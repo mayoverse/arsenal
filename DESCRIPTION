@@ -10,7 +10,13 @@ Suggests:
     rmarkdown,
     xtable,
     survival,
-    testthat
+    testthat,
+    coin,
+    pROC,
+    MASS,
+    gam,
+    pandoc,
+    rpart
 Depends:
     R (>= 3.2.0),
     stats (>= 3.2.0),
