@@ -1,0 +1,158 @@
+## Purpose: control parameters for tableby function
+## Authors: Jason Sinnwell, Beth Atkinson
+## Created: 4/16/2015
+
+#The default summary statistics are:
+#* `continuous`: Continuous variables will show by default `Nmiss, meansd, q1q3, range`
+#* `cat`: Categorical and factor variables will show by default `Nmiss, countpct`
+#* `ordered`: Ordered factors will show by default `Nmiss, countpct`
+#* `surv`: Survival variables will show by default `Nmiss, Nevents, medsurv`
+   ## JPS: consider survKyr
+#* `group`: The grouping variable will show by default `countpct`
+
+## Many of the test statistics are standardly defined in R (e.g. mean),
+## These are extra functions defined specifically for this function.
+
+#' Control settings for \code{tableby} function
+#' 
+#' Control test and summary settings for \code{\link{tableby}} function.
+#' 
+#' @param test logical, tell \code{tableby} whether to perform tests of x variables across levels of the group variable.
+#' @param total logical, tell \code{tableby} whether to calculate a column of totals across group variable.
+#' @param test.pname character string for the column name to give to the p-value column in \code{\link{summary.tableby}}.
+#'   Modifiable also with \code{\link{modpval.tableby}}.
+#' @param cat.simplify logical, tell \code{tableby} whether to include the first level of the categorical variable if binary.
+#'   If \code{TRUE}, only the summary stats of the second level, and total (if \code{TRUE}), are calculated.
+#'   NOTE: this only simplifies to one line if \code{cat.stats} is only one statistic, such as countpct.
+#'   Specifically, if \code{cat.stats} includes Nmiss and there are missings, then Nmiss is included in the stats.
+#' @param numeric.test set test for numeric RHS variables in \code{tableby} to anova or kwt (Kruskal-Wallis) rank based tests.
+#'   If no LHS variable exists, then a mean is required for a univariate test.
+#' @param numeric.stats summary statistics to include for numeric RHS variables of \code{tableby} within the levels of the group LHS variable.
+#'   Options are N, Nmiss, mean, meansd, median, q1q3, range, or other R built-in or user-written functions.
+#' @param cat.test  name of test for categorical variables: chisq
+#' @param cat.stats summary statistics to include for categorical RHS variables of \code{tableby} within the levels of the group LHS variable.
+#'   Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.
+#' @param ordered.test name of test for ordered variables: trend
+#' @param ordered.stats summary statistics to include for categorical RHS variables of \code{tableby} within the levels of the group LHS variable.
+#'   Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.
+#' @param surv.test name of test to perform for survival variables
+#' @param surv.stats summary statistics to include for time-to-event (survival) RHS variables of \code{tableby}  within the levels of the group LHS variable.
+#'   Options are Nevents, medsurv.
+#' @param date.test name of test to perform for date variables.
+#' @param date.stats stats functions to perform for Date variables
+#' @param stats.labels A named list of labels for all the statistics function names, where the function name is the named element in the list
+#'   and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
+#'   e.g., list(countpct="Count(Pct)").
+#' @param digits digits to print for non-integer statistics
+#' @param digits.test digits to print for test statistic p-values
+#' @param nsmall digits to print after decimal point for numerics
+#' @param nsmall.pct digits to print after decimal point for percentages
+#' @param ... additional arguments to be passed to internal \code{tableby} functions and kept for print method options, such as digits.
+#' @details 
+#' All tests can be turned off by setting \code{test} to FALSE.
+#'   Otherwise, test are set to default settings in this list, or set explicitly in the formula of \code{tableby}.
+#' 
+#' @return A list with settings to be used within the \code{tableby} function.
+#' @export
+#' 
+#' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby}}, \code{\link{summary.tableby}}
+#' 
+#' @author Jason Sinnwell, Beth Atkinson, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
+#' 
+#' @examples 
+#' set.seed(100)
+#' ## make 3+ categories for Response
+#' mdat <- data.frame(Response=c(0,0,0,0,0,1,1,1,1,1),
+#'                    Sex=sample(c("Male", "Female"), 10,replace=TRUE),
+#'                    Age=round(rnorm(10,mean=40, sd=5)),
+#'                    HtIn=round(rnorm(10,mean=65,sd=5)))
+#'                    
+#' ## allow default summaries in RHS variables, and pass control args to
+#' ## main function, to be picked up with ... when calling tableby.control
+#' outResp <- tableby(Response ~ Sex + Age + HtIn, data=mdat, total=FALSE, test=TRUE)
+#' outCtl <- tableby(Response ~ Sex + Age + HtIn, data=mdat,
+#'                   control=tableby.control(total=TRUE, cat.simplify=TRUE,
+#'                   cat.stats=c("Nmiss","countpct"),digits=1))
+#' summary(outResp, text=TRUE)
+#' summary(outCtl, text=TRUE)
+
+tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=FALSE,
+   numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt",
+   numeric.stats=c("Nmiss","meansd","q1q3","range"),
+   cat.stats=c("Nmiss","countpct"), 
+   ordered.stats=c("Nmiss", "countpct"),
+   surv.stats=c("Nevents","medSurv"),
+   date.stats=c("Nmiss", "median","range"),
+   stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", q1q3="Q1, Q3", range="Range", 
+		   			 countpct="Count (Pct)", Nevents="Events", medsurv="Median Survival"),                        
+   digits=3, digits.test=NULL, nsmall=NULL, nsmall.pct=NULL, ...) {
+
+  ## validate digits
+  if(is.null(digits)) {
+    digits <- 3
+  }
+  if(is.null(digits.test)){
+    digits.test <- digits
+  }
+#  if(is.null(nsmall)){
+#    nsmall <- 2
+#  }
+#  if(is.null(nsmall.pct)){
+#    nsmall.pct <- 2
+#  }
+  if(digits < 1 | digits.test < 1) {
+    warning("digits must be positive integer. Set to default. \n")
+    digits <- 3
+    digits.test <- digits
+  }
+  if(!is.null(nsmall) && (nsmall < 1)) {
+	  warning("nsmall must be positive integer, or NULL. Set to NULL. \n")
+	  nsmall <- NULL
+  }  
+  if(!is.null(nsmall.pct) && (nsmall.pct < 1)) {
+	  warning("nsmall.pct must be positive integer, or NULL. Set to NULL. \n")
+	  nsmall.pct <- NULL
+  }  
+  ## validate all test names
+  if(!exists(numeric.test)) {
+    stop("numeric test does not exist: ", numeric.test, "\n")
+  }
+  if(!exists(cat.test)) {
+    stop("categorical test does not exist: ", cat.test, "\n")
+  }
+  if(!exists(ordered.test)) {
+    stop("ordinal test does not exist: ", ordered.test, "\n")
+  }
+  if(!exists(surv.test)) {
+    stop("survival test does not exist: ", surv.test, "\n")
+  }
+  if(!exists(date.test)) {
+    stop("date test does not exist: ", date.test, "\n")
+  }
+ ## validate summary stat function names
+  
+  if(any(!exists(numeric.stats))) {
+    stop("One or more numeric summary statistic functions do not exist.\n")
+  }
+  if(any(!exists(cat.stats))) {
+    stop("One or more categorical summary statistic functions do not exist.\n")
+  }
+  if(any(!exists(ordered.stats))) {
+    stop("One or more ordered summary statistic functions do not exist.\n")
+  }
+  if(any(!exists(surv.stats))) {
+    stop("One or more survival summary statistic functions do not exist.\n")
+  }
+  if(any(!exists(date.stats))) {
+    stop("One or more date summary statistic functions do not exist.\n")
+  }
+  return(list(test=test, total=total, test.pname=test.pname, cat.simplify=cat.simplify,
+              numeric.test=numeric.test, cat.test=cat.test,
+              ordered.test=ordered.test, surv.test=surv.test,
+              numeric.stats=numeric.stats, cat.stats=cat.stats, 
+              ordered.stats=ordered.stats,  surv.stats=surv.stats,
+              date.test=date.test, date.stats=date.stats,
+              stats.labels=stats.labels,
+              digits=digits, digits.test=digits.test, nsmall=nsmall, nsmall.pct=nsmall.pct))
+  
+}
