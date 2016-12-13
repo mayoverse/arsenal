@@ -318,7 +318,7 @@ countpct <- function(x, levels=sort(unique(x)), na.rm=TRUE, weights=rep(1, lengt
 ##  tbl <- table(x[!is.na(x)])
 ## data.frame(count=as.vector(tbl), pct=100*as.vector(tbl)/sum(tbl), row.names=levels)
   wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)], ...)
-  df <- data.frame(count=as.vector(wtbl$sum.of.weights), pct=100*as.vector(wtbl$sum.of.weights)/sum(wtbl$sum.of.weights), row.names=if(length(wtbl$x)==length(levels)) levels else wtbl$x)
+  df <- data.frame(count=as.vector(wtbl$sum.of.weights), pct=100*as.vector(wtbl$sum.of.weights)/sum(wtbl$sum.of.weights), row.names=if(length(wtbl$x)==length(levels)) levels else names(wtbl$sum.of.weights))
   ## make sure all levels are in df. If not, add them and re-order.
   if(nrow(df) < length(levels) ) {
     misslevs <- levels[!(levels %in% rownames(df))]
@@ -392,15 +392,19 @@ anova <- function(x, x.by) {
 }
 ## 2. kruskal-wallis (non-parametric)
 kwt <- function(x, x.by) {
- na.ind <- is.na(x)
- kruskal.test(x[!na.ind], as.factor(x.by[!na.ind]))
+#  na.ind <- is.na(x)
+# kruskal.test(x[!na.ind], as.factor(x.by[!na.ind]))
+ if(any(colSums(table(x, x.by, exclude=NA))==0)) {
+   return(list(p.value=NA, statistic.F=NA, method="Kruskal-Wallis rank sum test"))
+ }
+ kruskal.test(x, as.factor(x.by))
 }
 
 ## two tests for categorical,
 ## 1. chisq goodness of fit, equal proportions across table cells
 chisq <- function(x, x.by) {
   tab <- table(x, x.by, exclude=NA)
-  return(chisq.test(tab))
+  return(chisq.test(tab[rowSums(tab)>0,]))
 }
 ## 2. Fisher's exact test for prob of as or more extreme table
 fe <- function(x, x.by) {
@@ -441,11 +445,15 @@ logrank <- function(x, x.by) {
 #' @return  the events stat from km$table
 Nevents <- function(x, ...) {
   mat <- summary(x, ...)$table
-  if(!is.null(nrow(mat))) {
-    rownames(mat) <- substr(rownames(mat), regexpr("=",rownames(mat))+1, nchar(rownames(mat)))
-    return(mat[,'events'])
-  } 
-  return(as.numeric(mat['events']))
+  if(!any(c(grepl("^events", colnames(mat)),grepl("^events",names(mat))))) {
+    stop("Survival endpoint may not be coded 0/1.\n")
+  }  
+  if (!is.null(nrow(mat))) {    
+    rownames(mat) <- substr(rownames(mat), regexpr("=", rownames(mat)) + 
+                            1, nchar(rownames(mat)))
+    return(mat[, "events"])
+  }
+  return(as.numeric(mat["events"]))
 }
 
 ## Median survival
@@ -458,10 +466,13 @@ Nevents <- function(x, ...) {
 #' @return vector of median subjects who have survived by time point
 medSurv <- function(x, ...) {
   mat <- summary(x, ...)$table
+  if(!any(c(grepl("^events", colnames(mat)),grepl("^events",names(mat))))) {
+    stop("Survival endpoint may not be coded 0/1.\n")
+  }
   if(!is.null(nrow(mat))) {
     rownames(mat) <- substr(rownames(mat), regexpr("=",rownames(mat))+1, nchar(rownames(mat)))
     return(mat[,'median'])
-  }
+  } 
   return(as.numeric(mat['median']))
 }
 ## 

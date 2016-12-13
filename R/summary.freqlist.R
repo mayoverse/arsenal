@@ -25,13 +25,30 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, .
   if (!is.logical(single)) stop("single must be TRUE or FALSE")
   if(!is.null(labelTranslations)) labels(object) <- labelTranslations
   
-  fmtdups <- function(vec){
-    x <- vec
-    x[is.na(x)] <- "NA"
-    y <- c(NA, head(x, -1))
-    x[x==y] <- ""
-    return(x)
+  # fmtdups <- function(vec){
+  #   x <- vec
+  #   x[is.na(x)] <- "NA"
+  #   y <- c(NA, x[-1])
+  #   x[x==y] <- ""
+  #   return(x)
+  # }
+  
+  ## changed on 11/18/16 by EPH. The other one wasn't working in cases like the second testthat example (bug reported by Emily Lundt)
+  fmtdups <- function(tab)
+  {
+    tab <- as.matrix(tab)
+    tab[is.na(tab)] <- "NA"
+    output <- tab
+    num <- max(stringr::str_count(tab, ","))
+    
+    for(col in 1:ncol(tab))
+    {
+      tmp <- apply(tab[, 1:col, drop = FALSE], 1, paste, collapse = paste0(rep(",", num + 1), collapse = "")) # in R >= 3.3.0, we could use strrep instead
+      output[duplicated(tmp), col] <- ""
+    }
+    output
   }
+  
   if(is.null(object[["labels"]])){
     cnames <- names(object[["freqlist"]])
   } else {
@@ -40,7 +57,8 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, .
   if(is.null(object[["byVar"]]) || single){
     freqdf <- object[["freqlist"]]
     if(ncol(freqdf)>5){
-      freqdf[, 1:(ncol(freqdf)-5)] <- apply(freqdf[, 1:(ncol(freqdf)-5), drop = FALSE], 2, fmtdups)
+      # freqdf[, 1:(ncol(freqdf)-5)] <- apply(freqdf[, 1:(ncol(freqdf)-5), drop = FALSE], 2, fmtdups)
+      freqdf[, 1:(ncol(freqdf)-4)] <- fmtdups(freqdf[, 1:(ncol(freqdf)-4), drop = FALSE])
     }
     print(knitr::kable(freqdf, row.names = FALSE, col.names = cnames, ...))
   } else {
@@ -55,7 +73,8 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, .
       if(!is.null(printlist[[i]])){
         if(nrow(printlist[[i]]) > 1){
           sublist <- printlist[[i]]
-          sublist[, 1:(ncol(sublist)-5)] <- apply(sublist[, 1:(ncol(sublist)-5), drop = FALSE], 2, fmtdups)
+          # sublist[, 1:(ncol(sublist)-5)] <- apply(sublist[, 1:(ncol(sublist)-5), drop = FALSE], 2, fmtdups)
+          sublist[, 1:(ncol(sublist)-4)] <- fmtdups(sublist[, 1:(ncol(sublist)-4), drop = FALSE])
           print(knitr::kable(sublist, row.names = FALSE, col.names = cnames, ...))
         } else {
           print(knitr::kable(printlist[[i]], row.names = FALSE, col.names = cnames, ...))
