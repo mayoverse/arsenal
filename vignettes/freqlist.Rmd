@@ -1,0 +1,244 @@
+---
+title: "The freqlist function"
+author: "Tina Gunderson"
+date: '`r format(Sys.time(),"%d %B, %Y")`'
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: 3
+  html_document:
+    toc: yes
+    toc_depth: '3'
+header-includes: \usepackage{tabularx}
+vignette: |
+  %\VignetteIndexEntry{The freqlist function}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=80), tidy=TRUE,  comment=NA)
+options(width=80, max.print=1000)
+
+require(arsenal)
+# source("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/R/freqlist.R")
+# source("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/R/summary.freqlist.R")
+# source("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/R/freqlist.internal.R")
+```
+
+\newpage
+
+# Overview 
+
+`freqlist` is a function meant to produce output similar to SAS's `PROC FREQ` procedure when using the `/list` option of the `TABLE` statement.
+`freqlist` provides options for handling missing or sparse data and can provide cumulative counts and percentages based on subgroups.
+It depends on the `knitr` package for printing. 
+
+## Sample dataset
+
+For our examples, we'll load the `mockstudy` data included with this package and use it to create a basic table.
+Because they have fewer levels, for brevity, we'll use the variables arm, sex, and mdquality.s to create the example table.
+We'll retain NAs in the table creation.
+See the appendix for notes regarding default NA handling and other useful information regarding tables in R. 
+
+```{r loading and setting up data}
+# load the data
+data(mockstudy)
+
+# examine the data
+str(mockstudy)
+
+# retain NAs when creating the table using the useNA argument
+tab.ex <- table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA="ifany")
+```
+
+\newpage
+ 
+# The `freqlist` object
+
+The `freqlist` function returns an object of class `freqlist`, which has three parts: `freqlist`, `byVar`, and `labels`.
+
+ - `freqlist` is a single data frame containing all contingency tables with calculated frequencies, cumulative frequencies, percentages, and cumulative percentages.
+ 
+ - `byVar` and `labels` are used in the `summary` method for subgroups and variable names, which will be covered in later examples.
+
+```{r console.output}
+noby <- freqlist(tab.ex)
+
+str(noby)
+
+# view the data frame portion of freqlist output
+noby[["freqlist"]]
+```
+
+\newpage
+
+# Basic output using `summary` 
+
+The `summary` method for `freqlist` relies on the `kable` function (in the `knitr` package) for printing.
+`knitr::kable` converts the output to markdown which can be printed in the console or easily rendered in Word, pdf, or html documents.
+
+Note that you must supply `results="asis"` to properly format the markdown output.
+
+```{r, results = 'asis'}
+summary(noby)
+```
+
+Additional arguments (except digits) in the `kable` function can be passed through. Perhaps the most useful is `caption`.
+
+```{r, results = 'asis'}
+summary(noby, caption="Basic freqlist output")
+```
+
+You can also easily pull out the `freqlist` data frame for more complicated formatting or manipulation
+(e.g. with another function such as `xtable` or `pander`). See below.
+
+\newpage
+
+# Rounding percentage digits or changing variable names for printing
+
+The digits argument takes a single numeric value and controls the rounding of percentages in the output.
+The labelTranslations argument is a character vector whose length must be equal to the number of factors used in the table.
+Note: this does not change the names of the data frame in the freqlist object, only those used in printing.
+Both options are applied in the following example. 
+
+```{r labelTranslations, results = 'asis'}
+
+withnames <- freqlist(tab.ex, labelTranslations = c("Treatment Arm","Gender","LASA QOL"), digits = 0)
+
+summary(withnames)
+
+```
+
+\newpage
+
+# Additional examples
+
+## Including combinations with frequencies of zero
+
+The sparse argument takes a single logical value as input. The default option is FALSE. If set to TRUE, the sparse option will include combinations with frequencies of zero in the list of results. As our initial table did not have any such levels, we create a second table to use in our example.
+
+```{r sparse, results = 'asis'}
+# we create a second table example to showcase the sparse argument
+tab.sparse <- table(mockstudy[, c("race","sex","arm")])
+
+nobysparse <- freqlist(tab.sparse, sparse = TRUE, digits=1)
+summary(nobysparse)
+```
+
+## Options for NA handling
+
+The various na.options allow you to include or exclude data with missing values for one or more factor levels in the counts and percentages as well as show the missing data but exclude it from the cumulative counts and percentages. The default option is to include all combinations with missing values. 
+
+```{r na.options, results = 'asis'}
+summary(freqlist(tab.ex, na.options="include"))
+summary(freqlist(tab.ex, na.options="showexclude"))
+summary(freqlist(tab.ex, na.options="remove"))
+```
+
+## Frequency counts and percentages subset by factor levels 
+
+The groupBy argument internally subsets the data by the specified factor  prior to calculating cumulative counts and percentages. By default, when used each subset will print in a separate table. Using the `single = TRUE` option when printing will collapse the subsetted result into a single table.
+
+```{r frequency counts, results='asis'}
+withby <- freqlist(tab.ex, groupBy = c("arm","sex"))
+summary(withby)
+
+#using the single = TRUE argument will collapse results into a single table for printing
+summary(withby, single = TRUE)
+
+```
+
+## Change labels on the fly
+
+At this time, the labels can be changed just for the variables (e.g. not the frequency columns).
+
+```{r changelabs, results = 'asis'}
+labels(noby) <- c("Arm", "Sex", "OtherThing")
+summary(noby)
+```
+
+You can also supply `labelTranslations` to `summary`.
+
+```{r, results = 'asis'}
+summary(noby, labelTranslations = c("Hi there", "What up", "Bye"))
+```
+
+## Using `xtable` to format and print `freqlist` results
+
+Fair warning: `xtable` has kind of a steep learning curve. These examples are given without explanation for more advanced users.
+
+```{r xtable setup}
+require(xtable)
+#turn off xtable header
+options(xtable.comment = FALSE)
+
+#set up custom function for xtable text
+italic <- function(x){
+paste0('{\\emph{ ', x, '}}')
+}
+
+```
+
+```{r printxtable, results='asis'}
+xftbl <- xtable(noby[["freqlist"]], 
+  caption = "xtable formatted output of freqlist data frame", align="|r|r|r|r|c|c|c|r|")
+
+# change the column names
+names(xftbl)[1:3] <- c("Arm", "Gender", "LASA QOL")
+
+print(xftbl, sanitize.colnames.function = italic, include.rownames = FALSE)
+```
+
+\newpage
+
+# Appendix: Notes regarding table options in R
+
+## NAs
+
+There are several widely used options for basic tables in R. The `table` function in base R is probably the most common;
+by default it excludes NA values. You can change NA handling in `base::table` using the useNA or exclude arguments.
+
+```{r}
+# base table default removes NAs
+tab.d1 <- base::table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA="ifany")
+tab.d1
+```
+
+`xtabs` is similar to `table`, but uses a formula-based syntax. However, there is not an option for retaining NAs in the
+`xtabs` function; instead, NAs must be added to each level of the factor where present using the `addNA` function.
+
+```{r}
+# without specifying addNA
+tab.d2 <- xtabs(formula = ~ arm + sex + mdquality.s, data = mockstudy)
+tab.d2
+
+# now with addNA
+tab.d3 <- xtabs(~ arm + sex + addNA(mdquality.s), data = mockstudy)
+tab.d3
+
+```
+
+## Table dimname names (dnn)
+
+Supplying a data.frame to the `table` function without giving columns individually will create a contingency table
+using all variables in the data.frame.
+
+However, if the columns of a data.frame or matrix are supplied separately (i.e., as vectors),
+column names will not be preserved.
+
+```{r}
+# providing variables separately (as vectors) drops column names
+tab.d4 <- base::table(mockstudy[, "arm"], mockstudy[, "sex"], mockstudy[, "mdquality.s"])
+tab.d4
+```
+
+If desired, you can use the `dnn` argument to pass variable names.
+
+```{r}
+# add the column name labels back using dnn option in base::table
+tab.dnn <- base::table(mockstudy[, "arm"], mockstudy[, "sex"], mockstudy[, "mdquality.s"], dnn=c("Amy", "Susan", "George"))
+tab.dnn
+```
+
+If using `freqlist`, you can provide the labels directly to `freqlist` or to `summary` using `labelTranslations`.
