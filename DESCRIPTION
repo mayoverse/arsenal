@@ -1,0 +1,21 @@
+Package: arsenal
+Title: An arsenal of useful R functions for biomedical statistics
+Version: 0.1.0
+Date: 2016-12-13
+Author: Beth Atkinson, Jason Sinnwell, Gregory Dougherty, Patrick Votruba, Ethan Heinzen, Tina Gunderson
+Maintainer: Ethan Heinzen <heinzen.ethan@mayo.edu>
+Description: An arsenal of useful R functions for biomedical statistics, specializing in models, reporting, and data summaries.
+Suggests:
+    knitr,
+    rmarkdown,
+    xtable,
+    survival,
+    testthat
+Depends:
+    R (>= 3.2.0),
+    stats (>= 3.2.0),
+    broom,
+    stringr
+VignetteBuilder: knitr
+License: GPL2 | LICENSE
+RoxygenNote: 5.0.1
