@@ -117,9 +117,9 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   } 
   outlist <- list(freqlist=tableout, byVar=groupBy, labels=variable_labels)
   class(outlist) <- "freqlist"
-  if(!usingRCF() & !usingNCSA()) {
-    cat(paste0("R-", version$major,".", version$minor, "\t", system("echo $USER",intern=TRUE), "\t", Sys.Date(), "\n"), file="/projects/bsi/gentools/R/logs/freqlist.log",append=TRUE)  
-  }
+  # if(!usingRCF() & !usingNCSA()) {
+  #   cat(paste0("R-", version$major,".", version$minor, "\t", system("echo $USER",intern=TRUE), "\t", Sys.Date(), "\n"), file="/projects/bsi/gentools/R/logs/freqlist.log",append=TRUE)  
+  # }
   return(outlist)
 }
 

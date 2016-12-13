@@ -602,9 +602,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   
   tblList <- list(y = yList, x = xList, control = control, Call = match.call(), weights=userWeights)
   class(tblList) <- "tableby"
-  if(!usingRCF() & !usingNCSA()) {
-    cat(paste0("R-", version$major,".", version$minor, "\t", system("echo $USER",intern=TRUE), "\t", Sys.Date(), "\n"), file="/projects/bsi/gentools/R/logs/tableby.log",append=TRUE)  
-  }
+  # if(!usingRCF() & !usingNCSA()) {
+  #   cat(paste0("R-", version$major,".", version$minor, "\t", system("echo $USER",intern=TRUE), "\t", Sys.Date(), "\n"), file="/projects/bsi/gentools/R/logs/tableby.log",append=TRUE)  
+  # }
   return(tblList) 
 }
 
