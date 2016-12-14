@@ -4,13 +4,15 @@
 \alias{as.data.frame.modelsum}
 \title{as.data.frame.modelsum}
 \usage{
-\method{as.data.frame}{modelsum}(x, title = NULL, labelTranslations = NULL,
-  digits = NA, nsmall = NA, nsmall.ratio = NA, digits.test = NA,
-  show.intercept = NA, show.adjust = NA, removeBlanks = text,
-  labelSize = 1.2, pFootnote = TRUE, ...)
+\method{as.data.frame}{modelsum}(x, ..., title = NULL,
+  labelTranslations = NULL, digits = NA, nsmall = NA, nsmall.ratio = NA,
+  digits.test = NA, show.intercept = NA, show.adjust = NA,
+  removeBlanks = text, labelSize = 1.2, pFootnote = TRUE)
 }
 \arguments{
 \item{x}{An object of class \code{\link{modelsum}}.}
+
+\item{...}{Other arguments (not implemented a this time).}
 
 \item{title}{Title for the table, defaults to \code{NULL} (no title)}
 
@@ -44,8 +46,6 @@ Default is 1.2: label column ~20\% bigger than other columns}
 
 \item{pFootnote}{Logical denoting if a footnote should be added describing the test used 
 to generate the p value.  Default is \code{TRUE}.}
-
-\item{...}{Other arguments (not implemented a this time).}
 }
 \value{
 A data.frame holding the modelsum

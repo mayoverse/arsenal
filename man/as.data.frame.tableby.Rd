@@ -4,12 +4,14 @@
 \alias{as.data.frame.tableby}
 \title{as.data.frame.tableby}
 \usage{
-\method{as.data.frame}{tableby}(object, title = NULL,
+\method{as.data.frame}{tableby}(x, ..., title = NULL,
   labelTranslations = NULL, digits = NA, nsmall = NA, nsmall.pct = NA,
-  digits.test = NA, test = NA, test.pname = NA, total = NA, ...)
+  digits.test = NA, test = NA, test.pname = NA, total = NA)
 }
 \arguments{
-\item{object}{An object of class \code{tableby}, made by the \code{\link{tableby}} function.}
+\item{x}{An object of class \code{\link{tableby}}.}
+
+\item{...}{Other arguments (not in use at this time).}
 
 \item{title}{Title that will appear on the top of the header in the pretty-table rendering 
 of the tableby object}
@@ -39,8 +41,6 @@ If \code{NA} (default), it uses the value from \code{object$control$test}.}
 
 \item{total}{Logical, denoting whether to include the "total" value. 
 If \code{NA} (default), it uses the value from \code{object$control$total}.}
-
-\item{...}{Other arguments (not in use at this time).}
 }
 \value{
 Information is returned as a data.frame of the tableby

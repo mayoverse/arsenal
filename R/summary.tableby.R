@@ -88,15 +88,17 @@ summary.tableby <- function (object, title = NULL, labelTranslations = NULL, dig
 #' Build a data.frame from the tableby object and parameters, and return it
 #' 
 #' @inheritParams summary.tableby
-#' 
+#' @param x An object of class \code{\link{tableby}}.
 #' @return Information is returned as a data.frame of the tableby
 #' @author Gregory Dougherty, Jason Sinnwell, Beth Atkinson, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 #' 
 #' @export
-as.data.frame.tableby <- function (object, title = NULL, labelTranslations = NULL, digits = NA, 
+as.data.frame.tableby <- function (x, ..., title = NULL, labelTranslations = NULL, digits = NA, 
 									nsmall = NA, nsmall.pct = NA, digits.test = NA, 
-									test = NA, test.pname = NA, total = NA, ...) {
-	frameOut <- makeSummary.tableby(FALSE, object, title, labelTranslations, digits, nsmall, 
+									test = NA, test.pname = NA, total = NA)
+{
+  if(length(list(...)) > 0) warning("The '...' in this function has changed. Are you passing positional arguments?")
+	frameOut <- makeSummary.tableby(FALSE, x, title, labelTranslations, digits, nsmall, 
 									nsmall.pct, digits.test, FALSE, FALSE, 1.2, test, test.pname, 
 									NA, total)
 	
