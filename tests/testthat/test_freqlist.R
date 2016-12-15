@@ -25,6 +25,7 @@ attr(mdat$Age, "label") <- "Age in Years"
 
 TAB <- table(mdat[, c("Group", "Sex", "Phase")])
 TAB.subset <- table(mdat[!(mdat$Group == "Low" & mdat$Sex == "Male"), c("Group", "Sex", "Phase")])
+TAB.na <- table(mdat[, c("trt", "ethan")], useNA = 'a')
 
 ###########################################################################################################
 #### Basic freqlist
@@ -117,4 +118,126 @@ test_that("groupBy option in freqlist call", {
       )
     )
   )
+})
+
+test_that("sparse option in freqlist call", {
+  expect_true(
+    identical(capture.output(summary(freqlist(TAB, sparse = TRUE))),
+      c(""                                                               ,
+        ""                                                               ,
+        "|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
+        "|:-----|:------|:-----|----:|-------:|-----------:|----------:|",
+        "|High  |Female |I     |    4|       4|        4.44|       4.44|",
+        "|      |       |II    |    8|      12|        8.89|      13.33|",
+        "|      |       |III   |    3|      15|        3.33|      16.67|",
+        "|      |Male   |I     |    7|      22|        7.78|      24.44|",
+        "|      |       |II    |    2|      24|        2.22|      26.67|",
+        "|      |       |III   |    6|      30|        6.67|      33.33|",
+        "|Low   |Female |I     |    7|      37|        7.78|      41.11|",
+        "|      |       |II    |    8|      45|        8.89|      50.00|",
+        "|      |       |III   |    2|      47|        2.22|      52.22|",
+        "|      |Male   |I     |    5|      52|        5.56|      57.78|",
+        "|      |       |II    |    4|      56|        4.44|      62.22|",
+        "|      |       |III   |    4|      60|        4.44|      66.67|",
+        "|Med   |Female |I     |    0|      60|        0.00|      66.67|",
+        "|      |       |II    |   11|      71|       12.22|      78.89|",
+        "|      |       |III   |    3|      74|        3.33|      82.22|",
+        "|      |Male   |I     |    0|      74|        0.00|      82.22|",
+        "|      |       |II    |    8|      82|        8.89|      91.11|",
+        "|      |       |III   |    8|      90|        8.89|     100.00|"
+      )
+    )
+  )
+})
+
+test_that("NA options in freqlist call", {
+  expect_true(
+    identical(capture.output(summary(freqlist(TAB.na, na.options = "include"))),
+      c(""                                                       ,
+        ""                                                       ,
+        "|trt |ethan   | Freq| cumFreq| freqPercent| cumPercent|",
+        "|:---|:-------|----:|-------:|-----------:|----------:|",
+        "|A   |Ethan   |   17|      17|       18.89|      18.89|",
+        "|    |Heinzen |   16|      33|       17.78|      36.67|",
+        "|    |NA      |    3|      36|        3.33|      40.00|",
+        "|B   |Ethan   |   25|      61|       27.78|      67.78|",
+        "|    |Heinzen |   29|      90|       32.22|     100.00|"
+      )
+    )
+  )
+  expect_true(
+    identical(capture.output(summary(freqlist(TAB.na, na.options = "showexclude"))),
+      c(""                                                       ,
+        ""                                                       ,
+        "|trt |ethan   | Freq| cumFreq| freqPercent| cumPercent|",
+        "|:---|:-------|----:|-------:|-----------:|----------:|",
+        "|A   |Ethan   |   17|      17|       19.54|      19.54|",
+        "|    |Heinzen |   16|      33|       18.39|      37.93|",
+        "|    |NA      |    3|      NA|          NA|         NA|",
+        "|B   |Ethan   |   25|      58|       28.74|      66.67|",
+        "|    |Heinzen |   29|      87|       33.33|     100.00|"
+      )
+    )
+  )
+  expect_true(
+    identical(capture.output(summary(freqlist(TAB.na, na.options = "remove"))),
+      c(""                                                       ,
+        ""                                                       ,
+        "|trt |ethan   | Freq| cumFreq| freqPercent| cumPercent|",
+        "|:---|:-------|----:|-------:|-----------:|----------:|",
+        "|A   |Ethan   |   17|      17|       19.54|      19.54|",
+        "|    |Heinzen |   16|      33|       18.39|      37.93|",
+        "|B   |Ethan   |   25|      58|       28.74|      66.67|",
+        "|    |Heinzen |   29|      87|       33.33|     100.00|"
+      )
+    )
+  )
+})
+
+test_that("Changing the labels", {
+  expect_true(
+    identical(capture.output(summary(freqlist(TAB.na, na.options = "include"), labelTranslations = c("Treatment", "Ethan Rocks"))),
+      c(""                                                                 ,
+        ""                                                                 ,
+        "|Treatment |Ethan Rocks | Freq| cumFreq| freqPercent| cumPercent|",
+        "|:---------|:-----------|----:|-------:|-----------:|----------:|",
+        "|A         |Ethan       |   17|      17|       18.89|      18.89|",
+        "|          |Heinzen     |   16|      33|       17.78|      36.67|",
+        "|          |NA          |    3|      36|        3.33|      40.00|",
+        "|B         |Ethan       |   25|      61|       27.78|      67.78|",
+        "|          |Heinzen     |   29|      90|       32.22|     100.00|"
+      )
+    )
+  )
+  tmp <- freqlist(TAB.na, na.options = "include")
+  labels(tmp) <- c("Treatment", "Ethan Rocks")  
+  expect_true(
+    identical(capture.output(summary(tmp)),
+      c(""                                                                 ,
+        ""                                                                 ,
+        "|Treatment |Ethan Rocks | Freq| cumFreq| freqPercent| cumPercent|",
+        "|:---------|:-----------|----:|-------:|-----------:|----------:|",
+        "|A         |Ethan       |   17|      17|       18.89|      18.89|",
+        "|          |Heinzen     |   16|      33|       17.78|      36.67|",
+        "|          |NA          |    3|      36|        3.33|      40.00|",
+        "|B         |Ethan       |   25|      61|       27.78|      67.78|",
+        "|          |Heinzen     |   29|      90|       32.22|     100.00|"
+      )
+    )
+  )
+  labels(tmp) <- NULL
+  expect_true(
+    identical(capture.output(summary(tmp)),
+      c(""                                                       ,
+        ""                                                       ,
+        "|trt |ethan   | Freq| cumFreq| freqPercent| cumPercent|",
+        "|:---|:-------|----:|-------:|-----------:|----------:|",
+        "|A   |Ethan   |   17|      17|       18.89|      18.89|",
+        "|    |Heinzen |   16|      33|       17.78|      36.67|",
+        "|    |NA      |    3|      36|        3.33|      40.00|",
+        "|B   |Ethan   |   25|      61|       27.78|      67.78|",
+        "|    |Heinzen |   29|      90|       32.22|     100.00|"
+      )
+    )
+  )  
 })
