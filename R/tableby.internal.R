@@ -268,8 +268,6 @@ range <- function(x, na.rm=TRUE, ...) {
 }
 
 ## quantiles
-#q1q3 <- function(x, na.rm=TRUE) {
-#  c(quantile(x, 0.25, na.rm), quantile(x, .75, na.rm)) #}
 q1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   if(na.rm & length(x)==sum(is.na(x))) {
     return(c(NA,NA))
@@ -282,22 +280,9 @@ medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   } 
   wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, .75), na.rm=na.rm, ...)
 }
-## old implementation if x.by is passed. Similar for meansd
-tb.q1q3 <- function(x, x.by, na.rm=TRUE) {
-  q1.vec <- tapply(x, x.by, quantile, .25, na.rm=na.rm)
-  q2.vec <- tapply(x, x.by, quantile, .75, na.rm=na.rm)
-  mat <- paste("(",min.mat, ",", max.mat, ")", sep="")
-  list(q1=q1.vec, q3=q3.vec)
-}
 
-## format the old q1q3 result for better printing (should work for range as well
-## Greg may need to edit this one
-format.q1q3 <- function(x,digits=5) {
-  paste("(",signif(x[1],digits=digits), ",",signif(x[2],digits=digits), ")",sep="")
-}
-
-## Inner-quartile range has a function IQR in R
-
+## Inner-quartile range has a function IQR in R, but a wrapper
+## would need to be written with weights in mind
 
 ## Count of missings: always show missings
 Nmiss <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
@@ -342,34 +327,6 @@ format.countpct <- function(x,digits=5, pct='') {
   } 
 }
 
-## alternative version of countpct that takes in by variable and will do totals.
-## if we do row percentages, have to do it this way, with countrowpct below
-tb.countpct <- function(x, x.by, doTotal=TRUE) {
-  miss.index <- which(is.na(x))
-  matx <- cbind((if(length(miss.index)) table(x[-miss.index],x.by[-miss.index]) else table(x, x.by)))
-  if(doTotal) {
-    matx <- cbind(matx, rowSums(matx))
-    colnames(matx) <- c(colnames(matx)[1:(ncol(matx)-1)], "Total")
-  }
-  totx <- matrix(colSums(matx), ncol=ncol(matx), nrow=nrow(matx),byrow=TRUE)
-  pctx <- matrix(100*matx/totx, ncol=ncol(matx))
-#  charx <- matrix(paste(matx, "(",round(100*matx/totx), "%)",sep=""), ncol=ncol(matx))
-  dimnames(pctx) <- dimnames(matx)
-  list(count=matx, pct=pctx)
-}
-tb.countrowpct <- function(x, x.by, doTotal=TRUE) {
-  miss.index <- which(is.na(x))
-  matx <- cbind((if(length(miss.index)) table(x[-miss.index],x.by[-miss.index]) else table(x, x.by)))
-  if(doTotal) {
-    matx <- cbind(matx, rowSums(matx))
-    colnames(matx) <- c(colnames(matx)[1:(ncol(matx)-1)], "Total")
-  }
-  totx <- matrix(rowSums(matx), ncol=ncol(matx), nrow=nrow(matx),byrow=TRUE)
-  pctx <- matrix(100*matx/totx, nrow=nrow(matx))
-#  charx <- matrix(paste(matx, "(",round(100*matx/totx), "%)",sep=""), ncol=ncol(matx))
-  dimnames(pctx) <- dimnames(matx)
-  list(count=matx, rowpct=pctx)
-}
 
 ### Test functions #######
 
@@ -1293,29 +1250,29 @@ format.other <- function(data, colSize, outputTypes, whichStat, isDate, digits, 
 	doFloat <- isFloatOut(outputTypes, whichStat)
 	
 	if(doDate) {
-		sep <- " "
+          sep <- " "
 	}
 	else if(doFloat) {
-		if(is.null(nsmall)) {
-			## Don't allow nsmall < 0   -JPS 9/11/15
-			nsmall <- max(0, digits - integerDigits(second))
-		}
-#		data <- format(round(as.numeric(data), nsmall), nsmall = nsmall)
-		data <- myFormat(data, digits, nsmall, isDate)
-		sep <- " "
+          if(is.null(nsmall)) {
+            ## Don't allow nsmall < 0   -JPS 9/11/15
+            nsmall <- max(0, digits - integerDigits(data))
+          }
+          ## data <- format(round(as.numeric(data), nsmall), nsmall = nsmall)
+          data <- myFormat(data, digits, nsmall, isDate)
+          sep <- " "
 	}
 	else {
-		if(isPct(outputTypes, whichStat) && !is.null(pctNSmall)) {
-			nsmall = pctNSmall
-		}
-#		if(is.null(nsmall)) {
-#			data <- format(data, digits = digits)
-#		}
-#		else {
-#			data <- format(data, digits = digits, nsmall = nsmall)
-#		}
-		data <- myFormat(data, digits, nsmall, isDate)
-		sep <- ", "
+          if(isPct(outputTypes, whichStat) && !is.null(pctNSmall)) {
+            nsmall = pctNSmall
+          }
+          ##	if(is.null(nsmall)) {
+          ##		data <- format(data, digits = digits)
+          ##	}
+          ##	else {
+          ##		data <- format(data, digits = digits, nsmall = nsmall)
+          ##	}
+          data <- myFormat(data, digits, nsmall, isDate)
+          sep <- ", "
 	}
 	
 	return(pastePaddedStr(c(data), colSize, sep = sep, appendSep = TRUE))

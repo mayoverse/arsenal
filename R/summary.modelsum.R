@@ -571,7 +571,7 @@ addModelsumTranslations <- function(object, labelTranslations) {
 #' 
 #' @author m082166
 makeModelSumHeader <- function(showCols, showOnce, minColSize, labelSize = 1.2, 
-								translations, leftJustify = FALSE, rightJustify = FALSE) {
+				translations, leftJustify = FALSE, rightJustify = FALSE) {
 	headers <- c(showCols, showOnce)
 	size <- max(nchar(headers)) + 2	# Need one extra "-" on either side to center text
 	if (size < 10)
@@ -640,53 +640,53 @@ makeModelSumHeader <- function(showCols, showOnce, minColSize, labelSize = 1.2,
 #' 
 #' @author m082166
 formatModelSum <- function(element, lineSize, firstColSize, colSize, translations, digits, 
-							pValueDigits, nsmall, nsmall.ratio, boldMark, showIntercept, showAdjust, 
-							showCols, showOnce, fieldName, oneTimeFieldName, pFootnote)
+                           pValueDigits, nsmall, nsmall.ratio, boldMark, showIntercept, showAdjust, 
+                           showCols, showOnce, fieldName, oneTimeFieldName, pFootnote)
 {
-	if (showAdjust) {
-		hideRows <- c()
-	}
-	else {
-		hideRows <- lookupHumanTitle(element$adjterms, translations)
-	}
-
-	coefficients <- element[[fieldName]]
-	rows <- makeModelSumTitleCells (element, fieldName, firstColSize, translations, boldMark, 
-									showIntercept, hideRows)
-	
-	numRows <- dim(coefficients)[1]
-	rowTitles <- lookupHumanTitle(element[[fieldName]]$term, translations)
-	colTitles <- getMatrixNames(element, fieldName, doRow = FALSE, translations = translations)
-	useCols <- getColsToUse (showCols, colTitles)
-	volueCols <- match(showCols, "p.value", nomatch = 0)
-	showExtras <- TRUE
-	curRow <- 0
-	
-	for (startRow in seq_len(numRows))
-	{
-		if (showRow(showIntercept, hideRows, rowTitles[startRow]))
-		{
-			extra <- c()
-			if (showExtras)
-			{
-				for (item in showOnce) {
-					extra <- c(extra, element[[oneTimeFieldName]][[item]])
-				}
-				showExtras <- FALSE
-			}
-			else {
-				for (item in showOnce) {
-					extra <- c(extra, ".")
-				}
-			}
-			
-			rows <- addModel(rows, useCols, volueCols, coefficients[startRow, ], extra, curRow, 
-							 colSize, digits, pValueDigits, nsmall, nsmall.ratio)
-			curRow <- curRow + 1
-		}
-	}
-	
-	return(rows)
+  if (showAdjust) {
+    hideRows <- c()
+  }
+  else {
+    hideRows <- lookupHumanTitle(element$adjterms, translations)
+  }
+  
+  coefficients <- element[[fieldName]]
+  rows <- makeModelSumTitleCells (element, fieldName, firstColSize, translations, boldMark, 
+                                  showIntercept, hideRows)
+  
+  numRows <- dim(coefficients)[1]
+  rowTitles <- lookupHumanTitle(element[[fieldName]]$term, translations)
+  colTitles <- getMatrixNames(element, fieldName, doRow = FALSE, translations = translations)
+  useCols <- getColsToUse (showCols, colTitles)
+  volueCols <- match(showCols, "p.value", nomatch = 0)
+  showExtras <- TRUE
+  curRow <- 0
+  
+  for (startRow in seq_len(numRows))
+    {
+      if (showRow(showIntercept, hideRows, rowTitles[startRow]))
+        {
+          extra <- c()
+          if (showExtras)
+            {
+              for (item in showOnce) {
+                extra <- c(extra, element[[oneTimeFieldName]][[item]])
+              }
+              showExtras <- FALSE
+            }
+          else {
+            for (item in showOnce) {
+              extra <- c(extra, ".")
+            }
+          }
+          
+          rows <- addModel(rows, useCols, volueCols, coefficients[startRow, ], extra, curRow, 
+                           colSize, digits, pValueDigits, nsmall, nsmall.ratio)
+          curRow <- curRow + 1
+        }
+    }
+  
+  return(rows)
 }
 
 
@@ -856,13 +856,14 @@ getColsToUse <- function(showCols, colTitles)
 #' 
 #' @author m082166
 makeModelSumHeaders <- function(object, showCols, showOnce, translations) {
-	theNames <- getMatrixNames(object, fieldName, translations = translations)
-	
-	if (is.na(extras) || (length(extras) == 0))	# length(NA) == 1
-		return(theNames)
-	
-	extras <- lookupHumanTitle(extras, translations)
-	return(c(theNames, extras))
+  ## second arg was fieldName, but not passed (tried by JPS on 12/15/16
+  theNames <- getMatrixNames(object, showCols, translations = translations)
+  
+  if (is.na(extras) || (length(extras) == 0))	# length(NA) == 1
+    return(theNames)
+  
+  extras <- lookupHumanTitle(extras, translations)
+  return(c(theNames, extras))
 }
 
 
@@ -884,28 +885,28 @@ makeModelSumHeaders <- function(object, showCols, showOnce, translations) {
 #' 
 #' @author m082166
 makeModelSumTitleCells <- function(element, fieldName, colSize, translations, boldMark, 
-									showIntercept, hideRows) {
-	theCells <- NULL
-	rowTitles <- lookupHumanTitle(element[[fieldName]]$term, translations)
-	
-	for (title in rowTitles) {
-		showThis <- showRow(showIntercept, hideRows, title)
-		if (showThis && (title != "(Intercept)")) {
-			title <- paste0(boldMark, title, boldMark)
-		}
-		
-		if (showThis) {
-			if (length(theCells) == 0) {
-				theCells <- c(makePaddedStr(title, colSize))
-			}
-			else {
-				# Add blank line to mark new row, then title line(s)
-				theCells <- c(theCells, "", makePaddedStr(title, colSize))
-			}
-		}
-	}
-	
-	return(theCells)
+                                   showIntercept, hideRows) {
+  theCells <- NULL
+  rowTitles <- lookupHumanTitle(element[[fieldName]]$term, translations)
+  
+  for (title in rowTitles) {
+    showThis <- showRow(showIntercept, hideRows, title)
+    if (showThis && (title != "(Intercept)")) {
+      title <- paste0(boldMark, title, boldMark)
+    }
+    
+    if (showThis) {
+      if (length(theCells) == 0) {
+        theCells <- c(makePaddedStr(title, colSize))
+      }
+      else {
+                                        # Add blank line to mark new row, then title line(s)
+        theCells <- c(theCells, "", makePaddedStr(title, colSize))
+      }
+    }
+  }
+  
+  return(theCells)
 }
 
 
