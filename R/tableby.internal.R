@@ -427,7 +427,7 @@ trend <- function(x, x.by) {
 #' @param x.by  by, categorical variable
 #' @return   test output with $method and $p.value
 logrank <- function(x, x.by) {
-  out <- survdiff(x ~ x.by)
+  out <- survival::survdiff(x ~ x.by)
   out$p.value <- 1-pchisq(out$chisq, df=length(unique(x.by))-1)
   out$method="survdiff logrank"
   out
