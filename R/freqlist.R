@@ -107,7 +107,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
     tableout <- internalTable(tab.freq, na.options = na.options, digits = digits)
   }
   if (!sparse) {
-    tableout <- subset(tableout, Freq != 0)
+    tableout <- tableout[tableout$Freq != 0, ]
     tableout <- droplevels(tableout)
   }
   variable_labels <- labelTranslations
