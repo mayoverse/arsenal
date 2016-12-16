@@ -25,7 +25,7 @@ magic8 <- function(question=NULL){
          'Hierarchical clustering always gives an answer',
          'My sources say no',
          'Make a 3-D pie chart',
-         "I'll believe it if the figure is colorful",
+         "Yes, if the figure is colorful",
          'Very doubtful',
          "PC Load Letter", 
          "Not Sure",
