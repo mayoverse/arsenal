@@ -68,13 +68,11 @@ summary.modelsum <- function(object, title = NULL, labelTranslations = NULL, dig
 #' @author m082166
 as.data.frame.modelsum <- function(x, ..., title = NULL, labelTranslations = NULL, digits = NA, 
 									nsmall = NA, nsmall.ratio = NA, digits.test = NA, show.intercept = NA, 
-									show.adjust = NA, removeBlanks = text, labelSize = 1.2, 
-									pFootnote = TRUE)
+									show.adjust = NA, pFootnote = TRUE)
 {
   if(length(list(...)) > 0) warning("The '...' in this function has changed. Are you passing positional arguments?")
 	results <- makeSummary.modelsum (x, title, labelTranslations, digits, nsmall, nsmall.ratio, 
-									 digits.test, show.intercept, show.adjust, FALSE, removeBlanks, 
-									 labelSize, pFootnote)
+									 digits.test, show.intercept, show.adjust, FALSE, FALSE, 1.2, pFootnote)
 	
 	return(to.data.frame.modelsum(x, results))
 }
