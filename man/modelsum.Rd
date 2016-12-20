@@ -75,6 +75,6 @@ tab2.df[1:5,]
 Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, adapted from SAS Macro of the same name
 }
 \seealso{
-\code{\link{modelsum.control}}, \code{\link{summary.modelsum}}
+\code{\link{modelsum.control}}, \code{\link{summary.modelsum}}, \code{\link{formulize}}
 }
 

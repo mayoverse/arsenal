@@ -131,6 +131,6 @@ Jason Sinnwell, Beth Atkinson, Gregory Dougherty, adapted from SAS Macros writte
 }
 \seealso{
 \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}}, 
-  \code{\link{print.tableby}}, \code{\link{summary.tableby}}
+  \code{\link{print.tableby}}, \code{\link{summary.tableby}}, \code{\link{formulize}}
 }
 

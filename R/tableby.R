@@ -104,7 +104,7 @@
 #' The object also contains the original function call and the \code{tableby.control} list that we used in \code{tableby}.
 #' 
 #' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}}, 
-#'   \code{\link{print.tableby}}, \code{\link{summary.tableby}}
+#'   \code{\link{print.tableby}}, \code{\link{summary.tableby}}, \code{\link{formulize}}
 #'   
 #' @examples
 #' data(mockstudy)
