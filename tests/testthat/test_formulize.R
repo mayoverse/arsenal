@@ -92,5 +92,23 @@ test_that("Two-sided formula, interaction", {
   )
 })
 
+###########################################################################################################
+#### Actually using it
+###########################################################################################################
 
+test_that("Two-sided formula, mixed input", {
+  expect_true(
+    identical(capture.output(print(lm(formulize(2, 3:4, data = mockstudy), data = mockstudy))),
+      c(""                                                                   ,
+        "Call:"                                                              ,
+        "lm(formula = formulize(2, 3:4, data = mockstudy), data = mockstudy)",
+        ""                                                                   ,
+        "Coefficients:"                                                      ,
+        " (Intercept)  armF: FOLFOX    armG: IROX     sexFemale  "           ,
+        "     60.1075        0.6927        0.1484       -1.2319  "           ,
+        ""                                                                   
+      )
+    )
+  )
+})
 

@@ -34,6 +34,11 @@ formulize(1, c("x1", "x2", "x3"), data = mockstudy)
 
 ## get an interaction
 formulize("y", c("x1*x2", "x3"))
+
+## use in an lm
+form <- formulize(2, 3:4, data = mockstudy)
+summary(lm(form, data = mockstudy))
+
 }
 \author{
 Ethan Heinzen
