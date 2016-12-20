@@ -692,16 +692,17 @@ all.is.numeric <- function(x, what = c("test", "vector"), extras = c(".", "NA"))
     else x
 }
 
+########## Note from Ethan: if we want these doc pages, just replace all instances of "## '" with "#'"
 
-#' makeDataFrame
-#' 
-#' Make the tableby data frame and add the output to it
-#' 
-#' @param headers		Vector of most of the columns and their titles
-#' @param frameLists	List of lists holding the data for the data frame
-#' @return Data Frame with all the elements set up and filled in
-#' 
-#' @author m082166
+## ' makeDataFrame
+## ' 
+## ' Make the tableby data frame and add the output to it
+## ' 
+## ' @param headers		Vector of most of the columns and their titles
+## ' @param frameLists	List of lists holding the data for the data frame
+## ' @return Data Frame with all the elements set up and filled in
+## ' 
+## ' @author m082166
 makeDataFrame <- function(headers, frameLists) {
 	df <- as.data.frame (frameLists, stringsAsFactors = FALSE)
 	colnames(df) <- c ("term", headers)
@@ -709,22 +710,22 @@ makeDataFrame <- function(headers, frameLists) {
 }
 
 
-#' addListElement
-#' 
-#' Make lists for the data frame the output will be added to
-#' 
-#' @param theFrame		List of Lists holding the Lists to be added to, 1st time through just 
-#'		contains "term" and "variable", both NULL)
-#' @param headers		Vector of the columns and their titles
-#' @param rows			Vector of text to be processed
-#' @param varName		Name of the variable that created all these rows
-#' @param firstColSize	Length the first (label) column was padded to
-#' @param colSize		Length all other columns were padded to
-#' @param boldMark		Text used to indicate something is bold text.  Ignored if empty
-#' @param indentStr		Text used to indent text.  Ignored if " "
-#' @return List of Lists updated with the data from the passed in rows
-#' 
-#' @author m082166
+## ' addListElement
+## ' 
+## ' Make lists for the data frame the output will be added to
+## ' 
+## ' @param theFrame		List of Lists holding the Lists to be added to, 1st time through just 
+## '		contains "term" and "variable", both NULL)
+## ' @param headers		Vector of the columns and their titles
+## ' @param rows			Vector of text to be processed
+## ' @param varName		Name of the variable that created all these rows
+## ' @param firstColSize	Length the first (label) column was padded to
+## ' @param colSize		Length all other columns were padded to
+## ' @param boldMark		Text used to indicate something is bold text.  Ignored if empty
+## ' @param indentStr		Text used to indent text.  Ignored if " "
+## ' @return List of Lists updated with the data from the passed in rows
+## ' 
+## ' @author m082166
 addListElement <- function(theFrame, headers, rows, varName, firstColSize, colSize, boldMark, indentStr) {
 	numRows <- length(rows)
 	lineSize <- max(nchar(rows))
@@ -782,17 +783,17 @@ addListElement <- function(theFrame, headers, rows, varName, firstColSize, colSi
 }
 	
 	
-#' addToListVector
-#' 
-#' If baseList[[title]] is NULL, make it a Vector holding value.  If it's not null, make a
-#'   vector holding its contents followed by value
-#' 
-#' @param baseList	List to update
-#' @param title		Name of baseList element to update
-#' @param value		Text to add to the Vector at baseList[[title]]
-#' @return baseList after it has been updated
-#' 
-#' @author m082166
+## ' addToListVector
+## ' 
+## ' If baseList[[title]] is NULL, make it a Vector holding value.  If it's not null, make a
+## '   vector holding its contents followed by value
+## ' 
+## ' @param baseList	List to update
+## ' @param title		Name of baseList element to update
+## ' @param value		Text to add to the Vector at baseList[[title]]
+## ' @return baseList after it has been updated
+## ' 
+## ' @author m082166
 addToListVector <- function(baseList, title, value) {
 	if(is.null (baseList[[title]]))
 		baseList[[title]] <- c (value)
@@ -803,16 +804,16 @@ addToListVector <- function(baseList, title, value) {
 }
 
 
-#' getName
-#' 
-#' Extract the row name from the text
-#' 
-#' @param nameText	Text to parse
-#' @param boldMark	Text used to indicate something is bold text.  Ignored if empty
-#' @param indentStr	Text used to indent text.  Ignored if " "
-#' @return String holding the ceaned up text.  Will clean either boldMark or indentStr
-#' 
-#' @author m082166
+## ' getName
+## ' 
+## ' Extract the row name from the text
+## ' 
+## ' @param nameText	Text to parse
+## ' @param boldMark	Text used to indicate something is bold text.  Ignored if empty
+## ' @param indentStr	Text used to indent text.  Ignored if " "
+## ' @return String holding the ceaned up text.  Will clean either boldMark or indentStr
+## ' 
+## ' @author m082166
 getName <- function(nameText, boldMark, indentStr) {
 	bSize <- nchar(boldMark)
 	tSize <- nchar(nameText)
@@ -840,14 +841,14 @@ getName <- function(nameText, boldMark, indentStr) {
 }
 
 
-#' process
-#' 
-#' Process text, extracting the numbers and returning them as a list of Strings
-#' 
-#' @param theText Text to parse
-#' @return List of strings holding numbers, possibly including a %
-#' 
-#' @author m082166
+## ' process
+## ' 
+## ' Process text, extracting the numbers and returning them as a list of Strings
+## ' 
+## ' @param theText Text to parse
+## ' @return List of strings holding numbers, possibly including a %
+## ' 
+## ' @author m082166
 process <- function(theText) {
 	locations <- str_locate_all(theText, "-*[0-9.%]+")[[1]]
 	numResults <- nrow(locations)
@@ -865,16 +866,16 @@ process <- function(theText) {
 }
 
 
-#' addMethods
-#' 
-#' Add the methods to the table output
-#' 
-#' @param results	Vector of strings to add to, will add immediately to end of results
-#' @param methods	List of Methods, where the names are method names, and the values are the 
-#' order the methods appear in the output
-#' @return Vector of strings holding Pandoc code to create the table and its methods, if any
-#' 
-#' @author m082166
+## ' addMethods
+## ' 
+## ' Add the methods to the table output
+## ' 
+## ' @param results	Vector of strings to add to, will add immediately to end of results
+## ' @param methods	List of Methods, where the names are method names, and the values are the 
+## ' order the methods appear in the output
+## ' @return Vector of strings holding Pandoc code to create the table and its methods, if any
+## ' 
+## ' @author m082166
 addMethods <- function(results, methods) {
 	theNames <- names(methods)
 	if(is.null(theNames)) {
@@ -898,34 +899,34 @@ addMethods <- function(results, methods) {
 }
 
 
-#' formatElement
-#' 
-#' Return a List with two elements: 
-#' The vector holding the lines of a row in the table, defined by element, in Pandoc format
-#' Updated list of methods used by this tableby object
-#' 
-#' @param element		List to get information from, whose first item must be the statistics
-#' @param lineSize		Length each non-blank line should be padded to
-#' @param firstColSize	Length the first (label) column should be padded to
-#' @param colSize		Length all other columns should be padded to
-#' @param includeTotal	TRUE if should include last pre-pValue column, FALSE if shouldn't
-#' @param hasPValue		TRUE if has column for p-values, FALSE if shouldn't
-#' @param translations	The List to use for conversion of labels
-#' @param digits		Maximum number of digits to display for floating point numbers
-#' @param pValueDigits	Number of digits to display for a p-value. Example: 5 ==> in 0.12345
-#' @param nsmall		Minimum number of digits to the right of the decimal point to display 
-#' for floating point numbers.  If NULL, use 'digits' to determine everything
-#' @param pctNSmall		Minimum number of digits to the right of the decimal point to display for 
-#' percent numbers.  If NULL, use 'nsmall', if that is NULL use 'digits' to determine everything
-#' @param boldMark		String to use to mark text as bold
-#' @param indentStr		String to use to indent something one space
-#' @param collapse		If true, data might have been collapsed, and needs to be tested
-#' @param methods		List of methods and when they were first seen, or NULL if not tracking that
-#' @return List of two elements:
-#' strings: Vector of strings holding Pandoc code to create a row in a table representing element
-#' methods: Updated list of methods, or NULL if methods was NULL
-#' 
-#' @author m082166
+## ' formatElement
+## ' 
+## ' Return a List with two elements: 
+## ' The vector holding the lines of a row in the table, defined by element, in Pandoc format
+## ' Updated list of methods used by this tableby object
+## ' 
+## ' @param element		List to get information from, whose first item must be the statistics
+## ' @param lineSize		Length each non-blank line should be padded to
+## ' @param firstColSize	Length the first (label) column should be padded to
+## ' @param colSize		Length all other columns should be padded to
+## ' @param includeTotal	TRUE if should include last pre-pValue column, FALSE if shouldn't
+## ' @param hasPValue		TRUE if has column for p-values, FALSE if shouldn't
+## ' @param translations	The List to use for conversion of labels
+## ' @param digits		Maximum number of digits to display for floating point numbers
+## ' @param pValueDigits	Number of digits to display for a p-value. Example: 5 ==> in 0.12345
+## ' @param nsmall		Minimum number of digits to the right of the decimal point to display 
+## ' for floating point numbers.  If NULL, use 'digits' to determine everything
+## ' @param pctNSmall		Minimum number of digits to the right of the decimal point to display for 
+## ' percent numbers.  If NULL, use 'nsmall', if that is NULL use 'digits' to determine everything
+## ' @param boldMark		String to use to mark text as bold
+## ' @param indentStr		String to use to indent something one space
+## ' @param collapse		If true, data might have been collapsed, and needs to be tested
+## ' @param methods		List of methods and when they were first seen, or NULL if not tracking that
+## ' @return List of two elements:
+## ' strings: Vector of strings holding Pandoc code to create a row in a table representing element
+## ' methods: Updated list of methods, or NULL if methods was NULL
+## ' 
+## ' @author m082166
 formatElement <- function(element, lineSize, firstColSize, colSize, includeTotal, hasPValue, 
 							translations, digits, pValueDigits, nsmall, pctNSmall, boldMark, 
 							indentStr, collapse, methods) {
@@ -964,15 +965,15 @@ formatElement <- function(element, lineSize, firstColSize, colSize, includeTotal
 }
 
 
-#' numStats
-#' 
-#' Count the number of Elements represented by statistics.  If only one element in statistics, 
-#' count number of elements in that element
-#' 
-#' @param statistics	List holding the data of interest
-#' @return Count of elements in statistics.  If that is 1, count of names in that element
-#' 
-#' @author m082166
+## ' numStats
+## ' 
+## ' Count the number of Elements represented by statistics.  If only one element in statistics, 
+## ' count number of elements in that element
+## ' 
+## ' @param statistics	List holding the data of interest
+## ' @return Count of elements in statistics.  If that is 1, count of names in that element
+## ' 
+## ' @author m082166
 numStats <- function(statistics) {
 	size <- length(statistics)
 	if(size != 1)
@@ -987,19 +988,19 @@ numStats <- function(statistics) {
 }
 
 
-#' makeReference
-#' 
-#' Return a list with two elements: 
-#' The text specifying the superscript referencing the method used this time
-#' Updated list of methods used by this tableby object
-#' 
-#' @param methods	List of methods and when they were first seen, or NULL if not tracking that
-#' @param method	Method used this time
-#' @return List of two elements:
-#' ref: Text specifying the superscript for the passed in method
-#' methods: Updated list of methods, or NULL if methods was NULL
-#' 
-#' @author m082166
+## ' makeReference
+## ' 
+## ' Return a list with two elements: 
+## ' The text specifying the superscript referencing the method used this time
+## ' Updated list of methods used by this tableby object
+## ' 
+## ' @param methods	List of methods and when they were first seen, or NULL if not tracking that
+## ' @param method	Method used this time
+## ' @return List of two elements:
+## ' ref: Text specifying the superscript for the passed in method
+## ' methods: Updated list of methods, or NULL if methods was NULL
+## ' 
+## ' @author m082166
 makeReference <- function(methods, method) {
 	endText <- ""
 	if(!is.null(methods)) {
@@ -1023,27 +1024,27 @@ makeReference <- function(methods, method) {
 }
 
 
-#' addStatistic
-#' 
-#' Takes the Vector of the currently filled in rows, as well as rows that have been started but 
-#' not yet completed, and fills in the stats info for one more row
-#' 
-#' @param rows			Vector of strings to edit, and possibly add to
-#' @param stat			The Stats element to process, holding the info to add
-#' @param startRow		Current row to operate on, 0 based
-#' @param whichStat		Which of the items in outputTypes to use
-#' @param colSize		Width to pad each cell to
-#' @param outputTypes	Vector from which to pull output type
-#' @param isDate		If true, show data as dates, if false treat normally
-#' @param digits		Number of digits to round to when displaying percent or Other data
-#' @param nsmall		Minimum number of digits to the right of the decimal point to display 
-#' for floating point numbers.  If NULL, use 'digits' to determine everything
-#' @param pctNSmall		Minimum number of digits to the right of the decimal point to display for 
-#' percent numbers
-#' @param includeTotal	TRUE if should include last pre-pValue column, FALSE if shouldn't
-#' @return The updated rows
-#' 
-#' @author m082166
+## ' addStatistic
+## ' 
+## ' Takes the Vector of the currently filled in rows, as well as rows that have been started but 
+## ' not yet completed, and fills in the stats info for one more row
+## ' 
+## ' @param rows			Vector of strings to edit, and possibly add to
+## ' @param stat			The Stats element to process, holding the info to add
+## ' @param startRow		Current row to operate on, 0 based
+## ' @param whichStat		Which of the items in outputTypes to use
+## ' @param colSize		Width to pad each cell to
+## ' @param outputTypes	Vector from which to pull output type
+## ' @param isDate		If true, show data as dates, if false treat normally
+## ' @param digits		Number of digits to round to when displaying percent or Other data
+## ' @param nsmall		Minimum number of digits to the right of the decimal point to display 
+## ' for floating point numbers.  If NULL, use 'digits' to determine everything
+## ' @param pctNSmall		Minimum number of digits to the right of the decimal point to display for 
+## ' percent numbers
+## ' @param includeTotal	TRUE if should include last pre-pValue column, FALSE if shouldn't
+## ' @return The updated rows
+## ' 
+## ' @author m082166
 addStatistic <- function(rows, stat, startRow, whichStat, colSize, outputTypes, isDate, digits, 
 						  nsmall, pctNSmall, includeTotal)
 {
@@ -1097,17 +1098,17 @@ addStatistic <- function(rows, stat, startRow, whichStat, colSize, outputTypes, 
 }
 
 
-#' getStartingLine
-#' 
-#' A row is defined as a series of non-empty strings, ended by an empty string or by the end of the 
-#' vector.  This method finds the 0 based curRow'th row, and returns its location within rows
-#' 
-#' @param rows		Vector of strings to look through
-#' @param curRow	Current row to operate on, 0 based
-#' @return The location in rows (1 based) holding the beginning of "row" curRow, 
-#' or the length of rows if rows doesn't hold that many "rows"
-#' 
-#' @author m082166
+## ' getStartingLine
+## ' 
+## ' A row is defined as a series of non-empty strings, ended by an empty string or by the end of the 
+## ' vector.  This method finds the 0 based curRow'th row, and returns its location within rows
+## ' 
+## ' @param rows		Vector of strings to look through
+## ' @param curRow	Current row to operate on, 0 based
+## ' @return The location in rows (1 based) holding the beginning of "row" curRow, 
+## ' or the length of rows if rows doesn't hold that many "rows"
+## ' 
+## ' @author m082166
 getStartingLine <- function(rows, curRow) {
 	arrayLen <- length(rows)
 	start <- 1
@@ -1124,24 +1125,24 @@ getStartingLine <- function(rows, curRow) {
 }
 
 
-#' format.two
-#' 
-#' Format two number output, according to the output type specified, padded to fill to colSize
-#' 
-#' @param first			First number to display
-#' @param second		Second number to display
-#' @param colSize		Width of the output string
-#' @param outputTypes	Vector from which to pull output type
-#' @param whichStat		Which of the items in outputTypes to use
-#' @param isDate		If true, show data as dates, if false treat normally
-#' @param digits		Number of digits to round to when displaying percent or Other data
-#' @param nsmall		Minimum number of digits to the right of the decimal point to display 
-#' for floating point numbers.  If NULL, use 'digits' to determine everything
-#' @param pctNSmall		Minimum number of digits to the right of the decimal point to display for 
-#' percent numbers
-#' @return String of length colSize
-#' 
-#' @author m082166
+## ' format.two
+## ' 
+## ' Format two number output, according to the output type specified, padded to fill to colSize
+## ' 
+## ' @param first			First number to display
+## ' @param second		Second number to display
+## ' @param colSize		Width of the output string
+## ' @param outputTypes	Vector from which to pull output type
+## ' @param whichStat		Which of the items in outputTypes to use
+## ' @param isDate		If true, show data as dates, if false treat normally
+## ' @param digits		Number of digits to round to when displaying percent or Other data
+## ' @param nsmall		Minimum number of digits to the right of the decimal point to display 
+## ' for floating point numbers.  If NULL, use 'digits' to determine everything
+## ' @param pctNSmall		Minimum number of digits to the right of the decimal point to display for 
+## ' percent numbers
+## ' @return String of length colSize
+## ' 
+## ' @author m082166
 format.two <- function(first, second, colSize, outputTypes, whichStat, isDate, digits, nsmall, 
 						pctNSmall) {
 	doList <- isListOut(outputTypes, whichStat)
@@ -1174,23 +1175,23 @@ format.two <- function(first, second, colSize, outputTypes, whichStat, isDate, d
 }
 
 
-#' format.three
-#' 
-#' Format three number output, according to the output type specified, padded to fill to colSize
-#' 
-#' @param first			First number to display
-#' @param second		Second number to display
-#' @param third     Third number to display
-#' @param colSize		Width of the output string
-#' @param outputTypes	Vector from which to pull output type
-#' @param whichStat		Which of the items in outputTypes to use
-#' @param isDate		If true, show data as dates, if false treat normally
-#' @param digits		Number of digits to round to when displaying percent or Other data
-#' @param nsmall		Minimum number of digits to the right of the decimal point to display 
-#' for floating point numbers.  If NULL, use 'digits' to determine everything
-#' @return String of length colSize
-#' 
-#' @author m082166
+## ' format.three
+## ' 
+## ' Format three number output, according to the output type specified, padded to fill to colSize
+## ' 
+## ' @param first			First number to display
+## ' @param second		Second number to display
+## ' @param third     Third number to display
+## ' @param colSize		Width of the output string
+## ' @param outputTypes	Vector from which to pull output type
+## ' @param whichStat		Which of the items in outputTypes to use
+## ' @param isDate		If true, show data as dates, if false treat normally
+## ' @param digits		Number of digits to round to when displaying percent or Other data
+## ' @param nsmall		Minimum number of digits to the right of the decimal point to display 
+## ' for floating point numbers.  If NULL, use 'digits' to determine everything
+## ' @return String of length colSize
+## ' 
+## ' @author m082166
 format.three <- function(first, second, third, colSize, outputTypes, whichStat, isDate, digits, nsmall) {
 	doMedList <- isMedListOut(outputTypes, whichStat)
 	doMedRange <- isMedRange(outputTypes, whichStat)
@@ -1227,23 +1228,23 @@ format.three <- function(first, second, third, colSize, outputTypes, whichStat, 
 }
 
 
-#' format.other
-#' 
-#' Format data output, according to the output type specified, padded to fill to colSize
-#' 
-#' @param data			Data to display, be it number or date
-#' @param colSize		Width of the output string
-#' @param outputTypes	Vector from which to pull output type
-#' @param whichStat		Which of the items in outputTypes to use
-#' @param isDate		If true, show data as dates, if false treat normally
-#' @param digits		Number of digits to round to when displaying percent or Other data
-#' @param nsmall		Minimum number of digits to the right of the decimal point to display 
-#' for floating point numbers.  If NULL, use 'digits' to determine everything
-#' @param pctNSmall		Minimum number of digits to the right of the decimal point to display for 
-#' percent numbers
-#' @return String of length colSize
-#' 
-#' @author m082166
+## ' format.other
+## ' 
+## ' Format data output, according to the output type specified, padded to fill to colSize
+## ' 
+## ' @param data			Data to display, be it number or date
+## ' @param colSize		Width of the output string
+## ' @param outputTypes	Vector from which to pull output type
+## ' @param whichStat		Which of the items in outputTypes to use
+## ' @param isDate		If true, show data as dates, if false treat normally
+## ' @param digits		Number of digits to round to when displaying percent or Other data
+## ' @param nsmall		Minimum number of digits to the right of the decimal point to display 
+## ' for floating point numbers.  If NULL, use 'digits' to determine everything
+## ' @param pctNSmall		Minimum number of digits to the right of the decimal point to display for 
+## ' percent numbers
+## ' @return String of length colSize
+## ' 
+## ' @author m082166
 format.other <- function(data, colSize, outputTypes, whichStat, isDate, digits, nsmall, pctNSmall) {
 	doDate <- isDateOut(outputTypes, whichStat)
 	doFloat <- isFloatOut(outputTypes, whichStat)
@@ -1278,14 +1279,14 @@ format.other <- function(data, colSize, outputTypes, whichStat, isDate, digits, 
 }
 
 
-#' getPct
-#' 
-#' Return the proper "pct" string for the specified stat. "\%" if it's percent data, "" if not
-#' 
-#' @param doPct Logical. If \code{TRUE}, returns "\%" else "".
-#' @return The appropriate string: "\%" or ""
-#' 
-#' @author m082166
+## ' getPct
+## ' 
+## ' Return the proper "pct" string for the specified stat. "\%" if it's percent data, "" if not
+## ' 
+## ' @param doPct Logical. If \code{TRUE}, returns "\%" else "".
+## ' @return The appropriate string: "\%" or ""
+## ' 
+## ' @author m082166
 getPct <- function(doPct) {
 	if(doPct)
 		return("%")
@@ -1294,16 +1295,16 @@ getPct <- function(doPct) {
 }
 
 
-#' typeTest
-#' 
-#' Returns TRUE if this stat's output type matches value
-#' 
-#' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-#' @param whichStat		Which of the items in outputTypes to look at
-#' @param value (see below)
-#' @return TRUE if outputTypes[whichStat] == value output, else FALSE
-#' 
-#' @author m082166
+## ' typeTest
+## ' 
+## ' Returns TRUE if this stat's output type matches value
+## ' 
+## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
+## ' @param whichStat		Which of the items in outputTypes to look at
+## ' @param value (see below)
+## ' @return TRUE if outputTypes[whichStat] == value output, else FALSE
+## ' 
+## ' @author m082166
 typeTest <- function(outputTypes, whichStat, value) {
 	if(is.null(outputTypes) || (length(outputTypes) < whichStat))
 		return(FALSE)
@@ -1312,113 +1313,113 @@ typeTest <- function(outputTypes, whichStat, value) {
 }
 
 
-#' isPct
-#' 
-#' Returns TRUE if this stat's two valued data should be displayed as a count / percent A (B%)
-#' 
-#' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-#' @param whichStat		Which of the items in outputTypes to look at
-#' @return TRUE if percent output, else FALSE
-#' 
-#' @author m082166
+## ' isPct
+## ' 
+## ' Returns TRUE if this stat's two valued data should be displayed as a count / percent A (B%)
+## ' 
+## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
+## ' @param whichStat		Which of the items in outputTypes to look at
+## ' @return TRUE if percent output, else FALSE
+## ' 
+## ' @author m082166
 isPct <- function(outputTypes, whichStat) {
 	return(typeTest(outputTypes, whichStat, 'percent'))
 }
 
 
-#' isRange
-#' 
-#' Returns TRUE if this stat's two valued data should be displayed as a range (A - B)
-#' 
-#' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-#' @param whichStat		Which of the items in outputTypes to look at
-#' @return TRUE if range output, else FALSE
-#' 
-#' @author m082166
+## ' isRange
+## ' 
+## ' Returns TRUE if this stat's two valued data should be displayed as a range (A - B)
+## ' 
+## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
+## ' @param whichStat		Which of the items in outputTypes to look at
+## ' @return TRUE if range output, else FALSE
+## ' 
+## ' @author m082166
 isRange <- function(outputTypes, whichStat) {
 	return(typeTest(outputTypes, whichStat, 'range'))
 }
 
 
-#' isMedRange
-#' 
-#' Returns TRUE if this stat's two valued data should be displayed as a median range A (B - C)
-#' 
-#' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-#' @param whichStat		Which of the items in outputTypes to look at
-#' @return TRUE if median range output, else FALSE
-#' 
-#' @author m082166
+## ' isMedRange
+## ' 
+## ' Returns TRUE if this stat's two valued data should be displayed as a median range A (B - C)
+## ' 
+## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
+## ' @param whichStat		Which of the items in outputTypes to look at
+## ' @return TRUE if median range output, else FALSE
+## ' 
+## ' @author m082166
 isMedRange <- function(outputTypes, whichStat) {
 	return(typeTest(outputTypes, whichStat, 'medrange'))
 }
 
 
-#' isListOut
-#' 
-#' Returns TRUE if this stat's data should be displayed as a list A[, B]*
-#' 
-#' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-#' @param whichStat		Which of the items in outputTypes to look at
-#' @return TRUE if list output, else FALSE
-#' 
-#' @author m082166
+## ' isListOut
+## ' 
+## ' Returns TRUE if this stat's data should be displayed as a list A[, B]*
+## ' 
+## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
+## ' @param whichStat		Which of the items in outputTypes to look at
+## ' @return TRUE if list output, else FALSE
+## ' 
+## ' @author m082166
 isListOut <- function(outputTypes, whichStat) {
 	return(typeTest(outputTypes, whichStat, 'list'))
 }
 
 
-#' isMedListOut
-#' 
-#' Returns TRUE if this stat's data should be displayed as a median list A (B, C)
-#' 
-#' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-#' @param whichStat		Which of the items in outputTypes to look at
-#' @return TRUE if median list output, else FALSE
-#' 
-#' @author m082166
+## ' isMedListOut
+## ' 
+## ' Returns TRUE if this stat's data should be displayed as a median list A (B, C)
+## ' 
+## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
+## ' @param whichStat		Which of the items in outputTypes to look at
+## ' @return TRUE if median list output, else FALSE
+## ' 
+## ' @author m082166
 isMedListOut <- function(outputTypes, whichStat) {
 	return(typeTest(outputTypes, whichStat, 'medlist'))
 }
 
 
-#' isFloatOut
-#' 
-#' Returns TRUE if this stat's data should be displayed as floating point number(s)
-#' 
-#' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-#' @param whichStat		Which of the items in outputTypes to look at
-#' @return TRUE if floating point output, else FALSE
-#' 
-#' @author m082166
+## ' isFloatOut
+## ' 
+## ' Returns TRUE if this stat's data should be displayed as floating point number(s)
+## ' 
+## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
+## ' @param whichStat		Which of the items in outputTypes to look at
+## ' @return TRUE if floating point output, else FALSE
+## ' 
+## ' @author m082166
 isFloatOut <- function(outputTypes, whichStat) {
 	return(typeTest(outputTypes, whichStat, 'float'))
 }
 
 
-#' isDateOut
-#' 
-#' Returns TRUE if this stat's data should be displayed as a date
-#' 
-#' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-#' @param whichStat		Which of the items in outputTypes to look at
-#' @return TRUE if date output, else FALSE
-#' 
-#' @author m082166
+## ' isDateOut
+## ' 
+## ' Returns TRUE if this stat's data should be displayed as a date
+## ' 
+## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
+## ' @param whichStat		Which of the items in outputTypes to look at
+## ' @return TRUE if date output, else FALSE
+## ' 
+## ' @author m082166
 isDateOut <- function(outputTypes, whichStat) {
 	return(typeTest(outputTypes, whichStat, 'date'))
 }
 
 
-#' isOther
-#' 
-#' Returns TRUE if this stat's two valued data should be displayed as an "other" type A (B)
-#' 
-#' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return TRUE
-#' @param whichStat		Which of the items in outputTypes to look at
-#' @return TRUE if other, else FALSE
-#' 
-#' @author m082166
+## ' isOther
+## ' 
+## ' Returns TRUE if this stat's two valued data should be displayed as an "other" type A (B)
+## ' 
+## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return TRUE
+## ' @param whichStat		Which of the items in outputTypes to look at
+## ' @return TRUE if other, else FALSE
+## ' 
+## ' @author m082166
 isOther <- function(outputTypes, whichStat) {
 	if(is.null(outputTypes) || (length(outputTypes) < whichStat))
 		return(TRUE)
@@ -1427,13 +1428,13 @@ isOther <- function(outputTypes, whichStat) {
 }
 
 
-#' Make a string of the form "name (N=count)"
-#' 
-#' @param name	The label that's getting a count (i.e. "High")
-#' @param count	The count that goes with this label
-#' @return String of the form "name (N=count)"
-#' 
-#' @author m082166
+## ' Make a string of the form "name (N=count)"
+## ' 
+## ' @param name	The label that's getting a count (i.e. "High")
+## ' @param count	The count that goes with this label
+## ' @return String of the form "name (N=count)"
+## ' 
+## ' @author m082166
 makeCountHeader <- function(name, count) {
   return(paste0(name, " (N=", count, ")"))
 }

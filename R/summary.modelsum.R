@@ -78,22 +78,22 @@ as.data.frame.modelsum <- function(x, ..., title = NULL, labelTranslations = NUL
 }
 
 
-#' Format the information in object as a Table using Pandoc coding or plain text, & cat it to stdout
-#' 
-#' @inheritParams summary.modelsum
-#' @param pFootnote	Logical denoting if a footnote should be added describing the test used 
-#' 		to generate the p value.  Default is \code{TRUE}. 
-#' 
-#' @return List holding the lines of the output plus information on column size
-#' results: The lines of the output, 
-#' firstColSize: The length of the first column, 
-#' colSize: The length of each other column, 
-#' showIntercept: TRUE if included the Intercept with each variable
-#' showAdjust: TRUE if included the adjust variable results for each variable
-#' showOnce: Vector of fields to be pulled from element$glance, one time only
-#' translations: List to use for conversion of labels
-#' 
-#' @author m082166
+## ' Format the information in object as a Table using Pandoc coding or plain text, & cat it to stdout
+## ' 
+## ' @inheritParams summary.modelsum
+## ' @param pFootnote	Logical denoting if a footnote should be added describing the test used 
+## ' 		to generate the p value.  Default is \code{TRUE}. 
+## ' 
+## ' @return List holding the lines of the output plus information on column size
+## ' results: The lines of the output, 
+## ' firstColSize: The length of the first column, 
+## ' colSize: The length of each other column, 
+## ' showIntercept: TRUE if included the Intercept with each variable
+## ' showAdjust: TRUE if included the adjust variable results for each variable
+## ' showOnce: Vector of fields to be pulled from element$glance, one time only
+## ' translations: List to use for conversion of labels
+## ' 
+## ' @author m082166
 makeSummary.modelsum <- function(object, title, labelTranslations, digits, nsmall, nsmall.ratio, 
 								  digits.test, show.intercept, show.adjust, text, removeBlanks, 
 								  labelSize, pFootnote ) {
@@ -167,23 +167,23 @@ makeSummary.modelsum <- function(object, title, labelTranslations, digits, nsmal
 }
 
 
-#' to.data.frame.modelsum
-#' 
-#' Take a Pandoc Table and turn it into a data frame
-#' 
-#' @param object		The data defining the table to display
-#' @param results		List with seven elements:
-#' 		results: The Pandoc multi-row table
-#' 		firstColSize: The length of the first column, 
-#' 		colSize: The length of each other column
-#' 		showIntercept: TRUE if included the Intercept with each variable
-#' 		showAdjust: TRUE if included the adjust variable results for each variable
-#' 		showOnce: Vector of fields to be pulled from element$glance, one time only
-#' 		translations: List to use for conversion of labels
-#' 
-#' @return A data.frame holding the modelsum
-#' 
-#' @author m082166
+## ' to.data.frame.modelsum
+## ' 
+## ' Take a Pandoc Table and turn it into a data frame
+## ' 
+## ' @param object		The data defining the table to display
+## ' @param results		List with seven elements:
+## ' 		results: The Pandoc multi-row table
+## ' 		firstColSize: The length of the first column, 
+## ' 		colSize: The length of each other column
+## ' 		showIntercept: TRUE if included the Intercept with each variable
+## ' 		showAdjust: TRUE if included the adjust variable results for each variable
+## ' 		showOnce: Vector of fields to be pulled from element$glance, one time only
+## ' 		translations: List to use for conversion of labels
+## ' 
+## ' @return A data.frame holding the modelsum
+## ' 
+## ' @author m082166
 to.data.frame.modelsum <- function(object, results)
 {
 	firstColSize <- as.integer(results$firstColSize)
@@ -219,21 +219,21 @@ to.data.frame.modelsum <- function(object, results)
 }
 
 
-#' to.the.data.frame.modelsum
-#' 
-#' Take a Pandoc Table and turn it into a data frame
-#' 
-#' @param results		The Pandoc multi-row table
-#' @param header		Vector with the column headers
-#' @param showOnce		Vector of fields that were pulled from element$glance, so will need to be duplicated
-#' @param rowCounts		List with one element per model of object, holding # rows & y variable
-#' @param firstColSize	The length of the first column, 
-#' @param colSize		The length of each other column
-#' @param killCol		Column of results holding data to be ignored
-#' 
-#' @return A data.frame holding the modelsum
-#' 
-#' @author m082166
+## ' to.the.data.frame.modelsum
+## ' 
+## ' Take a Pandoc Table and turn it into a data frame
+## ' 
+## ' @param results		The Pandoc multi-row table
+## ' @param header		Vector with the column headers
+## ' @param showOnce		Vector of fields that were pulled from element$glance, so will need to be duplicated
+## ' @param rowCounts		List with one element per model of object, holding # rows & y variable
+## ' @param firstColSize	The length of the first column, 
+## ' @param colSize		The length of each other column
+## ' @param killCol		Column of results holding data to be ignored
+## ' 
+## ' @return A data.frame holding the modelsum
+## ' 
+## ' @author m082166
 to.the.data.frame.modelsum <- function(results, header, showOnce, rowCounts, firstColSize, colSize, killCol)
 {
 	baseList <- list(term = NULL)
@@ -293,18 +293,18 @@ to.the.data.frame.modelsum <- function(results, header, showOnce, rowCounts, fir
 }
 
 
-#' makeDF
-#' 
-#' Create a data.frame, updating the "term" column to have the rowNames as its elements, and 
-#' setting its columns to be numeric or not as appropriate
-#' 
-#' @param baseList		List holding the contents of the data.frame to be
-#' @param rowNames		Names of the rows, will be added as column "term"
-#' @param nonNumeric	Names of non-numeric columns of the resulting data.frame
-#' 
-#' @return A data.frame holding the modelsum, with every column not in nonNumeric made numeric
-#' 
-#' @author m082166
+## ' makeDF
+## ' 
+## ' Create a data.frame, updating the "term" column to have the rowNames as its elements, and 
+## ' setting its columns to be numeric or not as appropriate
+## ' 
+## ' @param baseList		List holding the contents of the data.frame to be
+## ' @param rowNames		Names of the rows, will be added as column "term"
+## ' @param nonNumeric	Names of non-numeric columns of the resulting data.frame
+## ' 
+## ' @return A data.frame holding the modelsum, with every column not in nonNumeric made numeric
+## ' 
+## ' @author m082166
 makeDF <- function(baseList, rowNames, nonNumeric)
 {
 	baseList[["term"]] <- rowNames
@@ -327,20 +327,20 @@ makeDF <- function(baseList, rowNames, nonNumeric)
 }
 	
 	
-#' getRowInfo
-#' 
-#' For each model, get the number of rows that are part of that model, and the y variable associated 
-#' with it
-#' 
-#' @param object		The data defining the table to display
-#' @param showIntercept	TRUE if included the Intercept with each variable 
-#' @param showAdjust	TRUE if included the adjust variable results for each variable
-#' @param yCol			Name of the column in glance that holds the y column value
-#' @param translations Translations
-#' 
-#' @return List with one element per model of object, holding # rows & y variable
-#' 
-#' @author m082166
+## ' getRowInfo
+## ' 
+## ' For each model, get the number of rows that are part of that model, and the y variable associated 
+## ' with it
+## ' 
+## ' @param object		The data defining the table to display
+## ' @param showIntercept	TRUE if included the Intercept with each variable 
+## ' @param showAdjust	TRUE if included the adjust variable results for each variable
+## ' @param yCol			Name of the column in glance that holds the y column value
+## ' @param translations Translations
+## ' 
+## ' @return List with one element per model of object, holding # rows & y variable
+## ' 
+## ' @author m082166
 getRowInfo <- function(object, showIntercept, showAdjust, yCol, translations)
 {
 	if (showIntercept) {
@@ -372,18 +372,18 @@ getRowInfo <- function(object, showIntercept, showAdjust, yCol, translations)
 }
 	
 	
-#' myStrJoin
-#' 
-#' Take potentially split strings, or vector of strings, and join back together, each column becoming 
-#' a single string
-#' 
-#' @param theStr		String, or vector of strings, to join
-#' @param firstColSize	The length of the first column
-#' @param colSize		The length of each other column
-#' 
-#' @return Contents of each column de-Pandoced and formed into a single un-padded string
-#' 
-#' @author m082166
+## ' myStrJoin
+## ' 
+## ' Take potentially split strings, or vector of strings, and join back together, each column becoming 
+## ' a single string
+## ' 
+## ' @param theStr		String, or vector of strings, to join
+## ' @param firstColSize	The length of the first column
+## ' @param colSize		The length of each other column
+## ' 
+## ' @return Contents of each column de-Pandoced and formed into a single un-padded string
+## ' 
+## ' @author m082166
 myStrJoin <- function(theStr, firstColSize, colSize)
 {
 	len <- length (theStr)
@@ -427,18 +427,18 @@ myStrJoin <- function(theStr, firstColSize, colSize)
 }
 
 
-#' singleSplit
-#' 
-#' Split a string based on column lengths
-#' 
-#' @param theStr		String to split
-#' @param firstColSize	The length of the first column
-#' @param colSize		The length of each other column
-#' @param strLen		Total string length
-#' 
-#' @return Contents of each column de-Pandoced but not trimmed
-#' 
-#' @author m082166
+## ' singleSplit
+## ' 
+## ' Split a string based on column lengths
+## ' 
+## ' @param theStr		String to split
+## ' @param firstColSize	The length of the first column
+## ' @param colSize		The length of each other column
+## ' @param strLen		Total string length
+## ' 
+## ' @return Contents of each column de-Pandoced but not trimmed
+## ' 
+## ' @author m082166
 singleSplit <- function(theStr, firstColSize, colSize, strLen)
 {
 	first <- substring (theStr, 1, firstColSize)
@@ -460,16 +460,16 @@ singleSplit <- function(theStr, firstColSize, colSize, strLen)
 }
 
 
-#' addUniqueName
-#' 
-#' Add a row name, making it unique if necessary
-#' 
-#' @param rowNames	Vector to add to, and test against
-#' @param newRow	New row name to add
-#' 
-#' @return rowNames with newRow concatenated as a unique text string
-#' 
-#' @author m082166
+## ' addUniqueName
+## ' 
+## ' Add a row name, making it unique if necessary
+## ' 
+## ' @param rowNames	Vector to add to, and test against
+## ' @param newRow	New row name to add
+## ' 
+## ' @return rowNames with newRow concatenated as a unique text string
+## ' 
+## ' @author m082166
 addUniqueName <- function(rowNames, newRow)
 {
 	if (newRow %in% rowNames)
@@ -494,15 +494,15 @@ addUniqueName <- function(rowNames, newRow)
 ## 			[[2]] [1] "kind" "" "hood"
 ## --> [1] "man kind" "woman" "childhood"
 ## 
-#' compress
-#' 
-#' Take list of 1+ elements of vectors of equal length, produce a vector with things combined
-#' 
-#' @param theList	The list of data to compress
-#' 
-#' @return The Strings concatenated together
-#' 
-#' @author m082166
+## ' compress
+## ' 
+## ' Take list of 1+ elements of vectors of equal length, produce a vector with things combined
+## ' 
+## ' @param theList	The list of data to compress
+## ' 
+## ' @return The Strings concatenated together
+## ' 
+## ' @author m082166
 compress <- function(theList)
 {
 	if (length(theList) == 0)
@@ -523,16 +523,16 @@ compress <- function(theList)
 }
 
 
-#' addModelsumTranslations
-#' 
-#' Add all the desired translations from machine produced labels to a human readable ones to the list
-#' 
-#' @param object			The data defining the table to display
-#' @param labelTranslations	List where name is the label in the output, and value is the label you 
-#' want displayed e.g. list (q1q3: "Q1, Q3", medsurv = "Median Survival")
-#' @return Current translation list
-#' 
-#' @author m082166
+## ' addModelsumTranslations
+## ' 
+## ' Add all the desired translations from machine produced labels to a human readable ones to the list
+## ' 
+## ' @param object			The data defining the table to display
+## ' @param labelTranslations	List where name is the label in the output, and value is the label you 
+## ' want displayed e.g. list (q1q3: "Q1, Q3", medsurv = "Median Survival")
+## ' @return Current translation list
+## ' 
+## ' @author m082166
 addModelsumTranslations <- function(object, labelTranslations) {
 	translations <- format.addTranslations(object, labelTranslations, modelsum.translations, "fits", "xterms")
 	
@@ -547,27 +547,27 @@ addModelsumTranslations <- function(object, labelTranslations) {
 }
 
 
-#' makeModelSumHeader
-#' 
-#' Make the Pandoc format header for the table
-#' 
-#' @param showCols List of items that will be output as columns from each row, in order
-#' @param showOnce List of items that will be output as columns only on 1st row, in order
-#' @param minColSize Minimum size of the first column (which will hold label info for a row)
-#' @param translations The List to use for conversion of labels
-#' @param leftJustify	If TRUE, will left justify each column, defaults to FALSE 
-#' @param rightJustify If TRUE, will right justify each column, defaults to FALSE 
-#' When both leftJustify and rightJustify are FALSE, columns are centered
-#' @param labelSize	Relative size difference between label column and other columns. 
-#' 		Default is 1.2: label column ~20\% bigger than other columns
-#' @return List holding the lines of the header defined by group plus
-#' lineSize: The length of a full line, 
-#' firstColSize: The length of the first column, 
-#' colSize: The length of each other column, 
-#' header: The lines of the header
-#' The last element is the last line of the output, to go after the body of the output
-#' 
-#' @author m082166
+## ' makeModelSumHeader
+## ' 
+## ' Make the Pandoc format header for the table
+## ' 
+## ' @param showCols List of items that will be output as columns from each row, in order
+## ' @param showOnce List of items that will be output as columns only on 1st row, in order
+## ' @param minColSize Minimum size of the first column (which will hold label info for a row)
+## ' @param translations The List to use for conversion of labels
+## ' @param leftJustify	If TRUE, will left justify each column, defaults to FALSE 
+## ' @param rightJustify If TRUE, will right justify each column, defaults to FALSE 
+## ' When both leftJustify and rightJustify are FALSE, columns are centered
+## ' @param labelSize	Relative size difference between label column and other columns. 
+## ' 		Default is 1.2: label column ~20\% bigger than other columns
+## ' @return List holding the lines of the header defined by group plus
+## ' lineSize: The length of a full line, 
+## ' firstColSize: The length of the first column, 
+## ' colSize: The length of each other column, 
+## ' header: The lines of the header
+## ' The last element is the last line of the output, to go after the body of the output
+## ' 
+## ' @author m082166
 makeModelSumHeader <- function(showCols, showOnce, minColSize, labelSize = 1.2, 
 				translations, leftJustify = FALSE, rightJustify = FALSE) {
 	headers <- c(showCols, showOnce)
@@ -608,35 +608,35 @@ makeModelSumHeader <- function(showCols, showOnce, minColSize, labelSize = 1.2,
 }
 
 
-#' formatModelSum
-#' 
-#' Return a List with two elements: 
-#' The vector holding the lines of a row in the table, defined by element, in Pandoc format
-#' Updated list of methods used by this modelsum object
-#' 
-#' @param element		List to get information from, whose fieldName item must be the statistics
-#' @param lineSize		Length each non-blank line should be padded to
-#' @param firstColSize	Length the first (label) column should be padded to
-#' @param colSize		Length all other columns should be padded to
+## ' formatModelSum
+## ' 
+## ' Return a List with two elements: 
+## ' The vector holding the lines of a row in the table, defined by element, in Pandoc format
+## ' Updated list of methods used by this modelsum object
+## ' 
+## ' @param element		List to get information from, whose fieldName item must be the statistics
+## ' @param lineSize		Length each non-blank line should be padded to
+## ' @param firstColSize	Length the first (label) column should be padded to
+## ' @param colSize		Length all other columns should be padded to
 ## @param hasPValue TRUE if has column for p-values, FALSE if shouldn't
-#' @param translations	The List to use for conversion of labels
-#' @param digits		Maximum number of digits to display for floating point numbers
-#' @param pValueDigits	Number of digits to display for a p-value. Example: 5 ==> in 0.12345
-#' @param nsmall		Minimum number of digits to the right of the decimal point to display 
-#' for floating point numbers.  If NULL, use 'digits' to determine everything
-#' @param nsmall.ratio		Minimum number of digits to the right of the decimal point to display 
-#' for the ratio statistics (OR, HR, RR)
-#' @param boldMark		String to use to mark text as bold
-#' @param showIntercept	TRUE if should show the Intercept for each line, FALSE if shouldn't
-#' @param showAdjust	If TRUE show all rows, if false hide the "adjust" rows
-#' @param showCols		List of items that will be output as columns from each row, in order
-#' @param showOnce		List of items that will be output as columns only on 1st row, in order
-#' @param fieldName		The name of the List element that holds the matrix with the headers
-#' @param oneTimeFieldName ...?
-#' @param pFootnote		If TRUE add a footnote describing the test used to generate the p value
-#' @return Vector of strings holding Pandoc code to create a row in a table representing element
-#' 
-#' @author m082166
+## ' @param translations	The List to use for conversion of labels
+## ' @param digits		Maximum number of digits to display for floating point numbers
+## ' @param pValueDigits	Number of digits to display for a p-value. Example: 5 ==> in 0.12345
+## ' @param nsmall		Minimum number of digits to the right of the decimal point to display 
+## ' for floating point numbers.  If NULL, use 'digits' to determine everything
+## ' @param nsmall.ratio		Minimum number of digits to the right of the decimal point to display 
+## ' for the ratio statistics (OR, HR, RR)
+## ' @param boldMark		String to use to mark text as bold
+## ' @param showIntercept	TRUE if should show the Intercept for each line, FALSE if shouldn't
+## ' @param showAdjust	If TRUE show all rows, if false hide the "adjust" rows
+## ' @param showCols		List of items that will be output as columns from each row, in order
+## ' @param showOnce		List of items that will be output as columns only on 1st row, in order
+## ' @param fieldName		The name of the List element that holds the matrix with the headers
+## ' @param oneTimeFieldName ...?
+## ' @param pFootnote		If TRUE add a footnote describing the test used to generate the p value
+## ' @return Vector of strings holding Pandoc code to create a row in a table representing element
+## ' 
+## ' @author m082166
 formatModelSum <- function(element, lineSize, firstColSize, colSize, translations, digits, 
                            pValueDigits, nsmall, nsmall.ratio, boldMark, showIntercept, showAdjust, 
                            showCols, showOnce, fieldName, oneTimeFieldName, pFootnote)
@@ -688,22 +688,22 @@ formatModelSum <- function(element, lineSize, firstColSize, colSize, translation
 }
 
 
-#' getColsToShow
-#' 
-#' Takes the Vector of the currently filled in rows, as well as rows that have been started but 
-#' not yet completed, and fills in the modelSum info for one more row
-#' 
-#' @param control			Control object, holding the columns we're displaying
-#' @param family			Stats family of object we're displaying
-#' @param element			1st element we're displaying, to get column names / locations
-#' @param fieldName			The name of the List element for the "show every row" data
-#' @param oneTimeFieldName	The name of the List element for the "show once" data
-#' @param translations		The List to use for conversion of labels
-#' @return List of Vectors of names of rows to output
-#' showCols: fields to be pulled from every row of element$coeff
-#' showOnce: fields to be pulled from element$glance, one time only
-#' 
-#' @author m082166
+## ' getColsToShow
+## ' 
+## ' Takes the Vector of the currently filled in rows, as well as rows that have been started but 
+## ' not yet completed, and fills in the modelSum info for one more row
+## ' 
+## ' @param control			Control object, holding the columns we're displaying
+## ' @param family			Stats family of object we're displaying
+## ' @param element			1st element we're displaying, to get column names / locations
+## ' @param fieldName			The name of the List element for the "show every row" data
+## ' @param oneTimeFieldName	The name of the List element for the "show once" data
+## ' @param translations		The List to use for conversion of labels
+## ' @return List of Vectors of names of rows to output
+## ' showCols: fields to be pulled from every row of element$coeff
+## ' showOnce: fields to be pulled from element$glance, one time only
+## ' 
+## ' @author m082166
 getColsToShow <- function(control, family, element, fieldName, oneTimeFieldName, translations)
 {
 	## Match control stats columns by family to the stats in the object.
@@ -732,16 +732,16 @@ getColsToShow <- function(control, family, element, fieldName, oneTimeFieldName,
 }
 
 
-#' showRow
-#' 
-#' Determines whether or not a row should be displayed
-#' 
-#' @param showIntercept	TRUE if should show the Intercept for each line, FALSE if shouldn't
-#' @param hideRows		Vector of names of rows that should not be shown
-#' @param rowTitle		Name of the current row
-#' @return TRUE if should show this row, FALSE if shouldn't
-#' 
-#' @author m082166
+## ' showRow
+## ' 
+## ' Determines whether or not a row should be displayed
+## ' 
+## ' @param showIntercept	TRUE if should show the Intercept for each line, FALSE if shouldn't
+## ' @param hideRows		Vector of names of rows that should not be shown
+## ' @param rowTitle		Name of the current row
+## ' @return TRUE if should show this row, FALSE if shouldn't
+## ' 
+## ' @author m082166
 showRow <- function(showIntercept, hideRows, rowTitle) {
 	if (rowTitle == "(Intercept)")
 		return(showIntercept)
@@ -753,27 +753,27 @@ showRow <- function(showIntercept, hideRows, rowTitle) {
 }
 
 
-#' addModel
-#' 
-#' Takes the Vector of the currently filled in rows, as well as rows that have been started but 
-#' not yet completed, and fills in the modelSum info for one more row
-#' 
-#' @param rows			Vector of strings to edit, and possibly add to
-#' @param useCols		Vector of column numbers from modelSum to use, in order to use them
-#' @param volueCols		Vector of 0s and at most 1 "1", specifying if any column is the value col
-#' @param modelSum		The row of the coefficients of modelsum to process, holding the info to add
-#' @param extra			Vector of strings to pad and add to end of the row
-#' @param curRow		Current row to operate on, 0 based
-#' @param colSize		Width to pad each cell to
-#' @param digits		Number of digits to round to when displaying percent or Other data
-#' @param pValueDigits	Number of digits to display for a p-value. Example: 5 ==> in 0.12345
-#' @param nsmall		Minimum number of digits to the right of the decimal point to display 
-#' for floating point numbers.  If NULL, use 'digits' to determine everything
-#' @param nsmall.ratio		Minimum number of digits to the right of the decimal point to display 
-#' for the ratio statistics (OR, HR, RR)
-#' @return The updated rows
-#' 
-#' @author m082166
+## ' addModel
+## ' 
+## ' Takes the Vector of the currently filled in rows, as well as rows that have been started but 
+## ' not yet completed, and fills in the modelSum info for one more row
+## ' 
+## ' @param rows			Vector of strings to edit, and possibly add to
+## ' @param useCols		Vector of column numbers from modelSum to use, in order to use them
+## ' @param volueCols		Vector of 0s and at most 1 "1", specifying if any column is the value col
+## ' @param modelSum		The row of the coefficients of modelsum to process, holding the info to add
+## ' @param extra			Vector of strings to pad and add to end of the row
+## ' @param curRow		Current row to operate on, 0 based
+## ' @param colSize		Width to pad each cell to
+## ' @param digits		Number of digits to round to when displaying percent or Other data
+## ' @param pValueDigits	Number of digits to display for a p-value. Example: 5 ==> in 0.12345
+## ' @param nsmall		Minimum number of digits to the right of the decimal point to display 
+## ' for floating point numbers.  If NULL, use 'digits' to determine everything
+## ' @param nsmall.ratio		Minimum number of digits to the right of the decimal point to display 
+## ' for the ratio statistics (OR, HR, RR)
+## ' @return The updated rows
+## ' 
+## ' @author m082166
 addModel <- function(rows, useCols, volueCols, modelSum, extra, curRow, colSize, digits, 
 					  pValueDigits, nsmall, nsmall.ratio)
 {
@@ -807,15 +807,15 @@ addModel <- function(rows, useCols, volueCols, modelSum, extra, curRow, colSize,
 }
 
 
-#' getColsToUse
-#' 
-#' Generate a Vector holding the numbers of the columns to be used, in the order to be used
-#' 
-#' @param showCols		List of items that will be output as columns from each row, in order
-#' @param colTitles		List of column titles for modelSum, so can determine which to display
-#' @return Columns to be usedm in order
-#' 
-#' @author m082166
+## ' getColsToUse
+## ' 
+## ' Generate a Vector holding the numbers of the columns to be used, in the order to be used
+## ' 
+## ' @param showCols		List of items that will be output as columns from each row, in order
+## ' @param colTitles		List of column titles for modelSum, so can determine which to display
+## ' @return Columns to be usedm in order
+## ' 
+## ' @author m082166
 getColsToUse <- function(showCols, colTitles)
 {
 	numCells <- length(colTitles)
@@ -841,18 +841,18 @@ getColsToUse <- function(showCols, colTitles)
 }
 
 
-#' makeModelSumHeaders
-#' 
-#' Make the unpadded header for each column other than the label column
-#' 
-#' @param object		The data that will be turned into a table
-#' @param showCols		List of items that will be output as columns from each row, in order
-#' @param showOnce		List of items that will be output as columns only on 1st row, in order
-#' @param translations	The List to use for conversion of labels
-#' @return A Vector of the column headers, given the data in object and extras, 
-#' skipping the first (blank, label) header
-#' 
-#' @author m082166
+## ' makeModelSumHeaders
+## ' 
+## ' Make the unpadded header for each column other than the label column
+## ' 
+## ' @param object		The data that will be turned into a table
+## ' @param showCols		List of items that will be output as columns from each row, in order
+## ' @param showOnce		List of items that will be output as columns only on 1st row, in order
+## ' @param translations	The List to use for conversion of labels
+## ' @return A Vector of the column headers, given the data in object and extras, 
+## ' skipping the first (blank, label) header
+## ' 
+## ' @author m082166
 makeModelSumHeaders <- function(object, showCols, showOnce, translations) {
   ## second arg was fieldName, but not passed (tried by JPS on 12/15/16
   theNames <- getMatrixNames(object, showCols, translations = translations)
@@ -865,23 +865,23 @@ makeModelSumHeaders <- function(object, showCols, showOnce, translations) {
 }
 
 
-#' makeModelSumTitleCells
-#' 
-#' Return an array of the lines needed to make the label cell, given the data in element, 
-#' taking into account the maximum allowed width specified by colSize, 
-#' which must be >= 4 + length of the name of element
-#' 
-#' @param element		List to get information from, whose first item must be the statistics
-#' @param colSize		Width to pad the output to
-#' @param translations	The List to use for conversion of labels
-#' @param boldMark		String to use to mark something as bold
-#' @param showIntercept	TRUE if should show the Intercept for each line, FALSE if shouldn't
-#' @param hideRows		Vector of names of rows that should not be shown
-#' @param fieldName	...?
-#' @return	Vector holding the strings necessary to represent the rows of element, 
-#' each row separated by a blank string
-#' 
-#' @author m082166
+## ' makeModelSumTitleCells
+## ' 
+## ' Return an array of the lines needed to make the label cell, given the data in element, 
+## ' taking into account the maximum allowed width specified by colSize, 
+## ' which must be >= 4 + length of the name of element
+## ' 
+## ' @param element		List to get information from, whose first item must be the statistics
+## ' @param colSize		Width to pad the output to
+## ' @param translations	The List to use for conversion of labels
+## ' @param boldMark		String to use to mark something as bold
+## ' @param showIntercept	TRUE if should show the Intercept for each line, FALSE if shouldn't
+## ' @param hideRows		Vector of names of rows that should not be shown
+## ' @param fieldName	...?
+## ' @return	Vector holding the strings necessary to represent the rows of element, 
+## ' each row separated by a blank string
+## ' 
+## ' @author m082166
 makeModelSumTitleCells <- function(element, fieldName, colSize, translations, boldMark, 
                                    showIntercept, hideRows) {
   theCells <- NULL
@@ -908,17 +908,17 @@ makeModelSumTitleCells <- function(element, fieldName, colSize, translations, bo
 }
 
 
-#' getMatrixNames
-#' 
-#' Get the row or column names for the matrix in fieldName
-#' 
-#' @param element A List of Lists
-#' @param fieldName The name of the List element of interest
-#' @param doRow If TRUE get row names, if FALSE get column names, defaults to FALSE
-#' @param translations The List to use for conversion of labels, so can use the proper name length
-#' @return Vector of Strings, the row or column headers of the matrix
-#' 
-#' @author m082166
+## ' getMatrixNames
+## ' 
+## ' Get the row or column names for the matrix in fieldName
+## ' 
+## ' @param element A List of Lists
+## ' @param fieldName The name of the List element of interest
+## ' @param doRow If TRUE get row names, if FALSE get column names, defaults to FALSE
+## ' @param translations The List to use for conversion of labels, so can use the proper name length
+## ' @return Vector of Strings, the row or column headers of the matrix
+## ' 
+## ' @author m082166
 getMatrixNames <- function(element, fieldName, doRow = FALSE, translations = NULL) {
 	if (doRow) {
 		which <- 1
@@ -936,18 +936,18 @@ getMatrixNames <- function(element, fieldName, doRow = FALSE, translations = NUL
 }
 
 
-#' maxMatrixNameLen
-#'
-#' Return the length of the longest string among the names of elements
-#' 
-#' @param elements		A List of Lists
-#' @param translations	The List to use for conversion of labels, so can use the proper name length
-#' @param fieldName		The name of the List element of interest
-#' @param doRow			If TRUE get row names, if FALSE get column names, defaults to FALSE
-#' @return The nchar length of the longest name from element's sub-lists, 
-#' as translated via translations
-#' 
-#' @author m082166
+## ' maxMatrixNameLen
+## '
+## ' Return the length of the longest string among the names of elements
+## ' 
+## ' @param elements		A List of Lists
+## ' @param translations	The List to use for conversion of labels, so can use the proper name length
+## ' @param fieldName		The name of the List element of interest
+## ' @param doRow			If TRUE get row names, if FALSE get column names, defaults to FALSE
+## ' @return The nchar length of the longest name from element's sub-lists, 
+## ' as translated via translations
+## ' 
+## ' @author m082166
 maxMatrixNameLen <- function(elements, translations, fieldName, doRow = FALSE) {
 	theMax = 0
 	
@@ -959,16 +959,16 @@ maxMatrixNameLen <- function(elements, translations, fieldName, doRow = FALSE) {
 }
 
 
-#' maxElementNameLen
-#' 
-#' Return the length of the longest string among the names of elements
-#' 
-#' @param elements		A List of Lists
-#' @param translations	The List to use for conversion of labels, so can use the proper name length
-#' @return The nchar length of the longest name from element's sub-lists, 
-#' as translated via translations
-#' 
-#' @author m082166
+## ' maxElementNameLen
+## ' 
+## ' Return the length of the longest string among the names of elements
+## ' 
+## ' @param elements		A List of Lists
+## ' @param translations	The List to use for conversion of labels, so can use the proper name length
+## ' @return The nchar length of the longest name from element's sub-lists, 
+## ' as translated via translations
+## ' 
+## ' @author m082166
 maxElementNameLen <- function(elements, translations) {
 	if (length(elements) == 0)
 		return(0)

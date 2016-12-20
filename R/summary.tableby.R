@@ -106,15 +106,15 @@ as.data.frame.tableby <- function (x, ..., title = NULL, labelTranslations = NUL
 }
 
 
-#' Format the information in object as a Table using Pandoc coding or plain text<br/>
-#' If doText is TRUE, cat it to stdout, else just return the data.frame
-#' 
-#' @param doText			Do we print text output, or only do the data.frame
-#' @inheritParams summary.tableby
-#' 
-#' @return Results are cat'ed to stdout, and returned invisibly as a Vector of Strings
-#' 
-#' @author m082166
+## ' Format the information in object as a Table using Pandoc coding or plain text<br/>
+## ' If doText is TRUE, cat it to stdout, else just return the data.frame
+## ' 
+## ' @param doText			Do we print text output, or only do the data.frame
+## ' @inheritParams summary.tableby
+## ' 
+## ' @return Results are cat'ed to stdout, and returned invisibly as a Vector of Strings
+## ' 
+## ' @author m082166
 makeSummary.tableby <- function (doText, object, title, labelTranslations, digits, nsmall, 
 								 nsmall.pct, digits.test, text, removeBlanks, labelSize, test, 
 								 test.pname, pfootnote, total) {
