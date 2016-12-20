@@ -31,6 +31,9 @@ formulize(y = 1, x = 2:4, data = mockstudy)
 
 ## mix and match
 formulize(1, c("x1", "x2", "x3"), data = mockstudy)
+
+## get an interaction
+formulize("y", c("x1*x2", "x3"))
 }
 \author{
 Ethan Heinzen

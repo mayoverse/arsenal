@@ -22,6 +22,9 @@
 #' 
 #' ## mix and match
 #' formulize(1, c("x1", "x2", "x3"), data = mockstudy)
+#' 
+#' ## get an interaction
+#' formulize("y", c("x1*x2", "x3"))
 #' @export
 
 formulize <- function(y = "", x = "", ..., data = NULL)
