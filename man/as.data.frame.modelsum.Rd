@@ -7,7 +7,7 @@
 \method{as.data.frame}{modelsum}(x, ..., title = NULL,
   labelTranslations = NULL, digits = NA, nsmall = NA, nsmall.ratio = NA,
   digits.test = NA, show.intercept = NA, show.adjust = NA,
-  removeBlanks = text, labelSize = 1.2, pFootnote = TRUE)
+  pFootnote = TRUE)
 }
 \arguments{
 \item{x}{An object of class \code{\link{modelsum}}.}
@@ -37,12 +37,6 @@ Allowed values are \code{0 <= nsmall.ratio <= 20}.}
 \item{show.intercept}{Logical, denoting if the intercept should be shown for each line}
 
 \item{show.adjust}{Logical, denoting if the adjust variables should be shown for each line.}
-
-\item{removeBlanks}{Logical, denoting if any blank lines should be removed from the output. 
-Default is value of \code{"text"}, and will be set to \code{FALSE} if text is \code{FALSE}.}
-
-\item{labelSize}{Relative size difference between label column and other columns. 
-Default is 1.2: label column ~20\% bigger than other columns}
 
 \item{pFootnote}{Logical denoting if a footnote should be added describing the test used 
 to generate the p value.  Default is \code{TRUE}.}

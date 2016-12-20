@@ -23,7 +23,7 @@ na.modelsum <- function (object, ...) {
     omit <- is.na(object[,1])
     xx <- object[!omit, , drop = FALSE]
     if (any(omit > 0L)) {
-        temp <- setNames(seq(omit)[omit], attr(object, "row.names")[omit])
+        temp <- stats::setNames(seq(omit)[omit], attr(object, "row.names")[omit])
         attr(temp, "class") <- "omit"
         attr(xx, "na.action") <- temp
     }
@@ -32,7 +32,7 @@ na.modelsum <- function (object, ...) {
 
 ##standardized beta function (for gaussian stat)
 lm.beta  <- function (MOD) {
-    b <- coef(MOD)[-1]
+    b <- stats::coef(MOD)[-1]
     sx <- rep(NA,length(b))
     b.idx <- 1
     for(k in 2:ncol(MOD$model)) {
@@ -42,11 +42,11 @@ lm.beta  <- function (MOD) {
         b.idx <- b.idx + ifelse(is.null(ncol(MOD$model[,k])), length(unique(MOD$model[,k]))-1, ncol(MOD$model[,k]))
         ## skip as many elements of beta as there are N.levels-1 of categorical variables
       } else {
-        sx[b.idx] <- sd(as.double(MOD$model[,k]),na.rm=TRUE)
+        sx[b.idx] <- stats::sd(as.double(MOD$model[,k]),na.rm=TRUE)
         b.idx <- b.idx + 1
       }
     }
-    sy <- sd(as.double(MOD$model[,1]),na.rm=TRUE)
+    sy <- stats::sd(as.double(MOD$model[,1]),na.rm=TRUE)
     beta <- c(NA,round(b * sx/sy,3))
     return(beta)
 }

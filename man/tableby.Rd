@@ -19,7 +19,7 @@ containing the variables in the model. If not found in data, the variables are t
 typically the environment from which \code{tableby} is called.}
 
 \item{na.action}{a function which indicates what should happen when the data contain \code{NA}s.
-The default is \code{na.tableby} if there is a by variable, and \code{\link{na.pass}} if there is not.
+The default is \code{na.tableby} if there is a by variable, and \code{\link[stats]{na.pass}} if there is not.
 This schema thus includes observations with \code{NA}s in x variables,
 but removes those with \code{NA} in the categorical group variable.}
 

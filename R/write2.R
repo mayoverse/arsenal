@@ -50,7 +50,7 @@ write2.default <- function(object, file, ..., keep.md = FALSE, output_format = c
   
   output_format <- if(output_format == "html") rmarkdown::html_document else if(output_format == "pdf") rmarkdown::pdf_document else rmarkdown::word_document
   dots <- list(...)
-  capture.output(summary(object, ...), file = paste0(file, ".md"))
+  utils::capture.output(summary(object, ...), file = paste0(file, ".md"))
   
   output.args <- dots[names(dots) %in% names(formals(output_format))]
   

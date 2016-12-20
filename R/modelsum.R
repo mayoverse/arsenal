@@ -137,7 +137,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
   }
 #  indx <- match(c("formula", "data", "subset", "weights", "na.action"), names(Call), nomatch = 0)
 #  if(indx[4] != 0) {   ## weights
-#    weights <- as.vector(model.weights(modeldf))
+#    weights <- as.vector(stats::model.weights(modeldf))
     
   temp.call <- call("model.frame", formula = formula)
 
@@ -188,7 +188,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
   }
  
   base.call <- temp.call
-  base.call$formula <- as.formula(paste0(ybase, "~", paste(xvars, collapse="+")))
+  base.call$formula <- stats::as.formula(paste0(ybase, "~", paste(xvars, collapse="+")))
   ## undo for surv response, or I(fun(y))
   if(any(grepl("Surv",as.character((baseFormula[[2]]))))) {
   #if(any(grepl("Surv",as.character((baseFormula[[2]]))))) { #grepl("\\(",as.character(baseFormula[[2]])))) {
@@ -203,7 +203,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
   basedf <- eval.parent(base.call) 
   modeldf <- eval.parent(temp.call) 
   ## ----- add weights
-  weights <- as.vector(model.weights(modeldf))
+  weights <- as.vector(stats::model.weights(modeldf))
   if(is.null(weights)) {
     weights <- rep(1, nrow(basedf))
     base.call$weights <- rep(1, nrow(basedf))
@@ -280,7 +280,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       if(is.null(labelEff))  labelEff <- xname
 
       lmfit <- eval(call("lm", formula=formulaStr, data=basedf, x=TRUE, weights=weights), envir=tabenv)
-  ## lmfit <- lm(formulaStr, data=basedf, weights="weights", )
+  ## lmfit <- stats::lm(formulaStr, data=basedf, weights="weights", )
       coeffTidy <- tidy(lmfit, conf.int=TRUE, conf.level=control$conf.level)
      
       if(any(grepl("(weights)", colnames(lmfit$model)))) {
@@ -436,9 +436,9 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       labelEff <-  attributes(modeldf[,eff])$label
       if(is.null(labelEff))  labelEff <- xname
 
-      ph <- eval(call("coxph", formula=as.formula(formulaStr), data=basedf, weights=weights), envir=tabenv)
+      ph <- eval(call("coxph", formula=stats::as.formula(formulaStr), data=basedf, weights=weights), envir=tabenv)
       
-      #ph <- coxph(as.formula(formulaStr), data=data, weights=weights) ## should be this:modeldf)
+      #ph <- coxph(stats::as.formula(formulaStr), data=data, weights=weights) ## should be this:modeldf)
       ## use tidy to get both CIs, merge
       coeffHRTidy <- tidy(ph, exponentiate=TRUE, conf.int=.95)
       coeffTidy <- tidy(ph, exponentiate=FALSE, conf.int=.95)

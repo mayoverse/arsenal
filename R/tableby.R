@@ -21,7 +21,7 @@
 #'   containing the variables in the model. If not found in data, the variables are taken from \code{environment(formula)},
 #'   typically the environment from which \code{tableby} is called.
 #' @param na.action a function which indicates what should happen when the data contain \code{NA}s.
-#'   The default is \code{na.tableby} if there is a by variable, and \code{\link{na.pass}} if there is not.
+#'   The default is \code{na.tableby} if there is a by variable, and \code{\link[stats]{na.pass}} if there is not.
 #'   This schema thus includes observations with \code{NA}s in x variables,
 #'   but removes those with \code{NA} in the categorical group variable.
 #' @param subset an optional vector specifying a subset of observations (rows of data) to be used in the results.
@@ -153,16 +153,16 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   temp.call[[1]] <- as.name("model.frame")
 
   if(is.null(temp.call$na.action)) {
-    temp.call$na.action <- if(length(temp.call$formula) == 2) na.pass else na.tableby
+    temp.call$na.action <- if(length(temp.call$formula) == 2) stats::na.pass else na.tableby
   } else if(length(temp.call$formula) == 2 && identical(na.action, na.tableby)) {
     # purposely using na.action instead of temp.call$na.action here
     warning("It appears you're using na.tableby with a one-sided formula... Results may not be what you expect.")
   }
   special <- c("anova", "kwt", "chisq", "fe", "logrank", "trend")
   temp.call$formula <- if (missing(data)) {
-    terms(formula, special)
+    stats::terms(formula, special)
   } else {
-    terms(formula, special, data = data)
+    stats::terms(formula, special, data = data)
   }
   ##  set up new environment for
   ## if specials, assign dummy versions of those functions
@@ -212,7 +212,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   if (nrow(modeldf) == 0) {
     stop("No (non-missing) observations")
   }
-  Terms <- terms(modeldf)
+  Terms <- stats::terms(modeldf)
 
   if(attributes(Terms)$response == 0) {
     ## no response, create a dummy one
@@ -220,7 +220,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     control$total <- FALSE
     control$test <- FALSE
   }
-  weights <- as.vector(model.weights(modeldf))
+  weights <- as.vector(stats::model.weights(modeldf))
   if(is.null(weights)) {
     weights <- rep(1, nrow(modeldf))
     userWeights=FALSE

@@ -15,7 +15,6 @@ Suggests:
     pROC,
     MASS,
     gam,
-    pandoc,
     rpart
 Depends:
     R (>= 3.2.0),

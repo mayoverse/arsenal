@@ -31,8 +31,8 @@ The first step when using the `tableby` function is to load the `arsenal` packag
 
 ```{r, load-data}
 require(arsenal)
-require(pandoc)
 require(knitr)
+require(survival)
 data(mockstudy) ##load data
 dim(mockstudy)  ##look at how many subjects and variables are in the dataset 
 # help(mockstudy) ##learn more about the dataset and variables

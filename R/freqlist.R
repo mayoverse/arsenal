@@ -45,10 +45,10 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   cumfun <- function(x) {
     # function to create a cumulative sum retaining NAs, but omitting in sum function
     x2 <- rep(NA, length(x))
-    if (length(na.omit(x)) == 0) {
+    if (length(stats::na.omit(x)) == 0) {
       warning("For at least one level, all entries have NAs")
     } else {
-      x2[!is.na(x)] <- cumsum(na.omit(x))
+      x2[!is.na(x)] <- cumsum(stats::na.omit(x))
     }
     return(x2)
   }
@@ -82,7 +82,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
       freq_tmp <- data[, "Freq"]
       freq_tmp[na.index != 0] <- NA
       cumFreq = cumfun(freq_tmp)
-      freqPct = 100 * freq_tmp / max(na.omit(cumFreq), na.rm = TRUE)
+      freqPct = 100 * freq_tmp / max(stats::na.omit(cumFreq), na.rm = TRUE)
       cumPct = cumfun(freqPct)
     }
     freqOut  <- data.frame(cumFreq = cumFreq, freqPercent = round(freqPct, digits), cumPercent = round(cumPct, digits))

@@ -234,7 +234,7 @@ tests.tableby <- function(x) {
 
 ## paste mean and sd  mean(sd)
 #meansd <- function(x, na.rm=TRUE, weights=NULL, ...) {
-#  c(mean(x, na.rm=na.rm), sd(x, na.rm=na.rm))
+#  c(mean(x, na.rm=na.rm), stats::sd(x, na.rm=na.rm))
 #}
 meansd <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   c(wtd.mean(x, weights=weights, na.rm=na.rm, ...), sqrt(wtd.var(x, weights=weights,na.rm=na.rm, ...)))
@@ -341,7 +341,7 @@ anova <- function(x, x.by) {
   if(any(colSums(table(x, x.by, exclude=NA))==0)) {
     return(list(p.value=NA, statistic.F=NA, method="Linear Model ANOVA"))
   }
-  aov.out <- lm(x~x.by)
+  aov.out <- stats::lm(x~x.by)
   test <- stats::anova(aov.out)
   test.out <- list(p.value = test[1,ncol(test)],
                    statistic.F = test[1,ncol(test)-1],
@@ -350,23 +350,23 @@ anova <- function(x, x.by) {
 ## 2. kruskal-wallis (non-parametric)
 kwt <- function(x, x.by) {
 #  na.ind <- is.na(x)
-# kruskal.test(x[!na.ind], as.factor(x.by[!na.ind]))
+# stats::kruskal.test(x[!na.ind], as.factor(x.by[!na.ind]))
  if(any(colSums(table(x, x.by, exclude=NA))==0)) {
    return(list(p.value=NA, statistic.F=NA, method="Kruskal-Wallis rank sum test"))
  }
- kruskal.test(x, as.factor(x.by))
+ stats::kruskal.test(x, as.factor(x.by))
 }
 
 ## two tests for categorical,
 ## 1. chisq goodness of fit, equal proportions across table cells
 chisq <- function(x, x.by) {
   tab <- table(x, x.by, exclude=NA)
-  return(chisq.test(tab[rowSums(tab)>0,]))
+  return(stats::chisq.test(tab[rowSums(tab)>0,]))
 }
 ## 2. Fisher's exact test for prob of as or more extreme table
 fe <- function(x, x.by) {
   tab <- table(x,x.by, exclude=NA)
-  fisher.test(tab)
+  stats::fisher.test(tab)
 }
 
 ## trend test for ordinal data
@@ -385,7 +385,7 @@ trend <- function(x, x.by) {
 #' @return   test output with $method and $p.value
 logrank <- function(x, x.by) {
   out <- survival::survdiff(x ~ x.by)
-  out$p.value <- 1-pchisq(out$chisq, df=length(unique(x.by))-1)
+  out$p.value <- 1-stats::pchisq(out$chisq, df=length(unique(x.by))-1)
   out$method="survdiff logrank"
   out
 }
@@ -507,7 +507,7 @@ na.tableby <- function(object, ...) {
     omit <- is.na(object[,1])
     xx <- object[!omit, , drop = FALSE]
     if(any(omit > 0L)) {
-        temp <- setNames(seq(omit)[omit], attr(object, "row.names")[omit])
+        temp <- stats::setNames(seq(omit)[omit], attr(object, "row.names")[omit])
         attr(temp, "class") <- "omit"
         attr(xx, "na.action") <- temp
     }
@@ -617,7 +617,7 @@ wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1),
     type=c("quantile","(i-1)/(n-1)","i/(n+1)","i/n"), normwt=FALSE, na.rm=TRUE) {
 
   if(!length(weights)) 
-    return(quantile(x, probs = probs, na.rm = na.rm))
+    return(stats::quantile(x, probs = probs, na.rm = na.rm))
   type <- match.arg(type)
   if(any(probs < 0 | probs > 1)) 
     stop("Probabilities must be between 0 and 1 inclusive")
@@ -633,15 +633,14 @@ wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1),
     low <- pmax(floor(order), 1)
     high <- pmin(low + 1, n)
     order <- order%%1
-    allq <- approx(cumsum(wts), x, xout = c(low, high), method = "constant", 
-                   f = 1, rule = 2)$y
+    allq <- stats::approx(cumsum(wts), x, xout = c(low, high), method = "constant", f = 1, rule = 2)$y
     k <- length(probs)
     quantiles <- (1 - order) * allq[1:k] + order * allq[-(1:k)]
     names(quantiles) <- nams
     return(quantiles)
   }
   w <- wtd.Ecdf(x, weights, na.rm = na.rm, type = type, normwt = normwt)
-  structure(approx(w$ecdf, w$x, xout = probs, rule = 2)$y, names = nams)
+  structure(stats::approx(w$ecdf, w$x, xout = probs, rule = 2)$y, names = nams)
 }
 
 wtd.var <- function(x, weights = NULL, normwt=FALSE, na.rm=TRUE, method = c("unbiased","ML")) {
@@ -649,7 +648,7 @@ wtd.var <- function(x, weights = NULL, normwt=FALSE, na.rm=TRUE, method = c("unb
     if(!length(weights)) {
         if(na.rm) 
             x <- x[!is.na(x)]
-        return(var(x))
+        return(stats::var(x))
     }
     if(na.rm) {
         s <- !is.na(x + weights)
