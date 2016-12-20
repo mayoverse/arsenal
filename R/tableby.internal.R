@@ -377,12 +377,12 @@ trend <- function(x, x.by) {
   test <- list(p.value=coin::pvalue(indtest), method="Trend test for ordinal variables", statistic=indtest@statistic@teststatistic)
 }
 
-#' logrank
-#' 
-#' survdiff logrank test
-#' @param x  surv variable
-#' @param x.by  by, categorical variable
-#' @return   test output with $method and $p.value
+## ' logrank
+## ' 
+## ' survdiff logrank test
+## ' @param x  surv variable
+## ' @param x.by  by, categorical variable
+## ' @return   test output with $method and $p.value
 logrank <- function(x, x.by) {
   out <- survival::survdiff(x ~ x.by)
   out$p.value <- 1-stats::pchisq(out$chisq, df=length(unique(x.by))-1)
@@ -394,12 +394,12 @@ logrank <- function(x, x.by) {
 ## implemented with using pre-calculated
 ##    kmsumm <- summary(survfit(Surv() ~ group))
 
-#' Nevents
-#' 
-#' Number of events in a survival object, within a group
-#' @param x a thing
-#' @param ... other arguments
-#' @return  the events stat from km$table
+## ' Nevents
+## ' 
+## ' Number of events in a survival object, within a group
+## ' @param x a thing
+## ' @param ... other arguments
+## ' @return  the events stat from km$table
 Nevents <- function(x, ...) {
   mat <- summary(x, ...)$table
   if(!any(c(grepl("^events", colnames(mat)),grepl("^events",names(mat))))) {
@@ -414,13 +414,13 @@ Nevents <- function(x, ...) {
 }
 
 ## Median survival
-#' medSurv
-#' 
-#' Calculate median survival
-#' 
-#' @param x kaplan-meier summary object, used within tableby
-#' @param ... other arguments
-#' @return vector of median subjects who have survived by time point
+## ' medSurv
+## ' 
+## ' Calculate median survival
+## ' 
+## ' @param x kaplan-meier summary object, used within tableby
+## ' @param ... other arguments
+## ' @return vector of median subjects who have survived by time point
 medSurv <- function(x, ...) {
   mat <- summary(x, ...)$table
   if(!any(c(grepl("^events", colnames(mat)),grepl("^events",names(mat))))) {
@@ -484,14 +484,14 @@ NriskSurv <- function(x, times=1:5) {
 
 ## Can write similar functions for NcensorTime, NriskTime, etc.
 
-#' survNinterval
-#' 
-#' survival summary stat per N units of time. Default is years.
-#' 
-#' @param x              a Surv() variable within tableby formula
-#' @param x.by           the by-variable in tableby
-#' @param time.interval  the interval of units of time over which to summarize in categories
-#' @return     vector of number of events per time interval
+## ' survNinterval
+## ' 
+## ' survival summary stat per N units of time. Default is years.
+## ' 
+## ' @param x              a Surv() variable within tableby formula
+## ' @param x.by           the by-variable in tableby
+## ' @param time.interval  the interval of units of time over which to summarize in categories
+## ' @return     vector of number of events per time interval
 survNinterval <- function(x, x.by, time.interval=1) {
   #kmsumm <- survfit(x~x.by,type="kaplan-meier") 
   nsurv <- as.matrix(x)[,1]
