@@ -13,7 +13,11 @@
 #' 
 #' \code{\link{modelsum}}: Fit models over each of a set of independent variables with a response variable.
 #' 
-#' \code{\link{freqlist}}: Approximate the output from SAS's PROC FREQ procedure when using the /list option of the TABLE statement.
+#' \code{\link{freqlist}}: Approximate the output from SAS's \code{PROC FREQ} procedure when using the \code{/list} option of the \code{TABLE} statement.
+#' 
+#' \code{\link{write2word}}, \code{\link{write2html}}, \code{\link{write2pdf}}: Functions to generate a word, html, or pdf document containing a single table.
+#' 
+#' \code{\link{formulize}}: A shortcut to generate one-, two-, or many-sided formulas.
 #' 
 #' @section Data:
 #' 

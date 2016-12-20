@@ -1,0 +1,38 @@
+#' formulize
+#' 
+#' A shortcut to generate one-, two-, or many-sided formulas.
+#' 
+#' @param y,x,... Character vectors to put left-to-right in the formula. If \code{data} is supplied,
+#'   these can also be numeric denoting which column name to use. See examples.
+#' @param data An R object with non-null column names.
+#' @author Ethan Heinzen
+#' @examples
+#' ## two-sided formula
+#' formulize("y", c("x1", "x2", "x3"))
+#' 
+#' ## one-sided formula
+#' formulize(x = c("x1", "x2", "x3"))
+#' 
+#' ## multi-sided formula
+#' formulize("y", c("x1", "x2", "x3"), c("z1", "z2"), "w1")
+#' 
+#' ## can use numerics for column names
+#' data(mockstudy)
+#' formulize(y = 1, x = 2:4, data = mockstudy)
+#' 
+#' ## mix and match
+#' formulize(1, c("x1", "x2", "x3"), data = mockstudy)
+#' @export
+
+formulize <- function(y = "", x = "", ..., data = NULL)
+{
+  dots <- list(y = y, x = x, ...)
+  if(!is.null(data))
+  {
+    if(is.null(colnames(data))) stop("colnames(data) is NULL")
+    dots <- lapply(dots, function(elt, cn) if(is.numeric(elt)) cn[elt] else elt, cn = colnames(data))
+  }
+  trash <- lapply(dots, function(elt) if(!is.character(elt)) stop("One or more argument isn't a character vector"))
+  elts <- vapply(dots, paste0, character(1), collapse = " + ")
+  as.formula(paste0(elts, collapse = " ~ "))
+}

@@ -31,7 +31,7 @@ freqlist(tab, sparse = FALSE, na.options = c("include", "showexclude",
 An object of class \code{"freqlist"} (invisibly for \code{print.tableby})
 }
 \description{
-Approximate the output from SAS's PROC FREQ procedure when using the /list option of the TABLE statement
+Approximate the output from SAS's \code{PROC FREQ} procedure when using the \code{/list} option of the \code{TABLE} statement.
 }
 \examples{
 # load mockstudy data

@@ -1,6 +1,6 @@
 #' freqlist
 #' 
-#' Approximate the output from SAS's PROC FREQ procedure when using the /list option of the TABLE statement
+#' Approximate the output from SAS's \code{PROC FREQ} procedure when using the \code{/list} option of the \code{TABLE} statement.
 #'
 #' @param tab an object of class table or class xtabs
 #' @param sparse a logical value indicating whether to keep rows with counts of zero, default is FALSE 
