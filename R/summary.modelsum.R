@@ -40,7 +40,7 @@ modelsum.translations <- list() ## adj.r.squared = "adj.rsq", sex = "Sex", sexM 
 #' @return Results are cat'ed to stdout, and returned invisibly as a Vector of Strings
 #' @export
 #' 
-#' @author m082166
+#' @author Greg Dougherty
 summary.modelsum <- function(object, title = NULL, labelTranslations = NULL, digits = NA, 
 							  nsmall = NA, nsmall.ratio = NA, digits.test = NA, show.intercept = NA, 
 							  show.adjust = NA, text = FALSE, removeBlanks = text, labelSize = 1.2, 
@@ -65,7 +65,7 @@ summary.modelsum <- function(object, title = NULL, labelTranslations = NULL, dig
 #' @return A data.frame holding the modelsum
 #' @export
 #' 
-#' @author m082166
+#' @author Greg Dougherty
 as.data.frame.modelsum <- function(x, ..., title = NULL, labelTranslations = NULL, digits = NA, 
 									nsmall = NA, nsmall.ratio = NA, digits.test = NA, show.intercept = NA, 
 									show.adjust = NA, pFootnote = TRUE)

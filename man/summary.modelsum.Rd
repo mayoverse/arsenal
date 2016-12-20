@@ -56,7 +56,7 @@ Results are cat'ed to stdout, and returned invisibly as a Vector of Strings
 Format the information in object as a Table using Pandoc coding or plain text, and cat it to stdout
 }
 \author{
-m082166
+Greg Dougherty
 }
 \seealso{
 \code{\link{modelsum}}, \code{\link{print.modelsum}}, \code{\link{as.data.frame.modelsum}}

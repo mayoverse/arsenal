@@ -48,6 +48,6 @@ A data.frame holding the modelsum
 Build a data.frame from the modelsum object and parameters, and return it
 }
 \author{
-m082166
+Greg Dougherty
 }
 
