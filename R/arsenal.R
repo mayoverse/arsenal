@@ -43,4 +43,7 @@ NULL
 # devtools::build("../arsenal-eph/")
 ## < restart R >
 ## library(arsenal)
-##
+
+#### to upload to CRAN
+## Update DESCRIPTION, README.md, NEWS.md, and cran-comments.md
+# devtools::revdep_check()
