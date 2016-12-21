@@ -13,7 +13,7 @@
 
 #' Fit models over each of a set of independent variables with a response variable
 #' 
-#' Fit and summarize models for each independent (x) variables with a response variable, with options to adjust by variables for each model.
+#' Fit and summarize models for each independent (x) variable with a response variable, with options to adjust by variables for each model.
 #' 
 #' @param formula an object of class \code{formula}; a symbolic description of the variables to be summarized by the group,
 #'   or categorical variable, of interest.  See "Details" for more information.

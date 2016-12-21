@@ -53,7 +53,7 @@ An object with class \code{'modelsum'}, which is effectively a list with the var
     the result of \code{\link{modelsum.control}}}
 }
 \description{
-Fit and summarize models for each independent (x) variables with a response variable, with options to adjust by variables for each model.
+Fit and summarize models for each independent (x) variable with a response variable, with options to adjust by variables for each model.
 }
 \examples{
  

@@ -10,7 +10,7 @@
 #' @param groupBy an optional character string specifying a variable(s) to use for grouping when calculating cumulative counts and percentages, will also separate by grouping variable for printing
 #' @param ... additional arguments passed to the \code{\link[knitr]{kable}} function
 #' @param x an object of class \code{"freqlist"}
-#' @return An object of class \code{"freqlist"} (invisibly for \code{print.tableby})
+#' @return An object of class \code{"freqlist"} (invisibly for \code{print.freqlist})
 #' @seealso \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
 #'
 #' @examples

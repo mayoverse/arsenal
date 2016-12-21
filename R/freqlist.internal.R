@@ -3,12 +3,10 @@
 #' Convert \code{\link{freqlist}} object to a data.frame.
 #' 
 #' @param x An object of class \code{"freqlist"}.
-#' @param row.names Not in use at this time, but included for S3 consistency.
-#' @param optional Not in use at this time, but included for S3 consistency.
 #' @param ... optional arguments included for S3 consistency
 #' @return A data.frame corresponding to the \code{freqlist} object.
 #' @export
-as.data.frame.freqlist <- function(x, row.names, optional, ...)
+as.data.frame.freqlist <- function(x, ...)
 {
   return(x$freqlist)
 }

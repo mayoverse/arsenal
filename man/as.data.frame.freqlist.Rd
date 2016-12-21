@@ -4,14 +4,10 @@
 \alias{as.data.frame.freqlist}
 \title{as.data.frame.freqlist}
 \usage{
-\method{as.data.frame}{freqlist}(x, row.names, optional, ...)
+\method{as.data.frame}{freqlist}(x, ...)
 }
 \arguments{
 \item{x}{An object of class \code{"freqlist"}.}
-
-\item{row.names}{Not in use at this time, but included for S3 consistency.}
-
-\item{optional}{Not in use at this time, but included for S3 consistency.}
 
 \item{...}{optional arguments included for S3 consistency}
 }

@@ -13,7 +13,7 @@ An arsenal of useful R functions for biomedical statistics, specializing in mode
 
 Below are listed some of the most widely used functions available in \code{arsenal}:
 
-\code{\link{tableby}}: Summary Statistics Of a Set of Independent Variables By a Categorical Variable.
+\code{\link{tableby}}: Summary statistics Of a set of independent variables by a categorical variable.
 
 \code{\link{modelsum}}: Fit models over each of a set of independent variables with a response variable.
 
@@ -22,6 +22,8 @@ Below are listed some of the most widely used functions available in \code{arsen
 \code{\link{write2word}}, \code{\link{write2html}}, \code{\link{write2pdf}}: Functions to generate a word, html, or pdf document containing a single table.
 
 \code{\link{formulize}}: A shortcut to generate one-, two-, or many-sided formulas.
+
+\code{\link{mdy.Date}} and \code{\link{Date.mdy}}: Convert numeric dates for month, day, and year to Date object, and vice versa.
 }
 
 \section{Data}{
