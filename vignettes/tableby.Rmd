@@ -18,16 +18,28 @@ vignette: |
 Introduction
 =============
 
-One of the most common tables in medical literature includes summary statistics for a set of variables, often stratified by some group (e.g. treatment arm).  Locally, the SAS macros `%table` and `%summary` were written to create summary tables with a single call. With the increasing interest in R, we have developed the function `tableby` to create similar tables within the R environment.  
+One of the most common tables in medical literature includes summary statistics for a set of variables,
+often stratified by some group (e.g. treatment arm).  Locally, the SAS macros `%table` and `%summary` were
+written to create summary tables with a single call. With the increasing interest in R, we have developed
+the function `tableby` to create similar tables within the R environment.  
 
-In developing the `tableby` function, the goal was to bring the best features of these macros into an R function. However, the task was not simply to duplicate all the functionality, but rather to make use of R's strengths (modeling, method dispersion, flexibility in function definition and output format) and make a tool that fits the needs of R users.  Additionally, the results needed to fit within the general reproducible research framework so the tables could be displayed within an R markdown report.
+In developing the `tableby` function, the goal was to bring the best features of these macros into an R function.
+However, the task was not simply to duplicate all the functionality, but rather to make use of R's strengths
+(modeling, method dispersion, flexibility in function definition and output format) and make a tool that fits
+the needs of R users.  Additionally, the results needed to fit within the general reproducible research framework
+so the tables could be displayed within an R markdown report.
 
-This report provides step-by-step directions for using the functions associated with `tableby`. All functions presented here are available within the `arsenal` package.  An assumption is made that users are somewhat familiar with R markdown documents.  For those who are new to the topic, a good initial resource is available at [rmarkdown.rstudio.com](rmarkdown.rstudio.com). 
+This report provides step-by-step directions for using the functions associated with `tableby`.
+All functions presented here are available within the `arsenal` package.  An assumption is made that users
+are somewhat familiar with R markdown documents.  For those who are new to the topic, a good initial resource
+is available at [rmarkdown.rstudio.com](rmarkdown.rstudio.com). 
 
 Simple Example
 ================
 
-The first step when using the `tableby` function is to load the `arsenal` package.  All the examples in this report use a dataset called `mockstudy` made available by Paul Novotny which includes a variety of types of variables (character, numeric, factor, ordered factor, survival) to use as examples.
+The first step when using the `tableby` function is to load the `arsenal` package.  All the examples in this report use
+a dataset called `mockstudy` made available by Paul Novotny which includes a variety of types of variables (character,
+numeric, factor, ordered factor, survival) to use as examples.
 
 ```{r, load-data}
 require(arsenal)
@@ -39,13 +51,16 @@ dim(mockstudy)  ##look at how many subjects and variables are in the dataset
 str(mockstudy) ##quick look at the data
 ```
 
-To create a simple table stratified by treament arm, use a formula statement to specify the variables that you want summarized.  The example below uses age (a continuous variable) and sex (a factor). 
+To create a simple table stratified by treament arm, use a formula statement to specify the variables that you want summarized.
+The example below uses age (a continuous variable) and sex (a factor). 
 
 ```{r, simple1}
 tab1 <- tableby(arm ~ sex + age, data=mockstudy)
 ```
 
-If you want to take a quick look at the table, you can use `summary` on your tableby object and the table will print out as text in your R console window.  If you use `summary` without any options you will see a number of $\&nbsp;$ statements which translates to "space" in HTML.
+If you want to take a quick look at the table, you can use `summary` on your tableby object and the table
+will print out as text in your R console window.  If you use `summary` without any options you will see a
+number of $\&nbsp;$ statements which translates to "space" in HTML.
 
 ### Pretty text version of table
 
@@ -57,7 +72,8 @@ summary(tab1, text=TRUE)
 
 ### Pretty Rmarkdown version of table
 
-In order for the report to look nice within an R markdown (knitr) report, you just need to specify `results="asis"` when creating the r chunk. This changes the layout slightly (compresses it) and bolds the variable names. 
+In order for the report to look nice within an R markdown (knitr) report, you just need to specify
+`results="asis"` when creating the r chunk. This changes the layout slightly (compresses it) and bolds the variable names. 
 
 `r ''` ```{r, results="asis"}
  
@@ -95,7 +111,8 @@ Modifying Output
 
 ### Add labels
 
-In the above example, age is shown with a label (Age in Years), but sex is listed "as is" with lower case letters.  This is because the data was created in SAS and in the SAS dataset, age had a label but sex did not.  The label is stored as an attribute within R.
+In the above example, age is shown with a label (Age in Years), but sex is listed "as is" with lower case letters.
+This is because the data was created in SAS and in the SAS dataset, age had a label but sex did not.  The label is stored as an attribute within R.
 
 ```{r, check-labels}
 ## Look at one variable's label
@@ -135,7 +152,12 @@ summary(tab1)
 
 ### Change summary statistics globally
 
-Currently the default behavior is to summarize continuous variables with: Number of missing values, Mean (SD), 25th - 75th quantiles, and Minimum-Maximum values with an ANOVA (t-test with equal variances) p-value.  For categorical variables the default is to show: Number of missing values and count (column percent) with a chi-square p-value.  This behavior can be modified using the tableby.control function. In fact, you can save your standard settings and use that for future tables. Note that `test=FALSE` and `total=FALSE` results in the total column and p-value column not being printed.  
+Currently the default behavior is to summarize continuous variables with: Number of missing values,
+Mean (SD), 25th - 75th quantiles, and Minimum-Maximum values with an ANOVA (t-test with equal variances) p-value.
+For categorical variables the default is to show: Number of missing values and count (column percent) with a
+chi-square p-value.  This behavior can be modified using the tableby.control function. In fact, you can save
+your standard settings and use that for future tables. Note that `test=FALSE` and `total=FALSE` results in the
+total column and p-value column not being printed.  
 
 
 ```{r, results='asis'}
@@ -159,7 +181,10 @@ summary(tab3)
 
 ### Change summary statistics within the formula
 
-In addition to modifying summary options globally, it is possible to modify the test and summary statistics for specific variables within the formula statement.  For example, both the kwt (Kruskal-Wallis rank-based) and anova (asymptotic analysis of variance) tests apply to numeric variables and we can use one for the variable "age" and another for the variable "ast". A list of all the options is  shown at the end of the vignette.
+In addition to modifying summary options globally, it is possible to modify the test and summary statistics for
+specific variables within the formula statement.  For example, both the kwt (Kruskal-Wallis rank-based) and anova
+(asymptotic analysis of variance) tests apply to numeric variables and we can use one for the variable "age" and
+another for the variable "ast". A list of all the options is  shown at the end of the vignette.
 
 The `tests` function can do a quick check on what tests were performed on each variable in tableby.
 
@@ -173,7 +198,8 @@ summary(tab.test)
 ```
 
 Summary statistics for any individual variable can also be modified, but it must be done as secondary
-arguments to the test function. The function names must be strings that are functions already written for tableby, built-in R functions like mean and range, or user-defined functions.
+arguments to the test function. The function names must be strings that are functions already written for tableby,
+built-in R functions like mean and range, or user-defined functions.
 
 ```{r, testsAndStats, results='asis'}
 tab.test <- tableby(arm ~ kwt(ast, "Nmiss2","median") + anova(age, "N","mean") +
@@ -186,7 +212,9 @@ summary(tab.test)
 You can easily create Word versions of `tableby` output via an Rmarkdown report and the default options will give you a reasonable table in Word - just select the "Knit Word" option in RStudio.
 
 **The functionality listed in this next paragraph is coming soon but needs an upgraded version of RStudio**
-If you want to modify fonts used for the table, then you'll need to add an extra line to your header at the beginning of your file.  You can take the `WordStylesReference01.docx` file and modify the fonts (storing the format preferences in your project directory).  To see how this works, run your report once using WordStylesReference01.docx and then WordStylesReference02.docx. 
+If you want to modify fonts used for the table, then you'll need to add an extra line to your header at the beginning of your file.
+You can take the `WordStylesReference01.docx` file and modify the fonts (storing the format preferences in your project directory).
+To see how this works, run your report once using WordStylesReference01.docx and then WordStylesReference02.docx. 
 
 ```
 output: word_document
@@ -216,7 +244,9 @@ summary(tab.test) #, pfootnote=TRUE)
 
 ###3. Summarize an ordered factor
 
-When comparing groups of ordered data there are a couple of options.  The **default** uses a general independence test available from the `coin` package.  For two-group comparisons, this is essentially the Armitage trend test.  The other option is to specify the Kruskal Wallis test.  The example below shows both options.
+When comparing groups of ordered data there are a couple of options.  The **default** uses a general independence test available from the `coin` package.
+For two-group comparisons, this is essentially the Armitage trend test.  The other option is to specify the Kruskal Wallis test.
+The example below shows both options.
 
 ```{r}
 mockstudy$age.ordnew <- ordered(c("a",NA,as.character(mockstudy$age.ord[-(1:2)])))
@@ -232,7 +262,8 @@ summary(tableby(sex ~ kwt(age.ord), data = mockstudy)) #) #, pfootnote = TRUE)
 
 ###4. Summarize a survival variable
 
-First look at the information that is presented by the `survfit` function, then see how the same results can be seen with tableby.  The default is to show the median survival (time at which the probability of survival = 50%). 
+First look at the information that is presented by the `survfit` function, then see how the same results can be seen with tableby.
+The default is to show the median survival (time at which the probability of survival = 50%). 
 
 ```{r}
 survfit(Surv(fu.time, fu.stat)~sex, data=mockstudy)
@@ -255,7 +286,8 @@ summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5, 
 
 ###5. Summarize date variables
 
-Date variables by default are summarized with the number of missing values, the median, and the range.  For example purposes we've created a random date.  Missing values are introduced for impossible February dates.
+Date variables by default are summarized with the number of missing values, the median, and the range.
+For example purposes we've created a random date.  Missing values are introduced for impossible February dates.
 
 ```{r, results='asis'}
 set.seed(100)
@@ -267,7 +299,8 @@ summary(tableby(sex ~ dtentry, data=mockstudy))
 
 ###6. Summarize multiple variables without typing them out
 
-Often one wants to summarize a number of variables.  Instead of typing by hand each individual variable, an alternative approach is to create a formula using the `paste` command with the `collapse="+"` option.  
+Often one wants to summarize a number of variables.  Instead of typing by hand each individual variable,
+an alternative approach is to create a formula using the `paste` command with the `collapse="+"` option.  
 
 ```{r, results='asis'}
 ## create a vector specifying the variable names
@@ -303,7 +336,8 @@ summary(tableby(tmp, data=mockstudy))
 
 Here are two ways to get the same result (limit the analysis to subjects age>5 and in the F: FOLFOX treatment group). 
 
-* The first approach uses the subset function applied to the dataset `mockstudy`.  This example also selects a subset of variables.  The `tableby` function is then applied to this subsetted data.
+* The first approach uses the subset function applied to the dataset `mockstudy`.  This example also selects a subset of variables.
+The `tableby` function is then applied to this subsetted data.
 
 
 ```{r}
@@ -343,7 +377,8 @@ summary(tableby(interaction(mdquality.s, sex) ~  age + bmi, data=mockstudy, subs
 
 ###9. Transform variables on the fly
 
-Certain transformations need to be surrounded by `I()` so that R knows to treat it as a variable transformation and not some special model feature.  If the transformation includes any of the symbols `/ - + ^ *` then surround the new variable by `I()`.
+Certain transformations need to be surrounded by `I()` so that R knows to treat it as a variable transformation and
+not some special model feature.  If the transformation includes any of the symbols `/ - + ^ *` then surround the new variable by `I()`.
 
 
 ```{r, maketrans, results='asis'}
@@ -352,7 +387,8 @@ trans <- tableby(arm ~ I(age/10) + log(bmi) + factor(mdquality.s, levels=0:1, la
 summary(trans)
 ```
 
-The labels for these variables isn't exactly what we'd like so we can change modify those after the fact.  Instead of typing out the very long variable names you can modify specific labels by position. 
+The labels for these variables isn't exactly what we'd like so we can change modify those after the fact.
+Instead of typing out the very long variable names you can modify specific labels by position. 
 
 ```{r, assignlabels2}
 labels(trans)
@@ -371,7 +407,9 @@ class(mockstudy$mdquality.s)
 summary(tableby(arm~mdquality.s, data=mockstudy))
 ```
 
-Another option would be to specify the test and summary statistics.  In fact, if I had a set of variables coded 0/1 and that was all I was summarizing, then I could change the global option for continuous variables to use the chisquare test and show countpct.
+Another option would be to specify the test and summary statistics.
+In fact, if I had a set of variables coded 0/1 and that was all I was summarizing, then I could change the global option
+for continuous variables to use the chi-square test and show countpct.
 
 ```{r, results='asis'}
 summary(tableby(arm ~ chisq(mdquality.s, "Nmiss","countpct"), data=mockstudy))
@@ -462,7 +500,10 @@ Within tableby.control function there are 4 options for controlling the number o
 summary(tableby(arm ~ sex + age + fu.time, data=mockstudy), digits=4, digits.test=2, nsmall.pct=1)
 ```
 
-It is important to understand how R treats the `digits` argument.  Here are some summaries for the variable `pi`.  Note that with 4 digits, the number after the decimal point changes after multiplying pi by 10 or 100.  However, the `nsmall` option specifies the number of values after the decimal point.  The two can be used together (see the help file for "format" for more details on how that works).
+It is important to understand how R treats the `digits` argument.  Here are some summaries for the variable `pi`.
+Note that with 4 digits, the number after the decimal point changes after multiplying pi by 10 or 100.
+However, the `nsmall` option specifies the number of values after the decimal point.
+The two can be used together (see the help file for `format` for more details on how that works).
 
 ```{r}
 format(pi, digits=1)
@@ -476,7 +517,7 @@ format(pi*100, nsmall=2, digits=4)
 
 ###15. Create a user-defined summary statistic
 
-For purposes of this example, the code below creates a trimmed mean function (trims 10%) and use that to summarize the data. Note the use of the `...` which tells R to pass extra arguments on - this is required for user-defined functions.  In this case, `na.rm=T` is passed to `myfunc`.
+For purposes of this example, the code below creates a trimmed mean function (trims 10%) and uses that to summarize the data. Note the use of the `...` which tells R to pass extra arguments on - this is required for user-defined functions.  In this case, `na.rm=T` is passed to `myfunc`.
 
 ```{r, results='asis'}
 myfunc <- function(x,...){
@@ -491,7 +532,8 @@ summary(tableby(sex ~ hgb, data=mockstudy,
 
 ###16. Use case-weights for creating summary statistics
 
-When comparing groups, they are often unbalanced when it comes to nuisances such as age and sex.   The `tableby` function allows you to create weighted summary statistics.  If this option us used then p-values are not calculated (`test=FALSE`).
+When comparing groups, they are often unbalanced when it comes to nuisances such as age and sex.
+The `tableby` function allows you to create weighted summary statistics.  If this option us used then p-values are not calculated (`test=FALSE`).
 
 ```{r}
 ##create fake group that is not balanced by age/sex 
@@ -530,7 +572,10 @@ When using weighted summary statistics, it is often desirable to then show a p-v
 It is possible to add your own p-value and modify the column title for that new p-value.  Another use for this would be to add standardized 
 differences or confidence intervals instead of a p-value.
 
-To add the p-value you simply need to create a data frame and use the function `modpval.tableby`.  The first 2 columns in the dataframe are required and are the variable name and the new p-value.  The third column can be used to indicate what method was used to calculate the p-value.  If you specify `use.pname=TRUE` then the column name indicating the p-value will be also be used in the tableby summary.
+To add the p-value you simply need to create a data frame and use the function `modpval.tableby`.
+The first 2 columns in the dataframe are required and are the variable name and the new p-value.
+The third column can be used to indicate what method was used to calculate the p-value.
+If you specify `use.pname=TRUE` then the column name indicating the p-value will be also be used in the tableby summary.
 
 
 ```{r, results='asis'}
@@ -628,7 +673,8 @@ The **default** summary statistics, by varible type, are:
 * `date`: Date variables will show by default `Nmiss, median, range`
 * `group`: The grouping variable will show by default `countpct`
 
-Any summary statistics standardly defined in R (e.g. mean, median, sd, mad, range) can be specified, however there are a number of extra functions defined specifically for the tableby function.
+Any summary statistics standardly defined in R (e.g. mean, median, sd, med, range) can be specified,
+however there are a number of extra functions defined specifically for the tableby function.
 
 * `N`: a count of the number of observations for a particular group
 * `Nmiss`: always show a count of the number of missing values for a variable within each group
@@ -663,7 +709,8 @@ The following tests are accepted:
 * `logrank`: log-rank test, the default test for time-to-event
     variables
 
-* `trend`: The `independence_test` function from the `coin` is used to test for trends.  Whenthe grouping variable has two levels, it is equivalent to the Armitage trend test.  This is the default for ordered factors
+* `trend`: The `independence_test` function from the `coin` is used to test for trends.  Whenthe grouping variable has two levels,
+  it is equivalent to the Armitage trend test.  This is the default for ordered factors
 
 ### tableby.control settings
 

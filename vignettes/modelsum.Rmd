@@ -38,16 +38,30 @@ opts_chunk$set(comment = NA, echo=TRUE, prompt=TRUE ,collapse=TRUE)
 Introduction
 =============
 
-Very often we are asked to summarize model results from multiple fits into a nice table. The endpoint might be of different types (e.g., survival, case/control, continuous) and there may be several independent variables that we want to examine univariately or adjusted for certain variables such as age and sex. Locally, the SAS macros `%modelsum`, `%glmuniv`, and `%logisuni` were written to create such summary tables. With the increasing interest in R, we have developed the function `modelsum` to create similar tables within the R environment.  
+Very often we are asked to summarize model results from multiple fits into a nice table.
+The endpoint might be of different types (e.g., survival, case/control, continuous) and there
+may be several independent variables that we want to examine univariately or adjusted for certain
+variables such as age and sex. Locally, the SAS macros `%modelsum`, `%glmuniv`, and `%logisuni`
+were written to create such summary tables. With the increasing interest in R, we have developed the
+function `modelsum` to create similar tables within the R environment.  
 
-In developing the `modelsum` function, the goal was to bring the best features of these macros into an R function. However, the task was not simply to duplicate all the functionality, but rather to make use of R's strengths (modeling, method dispersion, flexibility in function definition and output format) and make a tool that fits the needs of R users.  Additionally, the results needed to fit within the general reproducible research framework so the tables could be displayed within an R markdown report.
+In developing the `modelsum` function, the goal was to bring the best features of these macros into an R function.
+However, the task was not simply to duplicate all the functionality, but rather to make use of R's strengths
+(modeling, method dispersion, flexibility in function definition and output format) and make a tool that fits
+the needs of R users.  Additionally, the results needed to fit within the general reproducible research framework
+so the tables could be displayed within an R markdown report.
 
-This report provides step-by-step directions for using the functions associated with `modelsum`. All functions presented here are available within the `arsenal` package.  An assumption is made that users are somewhat familiar with R markdown documents.  For those who are new to the topic, a good initial resource is available at [rmarkdown.rstudio.com](rmarkdown.rstudio.com). 
+This report provides step-by-step directions for using the functions associated with `modelsum`.
+All functions presented here are available within the `arsenal` package.  An assumption is made that users
+are somewhat familiar with R markdown documents.  For those who are new to the topic, a good initial
+resource is available at [rmarkdown.rstudio.com](rmarkdown.rstudio.com). 
 
 Simple Example
 ================
 
-The first step when using the `modelsum` function is to load the `arsenal` package.  All the examples in this report use a dataset called `mockstudy` made available by Paul Novotny which includes a variety of types of variables (character, numeric, factor, ordered factor, survival) to use as examples.
+The first step when using the `modelsum` function is to load the `arsenal` package.  All the examples in this report
+use a dataset called `mockstudy` made available by Paul Novotny which includes a variety of types of variables
+(character, numeric, factor, ordered factor, survival) to use as examples.
 
 ```{r, load-data}
 require(arsenal)
@@ -57,13 +71,16 @@ dim(mockstudy)  # look at how many subjects and variables are in the dataset
 str(mockstudy) # quick look at the data
 ```
 
-To create a simple linear regression table (the default), use a formula statement to specify the variables that you want summarized.  The example below predicts BMI with the variables sex and age. 
+To create a simple linear regression table (the default), use a formula statement to specify the variables
+that you want summarized.  The example below predicts BMI with the variables sex and age. 
 
 ```{r simple1}
 tab1 <- modelsum(bmi ~ sex + age, data=mockstudy)
 ```
 
-If you want to take a quick look at the table, you can use `summary` on your modelsum object and the table will print out as text in your R console window.  If you use `summary` without any options you will see a number of $\&nbsp;$ statements which translates to "space" in HTML.
+If you want to take a quick look at the table, you can use `summary` on your modelsum object and the table will
+print out as text in your R console window.  If you use `summary` without any options you will see a number of
+$\&nbsp;$ statements which translates to "space" in HTML.
 
 ### Pretty text version of table
 
@@ -75,7 +92,9 @@ summary(tab1, text=TRUE)
 
 ### Pretty Rmarkdown version of table
 
-In order for the report to look nice within an R markdown (knitr) report, you just need to specify `results="asis"` when creating the r chunk. This changes the layout slightly (compresses it) and bolds the variable names. The three single quotes are often located above the tab key.
+In order for the report to look nice within an R markdown (knitr) report, you just need to specify
+`results="asis"` when creating the r chunk. This changes the layout slightly (compresses it) and bolds
+the variable names. The three single quotes are often located above the tab key.
 
 `r ''` ```{r results="asis"}
  
@@ -100,7 +119,8 @@ summary(tab2)
 Models for each endpoint type
 ==================================
 
-To make sure the correct model is run you need to specify "family".  The options available right now are : gaussian, binomial, survival, and poisson.  If there is enough interest, additional models can be added.  
+To make sure the correct model is run you need to specify "family".  The options available right
+now are : gaussian, binomial, survival, and poisson.  If there is enough interest, additional models can be added.  
 
 Gaussian
 -----------
@@ -278,7 +298,11 @@ summary(modelsum(Surv(fu.time, fu.stat) ~ arm,
 Poisson
 --------
 
-Poisson regression is useful when predicting an outcome variable representing counts.  It can also be useful when looking at survival data.  Cox models and Poisson models are very closely related and survival data can be summarized using Poisson regression. If you have overdispersion (see if the residual deviance is much larger than degrees of freedom), you may want to use quasipoisson() instead of poisson().  Some of these diagnostics need to be done outside of `modelsum`. 
+Poisson regression is useful when predicting an outcome variable representing counts.
+It can also be useful when looking at survival data.  Cox models and Poisson models are very closely
+related and survival data can be summarized using Poisson regression. If you have overdispersion (see
+if the residual deviance is much larger than degrees of freedom), you may want to use `quasipoisson()`
+instead of `poisson()`.  Some of these diagnostics need to be done outside of `modelsum`. 
 
 ### Example 1: fit and summarize a Poisson regression model 
 
@@ -327,7 +351,9 @@ summary(modelsum(skips~Opening + Solder + Mask, data=solder, family="poisson"))
 
 ### Example 2: fit and summarize a Poisson regression model 
 
-This second example uses the survival endpoint available in the `mockstudy` dataset.  There is a close relationship between survival and Poisson models, and often it is easier to fit the model using Poisson regression, especially if you want to present absolute risk.
+This second example uses the survival endpoint available in the `mockstudy` dataset.  There is a close
+relationship between survival and Poisson models, and often it is easier to fit the model using Poisson
+regression, especially if you want to present absolute risk.
 
 ```{r}
 # add .01 to the follow-up time (.01*1 day) in order to keep everyone in the analysis
@@ -360,7 +386,9 @@ glance(fit) ##model summary statistics
 
 ### create a summary table using modelsum
 
-Remember that the result from `modelsum` is different from the `fit` above.  The `modelsum` summary shows the results for `age + offset(log(fu.time+.01))` then `sex + offset(log(fu.time+.01))` instead of `age + sex + arm + offset(log(fu.time+.01))`.
+Remember that the result from `modelsum` is different from the `fit` above.  The `modelsum`
+summary shows the results for `age + offset(log(fu.time+.01))` then `sex + offset(log(fu.time+.01))`
+instead of `age + sex + arm + offset(log(fu.time+.01))`.
 
 ```{r results="asis", eval=TRUE}
 summary(modelsum(fu.stat ~ age, adjust=~offset(log(fu.time+.01))+ sex + arm, 
@@ -376,7 +404,9 @@ Here are multiple examples showing how to use some of the different options.
 
 ###1. Change summary statistics globally
 
-There are standard settings for each type of model regarding what information is summarized in the table. This behavior can be modified using the modelsum.control function. In fact, you can save your standard settings and use that for future tables.  
+There are standard settings for each type of model regarding what information is summarized in the table.
+This behavior can be modified using the modelsum.control function. In fact, you can save your standard
+settings and use that for future tables.  
 
 
 ```{r, results='asis'}
@@ -397,7 +427,9 @@ summary(tab3)
 
 ###2. Add labels to independent variables
 
-In the above example, age is shown with a label (Age in Years), but sex is listed "as is".  This is because the data was created in SAS and in the SAS dataset, age had a label but sex did not.  The label is stored as an attribute within R.
+In the above example, age is shown with a label (Age in Years), but sex is listed "as is".
+This is because the data was created in SAS and in the SAS dataset, age had a label but sex did not.
+The label is stored as an attribute within R.
 
 ```{r check-labels}
 ## Look at one variable's label
@@ -453,7 +485,8 @@ summary(modelsum(mdquality.s ~ age + bmi, data=mockstudy, adjust=~sex, family=bi
 
 ###4. Summarize multiple variables without typing them out
 
-Often one wants to summarize a number of variables.  Instead of typing by hand each individual variable, an alternative approach is to create a formula using the `paste` command with the `collapse="+"` option.  
+Often one wants to summarize a number of variables.  Instead of typing by hand each individual variable,
+an alternative approach is to create a formula using the `paste` command with the `collapse="+"` option.  
 
 ```{r, results='asis'}
 # create a vector specifying the variable names
@@ -490,7 +523,8 @@ summary(modelsum(tmp, data=mockstudy, family=binomial))
 
 Here are two ways to get the same result (limit the analysis to subjects age>50 and in the F: FOLFOX treatment group). 
 
-* The first approach uses the subset function applied to the dataset `mockstudy`.  This example also selects a subset of variables.  The `modelsum` function is then applied to this subsetted data.
+* The first approach uses the subset function applied to the dataset `mockstudy`.
+This example also selects a subset of variables.  The `modelsum` function is then applied to this subsetted data.
 
 
 ```{r}
@@ -527,7 +561,9 @@ summary(modelsum(age ~ interaction(mdquality.s,sex), data=mockstudy))
 
 ###9. Transform variables on the fly
 
-Certain transformations need to be surrounded by `I()` so that R knows to treat it as a variable transformation and not some special model feature.  If the transformation includes any of the symbols `/ - + ^ *` then surround the new variable by `I()`.
+Certain transformations need to be surrounded by `I()` so that R knows to treat it as a variable
+transformation and not some special model feature.  If the transformation includes any of the
+symbols `/ - + ^ *` then surround the new variable by `I()`.
 
 
 ```{r, results='asis'}
@@ -548,7 +584,10 @@ summary(mytab[c(3,1)])
 
 ###11. Merge two modelsum objects together 
 
-It is possible to combine two modelsum objects so that they print out together, however you need to pay attention to the columns that are being displayed.  It is easier to combine two models of the same family (such as two sets of linear models).  If you want to combine linear and logistic model results then you would want to display the beta coefficients for the logistic model.
+It is possible to combine two modelsum objects so that they print out together, however you need to pay
+attention to the columns that are being displayed.  It is easier to combine two models of the same
+family (such as two sets of linear models).  If you want to combine linear and logistic model results
+then you would want to display the beta coefficients for the logistic model.
 
 ```{r, results="asis"}
 ## demographics
@@ -565,7 +604,8 @@ class(tab12)
 
 ###12. Add a title to the table
 
-When creating a pdf the tables are automatically numbered and the title appears below the table.  In Word and HTML, the titles appear un-numbered and above the table.  
+When creating a pdf the tables are automatically numbered and the title appears below the table.
+In Word and HTML, the titles appear un-numbered and above the table.  
 
 ```{r, results='asis'}
 t1 <- modelsum(bmi ~ sex + age, data=mockstudy)
@@ -615,7 +655,10 @@ Within modelsum.control function there are 4 options for controlling the number 
 summary(modelsum(bmi ~ sex + age + fu.time, data=mockstudy), digits=4, digits.test=2)
 ```
 
-It is important to understand how R treats the `digits` argument.  Here are some summaries for the variable `pi`.  Note that with 4 digits, the number after the decimal point changes after multiplying pi by 10 or 100.  However, the `nsmall` option specifies the number of values after the decimal point.  The two can be used together (see the help file for "format" for more details on how that works).
+It is important to understand how R treats the `digits` argument.  Here are some summaries for
+the variable `pi`.  Note that with 4 digits, the number after the decimal point changes after
+multiplying pi by 10 or 100.  However, the `nsmall` option specifies the number of values after
+the decimal point.  The two can be used together (see the help file for `format` for more details on how that works).
 
 ```{r}
 format(pi, digits=1)
@@ -629,7 +672,8 @@ format(pi*100, nsmall=2, digits=4)
 
 ###15. Use case-weights in the models
 
-Occasionally it is of interest to fit models using case weights.   The `modelsum` function allows you to pass on the weights to the models and it will do the appropriate fit.
+Occasionally it is of interest to fit models using case weights.
+The `modelsum` function allows you to pass on the weights to the models and it will do the appropriate fit.
 
 ```{r}
 mockstudy$agegp <- cut(mockstudy$age, breaks=c(18,50,60,70,90), right=FALSE)
@@ -695,7 +739,8 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 ```
 ###17. Export `modelsum` results to a .CSV file
 
-When looking at multiple variables it is sometimes useful to export the results to a csv file. The `as.data.frame` function creates a data frame object that can be exported or further manipulated within R.
+When looking at multiple variables it is sometimes useful to export the results to a csv file.
+The `as.data.frame` function creates a data frame object that can be exported or further manipulated within R.
 
 
 ```{r}
@@ -784,7 +829,8 @@ The full description of these parameters that can be shown for models include:
 
 ### modelsum.control settings
 
-A quick way to see what arguments are possible to utilize in a function is to use the `args()` command. Settings involving the number of digits can be set in `modelsum.control` or in `summary.modelsum`.
+A quick way to see what arguments are possible to utilize in a function is to use the `args()`
+command. Settings involving the number of digits can be set in `modelsum.control` or in `summary.modelsum`.
 
 ```{r}
 args(modelsum.control)
