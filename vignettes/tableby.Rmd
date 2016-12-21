@@ -602,6 +602,18 @@ tmp
 # write.csv(tmp, '/my/path/here/mymodel.csv')
 ```
 
+###21. Write `tableby` object to a separate Word file
+
+```{r}
+## write to an HTML document
+tab1 <- tableby(arm ~ sex + age, data=mockstudy)
+# write2html(tab1, "~/ibm/trash.html")
+
+## write to a Word document
+# write2word(tab1, "~/ibm/trash.doc", title="My table in Word")
+```
+
+
 Available Function Options
 ==================================
 

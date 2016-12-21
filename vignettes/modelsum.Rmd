@@ -471,6 +471,21 @@ as.formula(paste('mdquality.s ~ ', RHS))
 summary(modelsum(as.formula(paste('mdquality.s ~', RHS)), family=binomial, data=mockstudy))
 ```
 
+These steps can also be done using the `formulize` function.
+
+```{r, results='asis'}
+## The formulize function does the paste and as.formula steps
+tmp <- formulize('mdquality.s',myvars[8:10])
+tmp
+
+## More complex formulas could also be written using formulize
+tmp2 <- formulize('mdquality.s',c('ps','hgb','sqrt(bmi)'))
+
+## use the formula in the modelsum function
+summary(modelsum(tmp, data=mockstudy, family=binomial))
+```
+
+
 ###5. Subset the dataset used in the analysis
 
 Here are two ways to get the same result (limit the analysis to subjects age>50 and in the F: FOLFOX treatment group). 
@@ -690,6 +705,15 @@ tmp
 # write.csv(tmp, '/my/path/here/mymodel.csv')
 ```
 
+###18. Write `modelsum` object to a separate Word or HTML file
+
+```{r}
+## write to an HTML document
+# write2html(tab2, "~/ibm/trash.html")
+
+## write to a Word document
+# write2word(tab2, "~/ibm/trash.doc", title="My table in Word")
+```
 
 Available Function Options
 ==================================
