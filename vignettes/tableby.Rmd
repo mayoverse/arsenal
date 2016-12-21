@@ -517,11 +517,11 @@ format(pi*100, nsmall=2, digits=4)
 
 ###15. Create a user-defined summary statistic
 
-For purposes of this example, the code below creates a trimmed mean function (trims 10%) and uses that to summarize the data. Note the use of the `...` which tells R to pass extra arguments on - this is required for user-defined functions.  In this case, `na.rm=T` is passed to `myfunc`.
+For purposes of this example, the code below creates a trimmed mean function (trims 10%) and use that to summarize the data. Note the use of the `...` which tells R to pass extra arguments on - this is required for user-defined functions.  In this case, `na.rm=T` is passed to `myfunc`.  The *weights* argument is also required, even though it isn't passed on to the internal function in this particular example.   
 
 ```{r, results='asis'}
-myfunc <- function(x,...){
-  mean(x, trim=.1,...)
+myfunc <- function(x, weights=rep(1,length(x)), ...){
+  mean(x, trim=.1, ...)
 }
 
 summary(tableby(sex ~ hgb, data=mockstudy, 
