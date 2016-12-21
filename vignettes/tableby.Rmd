@@ -647,7 +647,7 @@ tmp
 # write.csv(tmp, '/my/path/here/mymodel.csv')
 ```
 
-###21. Write `tableby` object to a separate Word file
+###21. Write `tableby` object to a separate Word or HTML file
 
 ```{r}
 ## write to an HTML document
