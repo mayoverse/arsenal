@@ -275,7 +275,7 @@ myvars <- names(mockstudy)
 
 ## select the 8th through the last variables
 ## paste them together, separated by the + sign
-RHS <- paste(myvars[8:length(myvars)], collapse="+")
+RHS <- paste(myvars[8:10], collapse="+")
 RHS
 
 ## create a formula using the as.formula function
@@ -283,6 +283,20 @@ as.formula(paste('arm ~ ', RHS))
 
 ## use the formula in the tableby function
 summary(tableby(as.formula(paste('arm ~', RHS)), data=mockstudy))
+```
+
+These steps can also be done using the `formulize` function.
+
+```{r, results='asis'}
+## The formulize function does the paste and as.formula steps
+tmp <- formulize('arm',myvars[8:10])
+tmp
+
+## More complex formulas could also be written using formulize
+tmp2 <- formulize('arm',c('ps','hgb^2','bmi'))
+
+## use the formula in the tableby function
+summary(tableby(tmp, data=mockstudy))
 ```
 
 ###7. Subset the dataset used in the analysis
@@ -609,7 +623,9 @@ Any summary statistics standardly defined in R (e.g. mean, median, sd, mad, rang
 * `Nmiss2`: only show the count of the number of missing values if there are some missing values(not developed yet)
 * `meansd`: print the mean and standard deviation in the format `mean(sd)`
 * `countpct`: print the number of values in a category plus the percentage in the format `N (%)`
+* `medianq1q3`: print the median, 25th, and 75th quantiles `median (Q1, Q3)`
 * `q1q3`: print the 25th and 75th quantiles `Q1, Q3`
+* `medianrange`: print the median, minimum and maximum values `median (minimum, maximum)`
 * `Nevents`: print number of events for a survival object within each grouping level
 * `medsurv`: print the median survival
 
