@@ -16,7 +16,8 @@
 #'   distribution of the independent variables across the levels of the categorical variable.
 #' 
 #' @param formula an object of class \code{\link{formula}}; a symbolic description of the variables to be summarized by the group,
-#'   or categorical variable, of interest. See "Details" for more information.
+#'   or categorical variable, of interest. See "Details" for more information. To only view overall summary
+#'   statistics, a one-sided formula can be used.
 #' @param data an optional data frame, list or environment (or object coercible by \code{\link{as.data.frame}} to a data frame)
 #'   containing the variables in the model. If not found in data, the variables are taken from \code{environment(formula)},
 #'   typically the environment from which \code{tableby} is called.
@@ -37,17 +38,17 @@
 #' @param x an object of class \code{tableby}.
 #' 
 #' @details
-#' The group variable is categorical, which could be an integer, character,
+#' The group variable (if any) is categorical, which could be an integer, character,
 #' factor, or ordered factor. \code{tableby} makes a simple summary of
 #' the counts within the k-levels of the independent variables on the
 #' right side of the formula. Note that unused levels are dropped.
 #'
-#' Allows data.frames with label attributes for the columns, and those
-#' labels will be used in the print methods for the tableby class.
+#' The \code{data} argument allows data.frames with label attributes for the columns, and those
+#' labels will be used in the summary methods for the \code{tableby} class.
 #'
 #' The independent variables are a mixture of types: categorical (discrete),
 #' numeric (continuous), and time to event (survival). These variables
-#' are split by the levels of the group variable, then summarized within
+#' are split by the levels of the group variable (if any), then summarized within
 #' those levels, specific to the variable type. A statistical test is
 #' performed to compare the distribution of the independent variables across the
 #' levels of the grouping variable.
@@ -77,8 +78,7 @@
 #'     across a categorical variable; the default for ordered factor variables
 #'   }
 #'   \item{
-#'     \code{logrank}: log-rank , the default for time-to-event
-#'     variables
+#'     \code{logrank}: log-rank , the default for time-to-event variables
 #'   }
 #' }
 #' 
@@ -93,15 +93,15 @@
 #' @return 
 #' 
 #' An object with class \code{'tableby'}, which is effectively a list with
-#' the variables from the right-side in x and the group variable in y.
+#' the variables from the right-side in x and the group variable in y (if any).
 #' Then, each item in x has these:
 #' 
 #' \item{stats}{Summary statistics of the RHS variable within each level of the LHS variable}
 #' \item{test}{Formal test of the distribution of the RHS variable across the levels of the LHS variable}
 #' \item{label}{The label attribute of a variable. It is set to the label attribute of a data column, if it exists,
-#'   otherwise set to the variable name in \code{data}. Can be changed with labels function for the tableby object.} 
+#'   otherwise set to the variable name in \code{data}. Can be changed with \code{\link{labels.tableby}} function for the tableby object.} 
 #'   
-#' The object also contains the original function call and the \code{tableby.control} list that we used in \code{tableby}.
+#' The object also contains the original function call and the \code{tableby.control} list that is used in \code{tableby}.
 #' 
 #' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}}, 
 #'   \code{\link{print.tableby}}, \code{\link{summary.tableby}}, \code{\link{formulize}}

@@ -10,7 +10,7 @@
   test.pname = NA, pfootnote = NA, total = NA, ...)
 }
 \arguments{
-\item{object}{An object of class \code{tableby}, made by the \code{\link{tableby}} function.}
+\item{object}{An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.}
 
 \item{title}{Title that will appear on the top of the header in the pretty-table rendering 
 of the tableby object}
@@ -55,11 +55,11 @@ If \code{NA} (default), it uses the value from \code{object$control$total}.}
 \item{...}{Other arguments (not in use at this time).}
 }
 \value{
-Results are cat'ed to stdout, and returned invisibly as a data.frame of the tableby
+Results are cat'ed to stdout, and returned invisibly as a data.frame of the \code{tableby}
 }
 \description{
-The summary method for a tableby object, which is a pretty rendering of a tableby object into a 
-publication-quality results table in R-studio, and can render well in text-only.
+The summary method for a \code{\link{tableby}} object, which is a pretty rendering of a \code{\link{tableby}}
+object into a publication-quality results table in R-studio, and can render well in text-only.
 }
 \details{
 For text-only, simply paste the summary stats together per variable, along with p-value and totals, 
@@ -67,12 +67,12 @@ with group variable in the header.  For other formats, the paste is done into a 
 such that it can be translated into 3 formats: latex, html, rft.  The decision of which of those it 
 is translated to is left for run-time for whatever format into which the report is being generated.
 
-For all interative development within R sessions, we recommend \code{text=TRUE}.
+For all interative development within R sessions, \code{text=TRUE} is recommended.
 }
 \examples{
 
 set.seed(100)
-## make 3+ categories for Response
+## make 3+ categories for response
 nsubj <- 90
 mdat <- data.frame(Response=sample(c(1,2,3),nsubj, replace=TRUE),
                    Sex=sample(c("Male", "Female"), nsubj,replace=TRUE),

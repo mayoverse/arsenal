@@ -47,3 +47,4 @@ NULL
 #### to upload to CRAN
 ## Update DESCRIPTION, README.md, NEWS.md, and cran-comments.md
 # devtools::revdep_check()
+# devtools::release()

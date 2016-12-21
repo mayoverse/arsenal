@@ -7,13 +7,13 @@
 formulize(y = "", x = "", ..., data = NULL)
 }
 \arguments{
-\item{y, x, ...}{Character vectors to put left-to-right in the formula. If \code{data} is supplied,
-these can also be numeric denoting which column name to use. See examples.}
+\item{y, x, ...}{Character vectors to be collapsed (by \code{"+"}) and put left-to-right in the formula.
+If \code{data} is supplied, these can also be numeric, denoting which column name to use. See examples.}
 
 \item{data}{An R object with non-null column names.}
 }
 \description{
-A shortcut to generate one-, two-, or many-sided formulas.
+A shortcut to generate one-, two-, or many-sided formulas from vectors of variable names.
 }
 \examples{
 ## two-sided formula

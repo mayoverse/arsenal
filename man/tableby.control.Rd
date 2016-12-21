@@ -16,11 +16,11 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   digits.test = NULL, nsmall = NULL, nsmall.pct = NULL, ...)
 }
 \arguments{
-\item{test}{logical, tell \code{tableby} whether to perform tests of x variables across levels of the group variable.}
+\item{test}{logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.}
 
-\item{total}{logical, tell \code{tableby} whether to calculate a column of totals across group variable.}
+\item{total}{logical, telling \code{tableby} whether to calculate a column of totals across group variable.}
 
-\item{test.pname}{character string for the column name to give to the p-value column in \code{\link{summary.tableby}}.
+\item{test.pname}{character string denoting the p-value column name in \code{\link{summary.tableby}}.
 Modifiable also with \code{\link{modpval.tableby}}.}
 
 \item{cat.simplify}{logical, tell \code{tableby} whether to include the first level of the categorical variable if binary.
@@ -28,14 +28,14 @@ If \code{TRUE}, only the summary stats of the second level, and total (if \code{
 NOTE: this only simplifies to one line if \code{cat.stats} is only one statistic, such as countpct.
 Specifically, if \code{cat.stats} includes Nmiss and there are missings, then Nmiss is included in the stats.}
 
-\item{numeric.test}{set test for numeric RHS variables in \code{tableby} to anova or kwt (Kruskal-Wallis) rank based tests.
+\item{numeric.test}{set test for numeric RHS variables in \code{tableby} to anova or kwt (Kruskal-Wallis) rank-based tests.
 If no LHS variable exists, then a mean is required for a univariate test.}
 
-\item{cat.test}{name of test for categorical variables: chisq}
+\item{cat.test}{name of test for categorical variables: chisq, fe (Fisher's Exact)}
 
 \item{ordered.test}{name of test for ordered variables: trend}
 
-\item{surv.test}{name of test to perform for survival variables}
+\item{surv.test}{name of test to perform for survival variables: logrank}
 
 \item{date.test}{name of test to perform for date variables.}
 
@@ -48,7 +48,7 @@ Options are N, Nmiss, count, countpct, or other R built-in or user-written funct
 \item{ordered.stats}{summary statistics to include for categorical RHS variables of \code{tableby} within the levels of the group LHS variable.
 Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.}
 
-\item{surv.stats}{summary statistics to include for time-to-event (survival) RHS variables of \code{tableby}  within the levels of the group LHS variable.
+\item{surv.stats}{summary statistics to include for time-to-event (survival) RHS variables of \code{tableby} within the levels of the group LHS variable.
 Options are Nevents, medsurv.}
 
 \item{date.stats}{stats functions to perform for Date variables}
@@ -65,13 +65,13 @@ e.g., list(countpct="Count(Pct)").}
 
 \item{nsmall.pct}{digits to print after decimal point for percentages}
 
-\item{...}{additional arguments to be passed to internal \code{tableby} functions and kept for print method options, such as digits.}
+\item{...}{additional arguments to be passed to internal \code{tableby} functions and kept for summary method options, such as digits.}
 }
 \value{
 A list with settings to be used within the \code{tableby} function.
 }
 \description{
-Control test and summary settings for \code{\link{tableby}} function.
+Control test and summary settings for the \code{\link{tableby}} function.
 }
 \details{
 All tests can be turned off by setting \code{test} to FALSE.

@@ -10,53 +10,53 @@ format.translations <- list(Nmiss = "N-miss", Nmiss2 = "N-miss", meansd = "Mean 
 
 #' The summary method for a \code{tableby} object
 #' 
-#' The summary method for a tableby object, which is a pretty rendering of a tableby object into a 
-#' publication-quality results table in R-studio, and can render well in text-only.
+#' The summary method for a \code{\link{tableby}} object, which is a pretty rendering of a \code{\link{tableby}}
+#' object into a publication-quality results table in R-studio, and can render well in text-only.
 #' 
-#' @param object			An object of class \code{tableby}, made by the \code{\link{tableby}} function.
-#' @param title				Title that will appear on the top of the header in the pretty-table rendering 
+#' @param object An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.
+#' @param title Title that will appear on the top of the header in the pretty-table rendering 
 #'		of the tableby object
-#' @param labelTranslations	All labels that are to appear in the pretty rendering of the \code{tableby} 
+#' @param labelTranslations All labels that are to appear in the pretty rendering of the \code{tableby} 
 #'		results have both summary-statistic labels that are replaced by a formal label 
 #'		(e.g., \code{meansd} by \code{"Mean (SD)"}), and the variables from the formula can be replaced 
 #'		by a more formal name.
-#' @param digits			Digits to round for significant digits of numeric, non-integer values. 
+#' @param digits Digits to round for significant digits of numeric, non-integer values. 
 #'		If \code{digits.test} is not set, \code{digits} is used for that setting.
-#' @param nsmall			Minimum number of digits to the right of the decimal point to display 
+#' @param nsmall Minimum number of digits to the right of the decimal point to display 
 #'		for floating point numbers.  If \code{NA} (default), it uses the value from 
 #'		\code{object$control$nsmall}. Allowed non-\code{NA} values are \code{0 <= nsmall <= 20}.
-#' @param nsmall.pct		Minimum number of digits to the right of the decimal point to display 
+#' @param nsmall.pct Minimum number of digits to the right of the decimal point to display 
 #'		for percent numbers.  If \code{NA} (default), it uses the value from \code{object$control$nsmall.pct}.
-#' @param digits.test		Significant digits by which to round for numeric test statistic p-values, 
+#' @param digits.test Significant digits by which to round for numeric test statistic p-values, 
 #'		if the test was performed.
-#' @param text				Logical, tell R to print the raw text version of the summary to the screen. 
+#' @param text Logical, tell R to print the raw text version of the summary to the screen. 
 #'		Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development.
-#' @param removeBlanks		Logical, remove extra blanks in the pretty rendering of the table
-#' @param labelSize			Relative size difference between label column and other columns. 
+#' @param removeBlanks Logical, remove extra blanks in the pretty rendering of the table
+#' @param labelSize Relative size difference between label column and other columns. 
 #'		Default is 1.2: label column ~20\% bigger than other columns.
-#' @param test				Logical, denoting whether the "p value" value should be printed. 
+#' @param test Logical, denoting whether the "p value" value should be printed. 
 #'		If \code{NA} (default), it uses the value from \code{object$control$test}.
-#' @param test.pname		Title for p-value (only matters if test is \code{TRUE}; default is "p value").
-#' @param pfootnote			Logical, denoting whether to add a footnote describing the test used to 
+#' @param test.pname Title for p-value (only matters if test is \code{TRUE}; default is "p value").
+#' @param pfootnote Logical, denoting whether to add a footnote describing the test used to 
 #'		generate the p value. Default is \code{FALSE}.
-#' @param total				Logical, denoting whether to include the "total" value. 
+#' @param total Logical, denoting whether to include the "total" value. 
 #'		If \code{NA} (default), it uses the value from \code{object$control$total}.
-#' @param ...				Other arguments (not in use at this time).
+#' @param ... Other arguments (not in use at this time).
 #' @details
 #' For text-only, simply paste the summary stats together per variable, along with p-value and totals, 
 #' with group variable in the header.  For other formats, the paste is done into a pandoc-style markup 
 #' such that it can be translated into 3 formats: latex, html, rft.  The decision of which of those it 
 #' is translated to is left for run-time for whatever format into which the report is being generated.
 #' 
-#' For all interative development within R sessions, we recommend \code{text=TRUE}.
+#' For all interative development within R sessions, \code{text=TRUE} is recommended.
 #' 
-#' @return Results are cat'ed to stdout, and returned invisibly as a data.frame of the tableby
+#' @return Results are cat'ed to stdout, and returned invisibly as a data.frame of the \code{tableby}
 #' @seealso \code{\link{tableby.control}}, \code{\link{tableby}}
 #' @author Gregory Dougherty, Jason Sinnwell, Beth Atkinson, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 #' @examples
 #' 
 #' set.seed(100)
-#' ## make 3+ categories for Response
+#' ## make 3+ categories for response
 #' nsubj <- 90
 #' mdat <- data.frame(Response=sample(c(1,2,3),nsubj, replace=TRUE),
 #'                    Sex=sample(c("Male", "Female"), nsubj,replace=TRUE),

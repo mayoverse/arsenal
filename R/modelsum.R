@@ -13,14 +13,14 @@
 
 #' Fit models over each of a set of independent variables with a response variable
 #' 
-#' Fit and summarize models for each independent (x) variable with a response variable, with options to adjust by variables for each model.
+#' Fit and summarize models for each independent (x) variable with a response variable (y), with options to adjust by variables for each model.
 #' 
-#' @param formula an object of class \code{formula}; a symbolic description of the variables to be summarized by the group,
-#'   or categorical variable, of interest.  See "Details" for more information.
-#' @param adjust an object of class \code{formula}, listing variables to adjust by in all models. Specify like: \code{~Age+ Sex}.
-#' @param family similar mechanism to glm, where model to be fit is driven by the family, options include: binomial, gaussian, survival,
+#' @param formula an object of class \code{\link{formula}}; a symbolic description of the variables to be modeled.  See "Details" for more information.
+#' @param adjust an object of class \code{\link{formula}}, listing variables to adjust by in all models. Specify as a one-sided formula,
+#'   like: \code{~Age+ Sex}.
+#' @param family similar mechanism to \code{\link[stats]{glm}}, where the model to be fit is driven by the family, options include: binomial, gaussian, survival,
 #'   Poisson. Family options supported in glm can be in quotes or not, but survival requires quotes.
-#' @param data an optional data frame, list or environment (or object coercible by \code{\link[base]{as.data.frame}} to a data frame) containing the
+#' @param data an optional data.frame, list or environment (or object coercible by \code{\link[base]{as.data.frame}} to a data frame) containing the
 #'   variables in the model. If not found in \code{data}, the variables are taken from \code{environment(formula)}, typically
 #'   the environment from which \code{modelsum} is called.
 #' @param subset an optional vector specifying a subset of observations (rows of \code{data}) to be used in the results.

@@ -8,11 +8,12 @@
 #'   One popular option is to use \code{quiet = TRUE} to suppress the command line output.
 #' @param keep.md Logical, denoting whether to keep the intermediate \code{.md} file.
 #' @return \code{object} is returned invisibly, and \code{file} is written.
-#' @details This is (kind of) an S3 method (the real S3 method is \code{write2}),and the default (used for tableby, modelsum, freqlist, etc.) assumes
+#' @details This is (kind of) an S3 method (the real S3 method is \code{write2}),and the default
+#'   (used for \code{\link{tableby}}, \code{\link{modelsum}}, \code{\link{freqlist}}, etc.) assumes
 #'   that there is a \code{summary} method implemented.
 #'   
 #'   To generate the appropriate file type, the default uses one of \code{rmarkdown::word_document}, \code{rmarkdown::html_document},
-#'    and \code{rmarkdown::pdf_document} to get the job done. "..." arguments are passed to these functions, too.
+#'    and \code{rmarkdown::pdf_document} to get the job done. \code{"..."} arguments are passed to these functions, too.
 #' @seealso \code{\link[rmarkdown]{render}}, \code{\link[rmarkdown]{word_document}}, \code{\link[rmarkdown]{html_document}}, \code{\link[rmarkdown]{pdf_document}}
 #' @examples
 #' \dontrun{

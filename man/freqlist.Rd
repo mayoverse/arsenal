@@ -11,17 +11,21 @@ freqlist(tab, sparse = FALSE, na.options = c("include", "showexclude",
 \method{print}{freqlist}(x, ...)
 }
 \arguments{
-\item{tab}{an object of class table or class xtabs}
+\item{tab}{an object of class \code{"table"} or class \code{"xtabs"}}
 
-\item{sparse}{a logical value indicating whether to keep rows with counts of zero, default is FALSE}
+\item{sparse}{a logical value indicating whether to keep rows with counts of zero. The default is \code{FALSE}.}
 
-\item{na.options}{a character string indicating how to handling missing values: 'include' (include values with NAs in counts and percentages), 'showexclude' (show NAs but exclude from cumulative counts and all percentages), 'remove' (remove values with NAs); default is 'include'}
+\item{na.options}{a character string indicating how to handling missing values: 'include'
+(include values with NAs in counts and percentages),
+'showexclude' (show NAs but exclude from cumulative counts and all percentages),
+'remove' (remove values with NAs); default is 'include'}
 
-\item{digits}{a single number indicating the number of digits for percentages (passed to \code{\link{round}}; default is 2}
+\item{digits}{a single number indicating the number of digits for percentages (passed to \code{\link{round}}; default is 2.}
 
-\item{labelTranslations}{an optional character string of labels to use for variable levels when printing}
+\item{labelTranslations}{an optional character string of labels to use for variable levels when summarizing.}
 
-\item{groupBy}{an optional character string specifying a variable(s) to use for grouping when calculating cumulative counts and percentages, will also separate by grouping variable for printing}
+\item{groupBy}{an optional character string specifying a variable(s) to use for grouping when calculating cumulative
+counts and percentages. \code{\link{summary.freqlist}} will also separate by grouping variable for printing.}
 
 \item{...}{additional arguments passed to the \code{\link[knitr]{kable}} function}
 

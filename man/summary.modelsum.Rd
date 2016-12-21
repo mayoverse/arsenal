@@ -50,10 +50,10 @@ to generate the p value.  Default is \code{FALSE}.}
 \item{...}{Other arguments (not implemented a this time).}
 }
 \value{
-Results are cat'ed to stdout, and returned invisibly as a Vector of Strings
+Results are cat'ed to stdout, and returned invisibly as a character vector.
 }
 \description{
-Format the information in object as a Table using Pandoc coding or plain text, and cat it to stdout
+Format the information in \code{object} as a table using Pandoc coding or plain text, and cat it to stdout.
 }
 \author{
 Greg Dougherty

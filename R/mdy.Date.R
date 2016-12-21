@@ -30,18 +30,18 @@ mdy.Date <- function(month, day, year, yearcut=120) {
     ## keep operations vectorized
     ## NA for day or month out of range
     day <- as.numeric(day)
-    day <- ifelse(day <1 | day > 31, NA, day) # stop ("invalid day")
+    day <- ifelse(day < 1 | day > 31, NA, day) # stop ("invalid day")
 
     month <- as.numeric(month)
-    month <- ifelse(month<1 | month>12 | month != floor(month), NA, month)
+    month <- ifelse(month < 1 | month > 12 | month != floor(month), NA, month)
     
-    year <- ifelse(year<yearcut, year+1900, year)
-    temp <-cbind(year, month, day)  # force them all to the same length
+    year <- ifelse(year < yearcut, year + 1900, year)
+    temp <- cbind(year, month, day)  # force them all to the same length
     ## allow NAs
-    dtext <- rep(NA,nrow(temp))
-    dtext[rowSums(is.na(temp))<1] <- paste(temp[rowSums(is.na(temp))<1,1,drop=FALSE],
-                            sprintf("%2d", temp[rowSums(is.na(temp))<1,2,drop=FALSE]),
-                            sprintf("%2d", temp[rowSums(is.na(temp))<1,3,drop=FALSE]), sep='/')
+    dtext <- rep(NA, nrow(temp))
+    dtext[rowSums(is.na(temp)) < 1] <- paste(temp[rowSums(is.na(temp)) < 1, 1, drop=FALSE],
+                            sprintf("%2d", temp[rowSums(is.na(temp)) < 1, 2, drop=FALSE]),
+                            sprintf("%2d", temp[rowSums(is.na(temp)) < 1, 3, drop=FALSE]), sep='/')
 
    as.Date(dtext)
 }

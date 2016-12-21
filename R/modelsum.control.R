@@ -6,9 +6,9 @@
 #' 
 #' Control test and summary settings for \code{\link{modelsum}} function.
 #' 
-#' @param digits Numeric, denoting the number of significant digits for beta coefficient and standard error.
+#' @param digits Numeric, denoting the number of significant digits for beta coefficients and standard errors.
 #' @param digits.test Numeric, denoting the number of significant digits for p-values.
-#' @param nsmall Numeric, denoting the number of digits after the decimal point for beta coefficient and standard error.
+#' @param nsmall Numeric, denoting the number of digits after the decimal point for beta coefficients and standard errors.
 #' @param nsmall.ratio Numeric, denoting the number of digits after the decimal point for ratios, e.g. OR, RR, HR.
 #' @param show.adjust Logical, denoting whether to show adjustment terms.
 #' @param show.intercept Logical, denoting whether to show intercept terms.
@@ -24,8 +24,8 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
             binomial.stats=c("OR","CI.lower.OR","CI.upper.OR","p.value", "concordance","Nmiss"),
             gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
             poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","concordance","Nmiss"),
-            survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),
-			...) {
+            survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),	...)
+{
 		
   ## validate digits
   if(is.null(digits)) {
@@ -36,9 +36,9 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
 	  warning("digits must be positive integer. Set to default. \n")
 	  digits <- 3
   }
-  if(conf.level <=0 | conf.level >= 1) {
+  if(conf.level <= 0 | conf.level >= 1) {
     warning("conf.level must be between (0,1). Setting to default.\n")
-    conf.level <- .95
+    conf.level <- 0.95
   }
 
   ##########################

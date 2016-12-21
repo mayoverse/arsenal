@@ -9,35 +9,35 @@ modelsum.translations <- list() ## adj.r.squared = "adj.rsq", sex = "Sex", sexM 
 
 #' Summarize a \code{modelsum} object.
 #' 
-#' Format the information in object as a Table using Pandoc coding or plain text, and cat it to stdout
+#' Format the information in \code{object} as a table using Pandoc coding or plain text, and cat it to stdout.
 #' 
-#' @param object			The data defining the table to display
-#' @param title				Title for the table, defaults to \code{NULL} (no title)
-#' @param labelTranslations	List where name is the label in the output, and value is the label you 
+#' @param object The data defining the table to display
+#' @param title	Title for the table, defaults to \code{NULL} (no title)
+#' @param labelTranslations List where name is the label in the output, and value is the label you 
 #' 		want displayed e.g. \code{list (q1q3: "Q1, Q3", medsurv = "Median Survival")}.
-#' @param digits			Maximum number of digits to display for floating point numbers. 
+#' @param digits Maximum number of digits to display for floating point numbers. 
 #' 		If \code{NA} (default), it uses the value from \code{object$control$digits} 
 #' 		(whose default is 3, which would result in, e.g., 12.3, 1.23, 0.123, and 0.012).
-#' @param nsmall			Minimum number of digits to the right of the decimal point to display for 
+#' @param nsmall Minimum number of digits to the right of the decimal point to display for 
 #' 		floating point numbers.  If \code{NA} (default), it uses the value from \code{object$control$nsmall}. 
 #' 		Allowed non-\code{NA} values are \code{0 <= nsmall <= 20}.
-#' @param nsmall.ratio		Minimum number of digits to the right of the decimal point to display 
+#' @param nsmall.ratio Minimum number of digits to the right of the decimal point to display 
 #' 		for the ratio statistics (OR, HR, RR). If \code{NA} (default) it uses the value from 
 #' 		\code{object$control$nsmall.ratio} (whose default is 2).  
 #' 		Allowed values are \code{0 <= nsmall.ratio <= 20}.
-#' @param digits.test		Number of digits to display for a p-value. Default is 5 (e.g. 0.12345).
-#' @param show.intercept	Logical, denoting if the intercept should be shown for each line
-#' @param show.adjust		Logical, denoting if the adjust variables should be shown for each line.
-#' @param text				Logical, denoting whether to print out the text version.
-#' @param removeBlanks		Logical, denoting if any blank lines should be removed from the output. 
+#' @param digits.test Number of digits to display for a p-value. Default is 5 (e.g. 0.12345).
+#' @param show.intercept Logical, denoting if the intercept should be shown for each line
+#' @param show.adjust Logical, denoting if the adjust variables should be shown for each line.
+#' @param text Logical, denoting whether to print out the text version.
+#' @param removeBlanks Logical, denoting if any blank lines should be removed from the output. 
 #' 		Default is value of \code{"text"}, and will be set to \code{FALSE} if text is \code{FALSE}.
-#' @param labelSize			Relative size difference between label column and other columns. 
+#' @param labelSize Relative size difference between label column and other columns. 
 #' 		Default is 1.2: label column ~20\% bigger than other columns
-#' @param pfootnote			Logical denoting if a footnote should be added describing the test used 
+#' @param pfootnote Logical denoting if a footnote should be added describing the test used 
 #' 		to generate the p value.  Default is \code{FALSE}.
 #' @param ... Other arguments (not implemented a this time).
 #' @seealso \code{\link{modelsum}}, \code{\link{print.modelsum}}, \code{\link{as.data.frame.modelsum}}
-#' @return Results are cat'ed to stdout, and returned invisibly as a Vector of Strings
+#' @return Results are cat'ed to stdout, and returned invisibly as a character vector.
 #' @export
 #' 
 #' @author Greg Dougherty

@@ -14,9 +14,9 @@ modelsum.control(digits = 3, nsmall = NULL, nsmall.ratio = 2,
   "concordance", "Nmiss"), ...)
 }
 \arguments{
-\item{digits}{Numeric, denoting the number of significant digits for beta coefficient and standard error.}
+\item{digits}{Numeric, denoting the number of significant digits for beta coefficients and standard errors.}
 
-\item{nsmall}{Numeric, denoting the number of digits after the decimal point for beta coefficient and standard error.}
+\item{nsmall}{Numeric, denoting the number of digits after the decimal point for beta coefficients and standard errors.}
 
 \item{nsmall.ratio}{Numeric, denoting the number of digits after the decimal point for ratios, e.g. OR, RR, HR.}
 

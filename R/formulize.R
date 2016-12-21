@@ -1,9 +1,9 @@
 #' formulize
 #' 
-#' A shortcut to generate one-, two-, or many-sided formulas.
+#' A shortcut to generate one-, two-, or many-sided formulas from vectors of variable names.
 #' 
-#' @param y,x,... Character vectors to put left-to-right in the formula. If \code{data} is supplied,
-#'   these can also be numeric denoting which column name to use. See examples.
+#' @param y,x,... Character vectors to be collapsed (by \code{"+"}) and put left-to-right in the formula.
+#'   If \code{data} is supplied, these can also be numeric, denoting which column name to use. See examples.
 #' @param data An R object with non-null column names.
 #' @author Ethan Heinzen
 #' @examples
