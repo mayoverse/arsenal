@@ -28,6 +28,6 @@ c("a", "b") \%nin\% c("a", "c", "d")
 Raymond Moore
 }
 \seealso{
-\code{\link{\%in\%}}, \code{\link[Hmisc]{\%nin\%}}
+\code{\link{\%in\%}}
 }
 
