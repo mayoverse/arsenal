@@ -1,7 +1,7 @@
 ## Created: 12/13/2016
 ## Author: Ethan Heinzen
 
-#' An arsenal of useful R functions for biomedical statistics
+#' An Arsenal of Useful R Functions for Biomedical Statistics
 #'
 #' An arsenal of useful R functions for biomedical statistics, specializing in models, reporting, and data summaries.
 #'

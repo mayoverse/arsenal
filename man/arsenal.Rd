@@ -4,7 +4,7 @@
 \name{arsenal}
 \alias{arsenal}
 \alias{arsenal-package}
-\title{An arsenal of useful R functions for biomedical statistics}
+\title{An Arsenal of Useful R Functions for Biomedical Statistics}
 \description{
 An arsenal of useful R functions for biomedical statistics, specializing in models, reporting, and data summaries.
 }

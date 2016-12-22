@@ -2,8 +2,14 @@ Package: arsenal
 Title: An Arsenal of Useful R Functions for Biomedical Statistics
 Version: 0.1.0
 Date: 2016-12-22
-Author: Beth Atkinson, Jason Sinnwell, Gregory Dougherty, Patrick Votruba, Ethan Heinzen, Tina Gunderson
-Maintainer: Ethan Heinzen <heinzen.ethan@mayo.edu>
+Authors@R: c(
+    person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
+    person("Patrick", "Votruba", role="ctb"),
+    person("Jason", "Sinnwell", role=c("aut","ctb")),
+    person("Elizabeth", "Atkinson", role=c("aut","ctb")),
+    person("Tina", "Gunderson", role=c("aut","ctb")),
+    person("Gregory", "Dougherty", role=c("aut","ctb"))
+  )
 Description: An arsenal of useful R functions for biomedical statistics, specializing in models, reporting, and data summaries.
 Suggests:
     knitr,
