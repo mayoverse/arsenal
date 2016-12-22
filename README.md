@@ -26,7 +26,7 @@ Other S3 methods are implemented for objects of class `"modelsum"`, including `p
 `freqlist` is a function to approximate the output from SAS's `PROC FREQ` procedure when using the `/list` option of the `TABLE` statement.
 
 The `freqlist` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary` function.
-Other S3 methods are implemented for objects of class `"freqlist"`, including `print`, and `as.data.frame`.
+Other S3 methods are implemented for objects of class `"freqlist"`, including `print` and `as.data.frame`.
 
 ## Other Notable Functions
 
