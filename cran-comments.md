@@ -4,6 +4,8 @@ This is a resubmission. In this version we have:
 
 * Made the description and the title more descriptive, per request.
 
+* Tweaked the authorship list.
+
 ## Test environments
 * ubuntu 12.04 (on travis-ci), R 3.3.1
 * win-builder (devel and release)

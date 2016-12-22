@@ -4,11 +4,12 @@ Version: 0.1.0
 Date: 2016-12-22
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
+    person("Jason", "Sinnwell", role="aut"),
+    person("Elizabeth", "Atkinson", role="aut"),
+    person("Tina", "Gunderson", role="aut"),
+    person("Gregory", "Dougherty", role="aut"),
     person("Patrick", "Votruba", role="ctb"),
-    person("Jason", "Sinnwell", role=c("aut","ctb")),
-    person("Elizabeth", "Atkinson", role=c("aut","ctb")),
-    person("Tina", "Gunderson", role=c("aut","ctb")),
-    person("Gregory", "Dougherty", role=c("aut","ctb"))
+    person("Emily", "Lundt", role="ctb")
   )
 Description: An arsenal of useful R functions for biomedical statistics, specializing in models, reporting, and data summaries.
 Suggests:
