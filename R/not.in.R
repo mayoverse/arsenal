@@ -12,7 +12,7 @@
 #' @examples
 #' 1 %nin% 2:10
 #' c("a", "b") %nin% c("a", "c", "d")
-#' @seealso \code{\link{\%in\%}}, \code{\link[Hmisc]{\%nin\%}}
+#' @seealso \code{\link{\%in\%}}
 #' @author Raymond Moore
 #' @aliases nin
 #' @export
