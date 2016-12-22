@@ -46,7 +46,7 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
   ##########################
   ##Other coefficient columns:
   ##CI.estimate, N, Nmiss2, depvar (show name of dependent variable), estimate, se, zstat
-  ##Other  model fits:  “logLik”,”AIC”,”BIC”
+  ##Other  model fits:  logLik,AIC,BIC
   binomial.stats.valid <- c(c("Nmiss","OR","CI.lower.OR","CI.upper.OR","p.value","concordance"), # default
                  c("estimate","CI.OR","CI.estimate","CI.lower.estimate","CI.upper.estimate","N","Nmiss2","endpoint","std.error","statistic"),
                  c("logLik","AIC","BIC","null.deviance","deviance","df.residual","df.null"))
@@ -66,8 +66,8 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
   ##########################
   ## Gaussian stats:
   ##########################
-  ##Other coefficient columns: CI.estimate, N, Nmiss2, “t.stat”, standard.estimate, endpoint
-  ##Other model fits: “r.squared”, “AIC”, “BIC”,“logLik”
+  ##Other coefficient columns: CI.estimate, N, Nmiss2, t.stat, standard.estimate, endpoint
+  ##Other model fits: r.squared, AIC, BIC,logLik
   gaussian.stats.valid <- c(c("Nmiss","estimate","std.error","p.value", "adj.r.squared"), #default
               c("CI.estimate","CI.lower.estimate","CI.upper.estimate", "N", "Nmiss2", "statistic", "standard.estimate", "endpoint"),
               c("r.squared", "AIC", "BIC","logLik","statistic.F","p.value.F"))
@@ -86,7 +86,7 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
   ##########################
   ##(quasi)/poisson.stats=c("Nmiss","RR","CI.RR", "p.value","concordance"),
   ##Other coeff columns: CI.estimate, CI.RR  (ci for relrisk),N,Nmiss2, std.error, estimate, z.stat, endpoint
-  ##Other model fits: “AIC”, “BIC”, “logLik”, dispersion
+  ##Other model fits: AIC,BIC,logLik, dispersion
   ##  dispersion = deviance/df.residual
   poisson.stats.valid <- c(c("RR","CI.lower.RR","CI.upper.RR", "p.value","concordance", "Nmiss"), # default
                    c("CI.RR","CI.estimate","CI.lower.estimate","CI.upper.estimate", "CI.RR", "Nmiss2", "std.error", "estimate", "statistic","endpoint"),
@@ -106,8 +106,8 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
   ##########################
   ## Survival stats:
   ##########################
-  ##surv.stats=c(“Nmiss”,"HR",”CI.HR”,"p.value","concorance")
-  ##Other possible coefficient table columns: CI.estimate,N,Nmiss2,”estimate”,”se”,”endpoint”,”Nevents”,z.stat
+  ##surv.stats=c(Nmiss,HR,CI.HR,p.value,concorance)
+  ##Other possible coefficient table columns: CI.estimate,N,Nmiss2,estimate,se,endpoint,Nevents,z.stat
   ##Other possible model fits: r.squared, logLik, AIC, BIC
   surv.stats.valid <- c(c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"), # default
             c("CI.HR","CI.estimate","CI.lower.estimate","CI.upper.estimate","N","Nmiss2","estimate","std.error","endpoint","Nevents","statistic"),
