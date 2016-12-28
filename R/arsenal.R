@@ -1,9 +1,11 @@
 ## Created: 12/13/2016
 ## Author: Ethan Heinzen
 
-#' An Arsenal of Useful R Functions for Biomedical Statistics
+#' An Arsenal of R Functions for Large-Scale Statistical Summaries
 #'
-#' An arsenal of useful R functions for biomedical statistics, specializing in models, reporting, and data summaries.
+#' An Arsenal of R functions for large-scale statistical summaries,
+#'   which are streamlined to work within the latest reporting tools in R and RStudio and
+#'   which use formulas and versatile summary statistics for summary tables and models.
 #'
 #' @section Functions:
 #' 
