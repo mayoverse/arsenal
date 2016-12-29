@@ -1,10 +1,10 @@
 ## Created: 12/13/2016
 ## Author: Ethan Heinzen
 
-#' An Arsenal of R Functions for Large-Scale Statistical Summaries
+#' An Arsenal of 'R' Functions for Large-Scale Statistical Summaries
 #'
-#' An Arsenal of R functions for large-scale statistical summaries,
-#'   which are streamlined to work within the latest reporting tools in R and RStudio and
+#' An Arsenal of 'R' functions for large-scale statistical summaries,
+#'   which are streamlined to work within the latest reporting tools in 'R' and 'RStudio' and
 #'   which use formulas and versatile summary statistics for summary tables and models.
 #'
 #' @section Functions:
@@ -44,7 +44,7 @@ NULL
 #                      devtools::install("../arsenal-eph/", build_vignettes = TRUE, dependencies = FALSE))
 # devtools::build("../arsenal-eph/")
 ## < restart R >
-## library(arsenal)
+## library(arsenal, lib.loc = "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/testinstalls/")
 
 #### to upload to CRAN
 ## Update DESCRIPTION, README.md, NEWS.md, and cran-comments.md

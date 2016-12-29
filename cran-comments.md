@@ -1,4 +1,10 @@
-## Resubmission
+## Resubmission for arsenal 0.1.2
+
+This is a resubmission. In this version we have:
+
+* Put parentheses after function names in DESCRIPTION and single-quoted package names, per request
+
+## Resubmission for arsenal 0.1.1
 
 This is a resubmission. In this version we have:
 

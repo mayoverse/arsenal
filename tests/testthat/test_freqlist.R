@@ -115,6 +115,8 @@ test_that("groupBy option in freqlist call", {
       "|      |       |III   |    8|      30|       26.67|     100.00|"
     )
   )
+  
+  expect_error(freqlist(TAB, groupBy = "group"))
 })
 
 test_that("sparse option in freqlist call", {
@@ -201,6 +203,23 @@ test_that("Changing the labels", {
       "|          |Heinzen     |   29|      90|       32.22|     100.00|"
     )
   )
+  
+  expect_identical(
+    capture.output(summary(freqlist(TAB.na, na.options = "include", labelTranslations = c("Treatment", "Ethan Rocks")))),
+    c(""                                                                 ,
+      ""                                                                 ,
+      "|Treatment |Ethan Rocks | Freq| cumFreq| freqPercent| cumPercent|",
+      "|:---------|:-----------|----:|-------:|-----------:|----------:|",
+      "|A         |Ethan       |   17|      17|       18.89|      18.89|",
+      "|          |Heinzen     |   16|      33|       17.78|      36.67|",
+      "|          |NA          |    3|      36|        3.33|      40.00|",
+      "|B         |Ethan       |   25|      61|       27.78|      67.78|",
+      "|          |Heinzen     |   29|      90|       32.22|     100.00|"
+    )
+  )
+  
+  expect_error(freqlist(TAB.na, labelTranslations = c("Treatment", "Ethan Rocks", "Oops!")))
+  
   tmp <- freqlist(TAB.na, na.options = "include")
   labels(tmp) <- c("Treatment", "Ethan Rocks")  
   expect_identical(

@@ -28,10 +28,7 @@ NULL
 
   if(is.null(value))
   {
-    # can't set labels to null...so here's a workaround
-    x$labels <- NULL
-    x <- c(x, list(labels = NULL)) # this strips the class
-    class(x) <- "freqlist"
+    x["labels"] <- list(NULL)
     return(x)
   }
   

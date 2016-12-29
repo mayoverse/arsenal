@@ -35,12 +35,12 @@ NULL
 freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude', 'remove'), digits = 2, labelTranslations = NULL, groupBy = NULL, ...)
 {
   na.options <- match.arg(na.options)
-  if (sum(is.na(match(class(tab), c("table","xtabs")))) > 0) stop("table object is not of class 'table' or class 'xtabs'")
+  if (any(class(tab) %nin% c("table","xtabs"))) stop("table object is not of class 'table' or class 'xtabs'")
   if (min(dim(tab)) < 1) stop("table object has dimension of 0")
   if (!is.logical(sparse)) stop("sparse must be TRUE or FALSE")
   if (length(digits) > 1) stop("digits must be a single numeric value")
   if ((digits %% 1) != 0 || (digits < 0)) stop("digits must be a positive whole number")
-  if (!is.null(groupBy) && min((groupBy %in% names(dimnames(tab)))) < 1) stop("groupBy variable not found in table names")
+  if (!is.null(groupBy) && any(groupBy %nin% names(dimnames(tab)))) stop("groupBy variable not found in table names")
   if (!is.null(labelTranslations) && (!is.character(labelTranslations) || length(labelTranslations) != length(dim(tab))))
     stop("length of variable names does not match table object dimensions")
   
@@ -57,7 +57,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
     return(x2)
   }
   # create data frame from table object
-  if (!"xtabs" %in% class(tab)){
+  if ("xtabs" %nin% class(tab)){
     tab.df <- data.frame(expand.grid(dimnames(tab)))
     oldnames <- names(tab.df)
     tab.freq <- data.frame(tab.df, Freq = as.vector(tab))
@@ -76,13 +76,11 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
       cumFreq <- cumsum(data$Freq)
       freqPct <- 100 * data$Freq / sum(data$Freq)
       cumPct <- cumsum(freqPct)
-    }
-    if (na.options == 'include') {
+    } else if(na.options == 'include') {
       cumFreq = cumsum(data$Freq)
       freqPct = 100 * data$Freq / sum(data$Freq)
       cumPct = cumsum(freqPct)
-    }
-    if (na.options == 'showexclude') {
+    } else if(na.options == 'showexclude') {
       freq_tmp <- data[, "Freq"]
       freq_tmp[na.index != 0] <- NA
       cumFreq = cumfun(freq_tmp)
