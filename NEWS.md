@@ -1,3 +1,7 @@
+# arsenal 0.1.3
+
+* Updates to vignettes.
+
 # arsenal 0.1.2
 
 * `broom` and `stringr` have been moved to `imports` instead of `depends`.

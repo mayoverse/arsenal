@@ -54,7 +54,7 @@ so the tables could be displayed within an R markdown report.
 This report provides step-by-step directions for using the functions associated with `modelsum`.
 All functions presented here are available within the `arsenal` package.  An assumption is made that users
 are somewhat familiar with R markdown documents.  For those who are new to the topic, a good initial
-resource is available at [rmarkdown.rstudio.com](rmarkdown.rstudio.com). 
+resource is available at [rmarkdown.rstudio.com](http://rmarkdown.rstudio.com). 
 
 Simple Example
 ================
