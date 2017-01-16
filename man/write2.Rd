@@ -2,11 +2,17 @@
 % Please edit documentation in R/write2.R
 \name{write2}
 \alias{write2}
+\alias{write2.default}
 \alias{write2html}
 \alias{write2pdf}
 \alias{write2word}
 \title{write2word, write2html, write2pdf}
 \usage{
+write2(object, file, ..., keep.md, output_format)
+
+\method{write2}{default}(object, file, ..., keep.md = FALSE,
+  output_format = NULL)
+
 write2word(object, file, ..., keep.md = FALSE)
 
 write2pdf(object, file, ..., keep.md = FALSE)
@@ -22,6 +28,16 @@ write2html(object, file, ..., keep.md = FALSE)
 One popular option is to use \code{quiet = TRUE} to suppress the command line output.}
 
 \item{keep.md}{Logical, denoting whether to keep the intermediate \code{.md} file.}
+
+\item{output_format}{One of the following:
+\enumerate{
+  \item{An output format object, e.g. \code{rmarkdown::\link[rmarkdown]{html_document}(...)}.}
+  \item{A character string denoting such a format function, e.g. \code{"html_document"}. In this case, the \code{"..."} are NOT passed.}
+  \item{The format function itself, e.g. \code{rmarkdown::html_document}. In this case, the \code{"..."} arguments are passed.}
+  \item{One of \code{"html"}, \code{"pdf"}, and \code{"word"}, shortcuts implemented here. In this case, the \code{"..."} arguments are passed.}
+  \item{\code{NULL}, in which the output is html by default.}
+}
+See \code{rmarkdown::\link[rmarkdown]{render}} for details.}
 }
 \value{
 \code{object} is returned invisibly, and \code{file} is written.
@@ -30,11 +46,11 @@ One popular option is to use \code{quiet = TRUE} to suppress the command line ou
 Functions to generate a word, html, or pdf document containing a single table.
 }
 \details{
-This is (kind of) an S3 method (the real S3 method is \code{write2}),and the default
-  (used for \code{\link{tableby}}, \code{\link{modelsum}}, \code{\link{freqlist}}, etc.) assumes
-  that there is a \code{summary} method implemented.
+\code{write2} is an S3 method, and the default
+   (used for \code{\link{tableby}}, \code{\link{modelsum}}, \code{\link{freqlist}}, etc.) assumes
+   that there is a \code{summary} method implemented which looks 'good' in markdown.
   
-  To generate the appropriate file type, the default uses one of \code{rmarkdown::word_document}, \code{rmarkdown::html_document},
+ To generate the appropriate file type, the \code{write2*} functions use one of \code{rmarkdown::word_document}, \code{rmarkdown::html_document},
    and \code{rmarkdown::pdf_document} to get the job done. \code{"..."} arguments are passed to these functions, too.
 }
 \examples{
@@ -42,24 +58,33 @@ This is (kind of) an S3 method (the real S3 method is \code{write2}),and the def
 data(mockstudy)
 # tableby example
 tab1 <- tableby(arm ~ sex + age, data=mockstudy)
-write2html(tab1, "~/ibm/trash.html")
+write2html(tab1, "~/trash.html")
 
 # freqlist example
 tab.ex <- table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany")
 noby <- freqlist(tab.ex, na.options = "include")
-write2pdf(noby, "~/ibm/trash2.pdf")
+write2pdf(noby, "~/trash2.pdf")
 
 # A more complicated example
-write2word(tab1, "~/ibm/trash.doc", keep.md = TRUE,
+write2word(tab1, "~/trash.doc",
+  keep.md = TRUE,
   reference_docx = mystyles.docx, # passed to rmarkdown::word_document
   quiet = TRUE, # passed to rmarkdown::render
-  title = "My cool new title" # passed to summary.tableby
+  title = "My cool new title") # passed to summary.tableby
+
+# Using write2()
+write2(tab1, "~/trash.rtf",
+  toc = TRUE, # passed to rmarkdown::rtf_document
+  quiet = TRUE, # passed to rmarkdown::render, though in this case it's not practical
+  title = "My cool new title", # passed to summary.tableby
+  output_format = rmarkdown::rtf_document)
 }
 }
 \author{
 Ethan Heinzen, adapted from code from Krista Goergen
 }
 \seealso{
-\code{\link[rmarkdown]{render}}, \code{\link[rmarkdown]{word_document}}, \code{\link[rmarkdown]{html_document}}, \code{\link[rmarkdown]{pdf_document}}
+\code{\link[rmarkdown]{render}}, \code{\link[rmarkdown]{word_document}}, \code{\link[rmarkdown]{html_document}}, \code{\link[rmarkdown]{pdf_document}},
+  \code{\link[rmarkdown]{rtf_document}}, \code{\link[rmarkdown]{md_document}}, \code{\link[rmarkdown]{odt_document}}
 }
 

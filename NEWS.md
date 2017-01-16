@@ -2,6 +2,8 @@
 
 * Updates to vignettes.
 
+* `write2` is now exported and supports all output formats.
+
 # arsenal 0.1.2
 
 * `broom` and `stringr` have been moved to `imports` instead of `depends`.
