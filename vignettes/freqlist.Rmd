@@ -19,11 +19,6 @@ vignette: |
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=80), tidy=TRUE,  comment=NA)
 options(width=80, max.print=1000)
-
-require(arsenal)
-# source("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/R/freqlist.R")
-# source("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/R/summary.freqlist.R")
-# source("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/R/freqlist.internal.R")
 ```
 
 \newpage
@@ -34,6 +29,10 @@ require(arsenal)
 `freqlist` provides options for handling missing or sparse data and can provide cumulative counts and percentages based on subgroups.
 It depends on the `knitr` package for printing. 
 
+```{r}
+require(arsenal)
+```
+
 ## Sample dataset
 
 For our examples, we'll load the `mockstudy` data included with this package and use it to create a basic table.
@@ -41,7 +40,7 @@ Because they have fewer levels, for brevity, we'll use the variables arm, sex, a
 We'll retain NAs in the table creation.
 See the appendix for notes regarding default NA handling and other useful information regarding tables in R. 
 
-```{r loading and setting up data}
+```{r loading.data}
 # load the data
 data(mockstudy)
 
@@ -138,9 +137,11 @@ summary(freqlist(tab.ex, na.options="remove"))
 
 ## Frequency counts and percentages subset by factor levels 
 
-The groupBy argument internally subsets the data by the specified factor  prior to calculating cumulative counts and percentages. By default, when used each subset will print in a separate table. Using the `single = TRUE` option when printing will collapse the subsetted result into a single table.
+The groupBy argument internally subsets the data by the specified factor prior to calculating cumulative counts and percentages.
+By default, when used each subset will print in a separate table. Using the `single = TRUE` option when printing will collapse
+the subsetted result into a single table.
 
-```{r frequency counts, results='asis'}
+```{r freq.counts, results='asis'}
 withby <- freqlist(tab.ex, groupBy = c("arm","sex"))
 summary(withby)
 
@@ -168,7 +169,7 @@ summary(noby, labelTranslations = c("Hi there", "What up", "Bye"))
 
 Fair warning: `xtable` has kind of a steep learning curve. These examples are given without explanation for more advanced users.
 
-```{r xtable setup}
+```{r xtable.setup}
 require(xtable)
 #turn off xtable header
 options(xtable.comment = FALSE)

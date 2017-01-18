@@ -26,17 +26,12 @@ require(MASS)
 require(pROC)
 require(rpart)
  
-opts_chunk$set(comment = NA, echo=TRUE, prompt=TRUE ,collapse=TRUE)
+opts_chunk$set(comment = NA, echo=TRUE, prompt=TRUE, collapse=TRUE)
 
-#vignette: >
-#  %\VignetteIndexEntry{modelsum}
-#  %\VignetteEngine{knitr::rmarkdown}
-#  \usepackage[utf8]{inputenc}
 ```
 
 
-Introduction
-=============
+# Introduction
 
 Very often we are asked to summarize model results from multiple fits into a nice table.
 The endpoint might be of different types (e.g., survival, case/control, continuous) and there
@@ -56,8 +51,7 @@ All functions presented here are available within the `arsenal` package.  An ass
 are somewhat familiar with R markdown documents.  For those who are new to the topic, a good initial
 resource is available at [rmarkdown.rstudio.com](http://rmarkdown.rstudio.com). 
 
-Simple Example
-================
+# Simple Example
 
 The first step when using the `modelsum` function is to load the `arsenal` package.  All the examples in this report
 use a dataset called `mockstudy` made available by Paul Novotny which includes a variety of types of variables
@@ -82,7 +76,7 @@ If you want to take a quick look at the table, you can use `summary` on your mod
 print out as text in your R console window.  If you use `summary` without any options you will see a number of
 $\&nbsp;$ statements which translates to "space" in HTML.
 
-### Pretty text version of table
+## Pretty text version of table
 
 If you want a nicer version in your console window then adding the `text=TRUE` option.  
 
@@ -90,23 +84,17 @@ If you want a nicer version in your console window then adding the `text=TRUE` o
 summary(tab1, text=TRUE)
 ```
 
-### Pretty Rmarkdown version of table
+## Pretty Rmarkdown version of table
 
 In order for the report to look nice within an R markdown (knitr) report, you just need to specify
 `results="asis"` when creating the r chunk. This changes the layout slightly (compresses it) and bolds
-the variable names. The three single quotes are often located above the tab key.
-
-`r ''` ```{r results="asis"}
- 
- summary(tab1)
- 
-```
+the variable names.
 
 ```{r simple-markdown, results='asis'}
 summary(tab1)
 ```
 
-### Add an adjustor to the model
+## Add an adjustor to the model
 
 The argument `adjust` allows the user to indicate that all the variables should be adjusted for these terms.
 
@@ -116,16 +104,14 @@ summary(tab2)
 ```
 
 
-Models for each endpoint type
-==================================
+# Models for each endpoint type
 
 To make sure the correct model is run you need to specify "family".  The options available right
 now are : gaussian, binomial, survival, and poisson.  If there is enough interest, additional models can be added.  
 
-Gaussian
------------
+## Gaussian
 
-### fit and summarize linear regression model
+### Fit and summarize linear regression model
 
 Look at whether there is any evidence that AlkPhos values vary by study arm after adjusting for sex and age (assuming a linear age relationship).
 
@@ -163,7 +149,7 @@ termplot(fit3, term=2, se=T, rug=T)
 
 In this instance it looks like there isn't enough evidence to say that the relationship is non-linear.
 
-### extract data using the `broom` package
+### Extract data using the `broom` package
 
 The `broom` package makes it easy to extract information from the fit.
 
@@ -175,7 +161,7 @@ tmp
 glance(fit3)
 ```
 
-### create a summary table using modelsum
+### Create a summary table using modelsum
 
 ```{r, results="asis"}
 ms.logy <- modelsum(log(alk.phos) ~ arm + ps + hgb, data=mockstudy, adjust= ~age + sex, 
@@ -184,10 +170,9 @@ ms.logy <- modelsum(log(alk.phos) ~ arm + ps + hgb, data=mockstudy, adjust= ~age
 summary(ms.logy)
 ```
 
-Binomial
-----------
+## Binomial
 
-### fit and summarize logistic regression model
+### Fit and summarize logistic regression model
 
 ```{r}
 boxplot(age ~ mdquality.s, data=mockstudy, ylab=attr(mockstudy$age,'label'), xlab='mdquality.s')
@@ -216,7 +201,7 @@ tmp$auc
 
 ```
 
-### extract data using `broom` package
+### Extract data using `broom` package
 
 The `broom` package makes it easy to extract information from the fit.
 
@@ -226,7 +211,7 @@ tidy(fit, exp=T, conf.int=T) # coefficients, p-values, conf.intervals
 glance(fit) # model summary statistics
 ```
 
-### create a summary table using modelsum
+### Create a summary table using modelsum
 
 ```{r, results="asis"}
 summary(modelsum(mdquality.s ~ age + bmi, data=mockstudy, adjust=~sex, family=binomial))
@@ -237,10 +222,9 @@ summary(fitall)
 ```
 
 
-Survival
----------
+## Survival
 
-### fit and summarize a Cox regression model 
+### Fit and summarize a Cox regression model 
 
 ```{r survival}
 require(survival)
@@ -271,7 +255,7 @@ summary(fit2)$concordance
 survConcordance(Surv(fu.time, fu.stat) ~ predict(fit2), data=mockstudy)
 ```
 
-### extract data using `broom` package
+### Extract data using `broom` package
 
 The `broom` package makes it easy to extract information from the fit.
 
@@ -281,7 +265,7 @@ tidy(fit) # coefficients, p-values
 glance(fit) # model summary statistics
 ```
 
-### create a summary table using modelsum
+### Create a summary table using modelsum
 
 ```{r results="asis"}
 ##Note: You must use quotes when specifying family="survival" 
@@ -295,8 +279,7 @@ summary(modelsum(Surv(fu.time, fu.stat) ~ arm,
 ```
 
 
-Poisson
---------
+## Poisson
 
 Poisson regression is useful when predicting an outcome variable representing counts.
 It can also be useful when looking at survival data.  Cox models and Poisson models are very closely
@@ -331,7 +314,7 @@ fit2 <- glm(skips ~ Opening + Solder + Mask, data=solder, family=quasipoisson)
 summary(fit2)
 ```
 
-### extract data using `broom` package
+### Extract data using `broom` package
 
 The `broom` package makes it easy to extract information from the fit.
 
@@ -342,7 +325,7 @@ glance(fit) # model summary statistics
 ```
 
 
-### create a summary table using modelsum
+### Create a summary table using modelsum
 
 ```{r results='asis'}
 summary(modelsum(skips~Opening + Solder + Mask, data=solder, family="quasipoisson"))
@@ -373,7 +356,7 @@ fit2 <- glm(fu.stat ~ offset(log(fu.time+.01)) + age + sex + arm,
 summary(fit2)
 ```
 
-### extract data using `broom` package
+### Extract data using `broom` package
 
 The `broom` package makes it easy to extract information from the fit.
 
@@ -384,7 +367,7 @@ glance(fit) ##model summary statistics
 ```
 
 
-### create a summary table using modelsum
+### Create a summary table using `modelsum`
 
 Remember that the result from `modelsum` is different from the `fit` above.  The `modelsum`
 summary shows the results for `age + offset(log(fu.time+.01))` then `sex + offset(log(fu.time+.01))`
@@ -397,12 +380,12 @@ summary(modelsum(fu.stat ~ age, adjust=~offset(log(fu.time+.01))+ sex + arm,
 ```
 
 
-Additional Examples
-====================
+# Additional Examples
+
 
 Here are multiple examples showing how to use some of the different options.
 
-###1. Change summary statistics globally
+## 1. Change summary statistics globally
 
 There are standard settings for each type of model regarding what information is summarized in the table.
 This behavior can be modified using the modelsum.control function. In fact, you can save your standard
@@ -425,7 +408,7 @@ tab3 <- modelsum(bmi ~  age, adjust=~sex, data=mockstudy,
 summary(tab3)
 ```
 
-###2. Add labels to independent variables
+## 2. Add labels to independent variables
 
 In the above example, age is shown with a label (Age in Years), but sex is listed "as is".
 This is because the data was created in SAS and in the SAS dataset, age had a label but sex did not.
@@ -470,20 +453,20 @@ labels(tab1)
 summary(tab1)
 ```
 
-###2. Don't show intercept values
+## 3. Don't show intercept values
 
 ```{r, results='asis'}
 summary(modelsum(age~mdquality.s+sex, data=mockstudy), show.intercept=FALSE)
 ```
 
-###3. Don't show results for adjustment variables
+## 4. Don't show results for adjustment variables
 
 ```{r, results='asis'}
 summary(modelsum(mdquality.s ~ age + bmi, data=mockstudy, adjust=~sex, family=binomial),
         show.adjust=FALSE)  
 ```
 
-###4. Summarize multiple variables without typing them out
+## 5. Summarize multiple variables without typing them out
 
 Often one wants to summarize a number of variables.  Instead of typing by hand each individual variable,
 an alternative approach is to create a formula using the `paste` command with the `collapse="+"` option.  
@@ -519,7 +502,7 @@ summary(modelsum(tmp, data=mockstudy, family=binomial))
 ```
 
 
-###5. Subset the dataset used in the analysis
+## 6. Subset the dataset used in the analysis
 
 Here are two ways to get the same result (limit the analysis to subjects age>50 and in the F: FOLFOX treatment group). 
 
@@ -548,7 +531,7 @@ summary(modelsum(alk.phos ~ ps + bmi, adjust=~sex, subset = age>50 & bmi<24, dat
 summary(modelsum(alk.phos ~ ps + bmi, adjust=~sex, subset=1:30, data=mockstudy))
 ```
 
-###6. Create combinations of variables on the fly
+## 7. Create combinations of variables on the fly
 
 ```{r}
 ## create a variable combining the levels of mdquality.s and sex
@@ -559,7 +542,7 @@ with(mockstudy, table(interaction(mdquality.s,sex)))
 summary(modelsum(age ~ interaction(mdquality.s,sex), data=mockstudy))
 ```
 
-###9. Transform variables on the fly
+## 8. Transform variables on the fly
 
 Certain transformations need to be surrounded by `I()` so that R knows to treat it as a variable
 transformation and not some special model feature.  If the transformation includes any of the
@@ -572,7 +555,7 @@ summary(modelsum(arm=="F: FOLFOX" ~ I(age/10) + log(bmi) + mdquality.s,
 ```
 
 
-###10. Change the ordering of the variables or delete a variable
+## 9. Change the ordering of the variables or delete a variable
 
 ```{r, results='asis'}
 mytab <- modelsum(bmi ~ sex + alk.phos + age, data=mockstudy)
@@ -582,7 +565,7 @@ summary(mytab[c('age','sex')])
 summary(mytab[c(3,1)])
 ```
 
-###11. Merge two modelsum objects together 
+## 10. Merge two `modelsum` objects together 
 
 It is possible to combine two modelsum objects so that they print out together, however you need to pay
 attention to the columns that are being displayed.  It is easier to combine two models of the same
@@ -602,7 +585,7 @@ class(tab12)
 #summary(tab12)
 ```
 
-###12. Add a title to the table
+## 11. Add a title to the table
 
 When creating a pdf the tables are automatically numbered and the title appears below the table.
 In Word and HTML, the titles appear un-numbered and above the table.  
@@ -612,11 +595,12 @@ t1 <- modelsum(bmi ~ sex + age, data=mockstudy)
 summary(t1, title='Demographics')
 ```
 
-###13. Modify how missing values are treated
+## 12. Modify how missing values are treated
 
 Depending on the report you are writing you have the following options: 
 
 * Use all values available for each variable
+
 * Use only those subjects who have measurements available for all the variables
 
 ```{r}
@@ -642,13 +626,16 @@ summary(modelsum(bmi ~ ast + age, data=mockstudy,
                 control=modelsum.control(gaussian.stats=c("estimate"))))
 ```
 
-###14. Modify the number of digits used
+## 13. Modify the number of digits used
 
 Within modelsum.control function there are 4 options for controlling the number of significant digits shown.  
 
 * digits: controls the number of significant digits (counting both before and after the decimal point) for continuous variables
+
 * nsmall: controls the number of digits after the decimal point for the beta and standard error
+
 * nsmall.ratio: controls the number of digits for the ratio statistics (OR, HR, RR), default=2
+
 * digits.test: controls the number of digits after the decimal point for p-values (default=3)
 
 ```{r, results='asis'}
@@ -670,7 +657,7 @@ format(pi*100, nsmall=4)
 format(pi*100, nsmall=2, digits=4)
 ```
 
-###15. Use case-weights in the models
+## 14. Use case-weights in the models
 
 Occasionally it is of interest to fit models using case weights.
 The `modelsum` function allows you to pass on the weights to the models and it will do the appropriate fit.
@@ -703,7 +690,7 @@ tab2 <- modelsum(newvarA ~ ast + bmi + hgb, data=mockstudy, subset=(arm !='G: IR
 summary(tab2, title='Case Weights used')
 ```
           
-###16. Use `modelsum` within an Sweave document
+## 15. Use `modelsum` within an Sweave document
 
 For those users who wish to create tables within an Sweave document, the following code seems to work.
 
@@ -737,7 +724,7 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 
 \end{document}
 ```
-###17. Export `modelsum` results to a .CSV file
+## 16. Export `modelsum` results to a .CSV file
 
 When looking at multiple variables it is sometimes useful to export the results to a csv file.
 The `as.data.frame` function creates a data frame object that can be exported or further manipulated within R.
@@ -750,7 +737,7 @@ tmp
 # write.csv(tmp, '/my/path/here/mymodel.csv')
 ```
 
-###18. Write `modelsum` object to a separate Word or HTML file
+## 17. Write `modelsum` object to a separate Word or HTML file
 
 ```{r}
 ## write to an HTML document
@@ -760,10 +747,9 @@ tmp
 # write2word(tab2, "~/ibm/trash.doc", title="My table in Word")
 ```
 
-Available Function Options
-==================================
+# Available Function Options
 
-### Summary statistics
+## Summary statistics
 
 The available summary statistics, by varible type, are:
 
@@ -827,7 +813,7 @@ The full description of these parameters that can be shown for models include:
 * `CI.lower.estimate, CI.upper.estimate`: print the confidence interval for the beta coefficient
 
 
-### modelsum.control settings
+## `modelsum.control` settings
 
 A quick way to see what arguments are possible to utilize in a function is to use the `args()`
 command. Settings involving the number of digits can be set in `modelsum.control` or in `summary.modelsum`.
@@ -851,7 +837,7 @@ Settings:
 * poisson.stats, quasipoisson.stats
 
 
-### summary.modelsum settings
+## `summary.modelsum` settings
 
 The summary.modelsum function has options that modify how the table appears (such as adding a title or modifying labels).  
 
