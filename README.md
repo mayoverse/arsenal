@@ -30,7 +30,7 @@ Other S3 methods are implemented for objects of class `"freqlist"`, including `p
 
 ## Other Notable Functions
 
-* `write2word`, `write2pdf`, and `write2html` are functions to output any of the above objects into a document. They're a shortcut for
+* `write2word`, `write2pdf`, and `write2html` are functions to output an object into a document. They're a shortcut for
   "I just want to output this one table but I don't want to open an Rmarkdown script, ugh..."
   
 * `formulize` is a shortcut to collapse variable names into a formula.

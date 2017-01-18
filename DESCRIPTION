@@ -10,6 +10,7 @@ Authors@R: c(
     person("Gregory", "Dougherty", role="aut"),
     person("Patrick", "Votruba", role="ctb"),
     person("Ryan", "Lennon", role="ctb"),
+    person("Krista", "Goergen", role="ctb"),
     person("Emily", "Lundt", role="ctb")
   )
 Description: An Arsenal of 'R' functions for large-scale statistical summaries,
@@ -24,6 +25,7 @@ Suggests:
     knitr,
     rmarkdown,
     xtable,
+    pander,
     survival,
     testthat,
     coin,

@@ -2,29 +2,44 @@
 % Please edit documentation in R/write2.R
 \name{write2}
 \alias{write2}
+\alias{write2.character}
 \alias{write2.default}
-\alias{write2html}
-\alias{write2pdf}
-\alias{write2word}
-\title{write2word, write2html, write2pdf}
+\alias{write2.freqlist}
+\alias{write2.knitr_kable}
+\alias{write2.modelsum}
+\alias{write2.tableby}
+\alias{write2.xtable}
+\title{write2}
 \usage{
 write2(object, file, ..., keep.md, output_format)
 
-\method{write2}{default}(object, file, ..., keep.md = FALSE,
+\method{write2}{tableby}(object, file, ..., keep.md = FALSE,
   output_format = NULL)
 
-write2word(object, file, ..., keep.md = FALSE)
+\method{write2}{modelsum}(object, file, ..., keep.md = FALSE,
+  output_format = NULL)
 
-write2pdf(object, file, ..., keep.md = FALSE)
+\method{write2}{freqlist}(object, file, ..., keep.md = FALSE,
+  output_format = NULL)
 
-write2html(object, file, ..., keep.md = FALSE)
+\method{write2}{knitr_kable}(object, file, ..., keep.md = FALSE,
+  output_format = NULL)
+
+\method{write2}{xtable}(object, file, ..., keep.md = FALSE,
+  output_format = NULL)
+
+\method{write2}{character}(object, file, ..., keep.md = FALSE,
+  output_format = NULL)
+
+\method{write2}{default}(object, file, FUN, ..., keep.md = FALSE,
+  output_format = NULL)
 }
 \arguments{
-\item{object}{An object whose \code{summary} output looks "good" when using \code{results='asis'} in markdown.}
+\item{object}{An object.}
 
 \item{file}{A single character string denoting the filename for the output document.}
 
-\item{...}{Additional arguments to be passed to \code{summary}, \code{rmarkdown::render}, etc.
+\item{...}{Additional arguments to be passed to \code{FUN}, \code{rmarkdown::render}, etc.
 One popular option is to use \code{quiet = TRUE} to suppress the command line output.}
 
 \item{keep.md}{Logical, denoting whether to keep the intermediate \code{.md} file.}
@@ -35,47 +50,35 @@ One popular option is to use \code{quiet = TRUE} to suppress the command line ou
   \item{A character string denoting such a format function, e.g. \code{"html_document"}. In this case, the \code{"..."} are NOT passed.}
   \item{The format function itself, e.g. \code{rmarkdown::html_document}. In this case, the \code{"..."} arguments are passed.}
   \item{One of \code{"html"}, \code{"pdf"}, and \code{"word"}, shortcuts implemented here. In this case, the \code{"..."} arguments are passed.}
-  \item{\code{NULL}, in which the output is html by default.}
+  \item{\code{NULL}, in which the output is HTML by default.}
 }
 See \code{rmarkdown::\link[rmarkdown]{render}} for details.}
+
+\item{FUN}{The summary-like or print-like function to use to generate the markdown content. Can be passed as a function or a
+character string. It's expected that \code{FUN(object, ...)} looks "good" when using \code{results='asis'} in markdown.}
 }
 \value{
 \code{object} is returned invisibly, and \code{file} is written.
 }
 \description{
-Functions to generate a word, html, or pdf document containing a single table.
+Functions to generate a single document containing a single table. (Also the S3 backbone behind the \code{write2*} functions.)
 }
 \details{
 \code{write2} is an S3 method, and the default
-   (used for \code{\link{tableby}}, \code{\link{modelsum}}, \code{\link{freqlist}}, etc.) assumes
-   that there is a \code{summary} method implemented which looks 'good' in markdown.
-  
- To generate the appropriate file type, the \code{write2*} functions use one of \code{rmarkdown::word_document}, \code{rmarkdown::html_document},
-   and \code{rmarkdown::pdf_document} to get the job done. \code{"..."} arguments are passed to these functions, too.
+   assumes that there is a \code{FUN} method implemented which looks 'good' in Rmarkdown.
+   
+   There are methods implemented for \code{\link{tableby}}, \code{\link{modelsum}}, and \code{\link{freqlist}}, all of which use the
+   \code{summary} function. There are also methods compatible with \code{\link[knitr]{kable}}, \code{\link[xtable]{xtable}},
+   and \code{\link[pander]{pander_return}}.
 }
 \examples{
 \dontrun{
 data(mockstudy)
 # tableby example
 tab1 <- tableby(arm ~ sex + age, data=mockstudy)
-write2html(tab1, "~/trash.html")
-
-# freqlist example
-tab.ex <- table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany")
-noby <- freqlist(tab.ex, na.options = "include")
-write2pdf(noby, "~/trash2.pdf")
-
-# A more complicated example
-write2word(tab1, "~/trash.doc",
-  keep.md = TRUE,
-  reference_docx = mystyles.docx, # passed to rmarkdown::word_document
-  quiet = TRUE, # passed to rmarkdown::render
-  title = "My cool new title") # passed to summary.tableby
-
-# Using write2()
 write2(tab1, "~/trash.rtf",
-  toc = TRUE, # passed to rmarkdown::rtf_document
-  quiet = TRUE, # passed to rmarkdown::render, though in this case it's not practical
+  toc = TRUE, # passed to rmarkdown::rtf_document, though in this case it's not practical
+  quiet = TRUE, # passed to rmarkdown::render
   title = "My cool new title", # passed to summary.tableby
   output_format = rmarkdown::rtf_document)
 }
@@ -84,7 +87,8 @@ write2(tab1, "~/trash.rtf",
 Ethan Heinzen, adapted from code from Krista Goergen
 }
 \seealso{
-\code{\link[rmarkdown]{render}}, \code{\link[rmarkdown]{word_document}}, \code{\link[rmarkdown]{html_document}}, \code{\link[rmarkdown]{pdf_document}},
+\code{\link{write2word}}, \code{\link{write2pdf}}, \code{\link{write2html}},
+  \code{\link[rmarkdown]{render}}, \code{\link[rmarkdown]{word_document}}, \code{\link[rmarkdown]{html_document}}, \code{\link[rmarkdown]{pdf_document}},
   \code{\link[rmarkdown]{rtf_document}}, \code{\link[rmarkdown]{md_document}}, \code{\link[rmarkdown]{odt_document}}
 }
 
