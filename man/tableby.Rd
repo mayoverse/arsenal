@@ -116,7 +116,7 @@ data(mockstudy)
 tab1 <- tableby(arm ~ sex + age, data=mockstudy)
 summary(tab1, text=TRUE)
 
-mylabels <- list( sex = "SEX", age ="Age, yrs")
+mylabels <- list(sex = "SEX", age ="Age, yrs")
 summary(tab1, labelTranslations = mylabels, text=TRUE)
 
 tab3 <- tableby(arm ~ sex + age, data=mockstudy, test=FALSE, total=FALSE, 

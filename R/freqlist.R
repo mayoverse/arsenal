@@ -131,7 +131,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
 #' @export
 print.freqlist <- function(x, ...)
 {
-  cat("Freqlist object\n\n")
+  cat("Freqlist Object\n\n")
   cat(ncol(x$freqlist) - 4, " variables:\n", sep = "")
   print(colnames(x$freqlist)[1:(ncol(x$freqlist) - 4)])
   invisible(x)

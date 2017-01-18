@@ -15,7 +15,7 @@
 \item{title}{Title for the table, defaults to \code{NULL} (no title)}
 
 \item{labelTranslations}{List where name is the label in the output, and value is the label you 
-want displayed e.g. \code{list (q1q3: "Q1, Q3", medsurv = "Median Survival")}.}
+want displayed e.g. \code{list(q1q3 = "Q1, Q3", medsurv = "Median Survival")}.}
 
 \item{digits}{Maximum number of digits to display for floating point numbers. 
 If \code{NA} (default), it uses the value from \code{object$control$digits} 

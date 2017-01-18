@@ -59,13 +59,13 @@ Fit and summarize models for each independent (x) variable with a response varia
  
 data(mockstudy)
 
-tab1 <- modelsum(bmi ~ sex + age, data=mockstudy)
-summary(tab1, text=TRUE)
+tab1 <- modelsum(bmi ~ sex + age, data = mockstudy)
+summary(tab1, text = TRUE)
 
-tab2 <- modelsum(alk.phos ~ arm + ps + hgb, adjust= ~age + sex, family="gaussian",data=mockstudy)
-summary(tab2, text=TRUE)
+tab2 <- modelsum(alk.phos ~ arm + ps + hgb, adjust = ~ age + sex, family = "gaussian", data = mockstudy)
+summary(tab2, text = TRUE)
 
-summary(tab2, show.intercept=FALSE, text=TRUE)
+summary(tab2, show.intercept = FALSE, text = TRUE)
 
 tab2.df <- as.data.frame(tab2)
 
