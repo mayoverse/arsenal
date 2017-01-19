@@ -6,6 +6,8 @@
 #' An Arsenal of 'R' functions for large-scale statistical summaries,
 #'   which are streamlined to work within the latest reporting tools in 'R' and 'RStudio' and
 #'   which use formulas and versatile summary statistics for summary tables and models.
+#'   
+#' The package download, NEWS, and README are available on CRAN: \url{https://cran.r-project.org/package=arsenal}
 #'
 #' @section Functions:
 #' 
