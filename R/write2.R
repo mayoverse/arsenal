@@ -152,7 +152,9 @@ write2.default <- function(object, file, FUN, ..., keep.md = FALSE, output_forma
   
   do.call(rmarkdown::render, render.args)
   
-  if(!keep.md) system(paste0("rm -f ", file, ".md"))
+  # This short-circuits if they want to keep the .md file. Otherwise, file.remove() returns a logical about successful file removal
+  if(!keep.md && !file.remove(paste0(file, ".md"))) warning("Something went wrong removing the temporary .md file.")
+  
   invisible(object)
 }
 

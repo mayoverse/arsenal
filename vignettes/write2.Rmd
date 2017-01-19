@@ -53,7 +53,7 @@ Don't use the option `text = TRUE` with the `write2` functions.
 mylabels <- list(sex = "SEX", age ="Age, yrs")
 tab1 <- tableby(arm ~ sex + age, data=mockstudy)
 
-write2html(tab1, paste0(tmpdir, "/test.tableby.html"),
+write2html(tab1, paste0(tmpdir, "/test.tableby.html"), quiet = TRUE,
            title = "My test table",      # passed to summary.tableby
            labelTranslations = mylabels, # passed to summary.tableby
            total = FALSE                 # passed to summary.tableby
@@ -68,7 +68,7 @@ Don't use the option `text = TRUE` with the `write2` functions.
 ```{r}
 tab2 <- modelsum(alk.phos ~ arm + ps + hgb, adjust= ~ age + sex, family = "gaussian", data = mockstudy)
 
-write2pdf(tab2, paste0(tmpdir, "/test.modelsum.pdf"),
+write2pdf(tab2, paste0(tmpdir, "/test.modelsum.pdf"), quiet = TRUE,
           title = "My test table", # passed to summary.modelsum
           show.intercept = FALSE,  # passed to summary.modelsum
           digits = 5               # passed to summary.modelsum
@@ -82,7 +82,7 @@ For `freqlist` objects, the output function in `write2` is `summary`. For availa
 ```{r}
 tab3 <- freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex"))
 
-write2word(tab3, paste0(tmpdir, "/test.freqlist.doc"),
+write2word(tab3, paste0(tmpdir, "/test.freqlist.doc"), quiet = TRUE,
            single = FALSE # passed to summary.freqlist
            )
 ```
@@ -94,7 +94,7 @@ write2word(tab3, paste0(tmpdir, "/test.freqlist.doc"),
 For objects resulting from a call to `kable`, the output function in `write2` is `print`. There aren't any arguments to the `print.knitr_kable` function.
 
 ```{r}
-write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.html"))
+write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.html"),  quiet = TRUE)
 ```
 
 ## `xtable::xtable`
@@ -102,7 +102,7 @@ write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.html"))
 For `xtable` objects, the output function in `write2` is `print`. For available arguments, see the help pages for `print.xtable`.
 
 ```{r}
-write2pdf(xtable::xtable(head(mockstudy), caption = "My xtable"), paste0(tmpdir, "/test.xtable.pdf"),
+write2pdf(xtable::xtable(head(mockstudy), caption = "My xtable"), paste0(tmpdir, "/test.xtable.pdf"), quiet = TRUE,
           comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
           include.rownames = FALSE, # passed to print.xtable
           caption.placement = "top" # passed to print.xtable
@@ -112,7 +112,7 @@ write2pdf(xtable::xtable(head(mockstudy), caption = "My xtable"), paste0(tmpdir,
 To make an HTML document, use the `print.xtable` option `type = "html"`.
 
 ```{r}
-write2html(xtable::xtable(head(mockstudy), caption = "My xtable"), paste0(tmpdir, "/test.xtable.html"),
+write2html(xtable::xtable(head(mockstudy), caption = "My xtable"), paste0(tmpdir, "/test.xtable.html"), quiet = TRUE,
            type = "html",            # passed to print.xtable
            comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
            include.rownames = FALSE, # passed to print.xtable
@@ -126,7 +126,7 @@ Pander is a little bit more tricky. Since `pander::pander()` doesn't return an o
 `pander::pander_return()`. For this (and for all character vectors), the the output function in `write2` is `cat(sep = '\n')`.
 
 ```{r}
-write2word(pander::pander_return(head(mockstudy)), file = paste0(tmpdir, "/test.pander.doc"))
+write2word(pander::pander_return(head(mockstudy)), file = paste0(tmpdir, "/test.pander.doc"), quiet = TRUE)
 ```
 
 # FAQs
@@ -175,4 +175,11 @@ write2(knitr::kable(head(mockstudy[, 1:4])), paste0(tmpdir, "/test.kable.rtf"),
        quiet = TRUE,  # passed to rmarkdown::render
        output_format = rmarkdown::rtf_document
        )
+```
+
+```{r echo = FALSE}
+trash <- file.remove(paste0(tmpdir, c("/test.tableby.html", "/test.modelsum.pdf", "/test.freqlist.doc", "/test.kable.html", "/test.xtable.pdf",
+                                      "/test.xtable.html", "/test.pander.doc", "/test.kable.quiet.html", "/test.kable.keep.md.html",
+                                      "/test.kable.keep.md.html.md", "/test.kable.theme.html", "/test.kable.rtf")))
+stopifnot(all(trash))
 ```
