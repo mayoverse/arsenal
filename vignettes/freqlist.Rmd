@@ -3,12 +3,9 @@ title: "The freqlist function"
 author: "Tina Gunderson"
 date: '`r format(Sys.time(),"%d %B, %Y")`'
 output:
-  pdf_document:
+  rmarkdown::html_vignette:
     toc: yes
     toc_depth: 3
-  html_document:
-    toc: yes
-    toc_depth: '3'
 header-includes: \usepackage{tabularx}
 vignette: |
   %\VignetteIndexEntry{The freqlist function}
@@ -171,12 +168,10 @@ Fair warning: `xtable` has kind of a steep learning curve. These examples are gi
 
 ```{r xtable.setup}
 require(xtable)
-#turn off xtable header
-options(xtable.comment = FALSE)
 
-#set up custom function for xtable text
+# set up custom function for xtable text
 italic <- function(x){
-paste0('{\\emph{ ', x, '}}')
+paste0('<i>', x, '</i>')
 }
 
 ```
@@ -188,7 +183,7 @@ xftbl <- xtable(noby[["freqlist"]],
 # change the column names
 names(xftbl)[1:3] <- c("Arm", "Gender", "LASA QOL")
 
-print(xftbl, sanitize.colnames.function = italic, include.rownames = FALSE)
+print(xftbl, sanitize.colnames.function = italic, include.rownames = FALSE, type = "html", comment = FALSE)
 ```
 
 \newpage

@@ -1,16 +1,11 @@
-## Resubmission for arsenal 0.1.2
+## Submission for arsenal 0.2.0
 
-This is a resubmission. In this version we have:
+This is a new version. In this version we have:
 
-* Put parentheses after function names in DESCRIPTION and single-quoted package names, per request
+* Updated vignettes.
 
-## Resubmission for arsenal 0.1.1
-
-This is a resubmission. In this version we have:
-
-* Made the description and the title more descriptive, per request.
-
-* Tweaked the authorship list.
+* Exported `write2()`, which now supports all output formats supported by `rmarkdown::render()`. There is now a vignette for it
+  and the S3 methods have been expanded to handle more inputs, including `knitr::kable()`, `xtable::xtable()`, and `pander::pander_return()`.
 
 ## Test environments
 * ubuntu 12.04 (on travis-ci), R 3.3.1
@@ -18,12 +13,10 @@ This is a resubmission. In this version we have:
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
+0 errors | 0 warnings | 0 notes
 
 ## Reverse dependencies
 
-This is a new release, so there are no reverse dependencies.
+There are no reverse dependencies.
 
 

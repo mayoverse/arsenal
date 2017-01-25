@@ -3,9 +3,9 @@ title: "The tableby function"
 author: "Beth Atkinson, Jason Sinnwell, Shannon McDonnell and Greg Dougherty"
 date: '`r format(Sys.time(),"%d %B, %Y")`'
 output: 
-  html_document:
+  rmarkdown::html_vignette:
     toc: yes
-    toc_depth: '3'
+    toc_depth: 3
   pdf_document:
     toc: true
     toc_depth: 3

@@ -3,15 +3,12 @@ title: "The modelsum function"
 author: "Beth Atkinson, Pat Votruba, Jason Sinnwell, Shannon McDonnell and Greg Dougherty"
 date: '`r format(Sys.time(),"%d %B, %Y")`'
 output:
-  html_document:
+  rmarkdown::html_vignette:
     toc: yes
-    toc_depth: '3'
+    toc_depth: 3
   pdf_document:
     toc: yes
     toc_depth: 3
-  word_document:
-    toc: yes
-    toc_depth: '3'
 vignette: |
   %\VignetteIndexEntry{The modelsum function}
   %\VignetteEncoding{UTF-8}
