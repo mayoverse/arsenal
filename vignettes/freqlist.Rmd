@@ -26,7 +26,7 @@ options(width=80, max.print=1000)
 `freqlist` provides options for handling missing or sparse data and can provide cumulative counts and percentages based on subgroups.
 It depends on the `knitr` package for printing. 
 
-```{r}
+```{r message = FALSE}
 require(arsenal)
 ```
 
@@ -64,7 +64,7 @@ noby <- freqlist(tab.ex)
 str(noby)
 
 # view the data frame portion of freqlist output
-noby[["freqlist"]]
+noby[["freqlist"]] ## or use as.data.frame(noby)
 ```
 
 \newpage
@@ -87,7 +87,11 @@ summary(noby, caption="Basic freqlist output")
 ```
 
 You can also easily pull out the `freqlist` data frame for more complicated formatting or manipulation
-(e.g. with another function such as `xtable` or `pander`). See below.
+(e.g. with another function such as `xtable` or `pander`) using `as.data.frame`:
+
+```{r}
+head(as.data.frame(noby))
+```
 
 \newpage
 
