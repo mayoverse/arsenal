@@ -91,6 +91,14 @@ the variable names.
 summary(tab1)
 ```
 
+## Data frame version of table
+
+If you want a data.frame version, simply use `as.data.frame`.  
+
+```{r}
+as.data.frame(tab1)
+```
+
 ## Add an adjustor to the model
 
 The argument `adjust` allows the user to indicate that all the variables should be adjusted for these terms.

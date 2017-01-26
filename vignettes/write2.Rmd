@@ -18,7 +18,7 @@ vignette: |
 # Introduction
 
 The `write2*()` functions were designed as an alternative to SAS's `ODS` procedure for useRs who want to save R Markdown tables
-to separate Word, HTML, or PDF files without needing separate R Markdown programs. 
+to separate Word, HTML, or PDF files without needing separate R Markdown programs.
 
 There are three shortcut functions for the most common output types: HTML, PDF, and Word. Each of these three functions calls
 `write2()`, an S3 function which accepts many file output types (see the help pages for `rmarkdown::render()`). Methods have been implemented for

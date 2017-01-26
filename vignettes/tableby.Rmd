@@ -15,6 +15,10 @@ vignette: |
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
+```{r echo = FALSE}
+options(width = 100)
+```
+
 # Introduction
 
 One of the most common tables in medical literature includes summary statistics for a set of variables,
@@ -75,6 +79,14 @@ In order for the report to look nice within an R markdown (knitr) report, you ju
 
 ```{r, simple-markdown, results='asis'}
 summary(tab1)
+```
+
+## Data frame version of table
+
+If you want a data.frame version, simply use `as.data.frame`.
+
+```{r}
+as.data.frame(tab1)
 ```
 
 ## Summaries using standard R code
@@ -156,7 +168,7 @@ mycontrols  <- tableby.control(test=FALSE, total=FALSE,
                                numeric.test="kwt", cat.test="chisq",
                                numeric.stats=c("N", "median", "q1q3"),
                                cat.stats=c("countpct"),
-                               stats.labels=list(N='Count', median='Median', q1q3='Q1,Q3'))                            
+                               stats.labels=list(N='Count', median='Median', q1q3='Q1,Q3'))
 tab2 <- tableby(arm ~ sex + age, data=mockstudy, control=mycontrols)
 summary(tab2)
 ```
