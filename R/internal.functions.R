@@ -498,7 +498,7 @@ makePaddedStr <- function(startStr, size, padChar = ' ') {
   }
   
   # See if can split the string on a reasonable boundary character
-  for (split in c(" ", "\t", "_", "-", "*", ".", ";", ":")) {
+  for (split in c(" ", "\t", "_", "-",".", ";", ":")) {
     results <- strsplit(startStr, split, fixed = TRUE)[[1]]
     if ((length(results) > 1) && (minStrLen(results) <= size))
       return(pastePaddedStr(results, size, sep = split, padChar = padChar, appendSep = TRUE))
