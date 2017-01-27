@@ -24,7 +24,7 @@ attr(mdat$trt, "label") <- "Treatment Arm"
 attr(mdat$Age, "label") <- "Age in Years"
 
 ###########################################################################################################
-#### Basic two-sided tableby
+#### Basic modelsum call
 ###########################################################################################################
 
 test_that("A basic modelsum call--no labels, no missings", {
@@ -107,6 +107,41 @@ test_that("A basic modelsum call--suppressing intercept and/or adjustment vars",
       "Sex Male           -0.221          1.11            0.843           -0.005         ",
       "time               -0.368          0.275           0.184           0.014          ",
       "----------------------------------------------------------------------------------"
+    )
+  )
+})
+
+###########################################################################################################
+#### Reported bugs for modelsum
+###########################################################################################################
+
+set.seed(3248)
+dat <- data.frame(short.name = rnorm(100), really.long.name = rnorm(100),
+                  why.would.you.name.something = rnorm(100),
+                  as.long.as.this = rnorm(100))
+
+
+test_that("01/26/2017: Brendan Broderick's Bold Text Wrapping Problem", {
+  expect_identical(
+    capture.output(summary(modelsum(short.name ~ really.long.name + as.long.as.this, adjust = ~ why.would.you.name.something, data = dat))),
+    c("--------------------------------------------------------------------------------------------",
+      "                      estimate          std.error         p.value           adj.r.squared   ",
+      "-------------------- ----------------- ----------------- ----------------- -----------------",
+      "(Intercept)          0.035             0.099             0.721             -0.001           ",
+      ""                                                                                            ,
+      "**really.long.name** 0.099             0.099             0.319             .                ",
+      ""                                                                                            ,
+      "**why.would.you.name -0.083            0.09              0.361             .                ",
+      ".something**                                                                                ",
+      ""                                                                                            ,
+      "(Intercept)          0.048             0.097             0.624             0.023            ",
+      ""                                                                                            ,
+      "**as.long.as.this**  0.198             0.106             0.066             .                ",
+      ""                                                                                            ,
+      "**why.would.you.name -0.09             0.089             0.314             .                ",
+      ".something**                                                                                ",
+      ""                                                                                            ,
+      "--------------------------------------------------------------------------------------------"
     )
   )
 })

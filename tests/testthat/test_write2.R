@@ -72,4 +72,8 @@ test_that("write2.character (pander) -> HTML", {
 # write2html(pander::pander_return(head(mockstudy)),
 #            "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.pander.html")
 
+###########################################################################################################
+#### Reported bugs for write2
+###########################################################################################################
+
 
