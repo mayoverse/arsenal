@@ -10,6 +10,9 @@ expect_write2_worked <- function(FUN, object, reference, ...)
   FUN <- match.fun(FUN)
   filename <- tempfile(fileext = ".html")
   on.exit(expect_true(file.remove(filename)))
+  if(!file.exists(reference)) skip("Couldn't find the reference file.")
+  if(!file.create(filename)) skip("Couldn't create the temporary file.")
+  if(!grepl("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/", getwd(), fixed = TRUE)) skip("These tests only run in Ethan's space.")
   FUN(object, file = filename, ...)
   generated <- readLines(filename)
   expect_output_file(cat(generated, sep = "\n"), reference)
@@ -36,16 +39,26 @@ test_that("write2.freqlist -> HTML", {
 })
 
 test_that("write2.knitr_kable -> HTML", {
-  expect_write2_worked(write2html, knitr::kable(head(mockstudy)), reference = "write2.kable.html", quiet = TRUE)
+  if(require(knitr))
+  {
+    expect_write2_worked(write2html, knitr::kable(head(mockstudy)), reference = "write2.kable.html", quiet = TRUE)
+  } else skip("library(knitr) not available.")
 })
 
 test_that("write2.xtable -> HTML", {
-  expect_write2_worked(write2html, xtable::xtable(head(mockstudy), caption = "My xtable"), reference = "write2.xtable.html", quiet = TRUE,
-                       type = "html", comment = FALSE, include.rownames = FALSE, caption.placement = 'top')
+  if(require(xtable))
+  {
+    expect_write2_worked(write2html, xtable::xtable(head(mockstudy), caption = "My xtable"), reference = "write2.xtable.html", quiet = TRUE,
+                         type = "html", comment = FALSE, include.rownames = FALSE, caption.placement = 'top')
+  } else skip("library(xtable) not available.")
 })
 
+
 test_that("write2.character (pander) -> HTML", {
-  expect_write2_worked(write2html, pander::pander_return(head(mockstudy)), reference = "write2.pander.html", quiet = TRUE)
+  if(require(pander))
+  {
+    expect_write2_worked(write2html, pander::pander_return(head(mockstudy)), reference = "write2.pander.html", quiet = TRUE)
+  } else skip("library(pander) not available.")
 })
 
 ###########################################################################################################

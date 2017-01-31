@@ -6,14 +6,15 @@ output:
   rmarkdown::html_vignette:
     toc: yes
     toc_depth: 3
-  pdf_document:
-    toc: yes
-    toc_depth: 3
 vignette: |
   %\VignetteIndexEntry{The write2 function}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
 
 # Introduction
 
@@ -173,11 +174,4 @@ write2(knitr::kable(head(mockstudy[, 1:4])), paste0(tmpdir, "/test.kable.rtf"),
        quiet = TRUE,  # passed to rmarkdown::render
        output_format = rmarkdown::rtf_document
        )
-```
-
-```{r echo = FALSE}
-trash <- file.remove(paste0(tmpdir, c("/test.tableby.html", "/test.modelsum.pdf", "/test.freqlist.doc", "/test.kable.html", "/test.xtable.pdf",
-                                      "/test.xtable.html", "/test.pander.doc", "/test.kable.quiet.html", "/test.kable.keep.md.html",
-                                      "/test.kable.keep.md.html.md", "/test.kable.theme.html", "/test.kable.rtf")))
-stopifnot(all(trash))
 ```

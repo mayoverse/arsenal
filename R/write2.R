@@ -126,18 +126,20 @@ write2.default <- function(object, file, FUN, ..., keep.md = FALSE, output_forma
     rmarkdown::word_document
   } else output_format
 
+  filename <- paste0(file, ".md")
+  file.create(filename)
   dots <- list(...)
   if(names(formals(FUN))[1] == "...") # this is when the FUN is, e.g., cat(). Any named arguments would still get cat'd, which we don't want
   {
     ARGS <- c(list(object), dots[names(dots) %in% names(formals(FUN))])
-    utils::capture.output(do.call(FUN, ARGS), file = paste0(file, ".md"))
+    utils::capture.output(do.call(FUN, ARGS), file = filename)
   } else
   {
-    utils::capture.output(FUN(object, ...), file = paste0(file, ".md"))
+    utils::capture.output(FUN(object, ...), file = filename)
   }
   
   render.args <- dots[names(dots) %in% names(formals(rmarkdown::render))]
-  render.args$input <- paste0(file, ".md")
+  render.args$input <- filename
   render.args$output_file <- file
   
   # if output_format is a function, evaluate it with the ... arguments
@@ -153,7 +155,7 @@ write2.default <- function(object, file, FUN, ..., keep.md = FALSE, output_forma
   do.call(rmarkdown::render, render.args)
   
   # This short-circuits if they want to keep the .md file. Otherwise, file.remove() returns a logical about successful file removal
-  if(!keep.md && !file.remove(paste0(file, ".md"))) warning("Something went wrong removing the temporary .md file.")
+  if(!keep.md && !file.remove(filename)) warning("Something went wrong removing the temporary .md file.")
   
   invisible(object)
 }

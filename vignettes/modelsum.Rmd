@@ -6,9 +6,6 @@ output:
   rmarkdown::html_vignette:
     toc: yes
     toc_depth: 3
-  pdf_document:
-    toc: yes
-    toc_depth: 3
 vignette: |
   %\VignetteIndexEntry{The modelsum function}
   %\VignetteEncoding{UTF-8}
@@ -684,15 +681,17 @@ mockstudy$wts <- gpwts[index]
 tapply(mockstudy$wts,mockstudy$arm, summary)
 ```
 
-```{r results='asis', warning=FALSE}
+```{r results='asis'}
 mockstudy$newvarA <- as.numeric(mockstudy$arm=='A: IFL')
 tab1 <- modelsum(newvarA ~ ast + bmi + hgb, data=mockstudy, subset=(arm !='G: IROX'), 
                  family=binomial)
 summary(tab1, title='No Case Weights used')
 
+suppressWarnings({
 tab2 <- modelsum(newvarA ~ ast + bmi + hgb, data=mockstudy, subset=(arm !='G: IROX'), 
                  weights=wts, family=binomial)
 summary(tab2, title='Case Weights used')
+})
 ```
           
 ## 15. Use `modelsum` within an Sweave document

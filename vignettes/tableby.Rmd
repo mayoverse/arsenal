@@ -6,9 +6,6 @@ output:
   rmarkdown::html_vignette:
     toc: yes
     toc_depth: 3
-  pdf_document:
-    toc: true
-    toc_depth: 3
 vignette: |
   %\VignetteIndexEntry{The tableby function}
   %\VignetteEncoding{UTF-8}
