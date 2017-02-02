@@ -1,3 +1,8 @@
+# arsenal 0.2.0.9000
+
+* `write2.list()` has been implemented, allowing multiple tables output into a single document. The vignette
+  has been updated along with all documentation.
+
 # arsenal 0.2.0
 
 * Vignettes have been updated.

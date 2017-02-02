@@ -1,7 +1,7 @@
 # The `arsenal` Package
 
 The goal of `library(arsenal)` is to make statistical reporting easy. It includes many functions which the useR will find useful to have
-in his/her "arsenal" of functions. There are, at this time, 3 main functions, documented below. Each of these functions is
+in his/her "arsenal" of functions. There are, at this time, 4 main functions, documented below. Each of these functions is
 motivated by a local SAS macro of similar functionality.
 
 ## The `tableby()` Function
@@ -28,12 +28,17 @@ Other S3 methods are implemented for objects of class `"modelsum"`, including `p
 The `freqlist()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
 Other S3 methods are implemented for objects of class `"freqlist"`, including `print()` and `as.data.frame()`.
 
+## The `write2*()` Family of Functions
+
+`write2word()`, `write2pdf()`, and `write2html()` are functions to output a table into a document, much like SAS's `ODS` procedure.
+  The S3 method behind them is `write2()`. There are methods implemented for `tableby()`, `modelsum()`, and `freqlist()` and
+  also methods for `knitr::kable()`, `xtable::xtable()`, and `pander::pander_return()`.
+  
+  To output multiple tables into a document, simply make a list of them and call the same function as before. For more information,
+  See `vignette("write2")`.
+
 ## Other Notable Functions
 
-* `write2word()`, `write2pdf()`, and `write2html()` are functions to output an object into a document, much like SAS's `ODS` procedure.
-  They're a shortcut for "I just want to output this one table but I don't want to open an Rmarkdown script, ugh..."
-  The S3 method behind them is `write2()`.
-  
 * `formulize()` is a shortcut to collapse variable names into a formula.
 
 * `mdy.Date()` and `Date.mdy()` convert numeric dates for month, day, and year to Date object, and vice versa.

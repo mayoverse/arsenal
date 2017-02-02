@@ -13,7 +13,7 @@ vignette: |
 ---
 
 ```{r include = FALSE}
-knitr::opts_chunk$set(eval = FALSE)
+knitr::opts_chunk$set(eval = TRUE)
 ```
 
 # Introduction
@@ -36,9 +36,11 @@ The two most important things to recognize with `write2()` are the following:
 # Examples Using `arsenal` Objects
 
 ```{r}
-library(arsenal)
+# library(arsenal)
+devtools::load_all("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/")
 data(mockstudy)
-tmpdir <- tempdir()
+# tmpdir <- tempdir()
+tmpdir <- "~/"
 ```
 
 ## `tableby`
@@ -128,6 +130,34 @@ Pander is a little bit more tricky. Since `pander::pander()` doesn't return an o
 write2word(pander::pander_return(head(mockstudy)), file = paste0(tmpdir, "/test.pander.doc"), quiet = TRUE)
 ```
 
+# Output Multiple Tables to One Document
+
+To output multiple tables into a document, simply make a list of them and call the same function as before.
+
+```{r}
+mylist <- list(arsenal::tableby(sex ~ age, data = mockstudy),
+               arsenal::freqlist(table(mockstudy[, c("sex", "arm")])),
+               knitr::kable(head(mockstudy)))
+
+write2pdf(mylist, paste0(tmpdir, "/test.mylist.pdf"), quiet = TRUE)
+
+```
+
+One neat side-effect of this function is that you can output text and headers, etc. The possibilities are endless!
+
+```{r}
+mylist2 <- list("# Header 1",
+                "This is a small paragraph.",
+                arsenal::tableby(sex ~ age, data = mockstudy))
+write2word(mylist2, paste0(tmpdir, "/test.mylist2.doc"), quiet = TRUE)
+```
+
+In fact, you can even recurse on the lists!
+
+```{r}
+write2pdf(list(mylist2, mylist), paste0(tmpdir, "/test.mylists.pdf"), quiet = TRUE)
+```
+
 # FAQs
 
 ## How do I suppress the note about my document getting rendered?
@@ -150,6 +180,18 @@ write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.keep.md.ht
            keep.md = TRUE
            )
 ```
+
+
+## How do I prevent my document from being rendered?
+
+This is easily accomplished by using the option `render. = FALSE`. Note that this will then default to `keep.md = TRUE`.
+
+```{r}
+write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.dont.render.html"),
+           render. = FALSE
+           )
+```
+
 
 ## How do I tweak the default format from `write2word()`, `write2html()`, or `write2pdf()`?
 

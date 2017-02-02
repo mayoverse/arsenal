@@ -1,13 +1,9 @@
-## Submission for arsenal 0.2.0
+## Submission for arsenal 0.2.0.9000
 
-This is a new version. In this version we have:
+This is a new version. In this version:
 
-* Updated vignettes.
-
-* Exported `write2()`, which now supports all output formats supported by `rmarkdown::render()`. There is now a vignette for it
-  and the S3 methods have been expanded to handle more inputs, including `knitr::kable()`, `xtable::xtable()`, and `pander::pander_return()`.
-  
-* Fixed a bug in `summary.modelsum()`.
+* `write2.list()` has been implemented, allowing multiple tables output into a single document. The vignette
+  has been updated along with all documentation.
 
 
 ## Test environments
