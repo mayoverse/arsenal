@@ -13,7 +13,7 @@ vignette: |
 ---
 
 ```{r include = FALSE}
-knitr::opts_chunk$set(eval = TRUE)
+knitr::opts_chunk$set(eval = FALSE)
 ```
 
 # Introduction
@@ -36,11 +36,9 @@ The two most important things to recognize with `write2()` are the following:
 # Examples Using `arsenal` Objects
 
 ```{r}
-# library(arsenal)
-devtools::load_all("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/")
+library(arsenal)
 data(mockstudy)
-# tmpdir <- tempdir()
-tmpdir <- "~/"
+tmpdir <- tempdir()
 ```
 
 ## `tableby`
