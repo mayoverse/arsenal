@@ -27,10 +27,11 @@
 #'    
 #'    There are methods implemented for \code{\link{tableby}}, \code{\link{modelsum}}, and \code{\link{freqlist}}, all of which use the
 #'    \code{summary} function. There are also methods compatible with \code{\link[knitr]{kable}}, \code{\link[xtable]{xtable}},
-#'    and \code{\link[pander]{pander_return}}.
+#'    and \code{\link[pander]{pander_return}}. Another option is to coerce an object using \code{\link{as.threeticks}()} to print out the
+#'    results monospaced (as if they were in the terminal). To output multiple tables into a document, simply make a list of them
+#'    and call the same function as before.
 #'    
-#'    To output multiple tables into a document, simply make a list of them and call the same function as before. For more information, 
-#'    See \code{vignette("write2")}.
+#'    For more information, see \code{vignette("write2")}.
 #' @seealso \code{\link{write2word}}, \code{\link{write2pdf}}, \code{\link{write2html}},
 #'   \code{\link[rmarkdown]{render}}, \code{\link[rmarkdown]{word_document}}, \code{\link[rmarkdown]{html_document}}, \code{\link[rmarkdown]{pdf_document}},
 #'   \code{\link[rmarkdown]{rtf_document}}, \code{\link[rmarkdown]{md_document}}, \code{\link[rmarkdown]{odt_document}}

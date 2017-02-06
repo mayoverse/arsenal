@@ -2,9 +2,9 @@
 
 This is a new version. In this version:
 
-* `write2.list()` has been implemented, allowing multiple tables output into a single document. The vignette
-  has been updated along with all documentation.
-
+* `write2.list()` has been implemented, allowing multiple tables output into a single document.
+  `write2.threeticks()` has been implemented, allowing monospaced output.
+  The vignette has been updated along with all documentation.
 
 ## Test environments
 * ubuntu 12.04 (on travis-ci), R 3.3.1

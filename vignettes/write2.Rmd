@@ -156,6 +156,25 @@ In fact, you can even recurse on the lists!
 write2pdf(list(mylist2, mylist), paste0(tmpdir, "/test.mylists.pdf"), quiet = TRUE)
 ```
 
+# Output Other Objects Monospaced (as if in a terminal)
+
+It may be useful at times to save output that would normally be copied from the terminal. The `as.threeticks()` function
+works together with `write2()` to output the object (using `print()`) into a chunk surrounded by three backticks.
+
+To output the results of `summary.lm()`, for example:
+
+```{r}
+age.lm <- summary(lm(age ~ sex, data = mockstudy))
+write2pdf(as.threeticks(age.lm), paste0(tmpdir, "/test.lm.pdf"), quiet = TRUE)
+```
+
+This also becomes helpful for printing monospaced character vectors, for example:
+
+```{r}
+chr <- paste0("MyVector", 1:10)
+write2pdf(as.threeticks(chr), paste0(tmpdir, "/test.character.pdf"), quiet = TRUE)
+```
+
 # FAQs
 
 ## How do I suppress the note about my document getting rendered?

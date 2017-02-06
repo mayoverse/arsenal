@@ -1,7 +1,8 @@
 # arsenal 0.2.0.9000
 
-* `write2.list()` has been implemented, allowing multiple tables output into a single document. The vignette
-  has been updated along with all documentation.
+* `write2.list()` has been implemented, allowing multiple tables output into a single document.
+  `write2.threeticks()` has been implemented, allowing monospaced output.
+  The vignette has been updated along with all documentation.
 
 # arsenal 0.2.0
 
