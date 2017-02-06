@@ -133,8 +133,8 @@ write2word(pander::pander_return(head(mockstudy)), file = paste0(tmpdir, "/test.
 To output multiple tables into a document, simply make a list of them and call the same function as before.
 
 ```{r}
-mylist <- list(arsenal::tableby(sex ~ age, data = mockstudy),
-               arsenal::freqlist(table(mockstudy[, c("sex", "arm")])),
+mylist <- list(tableby(sex ~ age, data = mockstudy),
+               freqlist(table(mockstudy[, c("sex", "arm")])),
                knitr::kable(head(mockstudy)))
 
 write2pdf(mylist, paste0(tmpdir, "/test.mylist.pdf"), quiet = TRUE)
@@ -145,9 +145,12 @@ One neat side-effect of this function is that you can output text and headers, e
 
 ```{r}
 mylist2 <- list("# Header 1",
-                "This is a small paragraph.",
-                arsenal::tableby(sex ~ age, data = mockstudy))
-write2word(mylist2, paste0(tmpdir, "/test.mylist2.doc"), quiet = TRUE)
+                "This is a small paragraph introducting tableby.",
+                tableby(sex ~ age, data = mockstudy),
+                "<hr>",
+                "# Header 2",
+                "<font color='red'>I can change color of my text!</font>")
+write2html(mylist2, paste0(tmpdir, "/test.mylist2.html"), quiet = TRUE)
 ```
 
 In fact, you can even recurse on the lists!
@@ -209,6 +212,19 @@ write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.dont.rende
            )
 ```
 
+## How do I output headers, raw HTML/LaTeX, paragraphs, etc.?
+
+One can simply abuse the list S3 method for `write2()`!
+
+```{r}
+mylist2 <- list("# Header 1",
+                "This is a small paragraph introducting tableby.",
+                tableby(sex ~ age, data = mockstudy),
+                "<hr>",
+                "# Header 2",
+                "<font color='red'>I can change color of my text!</font>")
+write2html(mylist2, paste0(tmpdir, "/test.mylist2.html"), quiet = TRUE)
+```
 
 ## How do I tweak the default format from `write2word()`, `write2html()`, or `write2pdf()`?
 
