@@ -2,7 +2,7 @@
 #' 
 #' Helper functions for \code{\link{write2}}.
 #' 
-#' @param object An R object to coerce to class \code{"threeticks"} or such an object to print.
+#' @param x An R object to coerce to class \code{"threeticks"} or such an object to print.
 #' @param ... Other arguments passed to \code{print}.
 #' @name write2.internal
 NULL
@@ -10,7 +10,7 @@ NULL
 
 #' @rdname write2.internal
 #' @export
-print.threeticks <- function(object, ...)
+print.threeticks <- function(x, ...)
 {
   cat("```\n")
   NextMethod()
@@ -19,8 +19,8 @@ print.threeticks <- function(object, ...)
 
 #' @rdname write2.internal
 #' @export
-as.threeticks <- function(object)
+as.threeticks <- function(x)
 {
-  class(object) <- c("threeticks", class(object))
-  object
+  class(x) <- c("threeticks", class(x))
+  x
 }

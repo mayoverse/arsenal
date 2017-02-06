@@ -91,6 +91,17 @@ test_that("write2.list recursion -> PDF", {
                        reference = "write2.mylists.pdf.md")
 })
 
+
+###########################################################################################################
+#### threeticks output
+###########################################################################################################
+
+my.lm <- summary(lm(age ~ sex, data = mockstudy))
+test_that("write2.list -> PDF", {
+  expect_write2_worked(write2pdf, as.threeticks(my.lm),
+                       reference = "write2.lm.pdf.md")
+})
+
 ###########################################################################################################
 #### Code used to generate the files
 ###########################################################################################################
@@ -119,6 +130,8 @@ test_that("write2.list recursion -> PDF", {
 # write2pdf(mylist, "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.mylist.pdf", render. = FALSE)
 # write2word(mylist2, "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.mylist2.doc", render. = FALSE)
 # write2pdf(list(mylist2, mylist), "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.mylists.pdf", render. = FALSE)
+# 
+# write2pdf(as.threeticks(my.lm), "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.lm.pdf", render. = FALSE)
 
 ###########################################################################################################
 #### Reported bugs for write2

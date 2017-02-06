@@ -6,12 +6,12 @@
 \alias{write2.internal}
 \title{Helper functions for \code{write2}}
 \usage{
-\method{print}{threeticks}(object, ...)
+\method{print}{threeticks}(x, ...)
 
-as.threeticks(object)
+as.threeticks(x)
 }
 \arguments{
-\item{object}{An R object to coerce to class \code{"threeticks"} or such an object to print.}
+\item{x}{An R object to coerce to class \code{"threeticks"} or such an object to print.}
 
 \item{...}{Other arguments passed to \code{print}.}
 }
