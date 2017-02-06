@@ -127,6 +127,14 @@ write2.list <- function(object, file, ..., append. = FALSE, render. = TRUE, keep
   invisible(object)
 }
 
+############################ write2 for raw output ############################
+
+#' @rdname write2
+#' @export
+write2.threeticks <- function(object, file, ..., output_format = NULL)
+{
+  write2.default(object = object, file = file, FUN = raw.print, ..., output_format = output_format)
+}
 
 
 

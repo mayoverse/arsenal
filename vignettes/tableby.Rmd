@@ -63,7 +63,7 @@ number of $\&nbsp;$ statements which translates to "space" in HTML.
 
 ## Pretty text version of table
 
-If you want a nicer version in your console window then adding the `text=TRUE` option.  
+If you want a nicer version in your console window then add the `text=TRUE` option.  
 
 ```{r, simple-text}
 summary(tab1, text=TRUE)
