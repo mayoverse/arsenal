@@ -1,16 +1,12 @@
-raw.print <- function(object, ...)
+threeticks <- function(object, ...)
 {
   cat("```\n")
   print(object, ...)
   cat("\n```\n\n")
 }
 
-catn <- function(...)
+as.threeticks <- function(object)
 {
-  cat(..., sep = "\n")
-}
-
-catnn <- function(...)
-{
-  cat(..., sep = "\n\n")
+  class(object) <- c("threeticks", class(object))
+  object
 }
