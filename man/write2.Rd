@@ -9,6 +9,7 @@
 \alias{write2.list}
 \alias{write2.modelsum}
 \alias{write2.tableby}
+\alias{write2.threeticks}
 \alias{write2.xtable}
 \title{write2}
 \usage{
@@ -28,6 +29,8 @@ write2(object, file, ..., output_format)
 
 \method{write2}{list}(object, file, ..., append. = FALSE, render. = TRUE,
   keep.md = !render., output_format = NULL)
+
+\method{write2}{threeticks}(object, file, ..., output_format = NULL)
 
 \method{write2}{default}(object, file, FUN, ..., append. = FALSE,
   render. = TRUE, keep.md = !render., output_format = NULL)

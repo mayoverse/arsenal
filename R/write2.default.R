@@ -1,6 +1,6 @@
 #' @rdname write2
 #' @export
-write2.default <- function(object, file, FUN = threeticks, ..., append. = FALSE, render. = TRUE, keep.md = !render., output_format = NULL)
+write2.default <- function(object, file, FUN, ..., append. = FALSE, render. = TRUE, keep.md = !render., output_format = NULL)
 {
   if(!is.character(file) || length(file) > 1) stop("'file' argument must be a single character string.")
   if(!is.logical(append.) || length(append.) > 1) stop("'append.' argument must be a single logical value.")
