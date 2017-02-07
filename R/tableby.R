@@ -322,7 +322,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       if(class(modeldf[,eff])=="logical") {
         modeldf[,eff]<- factor(modeldf[,eff], levels=c(FALSE, TRUE))
       }
-      
+   
       ## to make sure all levels of cat variable are counted, need to pass values along
       xlevels <- if(is.factor(modeldf[,eff])) {
         levels(modeldf[,eff])
@@ -356,7 +356,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
           cstatList[[statfun]]$Total <- eval(call(statfun,modeldf[,eff], levels=xlevels, weights=weights))
         }
       }
-      
+    
       ## simplify, only do if num-levels is 2       
       if(control$cat.simplify==TRUE &
          !is.null(nrow(cstatList[[statfun]][[1]])) && nrow(cstatList[[statfun]][[1]])==2) {
