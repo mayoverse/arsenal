@@ -49,7 +49,7 @@ summary.modelsum <- function(object, title = NULL, labelTranslations = NULL, dig
 									 digits.test, show.intercept, show.adjust, text, removeBlanks, 
 									 labelSize, pfootnote)
 	results <- results$results
-	cat(paste(results, collapse = "\n"))
+	cat(paste(c("", results, ""), collapse = "\n"))
 	invisible(results)
 }
 
@@ -147,9 +147,9 @@ makeSummary.modelsum <- function(object, title, labelTranslations, digits, nsmal
 		results <- c(results, elmResults, "")
 	}
 	
-	results <- c(results, lastLine, "")	# Table must have blank line after last dashed line
+	results <- c(results, lastLine)
 	if (removeBlanks) {
-		results <- c(results[nchar(results) > 0], "")	# Keep one blank line at end
+		results <- results[nchar(results) > 0]
 	}
 	
 	if (!is.null(title) && !is.na(title)) {

@@ -182,9 +182,9 @@ makeSummary.tableby <- function (doText, object, title, labelTranslations, digit
 	frameOut <- makeDataFrame(headers, frameLists)
 	
 	if (doText) {
-		results <- c(results, lastLine, "")	# Table must have blank line after last dashed line
+		results <- c(results, lastLine)
 		if (removeBlanks) {
-			results <- c(results[nchar(results) > 0], "")	# Keep one blank line at end
+			results <- results[nchar(results) > 0]
 		}
 		
 		if (!is.null(title) && !is.na(title)) {
@@ -196,8 +196,8 @@ makeSummary.tableby <- function (doText, object, title, labelTranslations, digit
 			}
 		}
 		
-		results <- addMethods (results, methods)
-		cat(paste(results, collapse = "\n"))
+		results <- addMethods(results, methods)
+		cat(paste0(c("", results, ""), collapse = "\n")) # Table must have blank line before and after
 	}
 	return(frameOut)
 }

@@ -3,6 +3,9 @@
 * `write2.list()` has been implemented, allowing multiple tables output into a single document.
   `write2.threeticks()` has been implemented, allowing monospaced output.
   The vignette has been updated along with all documentation.
+  
+* The `summary()` output for `tableby` and `modelsum` objects now prints an extra blank header line,
+  for better use inside R Markdown code chunks.
 
 # arsenal 0.2.0
 

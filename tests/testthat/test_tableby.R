@@ -30,7 +30,8 @@ attr(mdat$Age, "label") <- "Age in Years"
 test_that("A basic two-sided tableby call--no labels, no missings", {
   expect_identical(
     capture.output(summary(tableby(Group ~ Sex + time + dt, data = mdat), text = TRUE)),
-    c("--------------------------------------------------------------------------------------------",
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
       "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
       "----------------- -------------- -------------- -------------- -------------- --------------",
       "Sex                                                                                    0.733",
@@ -52,7 +53,8 @@ test_that("A basic two-sided tableby call--no labels, no missings", {
 test_that("A basic two-sided tableby call--labels, no missings", {
   expect_identical(
     capture.output(summary(tableby(Group ~ Age + trt, data = mdat), text = TRUE)),
-    c("--------------------------------------------------------------------------------------------",
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
       "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
       "----------------- -------------- -------------- -------------- -------------- --------------",
       "Age in Years                                                                           0.906",
@@ -70,7 +72,8 @@ test_that("A basic two-sided tableby call--labels, no missings", {
 test_that("A basic two-sided tableby call--no labels, some missings", {
   expect_identical(
     capture.output(summary(tableby(Group ~ ethan, data = mdat), text = TRUE)),
-    c("--------------------------------------------------------------------------------------------",
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
       "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
       "----------------- -------------- -------------- -------------- -------------- --------------",
       "ethan                                                                                  0.178",
@@ -89,7 +92,8 @@ test_that("A basic two-sided tableby call--no labels, some missings", {
 test_that("A basic one-sided tableby call--no labels, no missings", {
   expect_identical(
     capture.output(summary(tableby(~ Sex + time + dt, data = mdat), text = TRUE)),
-    c("------------------------------------",
+    c(""                                    ,
+      "------------------------------------",
       "                     Overall (N=90) ",
       "------------------- ----------------",
       "Sex                "                 ,
@@ -111,7 +115,8 @@ test_that("A basic one-sided tableby call--no labels, no missings", {
 test_that("A basic one-sided tableby call--labels, no missings", {
   expect_identical(
     capture.output(summary(tableby(~ Age + trt, data = mdat), text = TRUE)),
-    c("------------------------------------",
+    c(""                                    ,
+      "------------------------------------",
       "                     Overall (N=90) ",
       "------------------- ----------------",
       "Age in Years       "                 ,
@@ -129,7 +134,8 @@ test_that("A basic one-sided tableby call--labels, no missings", {
 test_that("A basic one-sided tableby call--no labels, some missings (Sarah Jenkins's Error)", {
   expect_identical(
     capture.output(summary(tableby(~ ethan, data = mdat), text = TRUE)),
-    c("------------------------------------",
+    c(""                                    ,
+      "------------------------------------",
       "                     Overall (N=90) ",
       "------------------- ----------------",
       "ethan              "                 ,
@@ -148,7 +154,8 @@ test_that("A basic one-sided tableby call--no labels, some missings (Sarah Jenki
 test_that("A basic two-sided tableby call--no p-value, no total", {
   expect_identical(
     capture.output(summary(tableby(Group ~ Age + Sex, data = mdat, test = FALSE, total = FALSE), text = TRUE)),
-    c("----------------------------------------------------------",
+    c(""                                                          ,
+      "----------------------------------------------------------",
       "                  High (N=30)   Low (N=30)    Med (N=30)  ",
       "---------------- ------------- ------------- -------------",
       "Age in Years    "                                          ,
@@ -163,7 +170,8 @@ test_that("A basic two-sided tableby call--no p-value, no total", {
   )
   expect_identical(
     capture.output(summary(tableby(Group ~ Age + Sex, data = mdat), test = FALSE, total = FALSE, text = TRUE)),
-    c("----------------------------------------------------------",
+    c(""                                                          ,
+      "----------------------------------------------------------",
       "                  High (N=30)   Low (N=30)    Med (N=30)  ",
       "---------------- ------------- ------------- -------------",
       "Age in Years    "                                          ,
@@ -181,7 +189,8 @@ test_that("A basic two-sided tableby call--no p-value, no total", {
 test_that("A basic two-sided tableby call--p-value, no total", {
   expect_identical(
     capture.output(summary(tableby(Group ~ Age + Sex, data = mdat, total = FALSE), text = TRUE)),
-    c("------------------------------------------------------------------------",
+    c(""                                                                        ,
+      "------------------------------------------------------------------------",
       "                  High (N=30)   Low (N=30)    Med (N=30)    p value     ",
       "---------------- ------------- ------------- ------------- -------------",
       "Age in Years                                                       0.906",
@@ -196,7 +205,8 @@ test_that("A basic two-sided tableby call--p-value, no total", {
   )
   expect_identical(
     capture.output(summary(tableby(Group ~ Age + Sex, data = mdat), total = FALSE, text = TRUE)),
-    c("------------------------------------------------------------------------",
+    c(""                                                                        ,
+      "------------------------------------------------------------------------",
       "                  High (N=30)   Low (N=30)    Med (N=30)    p value     ",
       "---------------- ------------- ------------- ------------- -------------",
       "Age in Years                                                       0.906",
@@ -218,7 +228,8 @@ test_that("A basic two-sided tableby call--p-value, no total", {
 test_that("A basic two-sided tableby markdown output", {
   expect_identical(
     capture.output(summary(tableby(Group ~ Age + Sex + ethan + dt, data = mdat, total = FALSE))),
-    c("------------------------------------------------------------------------",
+    c(""                                                                        ,
+      "------------------------------------------------------------------------",
       "                  High (N=30)   Low (N=30)    Med (N=30)    p value     ",
       "---------------- ------------- ------------- ------------- -------------",
       "**Age in Years**                                                   0.906",
@@ -286,7 +297,8 @@ test_that("A warning occurs using one-sided formula and na.tableby", {
 test_that("The by-variable droplevels is working correctly", {
   expect_identical(
     capture.output(summary(tableby(Group.fac ~ Sex + time + dt, data = mdat[mdat$Group.fac %in% c("High", "Low"), ]), text = TRUE)),
-    c("-----------------------------------------------------------------------------",
+    c(""                                                                             ,
+      "-----------------------------------------------------------------------------",
       "                   High (N=30)    Low (N=30)     Total (N=60)   p value      ",
       "----------------- -------------- -------------- -------------- --------------",
       "Sex                                                                     0.796",
@@ -308,7 +320,8 @@ test_that("The by-variable droplevels is working correctly", {
 test_that("Using cat.simplify", {
   expect_identical(
     capture.output(summary(tableby(Group ~ Sex + trt, data = mdat, cat.simplify = TRUE), text = TRUE)),
-    c("--------------------------------------------------------------------------------------------",
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
       "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
       "----------------- -------------- -------------- -------------- -------------- --------------",
       "Sex               15 (50%)       13 (43.3%)     16 (53.3%)     44 (48.9%)              0.733",
@@ -322,7 +335,8 @@ test_that("Using cat.simplify", {
 test_that("Reordering variables", {
   expect_identical(
     capture.output(summary(tableby(Group ~ Sex + dt + Age, data = mdat)[c(3,1,2)], text = TRUE)),
-    c("--------------------------------------------------------------------------------------------",
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
       "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
       "----------------- -------------- -------------- -------------- -------------- --------------",
       "Age in Years                                                                           0.906",
@@ -346,7 +360,8 @@ test_that("Merging tableby objects", {
   expect_error(merge(tableby(Group ~ Sex, data = mdat), tableby(Group.fac ~ Age, data = mdat)))
   expect_identical(
     capture.output(summary(merge(tableby(Group ~ Sex, data = mdat), tableby(Group ~ Age, data = mdat)), text = TRUE)),
-    c("--------------------------------------------------------------------------------------------",
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
       "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
       "----------------- -------------- -------------- -------------- -------------- --------------",
       "Sex                                                                                    0.733",
@@ -365,7 +380,8 @@ test_that("Merging tableby objects", {
 test_that("Changing tests", {
   expect_identical(
     capture.output(summary(tableby(Group ~ fe(Sex) + kwt(Age), data = mdat), text = TRUE)),
-    c("--------------------------------------------------------------------------------------------",
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
       "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
       "----------------- -------------- -------------- -------------- -------------- --------------",
       "Sex                                                                                    0.806",
@@ -381,7 +397,8 @@ test_that("Changing tests", {
   
   expect_identical(
     capture.output(summary(tableby(Group ~ Sex + Age, data = mdat, numeric.test = "kwt", cat.test = "fe"), text = TRUE)),
-    c("--------------------------------------------------------------------------------------------",
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
       "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
       "----------------- -------------- -------------- -------------- -------------- --------------",
       "Sex                                                                                    0.806",
@@ -401,4 +418,7 @@ test_that("Changing tests", {
 #### Reported bugs for tableby
 ###########################################################################################################
 
+test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem", {
+  expect_identical(capture.output(summary(tableby(Group ~ Sex + time + dt, data = mdat), text = TRUE))[1], "")
+})
 

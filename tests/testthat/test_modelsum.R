@@ -30,7 +30,8 @@ attr(mdat$Age, "label") <- "Age in Years"
 test_that("A basic modelsum call--no labels, no missings", {
   expect_identical(
     capture.output(summary(modelsum(Age ~ Sex + time, data = mdat), text = TRUE)),
-    c("----------------------------------------------------------------------------------",
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
       "                    estimate        std.error       p.value         adj.r.squared ",
       "------------------ --------------- --------------- --------------- ---------------",
       "(Intercept)        39.8            0.779           <0.001          -0.011         ",
@@ -45,7 +46,8 @@ test_that("A basic modelsum call--no labels, no missings", {
 test_that("A basic modelsum tableby call--labels, no missings", {
   expect_identical(
     capture.output(summary(modelsum(Age ~ Sex + trt, data = mdat), text = TRUE)),
-    c("----------------------------------------------------------------------------------",
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
       "                    estimate        std.error       p.value         adj.r.squared ",
       "------------------ --------------- --------------- --------------- ---------------",
       "(Intercept)        39.8            0.779           <0.001          -0.011         ",
@@ -60,7 +62,8 @@ test_that("A basic modelsum tableby call--labels, no missings", {
 test_that("A basic modelsum call--adding adjustment", {
   expect_identical(
     capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE)),
-    c("----------------------------------------------------------------------------------",
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
       "                    estimate        std.error       p.value         adj.r.squared ",
       "------------------ --------------- --------------- --------------- ---------------",
       "(Intercept)        40.6            1.02            <0.001          -0.005         ",
@@ -77,7 +80,8 @@ test_that("A basic modelsum call--adding adjustment", {
 test_that("A basic modelsum call--suppressing intercept and/or adjustment vars", {
   expect_identical(
     capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.intercept = FALSE)),
-    c("----------------------------------------------------------------------------------",
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
       "                    estimate        std.error       p.value         adj.r.squared ",
       "------------------ --------------- --------------- --------------- ---------------",
       "Sex Male           -0.221          1.11            0.843           -0.005         ",
@@ -89,7 +93,8 @@ test_that("A basic modelsum call--suppressing intercept and/or adjustment vars",
   )
   expect_identical(
     capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.adjust = FALSE)),
-    c("----------------------------------------------------------------------------------",
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
       "                    estimate        std.error       p.value         adj.r.squared ",
       "------------------ --------------- --------------- --------------- ---------------",
       "(Intercept)        40.6            1.02            <0.001          -0.005         ",
@@ -101,7 +106,8 @@ test_that("A basic modelsum call--suppressing intercept and/or adjustment vars",
   )
   expect_identical(
     capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.intercept = FALSE, show.adjust = FALSE)),
-    c("----------------------------------------------------------------------------------",
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
       "                    estimate        std.error       p.value         adj.r.squared ",
       "------------------ --------------- --------------- --------------- ---------------",
       "Sex Male           -0.221          1.11            0.843           -0.005         ",
@@ -124,7 +130,8 @@ dat <- data.frame(short.name = rnorm(100), really.long.name = rnorm(100),
 test_that("01/26/2017: Brendan Broderick's Bold Text Wrapping Problem", {
   expect_identical(
     capture.output(summary(modelsum(short.name ~ really.long.name + as.long.as.this, adjust = ~ why.would.you.name.something, data = dat))),
-    c("--------------------------------------------------------------------------------------------",
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
       "                      estimate          std.error         p.value           adj.r.squared   ",
       "-------------------- ----------------- ----------------- ----------------- -----------------",
       "(Intercept)          0.035             0.099             0.721             -0.001           ",
@@ -144,4 +151,8 @@ test_that("01/26/2017: Brendan Broderick's Bold Text Wrapping Problem", {
       "--------------------------------------------------------------------------------------------"
     )
   )
+})
+
+test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem", {
+  expect_identical(capture.output(summary(modelsum(Age ~ Sex + time, data = mdat), text = TRUE))[1], "")
 })
