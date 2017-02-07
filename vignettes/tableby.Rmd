@@ -19,7 +19,7 @@ options(width = 100)
 # Introduction
 
 One of the most common tables in medical literature includes summary statistics for a set of variables,
-often stratified by some group (e.g. treatment arm).  Locally, the SAS macros `%table` and `%summary` were
+often stratified by some group (e.g. treatment arm).  Locally at Mayo, the SAS macros `%table` and `%summary` were
 written to create summary tables with a single call. With the increasing interest in R, we have developed
 the function `tableby` to create similar tables within the R environment.  
 

@@ -30,7 +30,7 @@ opts_chunk$set(comment = NA, echo=TRUE, prompt=TRUE, collapse=TRUE)
 Very often we are asked to summarize model results from multiple fits into a nice table.
 The endpoint might be of different types (e.g., survival, case/control, continuous) and there
 may be several independent variables that we want to examine univariately or adjusted for certain
-variables such as age and sex. Locally, the SAS macros `%modelsum`, `%glmuniv`, and `%logisuni`
+variables such as age and sex. Locally at Mayo, the SAS macros `%modelsum`, `%glmuniv`, and `%logisuni`
 were written to create such summary tables. With the increasing interest in R, we have developed the
 function `modelsum` to create similar tables within the R environment.  
 
