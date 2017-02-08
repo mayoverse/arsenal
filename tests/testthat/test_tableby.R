@@ -422,3 +422,62 @@ test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem", {
   expect_identical(capture.output(summary(tableby(Group ~ Sex + time + dt, data = mdat), text = TRUE))[1], "")
 })
 
+dat <- data.frame(x = c("A", "A", "A", rep(c("B", "C"), each = 7)),
+                  y = c("cough", "pneumonia", NA,
+                        "chest pain", "chest pain", "chest pain", "cough", "cough", "pneumonia", "cough",
+                        "cough", "pneumonia", "chest pain", "chest pain", "pneumonia", NA, NA))
+dat$y <- factor(dat$y)
+
+test_that("02/07/2017: Jason Sinnwell's countpct problem", {
+  expect_identical(
+    capture.output(summary(tableby(x ~ fe(y), data = dat), text = TRUE)),
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
+      "                   A (N=3)        B (N=7)        C (N=7)        Total (N=17)   p value      ",
+      "----------------- -------------- -------------- -------------- -------------- --------------",
+      "y                                                                                      0.750",
+      "   N-Miss         1              0              2              3             "               ,
+      "   chest pain     0 (0%)         3 (42.9%)      2 (40%)        5 (35.7%)     "               ,
+      "   cough          1 (50%)        3 (42.9%)      1 (20%)        5 (35.7%)     "               ,
+      "   pneumonia      1 (50%)        1 (14.3%)      2 (40%)        4 (28.6%)     "               ,
+      "--------------------------------------------------------------------------------------------"
+    )
+  )
+})
+
+test_that("02/07/2017: Jason Sinnwell's chisq problem", {
+  expect_identical(
+    capture.output(summary(tableby(x ~ y, data = dat[dat$y == "cough",]), text = TRUE)),
+    c(""                                                                                      ,
+      "--------------------------------------------------------------------------------------",
+      "                  A (N=1)       B (N=3)       C (N=1)       Total (N=5)   p value     ",
+      "---------------- ------------- ------------- ------------- ------------- -------------",
+      "y                                                                                1.000",
+      "   chest pain    0 (0%)        0 (0%)        0 (0%)        0 (0%)       "              ,
+      "   cough         1 (100%)      3 (100%)      1 (100%)      5 (100%)     "              ,
+      "   pneumonia     0 (0%)        0 (0%)        0 (0%)        0 (0%)       "              ,
+      "--------------------------------------------------------------------------------------"
+    )
+  )
+  expect_identical(
+    capture.output(summary(tableby(x ~ as.character(y), data = dat[dat$y == "cough",]), text = TRUE)),
+    c(""                                                                                      ,
+      "--------------------------------------------------------------------------------------",
+      "                  A (N=1)       B (N=3)       C (N=1)       Total (N=5)   p value     ",
+      "---------------- ------------- ------------- ------------- ------------- -------------",
+      "as.character(y)                                                                  1.000",
+      "   cough         1 (100%)      3 (100%)      1 (100%)      5 (100%)     "              ,
+      "--------------------------------------------------------------------------------------"
+    )
+  )
+})
+rm(dat)
+
+
+
+
+
+
+
+
+

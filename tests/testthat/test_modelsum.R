@@ -152,6 +152,7 @@ test_that("01/26/2017: Brendan Broderick's Bold Text Wrapping Problem", {
     )
   )
 })
+rm(dat)
 
 test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem", {
   expect_identical(capture.output(summary(modelsum(Age ~ Sex + time, data = mdat), text = TRUE))[1], "")
