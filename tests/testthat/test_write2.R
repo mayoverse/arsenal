@@ -93,13 +93,18 @@ test_that("write2.list recursion -> PDF", {
 
 
 ###########################################################################################################
-#### threeticks output
+#### verbatim output
 ###########################################################################################################
 
 my.lm <- summary(lm(age ~ sex, data = mockstudy))
-test_that("write2.list -> PDF", {
-  expect_write2_worked(write2pdf, as.threeticks(my.lm),
+test_that("write2.default -> PDF", {
+  expect_write2_worked(write2pdf, my.lm,
                        reference = "write2.lm.pdf.md")
+})
+
+test_that("write2.verbatim -> html", {
+  expect_write2_worked(write2pdf, verbatim(paste0("Hi.", 1:10)),
+                       reference = "write2.char.html.md")
 })
 
 ###########################################################################################################
@@ -131,7 +136,9 @@ test_that("write2.list -> PDF", {
 # write2word(mylist2, "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.mylist2.doc", render. = FALSE)
 # write2pdf(list(mylist2, mylist), "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.mylists.pdf", render. = FALSE)
 # 
-# write2pdf(as.threeticks(my.lm), "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.lm.pdf", render. = FALSE)
+# write2pdf(verbatim(my.lm), "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.lm.pdf", render. = FALSE)
+# write2html(verbatim(paste0("Hi.", 1:10)),
+#            "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.char.html", render. = FALSE)
 
 ###########################################################################################################
 #### Reported bugs for write2

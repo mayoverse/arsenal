@@ -9,7 +9,7 @@
 \alias{write2.list}
 \alias{write2.modelsum}
 \alias{write2.tableby}
-\alias{write2.threeticks}
+\alias{write2.verbatim}
 \alias{write2.xtable}
 \title{write2}
 \usage{
@@ -30,9 +30,9 @@ write2(object, file, ..., output_format)
 \method{write2}{list}(object, file, ..., append. = FALSE, render. = TRUE,
   keep.md = !render., output_format = NULL)
 
-\method{write2}{threeticks}(object, file, ..., output_format = NULL)
+\method{write2}{verbatim}(object, file, ..., output_format = NULL)
 
-\method{write2}{default}(object, file, FUN, ..., append. = FALSE,
+\method{write2}{default}(object, file, FUN = NULL, ..., append. = FALSE,
   render. = TRUE, keep.md = !render., output_format = NULL)
 }
 \arguments{
@@ -61,7 +61,7 @@ to append on. Used mostly for \code{write2.list}.}
 \item{keep.md}{Logical, denoting whether to keep the intermediate \code{.md} file. Used mostly for \code{write2.list}.}
 
 \item{FUN}{The summary-like or print-like function to use to generate the markdown content. Can be passed as a function or a
-character string. It's expected that \code{FUN(object, ...)} looks "good" when using \code{results='asis'} in markdown.}
+character string. It's expected that \code{FUN(object, ...)} looks "good" when put directly in a \code{.md} file.}
 }
 \value{
 \code{object} is returned invisibly, and \code{file} is written.
@@ -70,12 +70,12 @@ character string. It's expected that \code{FUN(object, ...)} looks "good" when u
 Functions to output tables to a single document. (Also the S3 backbone behind the \code{write2*} functions.)
 }
 \details{
-\code{write2} is an S3 method, and the default
-   assumes that there is a \code{FUN} method implemented which looks 'good' in Rmarkdown.
+\code{write2} is an S3 method. The default prints the object (using \code{\link{print}}) 
+   inside a section surrounded by three back ticks. See \code{\link{verbatim}} for details.
    
    There are methods implemented for \code{\link{tableby}}, \code{\link{modelsum}}, and \code{\link{freqlist}}, all of which use the
    \code{summary} function. There are also methods compatible with \code{\link[knitr]{kable}}, \code{\link[xtable]{xtable}},
-   and \code{\link[pander]{pander_return}}. Another option is to coerce an object using \code{\link{as.threeticks}()} to print out the
+   and \code{\link[pander]{pander_return}}. Another option is to coerce an object using \code{\link{verbatim}()} to print out the
    results monospaced (as if they were in the terminal). To output multiple tables into a document, simply make a list of them
    and call the same function as before.
    

@@ -1,12 +1,17 @@
 #' @rdname write2
 #' @export
-write2.default <- function(object, file, FUN, ..., append. = FALSE, render. = TRUE, keep.md = !render., output_format = NULL)
+write2.default <- function(object, file, FUN = NULL, ..., append. = FALSE, render. = TRUE, keep.md = !render., output_format = NULL)
 {
   if(!is.character(file) || length(file) > 1) stop("'file' argument must be a single character string.")
   if(!is.logical(append.) || length(append.) > 1) stop("'append.' argument must be a single logical value.")
   if(!is.logical(render.) || length(render.) > 1) stop("'render.' argument must be a single logical value.")
   if(!is.logical(keep.md) || length(keep.md) > 1) stop("'keep.md' argument must be a single logical value.")
 
+  if(is.null(FUN))
+  {
+    object <- verbatim(object)
+    FUN <- print
+  }
   FUN <- match.fun(FUN)
   
   if(is.character(output_format) && length(output_format) > 1)

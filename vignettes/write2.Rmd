@@ -13,7 +13,7 @@ vignette: |
 ---
 
 ```{r include = FALSE}
-knitr::opts_chunk$set(eval = FALSE)
+knitr::opts_chunk$set(eval = FALSE, message = FALSE)
 ```
 
 # Introduction
@@ -27,11 +27,12 @@ There are three shortcut functions for the most common output types: HTML, PDF, 
 
 The two most important things to recognize with `write2()` are the following:
 
-1. Which function is being used to output the object. Sometimes the `write2` functions use `summary()`, while other times they will use `print()`.
-   The details for each object specifically are described below.
+1. Which function is being used to output the object. Sometimes the `write2` functions use `summary()`,
+   while other times they will use `print()`. The details for each object specifically are described below.
    
-2. How the `...` arguments are passed. To change the options for the summary-like or print-like function, you can pass named arguments which will
-   in turn get passed to the appropriate function. Details for each object specifically are described below.
+2. How the `...` arguments are passed. To change the options for the summary-like or print-like function,
+   you can pass named arguments which will in turn get passed to the appropriate function.
+   Details for each object specifically are described below.
 
 # Examples Using `arsenal` Objects
 
@@ -161,21 +162,29 @@ write2pdf(list(mylist2, mylist), paste0(tmpdir, "/test.mylists.pdf"), quiet = TR
 
 # Output Other Objects Monospaced (as if in a terminal)
 
-It may be useful at times to save output that would normally be copied from the terminal. The `as.threeticks()` function
-works together with `write2()` to output the object (using `print()`) into a chunk surrounded by three backticks.
-
-To output the results of `summary.lm()`, for example:
+It may be useful at times to write output that would normally be copied from the terminal. The default method for `write2()`
+does this automatically. To output the results of `summary.lm()`, for example:
 
 ```{r}
 age.lm <- summary(lm(age ~ sex, data = mockstudy))
-write2pdf(as.threeticks(age.lm), paste0(tmpdir, "/test.lm.pdf"), quiet = TRUE)
+write2pdf(age.lm, paste0(tmpdir, "/test.lm.pdf"), quiet = TRUE)
 ```
 
-This also becomes helpful for printing monospaced character vectors, for example:
+The `verbatim()` function is another option to explicitly alert `write2()` to do this. This
+becomes particularly helpful to overrule existing S3 methods.
+
+For example, suppose you wanted to just print a tableby object (as if it were to print in the terminal):
+
+```{r}
+tab4 <- tableby(arm ~ sex + age, data=mockstudy)
+write2html(verbatim(tab4), paste0(tmpdir, "/test.print.tableby.html"), quiet = TRUE)
+```
+
+Or suppose you wanted to print a character vector (as if it were to print in the terminal):
 
 ```{r}
 chr <- paste0("MyVector", 1:10)
-write2pdf(as.threeticks(chr), paste0(tmpdir, "/test.character.pdf"), quiet = TRUE)
+write2pdf(verbatim(chr), paste0(tmpdir, "/test.character.pdf"), quiet = TRUE)
 ```
 
 # FAQs

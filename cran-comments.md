@@ -3,7 +3,7 @@
 This is a new version. In this version:
 
 * `write2.list()` has been implemented, allowing multiple tables output into a single document.
-  `write2.threeticks()` has been implemented, allowing monospaced output.
+  `write2.verbatim()` has been implemented, allowing monospaced output.
   The vignette has been updated along with all documentation.
   
 * The `summary()` output for `tableby` and `modelsum` objects now prints an extra blank header line,

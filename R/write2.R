@@ -7,7 +7,7 @@
 #' @param ... Additional arguments to be passed to \code{FUN}, \code{rmarkdown::render}, etc.
 #'   One popular option is to use \code{quiet = TRUE} to suppress the command line output.
 #' @param FUN The summary-like or print-like function to use to generate the markdown content. Can be passed as a function or a
-#'   character string. It's expected that \code{FUN(object, ...)} looks "good" when using \code{results='asis'} in markdown.
+#'   character string. It's expected that \code{FUN(object, ...)} looks "good" when put directly in a \code{.md} file.
 #' @param append. Logical, denoting whether (if a temporary \code{.md} file of the same name already exists)
 #'   to append on. Used mostly for \code{write2.list}.
 #' @param render. Logical, denoting whether to render the temporary \code{.md} file. Used mostly for \code{write2.list}.
@@ -22,12 +22,12 @@
 #'  }
 #'  See \code{rmarkdown::\link[rmarkdown]{render}} for details.
 #' @return \code{object} is returned invisibly, and \code{file} is written.
-#' @details \code{write2} is an S3 method, and the default
-#'    assumes that there is a \code{FUN} method implemented which looks 'good' in Rmarkdown.
+#' @details \code{write2} is an S3 method. The default prints the object (using \code{\link{print}}) 
+#'    inside a section surrounded by three back ticks. See \code{\link{verbatim}} for details.
 #'    
 #'    There are methods implemented for \code{\link{tableby}}, \code{\link{modelsum}}, and \code{\link{freqlist}}, all of which use the
 #'    \code{summary} function. There are also methods compatible with \code{\link[knitr]{kable}}, \code{\link[xtable]{xtable}},
-#'    and \code{\link[pander]{pander_return}}. Another option is to coerce an object using \code{\link{as.threeticks}()} to print out the
+#'    and \code{\link[pander]{pander_return}}. Another option is to coerce an object using \code{\link{verbatim}()} to print out the
 #'    results monospaced (as if they were in the terminal). To output multiple tables into a document, simply make a list of them
 #'    and call the same function as before.
 #'    
@@ -132,7 +132,7 @@ write2.list <- function(object, file, ..., append. = FALSE, render. = TRUE, keep
 
 #' @rdname write2
 #' @export
-write2.threeticks <- function(object, file, ..., output_format = NULL)
+write2.verbatim <- function(object, file, ..., output_format = NULL)
 {
   write2.default(object = object, file = file, FUN = print, ..., output_format = output_format)
 }
