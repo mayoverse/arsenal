@@ -6,6 +6,8 @@
   
 * The `summary()` output for `tableby` and `modelsum` objects now prints an extra blank header line,
   for better use inside R Markdown code chunks.
+  
+* Two bugs in `tableby()` were corrected.
 
 # arsenal 0.2.0
 
