@@ -23,7 +23,7 @@ print.verbatim <- function(x, ...)
   #   also print the "verbatim" class when run through the default, which
   #   isn't what I wanted. I want "verbatim" to be as invisible as possible.
   #   Note that this won't change what NextMethod() calls.
-  class(x) <- class(x)[class(x) %nin% "verbatim"]
+  class(x) <- class(x)[class(x) != "verbatim"]
 
   NextMethod("print")
   cat("\n```\n\n")
@@ -33,6 +33,6 @@ print.verbatim <- function(x, ...)
 #' @export
 verbatim <- function(x)
 {
-  class(x) <- c("verbatim", class(x))
+  class(x) <- c("verbatim", class(x)[class(x) != "verbatim"])
   x
 }
