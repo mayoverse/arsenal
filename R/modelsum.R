@@ -93,7 +93,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
   if(any(is.na(match.idx))) {
     warning("unused arguments: ", paste(names(Call)[1+which(is.na(match.idx))],collapse=", "), "\n")
   }
-  
+
   indx.adjust <- match(c("adjust"), names(Call), nomatch = 0)
   adjVars <- NULL
 
@@ -217,6 +217,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
     modeldf <- modeldf[,!grepl("(weights)", colnames(modeldf))]
     basedf <- basedf[,!grepl("(weights)", colnames(basedf))]
   }
+  
   ## assign weights, formula, data, etc. but don't need subset
   for(cc in names(base.call)[-c(1,grep("subset",names(base.call)))]){
     assign(cc, get(cc), envir=tabenv)
@@ -228,9 +229,16 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
   if(family=="survival" | family=="poisson") {
     ## put time/event/status vars into basedf, for surv, which is subsetted
-    if(is.null(subset)) {
+   
+    if(missing(subset)) {
       subset=rep(TRUE, nrow(data))
-    }  
+    } else {
+      subset <- eval(base.call$subset, env=data)
+    }
+    ## see if more rows were removed for NAs by na.action
+    if(sum(subset) != nrow(basedf)) {
+      subset[subset==TRUE & rownames(data) %nin% rownames(basedf)] <- FALSE
+    } 
     svars <- str_trim(strsplit(names(basedf)[1],split=",")[[1]],side="both")
     rparidx <- ifelse(grepl("\\)", svars), regexpr("\\)",svars)-1,nchar(svars))
     svars <- substr(svars, 1, rparidx)

@@ -236,6 +236,25 @@ N <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   sum(weights[!is.na(x)])    
 }
 
+## count within group variable 
+#' @rdname tableby.stats
+#' @export
+count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, length(x)), ...)  {
+    wtbl <- wtd.table(factor(x[!is.na(x)], levels = levels), 
+        weights = weights[!is.na(x)], ...)
+    df <- data.frame(count = as.vector(wtbl$sum.of.weights), 
+        row.names = if (length(wtbl$x) == length(levels)) 
+          levels
+        else names(wtbl$sum.of.weights))
+    if (nrow(df) < length(levels)) {
+        misslevs <- levels[!(levels %in% rownames(df))]
+        df <- rbind.data.frame(df, data.frame(count = rep(0, 
+            length(misslevs)),  row.names = misslevs))
+    }
+    return(df[as.character(levels), ,drop=FALSE])
+}
+
+
 ## count (pct) where pct is within group variable total
 #' @rdname tableby.stats
 #' @export
