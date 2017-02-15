@@ -9,6 +9,8 @@
   
 * Two bugs in `tableby()` were corrected.
 
+* Two problems with survival models in `modelsum()` have been resolved.
+
 # arsenal 0.2.0
 
 * Vignettes have been updated.

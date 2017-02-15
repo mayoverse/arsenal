@@ -233,7 +233,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
     if(missing(subset)) {
       subset=rep(TRUE, nrow(data))
     } else {
-      subset <- eval(base.call$subset, env=data)
+      subset <- eval(base.call$subset, envir=data)
     }
     ## see if more rows were removed for NAs by na.action
     if(sum(subset) != nrow(basedf)) {

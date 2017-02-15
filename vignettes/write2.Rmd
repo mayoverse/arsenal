@@ -37,7 +37,8 @@ The two most important things to recognize with `write2()` are the following:
 # Examples Using `arsenal` Objects
 
 ```{r}
-library(arsenal)
+# library(arsenal)
+devtools::load_all()
 data(mockstudy)
 tmpdir <- tempdir()
 ```

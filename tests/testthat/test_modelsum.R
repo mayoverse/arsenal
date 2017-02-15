@@ -157,3 +157,39 @@ rm(dat)
 test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem", {
   expect_identical(capture.output(summary(modelsum(Age ~ Sex + time, data = mdat), text = TRUE))[1], "")
 })
+
+
+test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
+  if(require(survival))
+  {
+    mdat.tmp <- mdat
+    
+    form <- Surv(time, status) ~ Sex + ethan
+    expect_identical(capture.output(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+                     capture.output(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
+    
+    mdat.tmp[3:4,"time"] <- c(NA,NA)
+    expect_identical(capture.output(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+                     capture.output(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
+
+    expect_identical(capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+                     capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))    
+    
+    expect_identical(
+      capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+      c(""                                                                                                           ,
+        "-----------------------------------------------------------------------------------------------------------",
+        "                   HR             CI.lower.HR    CI.upper.HR    p.value        concordance    Nmiss        ",
+        "----------------- -------------- -------------- -------------- -------------- -------------- --------------",
+        "Sex Male          0.612          0.21           1.79           0.369          0.592          0             ",
+        "Age               1.06           0.968          1.16           0.205          .              .             ",
+        "ethan Heinzen     1.02           0.297          3.5            0.976          0.639          2             ",
+        "Age               1.06           0.96           1.17           0.258          .              .             ",
+        "-----------------------------------------------------------------------------------------------------------"
+      )
+    )
+    
+    rm(mdat.tmp)
+  } else skip("survival package not available.")
+})
+

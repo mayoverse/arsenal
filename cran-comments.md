@@ -11,6 +11,8 @@ This is a new version. In this version:
     
 * Two bugs in `tableby()` were corrected.
 
+* Two problems with survival models in `modelsum()` have been resolved.
+
 ## Test environments
 * ubuntu 12.04 (on travis-ci), R 3.3.1
 * win-builder (devel and release)
