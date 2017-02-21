@@ -1,4 +1,4 @@
-## Submission for arsenal 0.2.0.9000
+## Submission for arsenal 0.2.?
 
 This is a new version. In this version:
 
@@ -12,6 +12,9 @@ This is a new version. In this version:
 * Two bugs in `tableby()` were corrected.
 
 * Two problems with survival models in `modelsum()` have been resolved.
+
+* Added `count()` function for tableby stats.
+
 
 ## Test environments
 * ubuntu 12.04 (on travis-ci), R 3.3.1

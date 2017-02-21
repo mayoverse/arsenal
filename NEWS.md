@@ -1,4 +1,10 @@
-# arsenal 0.2.0.9000
+# arsenal 0.2.2
+
+* Added `count()` function for tableby stats.
+
+* Two problems with survival models in `modelsum()` have been resolved.
+
+# arsenal 0.2.1
 
 * `write2.list()` has been implemented, allowing multiple tables output into a single document.
   `write2.verbatim()` has been implemented, allowing monospaced output.
@@ -8,8 +14,6 @@
   for better use inside R Markdown code chunks.
   
 * Two bugs in `tableby()` were corrected.
-
-* Two problems with survival models in `modelsum()` have been resolved.
 
 # arsenal 0.2.0
 
