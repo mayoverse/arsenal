@@ -52,7 +52,7 @@ test_that("A basic two-sided tableby call--no labels, no missings", {
 
 test_that("A basic two-sided tableby call--labels, no missings", {
   expect_identical(
-    capture.output(summary(tableby(Group ~ Age + trt, data = mdat), text = TRUE)),
+    capture.output(summary(tableby(Group ~ Age + trt + Phase, data = mdat), text = TRUE)),
     c(""                                                                                            ,
       "--------------------------------------------------------------------------------------------",
       "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
@@ -64,6 +64,10 @@ test_that("A basic two-sided tableby call--labels, no missings", {
       "Treatment Arm                                                                          0.659",
       "   A              14 (46.7%)     11 (36.7%)     11 (36.7%)     36 (40%)      "               ,
       "   B              16 (53.3%)     19 (63.3%)     19 (63.3%)     54 (60%)      "               ,
+      "Phase                                                                                  0.008",
+      "   I              11 (36.7%)     12 (40%)       0 (0%)         23 (25.6%)    ",
+      "   II             10 (33.3%)     12 (40%)       19 (63.3%)     41 (45.6%)    ",
+      "   III            9 (30%)        6 (20%)        11 (36.7%)     26 (28.9%)    ",
       "--------------------------------------------------------------------------------------------"
     )
   )
