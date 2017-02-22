@@ -266,13 +266,13 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         attributes(modeldf[,eff])$stats
       } else { 
         control$ordered.stats
-      }
+      }     
       ## if no missings, and control says not to show missings,
       ## remove Nmiss stat fun
       if(sum(is.na(modeldf[,eff])) == 0 && any(grepl("Nmiss$",ordered.stats))) {
         ordered.stats <- ordered.stats[!grepl("Nmiss$", ordered.stats)]
       }
-      for(statfun in control$ordered.stats) {
+      for(statfun in ordered.stats) {
         ostyles <- c(ostyles, ifelse(statfun %in% c("countpct"), "percent",NA))
 
         bystatlist <- list()
