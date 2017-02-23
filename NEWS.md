@@ -1,3 +1,10 @@
+
+# arsenal 0.2.2.9000
+
+* Fixed ordered stats in `tableby()`.
+
+* Fixed a problem with `as.data.frame.modelsum()` introduced in v0.2.1.
+
 # arsenal 0.2.2
 
 * Added `count()` function for tableby stats.

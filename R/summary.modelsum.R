@@ -44,8 +44,8 @@ modelsum.translations <- list() ## adj.r.squared = "adj.rsq", sex = "Sex", sexM 
 summary.modelsum <- function(object, title = NULL, labelTranslations = NULL, digits = NA, 
 							  nsmall = NA, nsmall.ratio = NA, digits.test = NA, show.intercept = NA, 
 							  show.adjust = NA, text = FALSE, removeBlanks = text, labelSize = 1.2, 
-							  pfootnote = TRUE, ...) {
-	results <- makeSummary.modelsum (object, title, labelTranslations, digits, nsmall, nsmall.ratio, 
+							  pfootnote = TRUE, ...){
+	results <- makeSummary.modelsum(object, title, labelTranslations, digits, nsmall, nsmall.ratio, 
 									 digits.test, show.intercept, show.adjust, text, removeBlanks, 
 									 labelSize, pfootnote)
 	results <- results$results
@@ -71,7 +71,7 @@ as.data.frame.modelsum <- function(x, ..., title = NULL, labelTranslations = NUL
 									show.adjust = NA, pFootnote = TRUE)
 {
   if(length(list(...)) > 0) warning("The '...' in this function has changed. Are you passing positional arguments?")
-	results <- makeSummary.modelsum (x, title, labelTranslations, digits, nsmall, nsmall.ratio, 
+	results <- makeSummary.modelsum(x, title, labelTranslations, digits, nsmall, nsmall.ratio, 
 									 digits.test, show.intercept, show.adjust, FALSE, FALSE, 1.2, pFootnote)
 	
 	return(to.data.frame.modelsum(x, results))
@@ -104,7 +104,7 @@ makeSummary.modelsum <- function(object, title, labelTranslations, digits, nsmal
 	showIntercept <- setParam3(show.intercept, object$control$show.intercept, FALSE)
 	showAdjust <- setParam3(show.adjust, object$control$show.adjust, FALSE)
 	
-	if (text) {
+	if(text) {
 		boldMark <- ""
 	}
 	else {
@@ -116,16 +116,16 @@ makeSummary.modelsum <- function(object, title, labelTranslations, digits, nsmal
 	oneTimeFieldName = "glance"
 	translations <- addModelsumTranslations(object, labelTranslations)
 	elements <- object$fits
-	if (length(elements) == 0)
+	if(length(elements) == 0)
 		return("")	# Nothing to show, no data from which to produce anything
 	
-	theCols <- getColsToShow (object$control, object$family, elements[[1]], fieldName, oneTimeFieldName, translations)
+	theCols <- getColsToShow(object$control, object$family, elements[[1]], fieldName, oneTimeFieldName, translations)
 	showCols <- theCols$showCols
 	showOnce <- theCols$showOnce
 	
 	## if Nmiss in showOnce and no missing, don't show Nmiss
 	totMiss <- sum(sapply(object$fits, function(x) x$glance$Nmiss))
-	if ((totMiss == 0) & any(grepl("Nmiss$", showOnce))) {
+	if((totMiss == 0) & any(grepl("Nmiss$", showOnce))) {
 		showOnce <- showOnce[-grep("Nmiss$", showOnce)]	  
 	}
 	minColSize <- maxStrLen(lookupHumanTitle(names(elements), translations)) + (nchar(boldMark) * 2)
@@ -140,7 +140,7 @@ makeSummary.modelsum <- function(object, title, labelTranslations, digits, nsmal
 	lastLine <- results[length(results)]	# Clip off last line, will need to add it back at end
 	results <- results[- length(results)]
 	
-	for (element in elements) {
+	for(element in elements) {
 		elmResults <- formatModelSum(element, lineSize, firstColSize, colSize, translations, digits, 
 									 pValueDigits, nsmall, nsmall.ratio, boldMark, showIntercept, 
 									 showAdjust, showCols, showOnce, fieldName, oneTimeFieldName, pFootnote)
@@ -148,12 +148,12 @@ makeSummary.modelsum <- function(object, title, labelTranslations, digits, nsmal
 	}
 	
 	results <- c(results, lastLine)
-	if (removeBlanks) {
+	if(removeBlanks) {
 		results <- results[nchar(results) > 0]
 	}
 	
-	if (!is.null(title) && !is.na(title)) {
-		if (text) {
+	if(!is.null(title) && !is.na(title)) {
+		if(text) {
 			results <- c(makeCenteredStr(title, lineSize), results)
 		}
 		else {	# Titles can be multi line, so have a blank line to clearly end title
@@ -196,26 +196,24 @@ to.data.frame.modelsum <- function(object, results)
 	
 	start <- 2
 	end <- 3
-	while (substring (results[end], 1, 1) != '-')
+	while(substring(results[end], 1, 1) != '-')
 		end <- end + 1
 	
-	header <- strsplit (results[start:(end - 1)], " +")
-	header <- compress (header)[-1]	# Drop the empty first column
-	if ("endpoint" %in% header)
+	header <- strsplit(results[start:(end - 1)], " +")
+	header <- compress(header)[-1] # Drop the empty first column
+	if("endpoint" %in% header)
 	{
-		killCol <- -match (c ("endpoint"), header)
+		killCol <- -match("endpoint", header)
 		header <- header[killCol]
-		showOnce <- showOnce[match (showOnce, c ("endpoint"), nomatch = 0) < 1]
-	}
-	else
-		killCol <- 0
-	header <- c ("model", "endpoint", header)
-#	header <- myStrJoin (results[start:(end - 1)], firstColSize, colSize)
+		showOnce <- showOnce[match(showOnce, "endpoint", nomatch = 0) < 1]
+	} else killCol <- 0
+	header <- c("model", "endpoint", header)
+#	header <- myStrJoin(results[start:(end - 1)], firstColSize, colSize)
 	
-	results <- results[-1:-end]	# Delete all the header
-	rowCounts <- getRowInfo (object, showIntercept, showAdjust, "endpoint", translations)
+	results <- results[-(1:end)] # Delete all the header
+	rowCounts <- getRowInfo(object, showIntercept, showAdjust, "endpoint", translations)
 	
-	return (to.the.data.frame.modelsum (results, header, showOnce, rowCounts, firstColSize, colSize, killCol))
+	return(to.the.data.frame.modelsum(results, header, showOnce, rowCounts, firstColSize, colSize, killCol))
 }
 
 
@@ -243,12 +241,12 @@ to.the.data.frame.modelsum <- function(results, header, showOnce, rowCounts, fir
 	curCount <- 1
 	curMax <- 0
 	start <- 1
-	len <- length (results) - 3	# Last three lines are not relevant
+	len <- length(results) - 2 # Last two lines are not relevant -- fixed by EPH 2/2/17
 	
-	while (start <= len)
+	while(start <= len)
 	{
 		curCount <- curCount + 1
-		if (curCount > curMax)
+		if(curCount > curMax)
 		{
 			curCount <- 1
 			curRow <- curRow + 1
@@ -256,40 +254,40 @@ to.the.data.frame.modelsum <- function(results, header, showOnce, rowCounts, fir
 			curY <- rowCounts[[curRow]][2]
 		}
 		end <- start
-		while (end <= len)
+		while(end <= len)
 		{
-			if (nchar (results[end]) == 0)
+			if(nchar(results[end]) == 0)
 				break
 			end <- end + 1
 		}
-		line <- myStrJoin (results[start:(end - 1)], firstColSize, colSize)
-		rowNames <- c (rowNames, line[1])
+		line <- myStrJoin(results[start:(end - 1)], firstColSize, colSize)
+		rowNames <- c(rowNames, line[1])
 		line <- line[-1]
-		if (killCol < 0)
+		if(killCol < 0)
 			line <- line[killCol]
-		line <- c (curRow, curY, line)
+		line <- c(curRow, curY, line)
 		
-		for (i in seq_len (length (line)))
+		for(i in seq_len(length(line)))
 		{
 			title <- header[i]
 			value <- line[i]
-			if (title %in% showOnce)
+			if(title %in% showOnce)
 			{
-				if (value == ".")
+				if(value == ".")
 					value <- holdValues[[title]]
 				else
 					holdValues[[title]] <- value
 			}
-			if (is.null (baseList[[title]]))
-				baseList[[title]] <- c (value)
+			if(is.null(baseList[[title]]))
+				baseList[[title]] <- c(value)
 			else
-				baseList[[title]] <- c (baseList[[title]], value)
+				baseList[[title]] <- c(baseList[[title]], value)
 		}
 		
 		start <- end + 1
 	}
 	
-	return (makeDF (baseList, rowNames, c ("endpoint")))
+	return(makeDF(baseList, rowNames, c("endpoint")))
 }
 
 
@@ -308,18 +306,18 @@ to.the.data.frame.modelsum <- function(results, header, showOnce, rowCounts, fir
 makeDF <- function(baseList, rowNames, nonNumeric)
 {
 	baseList[["term"]] <- rowNames
-#	df <- as.data.frame (baseList, stringsAsFactors = FALSE, row.names = rowNames)
-	df <- as.data.frame (baseList, stringsAsFactors = FALSE)
+#	df <- as.data.frame(baseList, stringsAsFactors = FALSE, row.names = rowNames)
+	df <- as.data.frame(baseList, stringsAsFactors = FALSE)
 	
 	oldwarn <- options()$warn
 	options(warn = -1)
 	
-	nonNumeric <- c ("term", nonNumeric)
-	theNames <- names (baseList)
+	nonNumeric <- c("term", nonNumeric)
+	theNames <- names(baseList)
 	theNames <- theNames[!(theNames %in% nonNumeric)]
 	
-	for (colName in theNames)
-		class (df[, colName]) <- "numeric"
+	for(colName in theNames)
+		class(df[, colName]) <- "numeric"
 	
 	options(warn = oldwarn)
 	
@@ -343,20 +341,20 @@ makeDF <- function(baseList, rowNames, nonNumeric)
 ## ' @author m082166
 getRowInfo <- function(object, showIntercept, showAdjust, yCol, translations)
 {
-	if (showIntercept) {
+	if(showIntercept) {
 		neverRows <- c()
 	}
 	else {
 		neverRows <- c("(Intercept)")
 	}
 	
-	results <- list ()
-	numModels <- length (object$fits)
+	results <- list()
+	numModels <- length(object$fits)
 	
-	for (model in seq_len (numModels))
+	for(model in seq_len(numModels))
 	{
 		theFit <- object$fits[[model]];
-		if (showAdjust)  {
+		if(showAdjust)  {
 			hideRows <- neverRows
 		}
 		else {
@@ -365,10 +363,10 @@ getRowInfo <- function(object, showIntercept, showAdjust, yCol, translations)
 		
 		coeff <- theFit$coeff
 		coeff <- coeff[!(coeff$term %in% hideRows), ]
-		results[[model]] <- c (nrow (coeff), theFit$glance[[yCol]])
+		results[[model]] <- c(nrow(coeff), theFit$glance[[yCol]])
 	}
 	
-	return (results)
+	return(results)
 }
 	
 	
@@ -386,44 +384,44 @@ getRowInfo <- function(object, showIntercept, showAdjust, yCol, translations)
 ## ' @author m082166
 myStrJoin <- function(theStr, firstColSize, colSize)
 {
-	len <- length (theStr)
-	if (len == 0)
-		return (c ())
+	len <- length(theStr)
+	if(len == 0)
+		return(c())
 	
-	strLen <- nchar (theStr[1])
-	row <- singleSplit (theStr[1], firstColSize, colSize, strLen)
-	if (len == 1)
-		return (str_trim (row))
+	strLen <- nchar(theStr[1])
+	row <- singleSplit(theStr[1], firstColSize, colSize, strLen)
+	if(len == 1)
+		return(str_trim(row))
 	
-	results <- str_trim (row, "left")
-	numCols <- length (row)
-	for (i in 2:len)
+	results <- str_trim(row, "left")
+	numCols <- length(row)
+	for(i in 2:len)
 	{
-		row <- singleSplit (theStr[i], firstColSize, colSize, strLen)
+		row <- singleSplit(theStr[i], firstColSize, colSize, strLen)
 		
-		for (j in seq_len (numCols))
+		for(j in seq_len(numCols))
 		{
-			size <- nchar (results[j])
+			size <- nchar(results[j])
 			toAdd <- row[j]
-			if (size == 0)
-				results[j] <- str_trim (toAdd, "left")
+			if(size == 0)
+				results[j] <- str_trim(toAdd, "left")
 			else
 			{
-				cur <- str_trim (results[j], "right")
-				doPad <- (nchar (cur) < size) && !endsWithPad (cur)
-				size <- nchar (toAdd)
-				toAdd <- str_trim (toAdd, "left")
-				addSize <- nchar (toAdd)
-				doPad <- (doPad || (addSize < size)) && (addSize > 0) && !beginsWithPad (toAdd)
-				if (doPad)
-					results[j] <- paste (cur, toAdd)
+				cur <- str_trim(results[j], "right")
+				doPad <- (nchar(cur) < size) && !endsWithPad(cur)
+				size <- nchar(toAdd)
+				toAdd <- str_trim(toAdd, "left")
+				addSize <- nchar(toAdd)
+				doPad <- (doPad || (addSize < size)) && (addSize > 0) && !beginsWithPad(toAdd)
+				if(doPad)
+					results[j] <- paste(cur, toAdd)
 				else
-					results[j] <- paste0 (cur, toAdd)
+					results[j] <- paste0(cur, toAdd)
 			}
 		}
 	}
 	
-	return (str_trim (results, "right"))
+	return(str_trim(results, "right"))
 }
 
 
@@ -441,22 +439,22 @@ myStrJoin <- function(theStr, firstColSize, colSize)
 ## ' @author m082166
 singleSplit <- function(theStr, firstColSize, colSize, strLen)
 {
-	first <- substring (theStr, 1, firstColSize)
-	for (find in c("**", "&nbsp;"))
-		first <- gsub (find, " ", first, fixed = TRUE)
+	first <- substring(theStr, 1, firstColSize)
+	for(find in c("**", "&nbsp;"))
+		first <- gsub(find, " ", first, fixed = TRUE)
 	
 	results <- c(first)
 	
 	start <- firstColSize + 2
-	while (start < strLen)
+	while(start < strLen)
 	{
 		end <- start + colSize - 1
-		nextStr <- substring (theStr, start, end)
+		nextStr <- substring(theStr, start, end)
 		results <- c(results, nextStr)
 		start <- end + 2
 	}
 	
-	return (results)
+	return(results)
 }
 
 
@@ -472,20 +470,20 @@ singleSplit <- function(theStr, firstColSize, colSize, strLen)
 ## ' @author m082166
 addUniqueName <- function(rowNames, newRow)
 {
-	if (newRow %in% rowNames)
+	if(newRow %in% rowNames)
 	{
 		count <- 1
-		test <- paste (newRow, count)
-		while (test %in% rowNames)
+		test <- paste(newRow, count)
+		while(test %in% rowNames)
 		{
 			count <- count + 1
-			test <- paste (newRow, count)
+			test <- paste(newRow, count)
 		}
 		
 		newRow <- test
 	}
 	
-	return (c (rowNames, newRow))
+	return(c(rowNames, newRow))
 }
 	
 	
@@ -505,21 +503,21 @@ addUniqueName <- function(rowNames, newRow)
 ## ' @author m082166
 compress <- function(theList)
 {
-	if (length(theList) == 0)
-		return ("")	# Nothing to show, no data from which to produce anything
+	if(length(theList) == 0)
+		return("")	# Nothing to show, no data from which to produce anything
 	
 	result <- c()
 	
-	for (i in seq_len(length (theList[[1]])))
-		result <- c (result, "")
+	for(i in seq_len(length(theList[[1]])))
+		result <- c(result, "")
 	
-	for (element in theList)
+	for(element in theList)
 	{
-		for (i in seq_len(length (element)))
-			result[i] <- paste0 (result[i], element[i])
+		for(i in seq_len(length(element)))
+			result[i] <- paste0(result[i], element[i])
 	}
 	
-	return (result)
+	return(result)
 }
 
 
@@ -529,7 +527,7 @@ compress <- function(theList)
 ## ' 
 ## ' @param object			The data defining the table to display
 ## ' @param labelTranslations	List where name is the label in the output, and value is the label you 
-## ' want displayed e.g. list (q1q3: "Q1, Q3", medsurv = "Median Survival")
+## ' want displayed e.g. list(q1q3: "Q1, Q3", medsurv = "Median Survival")
 ## ' @return Current translation list
 ## ' 
 ## ' @author m082166
@@ -539,7 +537,7 @@ addModelsumTranslations <- function(object, labelTranslations) {
 	elements <- object$fits
 	
 	# Now get every adjterms and their matching adjlabels
-	for (element in elements) {
+	for(element in elements) {
 		translations <- addTranslations(translations, element$adjterms, element$adjlabels)
 	}
 	
@@ -572,10 +570,10 @@ makeModelSumHeader <- function(showCols, showOnce, minColSize, labelSize = 1.2,
 				translations, leftJustify = FALSE, rightJustify = FALSE) {
 	headers <- c(showCols, showOnce)
 	size <- max(nchar(headers)) + 2	# Need one extra "-" on either side to center text
-	if (size < 10)
-		size = 10	# Minimum width for a column
+	if(size < 10)
+		size <- 10	# Minimum width for a column
 	bigSize = round(size * labelSize)	# Want the first column ~ 20% larger than other columns
-	if (bigSize < minColSize) {
+	if(bigSize < minColSize) {
 		bigSize <- minColSize
 		size <- round(bigSize / labelSize)
 	}
@@ -586,7 +584,7 @@ makeModelSumHeader <- function(showCols, showOnce, minColSize, labelSize = 1.2,
 	#First Line
 	head <- makeDashStr(bigSize, theChar = ' ')
 	
-	for (cellH in headers) {	# Want it to insert space as separator
+	for(cellH in headers) {	# Want it to insert space as separator
 		head <- paste(head, makeCellHeader(cellH, size, leftJustify, rightJustify))
 	}
 	
@@ -594,7 +592,7 @@ makeModelSumHeader <- function(showCols, showOnce, minColSize, labelSize = 1.2,
 	#Second line
 	head <- makeDashStr(bigSize)
 	
-	for (cellH in headers) {
+	for(cellH in headers) {
 		head <- paste(head, makeDashStr(size))	# Want it to insert space as separator
 	}
 	
@@ -641,7 +639,7 @@ formatModelSum <- function(element, lineSize, firstColSize, colSize, translation
                            pValueDigits, nsmall, nsmall.ratio, boldMark, showIntercept, showAdjust, 
                            showCols, showOnce, fieldName, oneTimeFieldName, pFootnote)
 {
-  if (showAdjust) {
+  if(showAdjust) {
     hideRows <- c()
   }
   else {
@@ -649,31 +647,31 @@ formatModelSum <- function(element, lineSize, firstColSize, colSize, translation
   }
   
   coefficients <- element[[fieldName]]
-  rows <- makeModelSumTitleCells (element, fieldName, firstColSize, translations, boldMark, 
+  rows <- makeModelSumTitleCells(element, fieldName, firstColSize, translations, boldMark, 
                                   showIntercept, hideRows)
   
   numRows <- dim(coefficients)[1]
   rowTitles <- lookupHumanTitle(element[[fieldName]]$term, translations)
   colTitles <- getMatrixNames(element, fieldName, doRow = FALSE, translations = translations)
-  useCols <- getColsToUse (showCols, colTitles)
+  useCols <- getColsToUse(showCols, colTitles)
   volueCols <- match(showCols, "p.value", nomatch = 0)
   showExtras <- TRUE
   curRow <- 0
   
-  for (startRow in seq_len(numRows))
+  for(startRow in seq_len(numRows))
     {
-      if (showRow(showIntercept, hideRows, rowTitles[startRow]))
+      if(showRow(showIntercept, hideRows, rowTitles[startRow]))
         {
           extra <- c()
-          if (showExtras)
+          if(showExtras)
             {
-              for (item in showOnce) {
+              for(item in showOnce) {
                 extra <- c(extra, element[[oneTimeFieldName]][[item]])
               }
               showExtras <- FALSE
             }
           else {
-            for (item in showOnce) {
+            for(item in showOnce) {
               extra <- c(extra, ".")
             }
           }
@@ -708,27 +706,27 @@ getColsToShow <- function(control, family, element, fieldName, oneTimeFieldName,
 {
 	## Match control stats columns by family to the stats in the object.
 	## It is split by showCols and showOnce
-	if (family %in% c("quasibinomial","binomial"))
+	if(family %in% c("quasibinomial","binomial"))
 		statFields <- control$binomial.stats
-	else if (family %in% c("quasipoisson","poisson"))
+	else if(family %in% c("quasipoisson","poisson"))
 		statFields <- control$poisson.stats
-	else if (family == "survival")
+	else if(family == "survival")
 		statFields <- control$survival.stats
 	else
 		statFields <- control$gaussian.stats
 	
 	statFields <- statFields[!is.na(statFields)]
 	
-	names <- colnames (element[[fieldName]])
-	showCols <- names[match (statFields, names)]
-	names <- names (element[[oneTimeFieldName]])
-	showOnce <- names[match (statFields, names)]
+	names <- colnames(element[[fieldName]])
+	showCols <- names[match(statFields, names)]
+	names <- names(element[[oneTimeFieldName]])
+	showOnce <- names[match(statFields, names)]
 	showCols <- lookupHumanTitle(showCols, translations)
 	showOnce <- lookupHumanTitle(showOnce, translations)
 	showCols <- showCols[!is.na(showCols)]
 	showOnce <- showOnce[!is.na(showOnce)]
 	
-	return (list (showCols = showCols, showOnce = showOnce))
+	return(list(showCols = showCols, showOnce = showOnce))
 }
 
 
@@ -743,13 +741,13 @@ getColsToShow <- function(control, family, element, fieldName, oneTimeFieldName,
 ## ' 
 ## ' @author m082166
 showRow <- function(showIntercept, hideRows, rowTitle) {
-	if (rowTitle == "(Intercept)")
+	if(rowTitle == "(Intercept)")
 		return(showIntercept)
 	
-	if (is.null(hideRows))
+	if(is.null(hideRows))
 		return(TRUE)
 	
-	return (!(rowTitle %in% hideRows))
+	return(!(rowTitle %in% hideRows))
 }
 
 
@@ -777,10 +775,10 @@ showRow <- function(showIntercept, hideRows, rowTitle) {
 addModel <- function(rows, useCols, volueCols, modelSum, extra, curRow, colSize, digits, 
 					  pValueDigits, nsmall, nsmall.ratio)
 {
-	for (i in seq_len (length (useCols)))
+	for(i in seq_len(length(useCols)))
 	{
 		col <- useCols[i]
-		if (volueCols[i] > 0) {
+		if(volueCols[i] > 0) {
 			cell <- makeLimitedNumber(modelSum[col], pValueDigits)
 		}
 		else {
@@ -791,8 +789,8 @@ addModel <- function(rows, useCols, volueCols, modelSum, extra, curRow, colSize,
 		rows <- addToRow(rows, curRow, cell)
 	}
 	
-	for (item in extra) {
-		if (is.numeric(item)) {
+	for(item in extra) {
+		if(is.numeric(item)) {
 			cell <- myFormat(item, digits, nsmall)
 		}
 		else {
@@ -822,13 +820,13 @@ getColsToUse <- function(showCols, colTitles)
 	unusedCols <- seq_len(numCells)
 	colsToUse <- c()
 	
-	for (theCol in showCols)
+	for(theCol in showCols)
 	{
-		for (test in seq_len(length(unusedCols)))
+		for(test in seq_len(length(unusedCols)))
 		{
 			i <- unusedCols[test]
 			colTitle <- colTitles[i]
-			if (colTitle == theCol)
+			if(colTitle == theCol)
 			{
 				colsToUse <- c(colsToUse, i)
 				unusedCols <- unusedCols[- test]	# Delete the used item
@@ -857,7 +855,7 @@ makeModelSumHeaders <- function(object, showCols, showOnce, translations) {
   ## second arg was fieldName, but not passed (tried by JPS on 12/15/16
   theNames <- getMatrixNames(object, showCols, translations = translations)
   
-  if (is.na(extras) || (length(extras) == 0))	# length(NA) == 1
+  if(is.na(extras) || (length(extras) == 0))	# length(NA) == 1
     return(theNames)
   
   extras <- lookupHumanTitle(extras, translations)
@@ -887,14 +885,14 @@ makeModelSumTitleCells <- function(element, fieldName, colSize, translations, bo
   theCells <- NULL
   rowTitles <- lookupHumanTitle(element[[fieldName]]$term, translations)
   
-  for (title in rowTitles) {
+  for(title in rowTitles) {
     showThis <- showRow(showIntercept, hideRows, title)
-    if (showThis && (title != "(Intercept)")) {
+    if(showThis && (title != "(Intercept)")) {
       title <- paste0(boldMark, title, boldMark)
     }
     
-    if (showThis) {
-      if (length(theCells) == 0) {
+    if(showThis) {
+      if(length(theCells) == 0) {
         theCells <- c(makePaddedStr(title, colSize))
       }
       else {
@@ -920,7 +918,7 @@ makeModelSumTitleCells <- function(element, fieldName, colSize, translations, bo
 ## ' 
 ## ' @author m082166
 getMatrixNames <- function(element, fieldName, doRow = FALSE, translations = NULL) {
-	if (doRow) {
+	if(doRow) {
 		which <- 1
 	}
 	else {
@@ -928,7 +926,7 @@ getMatrixNames <- function(element, fieldName, doRow = FALSE, translations = NUL
 	}
 	
 	names <- dimnames(element[[fieldName]])[[which]]
-	if (!is.null(translations)) {
+	if(!is.null(translations)) {
 		names <- lookupHumanTitle(names, translations)
 	}
 	
@@ -951,7 +949,7 @@ getMatrixNames <- function(element, fieldName, doRow = FALSE, translations = NUL
 maxMatrixNameLen <- function(elements, translations, fieldName, doRow = FALSE) {
 	theMax = 0
 	
-	for (element in elements) {
+	for(element in elements) {
 		theMax <- max(theMax, nchar(getMatrixNames(element, fieldName, doRow, translations)))
 	}
 	
@@ -970,7 +968,7 @@ maxMatrixNameLen <- function(elements, translations, fieldName, doRow = FALSE) {
 ## ' 
 ## ' @author m082166
 maxElementNameLen <- function(elements, translations) {
-	if (length(elements) == 0)
+	if(length(elements) == 0)
 		return(0)
 	
 	return(max(0, nchar(lookupHumanTitle(names(elements[[1]]), translations))))
@@ -985,7 +983,7 @@ summary.modelsumList <- function(object, title = NULL, labelTranslations = NULL,
                                   pFootnote = TRUE, ...) {
 
 	## summary on a list of modelsum objects
-	for (k in 1:length(object)) {    
+	for(k in 1:length(object)) {    
 		summary.modelsum(object[k])
 	}
 	

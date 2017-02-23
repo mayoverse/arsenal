@@ -154,9 +154,13 @@ test_that("01/26/2017: Brendan Broderick's Bold Text Wrapping Problem", {
 })
 rm(dat)
 
+#################################################################################################################################
+
 test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem", {
   expect_identical(capture.output(summary(modelsum(Age ~ Sex + time, data = mdat), text = TRUE))[1], "")
 })
+
+#################################################################################################################################
 
 
 test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
@@ -192,4 +196,25 @@ test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
     rm(mdat.tmp)
   } else skip("survival package not available.")
 })
+
+#################################################################################################################################
+
+set.seed(99)
+dat <- rbind(data.frame(y = rnorm(100, 0, 1), x = "A", z = rnorm(100), stringsAsFactors = F),
+             data.frame(y = rnorm(100, 1, 1), x = "B", z = rnorm(100), stringsAsFactors = F))
+
+
+test_that("02/23/2017: Ethan Heinzen's Missing Row in as.data.frame.modelsum", {
+  expect_identical(
+    capture.output(as.data.frame(modelsum(y ~ x, adjust = ~ z, data = dat), digits.test = 13)),
+    c("         term model endpoint estimate std.error      p.value adj.r.squared",
+      "1 (Intercept)     1        y   -0.100     0.102 3.269503e-01          0.21",
+      "2         x B     1        y    1.060     0.144 4.400000e-12          0.21",
+      "3           z     1        y    0.044     0.069 5.302928e-01          0.21"
+    )
+  )
+})
+rm(dat)
+
+#################################################################################################################################
 
