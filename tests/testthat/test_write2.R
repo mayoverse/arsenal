@@ -103,7 +103,7 @@ test_that("write2.default -> PDF", {
 })
 
 test_that("write2.verbatim -> html", {
-  expect_write2_worked(write2pdf, verbatim(paste0("Hi.", 1:10)),
+  expect_write2_worked(write2pdf, verbatim(paste0("Hi.", 1:5)),
                        reference = "write2.char.html.md")
 })
 
@@ -137,7 +137,7 @@ test_that("write2.verbatim -> html", {
 # write2pdf(list(mylist2, mylist), "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.mylists.pdf", render. = FALSE)
 # 
 # write2pdf(verbatim(my.lm), "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.lm.pdf", render. = FALSE)
-# write2html(verbatim(paste0("Hi.", 1:10)),
+# write2html(verbatim(paste0("Hi.", 1:5)),
 #            "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/arsenal-eph/tests/testthat/write2.char.html", render. = FALSE)
 
 ###########################################################################################################
