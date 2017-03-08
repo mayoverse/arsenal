@@ -1,5 +1,5 @@
 
-# arsenal 0.2.2.9000
+# arsenal 0.2.3
 
 * Fixed ordered stats in `tableby()`.
 
