@@ -43,3 +43,5 @@ Other S3 methods are implemented for objects of class `"freqlist"`, including `p
 * `formulize()` is a shortcut to collapse variable names into a formula.
 
 * `mdy.Date()` and `Date.mdy()` convert numeric dates for month, day, and year to Date object, and vice versa.
+
+* `%nin%` tests for "not in", the negation of `%in%`.

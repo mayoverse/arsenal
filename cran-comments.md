@@ -1,4 +1,4 @@
-## Submission for arsenal 0.2.?
+## Submission for arsenal 0.3.0
 
 This is a new version. In this version:
 
@@ -9,7 +9,7 @@ This is a new version. In this version:
 * The `summary()` output for `tableby` and `modelsum` objects now prints an extra blank header line,
   for better use inside R Markdown code chunks.
     
-* Two bugs in `tableby()` were corrected.
+* Three bugs in `tableby()` were corrected.
 
 * Two problems with survival models in `modelsum()` have been resolved.
 
