@@ -15,6 +15,7 @@ This is a new version. In this version:
 
 * Added `count()` function for tableby stats.
 
+* Tweaked the DESCRIPTION to include `write2()`.
 
 ## Test environments
 * ubuntu 12.04 (on travis-ci), R 3.3.1

@@ -21,7 +21,8 @@ Description: An Arsenal of 'R' functions for large-scale statistical summaries,
   summary of multiple variable types 'by' the levels of a categorical
   variable; modelsum(), which performs simple model fits on the same endpoint
   for many variables (univariate or adjusted for standard covariates);
-  and freqlist(), a powerful frequency table across many categorical variables.
+  freqlist(), a powerful frequency table across many categorical variables; and
+  write2(), a function to output tables to a document.
 Suggests:
     knitr,
     rmarkdown,

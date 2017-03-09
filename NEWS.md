@@ -2,6 +2,8 @@
 
 * The CRAN release of the locally stable 0.2.3. For NEWS on this version, see below.
 
+* Tweaked the DESCRIPTION to include `write2()`.
+
 # arsenal 0.2.3
 
 * Fixed ordered stats in `tableby()`.
