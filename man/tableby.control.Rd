@@ -11,9 +11,10 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   cat.stats = c("Nmiss", "countpct"), ordered.stats = c("Nmiss",
   "countpct"), surv.stats = c("Nevents", "medSurv"), date.stats = c("Nmiss",
   "median", "range"), stats.labels = list(Nmiss = "N-Miss", Nmiss2 = "N-Miss",
-  meansd = "Mean (SD)", q1q3 = "Q1, Q3", range = "Range", countpct =
-  "Count (Pct)", Nevents = "Events", medsurv = "Median Survival"), digits = 3,
-  digits.test = NULL, nsmall = NULL, nsmall.pct = NULL, ...)
+  meansd = "Mean (SD)", medianq1q3 = "Median (Q1, Q3)", q1q3 = "Q1, Q3", range =
+  "Range", countpct = "Count (Pct)", Nevents = "Events", medsurv =
+  "Median Survival"), digits = 3, digits.test = NULL, nsmall = NULL,
+  nsmall.pct = NULL, ...)
 }
 \arguments{
 \item{test}{logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.}

@@ -477,7 +477,26 @@ test_that("02/07/2017: Jason Sinnwell's chisq problem", {
 })
 rm(dat)
 
-
+test_that("03/17/2017: Beth's medianq1q3 label", {
+  expect_identical(
+    capture.output(summary(tableby(Group ~ ht_in + time, data = mdat,
+                                   control = tableby.control(numeric.stats = c("Nmiss2", "medianq1q3"))), text = TRUE)),
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
+      "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
+      "----------------- -------------- -------------- -------------- -------------- --------------",
+      "Height in Inches                                                                       0.785",
+      "   N-Miss         0              0              0              0             "               ,
+      "   Median (Q1,    64.5 (62, 68)  64 (61, 68.8)  64.5 (62, 68)  64 (62, 68)   "               ,
+      "   Q3)                                                                       "               ,
+      "time                                                                                   0.025",
+      "   N-Miss         0              0              0              0             "               ,
+      "   Median (Q1,    5 (3.25, 6)    3 (1.25, 5)    4 (2, 5)       4 (2, 6)      "               ,
+      "   Q3)                                                                       "               ,
+      "--------------------------------------------------------------------------------------------"
+    )
+  )
+})
 
 
 

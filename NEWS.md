@@ -1,3 +1,7 @@
+# arsenal 0.3.?
+
+* Added a label for `medianq1q3()` in `tableby.control()`.
+
 # arsenal 0.3.0
 
 * The CRAN release of the locally stable 0.2.3. For NEWS on this version, see below.
