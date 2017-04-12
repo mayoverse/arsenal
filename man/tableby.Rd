@@ -6,7 +6,7 @@
 \title{Summary Statistics of a Set of Independent Variables by a Categorical Variable}
 \usage{
 tableby(formula, data, na.action, subset = NULL, weights = NULL,
-  control = list(...), ...)
+  control = NULL, ...)
 
 \method{print}{tableby}(x, ...)
 }
@@ -32,8 +32,8 @@ Works as vector of logicals or an index.}
 \item{control}{control parameters to handle optional settings within \code{tableby}.
 Two aspects of \code{tableby} are controlled with these: test options of RHS variables across levels of the categorical
 grouping variable, and x variable summaries within the grouping variable. Arguments for \code{tableby.control}
-can be passed to \code{tableby} and will be set with \code{tableby.control}, but if using
-\code{control=tableby.control(test=TRUE), test=FALSE}, \code{test} will be \code{TRUE}. See \code{\link{tableby.control}} for more details.}
+can be passed to \code{tableby} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,
+the latter are used. See \code{\link{tableby.control}} for more details.}
 
 \item{...}{additional arguments to be passed to internal \code{tableby} functions. See "Details" for information.
 Currently not implemented in \code{print.tableby}.}
@@ -48,13 +48,13 @@ Then, each item in x has these:
 \item{stats}{Summary statistics of the RHS variable within each level of the LHS variable}
 \item{test}{Formal test of the distribution of the RHS variable across the levels of the LHS variable}
 \item{label}{The label attribute of a variable. It is set to the label attribute of a data column, if it exists,
-  otherwise set to the variable name in \code{data}. Can be changed with \code{\link{labels.tableby}} function for the tableby object.} 
-  
+  otherwise set to the variable name in \code{data}. Can be changed with \code{\link{labels.tableby}} function for the tableby object.}
+
 The object also contains the original function call and the \code{tableby.control} list that is used in \code{tableby}.
 }
 \description{
-Summarize one or more variables (x) by a categorical variable (y). Variables 
-  on the right side of the formula, i.e. independent variables, are summarized by the 
+Summarize one or more variables (x) by a categorical variable (y). Variables
+  on the right side of the formula, i.e. independent variables, are summarized by the
   levels of a categorical variable on the left of the formula. Optionally, an appropriate test is performed to test the
   distribution of the independent variables across the levels of the categorical variable.
 }
@@ -107,7 +107,7 @@ To perform a mixture of asymptotic and rank-based tests on two
 different continuous variables, an example formula is:
 \code{formula = group ~ anova(age) + kwt(height)}. The test settings
 in \code{tableby.control} apply to all independent variables of a given type.
-     
+
 The summary statistics reported for each independent variable within the
 group variable can be set in \code{\link{tableby.control}}.
 }
@@ -119,7 +119,7 @@ summary(tab1, text=TRUE)
 mylabels <- list(sex = "SEX", age ="Age, yrs")
 summary(tab1, labelTranslations = mylabels, text=TRUE)
 
-tab3 <- tableby(arm ~ sex + age, data=mockstudy, test=FALSE, total=FALSE, 
+tab3 <- tableby(arm ~ sex + age, data=mockstudy, test=FALSE, total=FALSE,
                 numeric.stats=c("median","q1q3"), numeric.test="kwt")
 summary(tab3, text=TRUE)
 
@@ -130,7 +130,7 @@ tests(tab.test)
 Jason Sinnwell, Beth Atkinson, Gregory Dougherty, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 }
 \seealso{
-\code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}}, 
+\code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}},
   \code{\link{print.tableby}}, \code{\link{summary.tableby}}, \code{\link{formulize}}
 }
 

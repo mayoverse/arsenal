@@ -2,6 +2,9 @@
 
 * Added a label for `medianq1q3()` in `tableby.control()`.
 
+* Changed the `...` vs. `control=` action in `tableby()` and `modelsum()` to fix which
+  arguments are used over which other arguments.
+
 # arsenal 0.3.0
 
 * The CRAN release of the locally stable 0.2.3. For NEWS on this version, see below.

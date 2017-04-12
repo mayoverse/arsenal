@@ -398,7 +398,7 @@ test_that("Changing tests", {
       "--------------------------------------------------------------------------------------------"
     )
   )
-  
+
   expect_identical(
     capture.output(summary(tableby(Group ~ Sex + Age, data = mdat, numeric.test = "kwt", cat.test = "fe"), text = TRUE)),
     c(""                                                                                            ,
@@ -499,8 +499,19 @@ test_that("03/17/2017: Beth's medianq1q3 label", {
 })
 
 
-
-
+test_that("04/12/2017: Katherine King's cat.simplify vs tableby.control", {
+  expect_identical(
+    capture.output(summary(tableby(Group ~ trt + Sex, data = mdat, control = tableby.control(), cat.simplify = TRUE), text = TRUE)),
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
+      "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
+      "----------------- -------------- -------------- -------------- -------------- --------------",
+      "Treatment Arm     16 (53.3%)     19 (63.3%)     19 (63.3%)     54 (60%)                0.659",
+      "Sex               15 (50%)       13 (43.3%)     16 (53.3%)     44 (48.9%)              0.733",
+      "--------------------------------------------------------------------------------------------"
+    )
+  )
+})
 
 
 

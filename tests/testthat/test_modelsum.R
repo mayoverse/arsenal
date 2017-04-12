@@ -167,18 +167,18 @@ test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
   if(require(survival))
   {
     mdat.tmp <- mdat
-    
+
     form <- Surv(time, status) ~ Sex + ethan
     expect_identical(capture.output(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
                      capture.output(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
-    
+
     mdat.tmp[3:4,"time"] <- c(NA,NA)
     expect_identical(capture.output(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
                      capture.output(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
 
     expect_identical(capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
-                     capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))    
-    
+                     capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
+
     expect_identical(
       capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
       c(""                                                                                                           ,
@@ -192,7 +192,7 @@ test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
         "-----------------------------------------------------------------------------------------------------------"
       )
     )
-    
+
     rm(mdat.tmp)
   } else skip("survival package not available.")
 })
@@ -218,3 +218,18 @@ rm(dat)
 
 #################################################################################################################################
 
+test_that("04/12/2017: ... vs modelsum.control", {
+  expect_identical(
+    capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat, show.adjust = FALSE, control = modelsum.control()), text = TRUE)),
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
+      "                    estimate        std.error       p.value         adj.r.squared ",
+      "------------------ --------------- --------------- --------------- ---------------",
+      "(Intercept)        40.6            1.02            <0.001          -0.005         ",
+      "Sex Male           -0.221          1.11            0.843           .              ",
+      "(Intercept)        41.9            1.37            <0.001          0.014          ",
+      "time               -0.368          0.275           0.184           .              ",
+      "----------------------------------------------------------------------------------"
+    )
+  )
+})

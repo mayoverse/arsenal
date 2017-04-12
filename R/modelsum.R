@@ -12,9 +12,9 @@
 ## examples now in modelsum.Rd and test.modelsum.R and modelsum.Rmd vignette
 
 #' Fit models over each of a set of independent variables with a response variable
-#' 
+#'
 #' Fit and summarize models for each independent (x) variable with a response variable (y), with options to adjust by variables for each model.
-#' 
+#'
 #' @param formula an object of class \code{\link{formula}}; a symbolic description of the variables to be modeled.  See "Details" for more information.
 #' @param adjust an object of class \code{\link{formula}}, listing variables to adjust by in all models. Specify as a one-sided formula,
 #'   like: \code{~Age+ Sex}.
@@ -29,9 +29,10 @@
 #' @param na.action a function which indicates what should happen when the data contain \code{NA}s.
 #'   The default is set by the \code{na.modelsum} setting of \code{options}, and is \code{na.fail} if that is unset. The default is
 #'   to include observations with \code{NA}s in x variables, but remove those with \code{NA} in response variable.
-#' @param control control parameters to handle optional settings within \code{modelsum}. Control arguments can be passed to \code{modelsum},
-#'   which are carried forward to \code{modelsum.control} via the \code{...} argument. See \code{\link{modelsum.control}} for more details.
-#' @param ... additional arguments to be passed to internal \code{modelsum} functions. See "Details" for information.
+#' @param control control parameters to handle optional settings within \code{modelsum}.  Arguments for \code{modelsum.control}
+#'   can be passed to \code{modelsum} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,
+#'   the latter are used. See \code{\link{modelsum.control}} for other details.
+#' @param ... additional arguments to be passed to internal \code{modelsum} functions.
 #' @param x An object of class \code{'modelsum'}, or a list of such objects.
 #' @return
 #' An object with class \code{'modelsum'}, which is effectively a list with the variables from the right-side in x and the group variable in y.
@@ -44,20 +45,20 @@
 #' @author Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, adapted from SAS Macro of the same name
 #' @seealso \code{\link{modelsum.control}}, \code{\link{summary.modelsum}}, \code{\link{formulize}}
 #' @examples
-#'  
+#'
 #' data(mockstudy)
-#' 
+#'
 #' tab1 <- modelsum(bmi ~ sex + age, data = mockstudy)
 #' summary(tab1, text = TRUE)
-#' 
+#'
 #' tab2 <- modelsum(alk.phos ~ arm + ps + hgb, adjust = ~ age + sex,
 #'                  family = "gaussian", data = mockstudy)
 #' summary(tab2, text = TRUE)
-#' 
+#'
 #' summary(tab2, show.intercept = FALSE, text = TRUE)
-#' 
+#'
 #' tab2.df <- as.data.frame(tab2)
-#' 
+#'
 #' tab2.df[1:5,]
 #' @import broom
 #' @name modelsum
@@ -68,24 +69,25 @@ NULL
 #' @export
 
 modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=na.modelsum,
-                     subset=NULL, weights=NULL, control=list(...), ...) {
+                     subset=NULL, weights=NULL, control = NULL, ...) {
   Call <- match.call()
-  
+
   ## Allow family parameter to passed with or without quotes
   ##    exception is survival, would require public function named survival.
   ## Here, we force quotes to simplify in for loop below
-  if (is.function(family)) 
+  if (is.function(family))
     family <- family()$family
-    
-  if(family %nin% c("survival","gaussian","binomial","poisson","quasibinomial","quasipoisson")) 
+
+  if(family %nin% c("survival","gaussian","binomial","poisson","quasibinomial","quasipoisson"))
     stop("Family ", family, "not supported.\n")
- 
+
   if(family != "survival" && any(grepl("Surv\\(", formula))) {
     warning("Found Surv in formula, assuming family='survival'\n")
     family <- "survival"
   }
   ## pick up extra control arguments from command via ...
-  control <- do.call("modelsum.control", control)
+  control <- c(list(...), control)
+  control <- do.call("modelsum.control", control[!duplicated(names(control))])
 
   ## Tell user if they passed an argument that was not expected, either here or in control
   expectArgs <- c("formula","family","adjust","data","na.action","subset","weights", "control", names(control))
@@ -99,7 +101,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
   if(indx.adjust != 0) {
     ## will add adjVars to end of RHS of formula
-    j <- length(formula)  
+    j <- length(formula)
     adjLen <- length(adjust[[2]])
     if(adjLen < 2) {
       adjVars <- as.character(adjust[2])
@@ -114,9 +116,9 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       adjVars <- c(adjVars,as.character(adj2)) # [2:length(adj2)]))
       adjVars <- adjVars[!(adjVars == "pspline" | adjVars == "offset")]
     }
-    
+
     formula[[j]] <- call("+", formula[[j]], call("(", adjust[[2]]))
-  }  
+  }
 
   indx.subset <- match(c("subset"), names(Call), nomatch = 0)
   subsetVarsAdd <- NULL
@@ -130,7 +132,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
     ##Subset to only those not already in formula
     subsetVarsAdd <- subsetVars[subsetVars %nin%
                        unlist(str_match_all(paste0(as.character(formula),collapse=""), subsetVars))]
-                             
+
     if(length(subsetVarsAdd)>0 ) {
       formula[[j]] <- call("+", formula[[j]], call("(",as.name(subsetVarsAdd)))
     }
@@ -139,7 +141,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 #  indx <- match(c("formula", "data", "subset", "weights", "na.action"), names(Call), nomatch = 0)
 #  if(indx[4] != 0) {   ## weights
 #    weights <- as.vector(stats::model.weights(modeldf))
-    
+
   temp.call <- call("model.frame", formula = formula)
 
   for (i in c("data", "subset", "weights", "na.action")) {
@@ -150,7 +152,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
   if(is.null(temp.call$na.action)) {
     temp.call$na.action <- na.modelsum
   }
- 
+
   ## if(is.null(temp.call$weights)) {
   ##    temp.call$weights <- rep(1, nrow())
   ##  }
@@ -161,7 +163,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
   if(any(grepl("Surv",as.character((baseFormula[[2]]))))) {
     ## skip ybase, put something here   ##| length(baseFormula[[2]]) > 1
-    ybase <- "" 
+    ybase <- ""
   } else {
     ybase <- unlist(tapply(as.character(baseFormula[[2]]), 1:length(baseFormula[[2]]),
               function(x) {tmp <- str_match(x, colnames(data)); tmp[!is.na(tmp),1]}))
@@ -187,7 +189,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       xvars <- c(xvars, xbase[!is.na(xbase),1])
     }
   }
- 
+
   base.call <- temp.call
   base.call$formula <- stats::as.formula(paste0(ybase, "~", paste(xvars, collapse="+")))
   ## undo for surv response, or I(fun(y))
@@ -201,8 +203,8 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
   tabenv <- new.env(parent = environment(formula))
   environment(temp.call$formula) <-  environment(base.call) <- tabenv
 
-  basedf <- eval.parent(base.call) 
-  modeldf <- eval.parent(temp.call) 
+  basedf <- eval.parent(base.call)
+  modeldf <- eval.parent(temp.call)
   ## ----- add weights
   weights <- as.vector(stats::model.weights(modeldf))
   if(is.null(weights)) {
@@ -211,25 +213,25 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
   }
   if (!is.null(weights) && (!is.numeric(weights) | any(weights<0))) {
     stop("'weights' must be a numeric vector and must be non-negative")
-  } 
-  
+  }
+
   if("(weights)" %in% colnames(modeldf)) {
     modeldf <- modeldf[,!grepl("(weights)", colnames(modeldf))]
     basedf <- basedf[,!grepl("(weights)", colnames(basedf))]
   }
-  
+
   ## assign weights, formula, data, etc. but don't need subset
   for(cc in names(base.call)[-c(1,grep("subset",names(base.call)))]){
     assign(cc, get(cc), envir=tabenv)
   }
-  
+
   ## this assigns what is needed for evaluating all models with x, adjust, subset
   ##    check with: ls(envir=tabenv)
   assign("basedf",basedf, envir=tabenv)
 
   if(family=="survival" | family=="poisson") {
     ## put time/event/status vars into basedf, for surv, which is subsetted
-   
+
     if(missing(subset)) {
       subset=rep(TRUE, nrow(data))
     } else {
@@ -238,7 +240,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
     ## see if more rows were removed for NAs by na.action
     if(sum(subset) != nrow(basedf)) {
       subset[subset==TRUE & rownames(data) %nin% rownames(basedf)] <- FALSE
-    } 
+    }
     svars <- str_trim(strsplit(names(basedf)[1],split=",")[[1]],side="both")
     rparidx <- ifelse(grepl("\\)", svars), regexpr("\\)",svars)-1,nchar(svars))
     svars <- substr(svars, 1, rparidx)
@@ -246,14 +248,14 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
     svars <- substr(svars, lparidx,nchar(svars))
     for(sname in svars) {
       basedf[,sname] <- data[subset,sname]
-    }   
+    }
   }
-  
-  if (nrow(basedf) == 0) { 
-    stop("No (non-missing) observations")
-  } 
 
-  fitList <- list() 
+  if (nrow(basedf) == 0) {
+    stop("No (non-missing) observations")
+  }
+
+  fitList <- list()
   modeldf <- modeldf[,!duplicated(colnames(modeldf))]
   adjCols <- sapply(adjVars,function(x) grep(x, colnames(modeldf), fixed=TRUE))
   if(length(adjCols)<1) adjCols <- numeric()
@@ -268,7 +270,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
   }
 
   for(eff in effCols) {
-    
+
     formulaStr <- paste0(yTerm, "~", paste(colnames(modeldf)[c(eff, adjCols)], collapse="+"))
 
     ## placeholder for ordered, don't do any fitting
@@ -278,7 +280,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       ## look into using same ordered test from tableby
       fitList[[xname]] <- list(#coeff=summary(coeff(p(modeldf[,1]~ modeldf[,eff]),
                                N=sum(!is.na(modeldf[,eff])),
-                               family="ordered", label=xname)      
+                               family="ordered", label=xname)
     } else if (family == "gaussian") {
       ## issue warning if appears categorical
       if(length(unique(modeldf[,1])) <= 5) {
@@ -291,13 +293,13 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       lmfit <- eval(call("lm", formula=formulaStr, data=basedf, x=TRUE, weights=weights), envir=tabenv)
   ## lmfit <- stats::lm(formulaStr, data=basedf, weights="weights", )
       coeffTidy <- tidy(lmfit, conf.int=TRUE, conf.level=control$conf.level)
-     
+
       if(any(grepl("(weights)", colnames(lmfit$model)))) {
         lmfit$model <- lmfit$model[,-grep("(weights)", colnames(lmfit$model))]
       }
       coeffTidy$standard.estimate <- lm.beta(lmfit)
       names(coeffTidy) <- gsub("conf.low","CI.lower.estimate",
-                            gsub("conf.high", "CI.upper.estimate",names(coeffTidy)))   
+                            gsub("conf.high", "CI.upper.estimate",names(coeffTidy)))
       xterms=coeffTidy[grep(xname,coeffTidy$term,fixed=TRUE),"term"]
       ## handle when xterm is categorical with level tagged on
       if(nchar(xterms[1]) > nchar(xname)) {
@@ -307,17 +309,17 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       for(adj in adjVars) { ## manage adj terms and labels
         aterm <- coeffTidy[grep(adj,coeffTidy$term,fixed=TRUE),"term"]
         if(length(aterm)>0) {
-          adjterms <- c(adjterms, aterm)    
-          alabel <- attributes(modeldf[,adj])$label      
+          adjterms <- c(adjterms, aterm)
+          alabel <- attributes(modeldf[,adj])$label
           if(is.null(alabel))
             alabel <- adj
           ## handle when adj term is categorical with level tagged on
           if(nchar(aterm[1]) > nchar(adj))
-            alabel <- gsub(adj, paste0(alabel, " "), aterm)        
+            alabel <- gsub(adj, paste0(alabel, " "), aterm)
           adjlabels <- c(adjlabels, alabel)
         }
       }
-      
+
       ## Continuous variable (numeric) ###############
       ## Note: Using tidy changes colname from 't value' to 'statistic'
       modelGlance <- c(glance(lmfit),N=sum(!is.na(modeldf[,eff])),
@@ -327,21 +329,21 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
         names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
       }
       fitList[[xname]] <- list(coeff=coeffTidy,
-                               family="gaussian", 
+                               family="gaussian",
                                xterms=xterms, label=labelEff,
                                adjterms=adjterms, adjlabels=adjlabels,
                                glance=modelGlance)
-           
+
     } else if (family == "binomial" || family == "quasibinomial") {
       ## These families are used in glm
-      
+
       ## I think this is taken care of with the pROC:: below
       ## require(pROC, quietly=TRUE,warn.conflicts=FALSE)
-      
+
       xname <- colnames(modeldf)[eff]
       labelEff <-  attributes(modeldf[,eff])$label
       if(is.null(labelEff))  labelEff <- xname
-      
+
       fit <- eval(call("glm", formula=formulaStr, data=basedf, family=family, x=TRUE, weights=weights), envir=tabenv)
      # fit <- glm(formulaStr, data=basedf, family=family, x=TRUE, weights="weights")
       rocOut <- pROC::roc(fit$y ~ predict(fit, type='response'))
@@ -352,11 +354,11 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       coeffTidy <- tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
       names(coeffTidy) <- gsub("conf.low","CI.lower.estimate",
                                gsub("conf.high", "CI.upper.estimate",names(coeffTidy)))
-      
+
       coeffTidy <- data.frame(coeffTidy, OR=coeffORTidy$estimate,
                               CI.lower.OR=coeffORTidy$conf.low,
                               CI.upper.OR=coeffORTidy$conf.high)
-      
+
       xterms <- coeffTidy[grep(xname,coeffTidy$term,fixed=TRUE),"term"]
       ## handle when xterm is categorical with level tagged on
       if(nchar(xterms[1]) > nchar(xname)) {
@@ -366,35 +368,35 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       for(adj in adjVars) { ## manage adj terms and labels
         aterm <- coeffTidy[grep(adj,coeffTidy$term,fixed=TRUE),"term"]
         if(length(aterm)>0) {
-          adjterms <- c(adjterms, aterm)    
-          alabel <- attributes(modeldf[,adj])$label      
+          adjterms <- c(adjterms, aterm)
+          alabel <- attributes(modeldf[,adj])$label
           if(is.null(alabel))
             alabel <- adj
           ## handle when adj term is categorical with level tagged on
           if(nchar(aterm[1]) > nchar(adj))
-            alabel <- gsub(adj, paste0(alabel, " "), aterm)        
+            alabel <- gsub(adj, paste0(alabel, " "), aterm)
           adjlabels <- c(adjlabels, alabel)
         }
       }
       ## tidy data frame has extra column for terms (row names), shift col index +1
-      ## 'z value' changed to 'statistic'    
+      ## 'z value' changed to 'statistic'
       modelGlance <- c(glance(fit),concordance=pROC::auc(rocOut),
-                       N=sum(!is.na(modeldf[,eff])), Nmiss=sum(is.na(modeldf[,eff]))) 
+                       N=sum(!is.na(modeldf[,eff])), Nmiss=sum(is.na(modeldf[,eff])))
       if(any(grepl("Nmiss2",control$binomial.stats))) {
         names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
       }
-      fitList[[xname]] <- list(coeff=coeffTidy,                               
+      fitList[[xname]] <- list(coeff=coeffTidy,
                                family=family, label=labelEff,
                                xterms=xterms, adjterms=adjterms,
                                glance=modelGlance)
-      
+
     } else if (family == "quasipoisson" || family == "poisson") {
       ## These families use glm
       xname <- colnames(modeldf)[eff]
       labelEff <-  attributes(modeldf[,eff])$label
-      if(is.null(labelEff))  labelEff <- xname     
+      if(is.null(labelEff))  labelEff <- xname
       fit <- eval(call("glm", formula=formulaStr, data=basedf, family=family, x=TRUE, weights=weights), envir=tabenv)
-      
+
 ##      fit <- glm(formulaStr, data=basedf, family=family, x=TRUE, weights=weights)
       #coeffbeta <- summary(fit)$coef
       ## find out that broom:::tidy.lm allows conf.int and exp
@@ -403,7 +405,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       coeffTidy <- tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
       names(coeffTidy) <- gsub("conf.low","CI.lower.estimate",
                             gsub("conf.high", "CI.upper.estimate",names(coeffTidy)))
-      
+
       coeffTidy <- data.frame(coeffTidy, RR=coeffRRTidy$estimate,
                               CI.lower.RR=coeffRRTidy$conf.low,
                               CI.upper.RR=coeffRRTidy$conf.high)
@@ -417,24 +419,24 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       for(adj in adjVars) { ## manage adj terms and labels
         aterm <- coeffTidy[grep(adj,coeffTidy$term,fixed=TRUE),"term"]
         if(length(aterm)>0) {
-          adjterms <- c(adjterms, aterm)    
-          alabel <- attributes(modeldf[,adj])$label      
+          adjterms <- c(adjterms, aterm)
+          alabel <- attributes(modeldf[,adj])$label
           if(is.null(alabel))
             alabel <- adj
           ## handle when adj term is categorical with level tagged on
           if(nchar(aterm[1]) > nchar(adj))
-            alabel <- gsub(adj, paste0(alabel, " "), aterm)        
+            alabel <- gsub(adj, paste0(alabel, " "), aterm)
           adjlabels <- c(adjlabels, alabel)
         }
       }
       ## tidy data frame has extra column for terms (row names), shift col index +1
-      ## 'z value' changed to 'statistic'    
-     
+      ## 'z value' changed to 'statistic'
+
       modelGlance <- c(glance(fit),N=sum(!is.na(modeldf[,eff])), Nmiss=sum(is.na(modeldf[,eff])))
       if(any(grepl("Nmiss2",control$poisson.stats))) {
         names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
       }
-      fitList[[xname]] <- list(coeff=coeffTidy,                               
+      fitList[[xname]] <- list(coeff=coeffTidy,
                             family=family, label=labelEff,
                             xterms=xterms, adjterms=adjterms,
                             glance=modelGlance)
@@ -446,19 +448,19 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       if(is.null(labelEff))  labelEff <- xname
 
       ph <- eval(call("coxph", formula=stats::as.formula(formulaStr), data=basedf, weights=weights), envir=tabenv)
-      
+
       #ph <- coxph(stats::as.formula(formulaStr), data=data, weights=weights) ## should be this:modeldf)
       ## use tidy to get both CIs, merge
       coeffHRTidy <- tidy(ph, exponentiate=TRUE, conf.int=.95)
       coeffTidy <- tidy(ph, exponentiate=FALSE, conf.int=.95)
       names(coeffTidy) <- gsub("conf.low","CI.lower.estimate",
-                            gsub("conf.high", "CI.upper.estimate",names(coeffTidy)))   
+                            gsub("conf.high", "CI.upper.estimate",names(coeffTidy)))
       coeffTidy <- data.frame(coeffTidy, HR=coeffHRTidy$estimate,
                               CI.lower.HR=coeffHRTidy$conf.low,
                               CI.upper.HR=coeffHRTidy$conf.high)
-      
+
  ##     coeffTidy[ coeffTidy > 1e60  | coeffTidy < -1e60] <- NA
-      
+
       xterms <- coeffTidy[grep(xname,coeffTidy$term,fixed=TRUE),"term"]
       ## handle when xterm is categorical with level tagged on
       if(nchar(xterms[1]) > nchar(xname)) {
@@ -468,25 +470,25 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       for(adj in adjVars) { ## manage adj terms and labels
         aterm <- coeffTidy[grep(adj,coeffTidy$term,fixed=TRUE),"term"]
         if(length(aterm)>0) {
-          adjterms <- c(adjterms, aterm)    
-          alabel <- attributes(modeldf[,adj])$label      
+          adjterms <- c(adjterms, aterm)
+          alabel <- attributes(modeldf[,adj])$label
           if(is.null(alabel))
             alabel <- adj
           ## handle when adj term is categorical with level tagged on
           if(nchar(aterm[1]) > nchar(adj))
-            alabel <- gsub(adj, paste0(alabel, " "), aterm)        
+            alabel <- gsub(adj, paste0(alabel, " "), aterm)
           adjlabels <- c(adjlabels, alabel)
         }
       }
-      
-      ## work with fit to get hr, try summary(fit) as above    
+
+      ## work with fit to get hr, try summary(fit) as above
       modelGlance <-  c(glance(ph),Nmiss=sum(is.na(modeldf[,eff])))
       names(modelGlance) <- gsub("n$","N", gsub("nevent","Nevent", names(modelGlance)))
       if(any(grepl("Nmiss2",control$survival.stats))) {
         names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
       }
-      ## Survival (time to event) #######    
-      fitList[[xname]] <- list(coeff=coeffTidy,          
+      ## Survival (time to event) #######
+      fitList[[xname]] <- list(coeff=coeffTidy,
                            family="survival", label=labelEff,
                            xterms=xterms, adjterms=adjterms,
                            glance=c(glance(ph),
@@ -494,14 +496,14 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
     }
 ## put xname and endpoint in glance, summary and as.data.frame to pull from there
     fitList[[xname]]$glance <- c(fitList[[xname]]$glance, endpoint=yTerm, endlabel=yLabel, x=xname)
-    
+
   } # end for: eff
 
   ##  if(!usingRCF() & !usingNCSA()) {
   ##    cat(paste0("R-", version$major,".", version$minor, "\t", system("echo $USER",intern=TRUE), "\t", Sys.Date(), "\n"),
-  ##        file="/projects/bsi/infrastructure/s200555.Rinfrastructure/rlogs/modelsum.log",append=TRUE)  
+  ##        file="/projects/bsi/infrastructure/s200555.Rinfrastructure/rlogs/modelsum.log",append=TRUE)
   ##  }
-  
+
   msList <- list(fits=fitList, control = control, Call = Call, family=family)
                  ##, adjust=adjVars)
   class(msList) <- "modelsum"
@@ -516,7 +518,7 @@ survival <- function() list(family="survival")
 mySeq <- function(from, to) {
 	if (from > to)
 		return(seq_len(0))
-	
+
 	return(seq(from, to))
 }
 
@@ -529,7 +531,7 @@ print.modelsum <- function(x, ...) {
 #  }
 
 #  else {
-    cat("Modelsum S3 Object\n\n")  
+    cat("Modelsum S3 Object\n\n")
     cat("Function Call: \n")
     print(x$Call)
     cat("\n")
@@ -542,7 +544,7 @@ print.modelsum <- function(x, ...) {
     }
     print(xvars)
 #  }
-  invisible(x)  
+  invisible(x)
 }
 
 #' @rdname modelsum

@@ -10,11 +10,11 @@
 
 #' Summary Statistics of a Set of Independent Variables by a Categorical Variable
 #'
-#' Summarize one or more variables (x) by a categorical variable (y). Variables 
-#'   on the right side of the formula, i.e. independent variables, are summarized by the 
+#' Summarize one or more variables (x) by a categorical variable (y). Variables
+#'   on the right side of the formula, i.e. independent variables, are summarized by the
 #'   levels of a categorical variable on the left of the formula. Optionally, an appropriate test is performed to test the
 #'   distribution of the independent variables across the levels of the categorical variable.
-#' 
+#'
 #' @param formula an object of class \code{\link{formula}}; a symbolic description of the variables to be summarized by the group,
 #'   or categorical variable, of interest. See "Details" for more information. To only view overall summary
 #'   statistics, a one-sided formula can be used.
@@ -31,12 +31,12 @@
 #' @param control control parameters to handle optional settings within \code{tableby}.
 #'   Two aspects of \code{tableby} are controlled with these: test options of RHS variables across levels of the categorical
 #'   grouping variable, and x variable summaries within the grouping variable. Arguments for \code{tableby.control}
-#'   can be passed to \code{tableby} and will be set with \code{tableby.control}, but if using
-#'   \code{control=tableby.control(test=TRUE), test=FALSE}, \code{test} will be \code{TRUE}. See \code{\link{tableby.control}} for more details.
+#'   can be passed to \code{tableby} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,
+#'   the latter are used. See \code{\link{tableby.control}} for more details.
 #' @param ... additional arguments to be passed to internal \code{tableby} functions. See "Details" for information.
 #'   Currently not implemented in \code{print.tableby}.
 #' @param x an object of class \code{tableby}.
-#' 
+#'
 #' @details
 #' The group variable (if any) is categorical, which could be an integer, character,
 #' factor, or ordered factor. \code{tableby} makes a simple summary of
@@ -81,43 +81,43 @@
 #'     \code{logrank}: log-rank , the default for time-to-event variables
 #'   }
 #' }
-#' 
+#'
 #' To perform a mixture of asymptotic and rank-based tests on two
 #' different continuous variables, an example formula is:
 #' \code{formula = group ~ anova(age) + kwt(height)}. The test settings
 #' in \code{tableby.control} apply to all independent variables of a given type.
-#'      
+#'
 #' The summary statistics reported for each independent variable within the
 #' group variable can be set in \code{\link{tableby.control}}.
-#' 
-#' @return 
-#' 
+#'
+#' @return
+#'
 #' An object with class \code{'tableby'}, which is effectively a list with
 #' the variables from the right-side in x and the group variable in y (if any).
 #' Then, each item in x has these:
-#' 
+#'
 #' \item{stats}{Summary statistics of the RHS variable within each level of the LHS variable}
 #' \item{test}{Formal test of the distribution of the RHS variable across the levels of the LHS variable}
 #' \item{label}{The label attribute of a variable. It is set to the label attribute of a data column, if it exists,
-#'   otherwise set to the variable name in \code{data}. Can be changed with \code{\link{labels.tableby}} function for the tableby object.} 
-#'   
+#'   otherwise set to the variable name in \code{data}. Can be changed with \code{\link{labels.tableby}} function for the tableby object.}
+#'
 #' The object also contains the original function call and the \code{tableby.control} list that is used in \code{tableby}.
-#' 
-#' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}}, 
+#'
+#' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}},
 #'   \code{\link{print.tableby}}, \code{\link{summary.tableby}}, \code{\link{formulize}}
-#'   
+#'
 #' @examples
 #' data(mockstudy)
 #' tab1 <- tableby(arm ~ sex + age, data=mockstudy)
 #' summary(tab1, text=TRUE)
-#' 
+#'
 #' mylabels <- list(sex = "SEX", age ="Age, yrs")
 #' summary(tab1, labelTranslations = mylabels, text=TRUE)
-#' 
-#' tab3 <- tableby(arm ~ sex + age, data=mockstudy, test=FALSE, total=FALSE, 
+#'
+#' tab3 <- tableby(arm ~ sex + age, data=mockstudy, test=FALSE, total=FALSE,
 #'                 numeric.stats=c("median","q1q3"), numeric.test="kwt")
 #' summary(tab3, text=TRUE)
-#' 
+#'
 #' tab.test <- tableby(arm ~ kwt(age) + anova(bmi) + kwt(ast), data=mockstudy)
 #' tests(tab.test)
 #' @author Jason Sinnwell, Beth Atkinson, Gregory Dougherty, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
@@ -128,10 +128,11 @@ NULL
 
 #' @rdname tableby
 #' @export
-tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control=list(...), ...) {
- 
-  control <- do.call("tableby.control", control)
- 
+tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control = NULL, ...) {
+
+  control <- c(list(...), control)
+  control <- do.call("tableby.control", control[!duplicated(names(control))])
+
   Call <- match.call()
   ## Tell user if they passed an argument that was not expected, either here or in control
   expectArgs <- c("formula","data","na.action","subset","weights", "control", names(control))
@@ -141,7 +142,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   }
   ## pick up extra control arguments from command via ...
   control <- do.call("tableby.control", control)
- 
+
   indx <- match(c("formula", "data", "subset", "weights", "na.action"), names(Call), nomatch = 0)
   if(indx[1] == 0) {   ## formula
     stop("A formula argument is required")
@@ -166,9 +167,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   }
   ##  set up new environment for
   ## if specials, assign dummy versions of those functions
-     ## if(any(!is.null(attr(temp.call$formula, "specials")))) 
+     ## if(any(!is.null(attr(temp.call$formula, "specials"))))
   tabenv <- new.env(parent = environment(formula))
-  
+
   if (!is.null(attr(temp.call$formula, "specials")$anova)) {
     ## allow stat functions to be passed as single arguments that are strings of function names
     ## Store this as attribute in the modeldf column, along with the actual name of the variable,
@@ -204,9 +205,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
            envir = tabenv)
   }
   ## set tabenv as environment in which to evalulate formula
-  #if(any(!is.null(attr(temp.call$formula, "specials")))) 
+  #if(any(!is.null(attr(temp.call$formula, "specials"))))
   environment(temp.call$formula) <- tabenv
-  
+
   ## evaluate the formula with env set for it
   modeldf <- eval.parent(temp.call)
   if (nrow(modeldf) == 0) {
@@ -231,8 +232,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   }
   if (!is.null(weights) && (!is.numeric(weights) | any(weights<0))) {
     stop("'weights' must be a numeric vector and must be non-negative")
-  }  
-  
+  }
+
   ## find which columnss of modeldf have specials assigned to known specials
   specialIndices <- unlist(attr(Terms, "specials"))
   specialTests <- rep("",ncol(modeldf))
@@ -240,19 +241,19 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   ## This disallows functions with a number at the end, and trims off up to 999 instances of
   ## the same test name
   specialTests[specialIndices] <- gsub("[0-9]$","",gsub("[0-9]$","",gsub("[0-9]$","",names(specialIndices))))
-  
+
   ## list of x variables
   xList <- list()
   ## turn warnings off (for chisq test), set back later
   oldwarn <- options()$warn
   options(warn = -1)
-  
+
   ## fix of droplevels on by factor suggested by Ethan Heinzen 4/12/2016
   if(is.factor(modeldf[,1])) {
     modeldf[,1] <- droplevels(modeldf[,1])
   }
-  
-  for(eff in 2:ncol(modeldf)) { 
+
+  for(eff in 2:ncol(modeldf)) {
 
     ## ordered factor
     if("ordered" %in% class(modeldf[,eff])) {
@@ -260,13 +261,13 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       ## stats
       ostatList <- list()
       ostyles <- character()
-      xlevels <- levels(modeldf[,eff])     
-      ## get stats funs from either formula  or control 
+      xlevels <- levels(modeldf[,eff])
+      ## get stats funs from either formula  or control
       ordered.stats <- if(length(attributes(modeldf[,eff])$stats)>0) {
         attributes(modeldf[,eff])$stats
-      } else { 
+      } else {
         control$ordered.stats
-      }     
+      }
       ## if no missings, and control says not to show missings,
       ## remove Nmiss stat fun
       if(sum(is.na(modeldf[,eff])) == 0 && any(grepl("Nmiss$",ordered.stats))) {
@@ -281,13 +282,13 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
           bystatlist[[as.character(bylev)]] <- eval(call(statfun, modeldf[idx,eff], levels=xlevels, na.rm=TRUE, weights=weights[idx]))
         }
         ostatList[[statfun]] <- bystatlist
-    
+
         ## add Total
         if(control$total) {
           ostatList[[statfun]]$Total <- eval(call(statfun,modeldf[,eff], levels=xlevels, weights=weights))
-        }       
+        }
       }
-      
+
       ## test
       if(control$test) {
         if(nchar(specialTests[eff]) > 0) {
@@ -298,19 +299,19 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       } else {
         testout <- NULL
       }
-      
+
       ## label
       nameEff <- attributes(modeldf[,eff])$name
       if(is.null(nameEff))  nameEff <- names(modeldf)[eff]
       labelEff <-  attributes(modeldf[,eff])$label
       if(is.null(labelEff))  labelEff <- nameEff
-      
+
       xList[[nameEff]] <- list(stats=ostatList, test=testout, label=labelEff,
                                            name=names(modeldf)[eff],
                                            type="ordinal", output=ostyles)
-      
+
     } else if(any( c("character", "factor", "logical") %in% c(mode(modeldf[,eff]), class(modeldf[,eff])))) {
-    ##############################################  
+    ##############################################
     ## categorical variable (character or factor)
     ##############################################
 
@@ -322,7 +323,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       if(class(modeldf[,eff])=="logical") {
         modeldf[,eff]<- factor(modeldf[,eff], levels=c(FALSE, TRUE))
       }
-   
+
       ## to make sure all levels of cat variable are counted, need to pass values along
       xlevels <- if(is.factor(modeldf[,eff])) {
         levels(modeldf[,eff])
@@ -334,15 +335,15 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       ## remove Nmiss stat fun
       cat.stats <- if(length(attributes(modeldf[,2])$stats)>0) {
         attributes(modeldf[,eff])$stats
-      } else { 
+      } else {
         control$cat.stats
       }
       if(sum(is.na(modeldf[,eff])) == 0 && any(grepl("Nmiss$",cat.stats))) {
         cat.stats <- cat.stats[!grepl("Nmiss$", cat.stats)]
-      }  
+      }
       for(statfun in cat.stats) {
         cstyles <- c(cstyles, ifelse(statfun %in% c("countpct"), "percent",NA))
-        bystatlist <- list()     
+        bystatlist <- list()
         for(bylev in sort(unique(modeldf[,1]))) {
           idx <- which(modeldf[,1] == bylev)
           bystatlist[[as.character(bylev)]] <- eval(call(statfun, modeldf[idx,eff], levels=xlevels, na.rm=TRUE, weights=weights[idx]))
@@ -350,20 +351,20 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         cstatList[[statfun]] <- bystatlist
         ## without weights can do:
         ##   tapply(modeldf[,eff],modeldf[,1], statfun, levels=xlevels, na.rm=TRUE,simplify=FALSE, weights=weights, ...)
-        
+
         ## add Total
         if(control$total) {
           cstatList[[statfun]]$Total <- eval(call(statfun,modeldf[,eff], levels=xlevels, weights=weights))
         }
       }
-    
-      ## simplify, only do if num-levels is 2       
+
+      ## simplify, only do if num-levels is 2
       if(control$cat.simplify==TRUE &
          !is.null(nrow(cstatList[[statfun]][[1]])) && nrow(cstatList[[statfun]][[1]])==2) {
-        ##length(xlevels)==2) {          
+        ##length(xlevels)==2) {
         cstatList[[statfun]] <- lapply(cstatList[[statfun]], function(x) x[-1,])
       }
-   
+
       ## test
       if(control$test) {
         if(nchar(specialTests[eff]) > 0) {
@@ -379,15 +380,15 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       if(is.null(nameEff))  nameEff <- names(modeldf)[eff]
       labelEff <-  attributes(modeldf[,eff])$label
       if(is.null(labelEff))  labelEff <- nameEff
-      
+
       xList[[nameEff]] <- list(stats=cstatList, test=testout, label=labelEff,
                                name=names(modeldf)[eff],
                                type="categorical", output=cstyles)
-      
+
     } else if("Date" %in% c(mode(modeldf[,eff]),class(modeldf[,eff]))) {
-      
+
       ######## Date variable ###############
-     
+
       #stats
       dstatList <- list()
       dstyles <- character()
@@ -402,7 +403,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         date.stats <- date.stats[!grepl("Nmiss$", date.stats)]
       }
 
-      for(statfun in date.stats) {        
+      for(statfun in date.stats) {
         dstyles <- c(dstyles, ifelse(statfun %in% "range", "range",
                         ifelse(statfun %in% "q1q3","list",
                            ifelse(statfun %in% c("medianrange","medianq1q3"), "medlist",NA))))
@@ -432,19 +433,19 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       } else {
         testout <- NULL
       }
-      
+
       ## label
       nameEff <- attributes(modeldf[,eff])$name
       if(is.null(nameEff))  nameEff <- names(modeldf)[eff]
       labelEff <-  attributes(modeldf[,eff])$label
       if(is.null(labelEff))  labelEff <- nameEff
-      
+
       xList[[nameEff]] <- list(stats=dstatList, test=testout, label=labelEff,
                                            name=names(modeldf)[eff],
                                            type="Date", output=dstyles)
 
     } else if("Surv" %in% class(modeldf[,eff])) {
-    
+
       ##### Survival (time to event) #######
 
       ## stats
@@ -456,15 +457,15 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       }
       stratfit <- survival::survfit(modeldf[,eff] ~ modeldf[,1], weights=weights)
       totfit <- survival::survfit(modeldf[,eff] ~ 1, weights=weights)
-      for(statfun in control$surv.stats) {       
+      for(statfun in control$surv.stats) {
         sstyles <- c(sstyles, ifelse(statfun=="NeventsSurv", "pct", NA))
-        sstatList[[statfun]] <- as.list(eval(call(statfun, stratfit, times=times)))        
+        sstatList[[statfun]] <- as.list(eval(call(statfun, stratfit, times=times)))
         ## add Total
         if(control$total) {
           sstatList[[statfun]]$Total <- eval(call(statfun,totfit, times=times))
-        } 
+        }
       }
-    
+
       ## test
       if(control$test) {
         if(nchar(specialTests[eff]) > 0) {
@@ -475,7 +476,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       } else {
         testout <- NULL
       }
-        
+
       ## label
       nameEff <- attributes(modeldf[,eff])$name
       if(is.null(nameEff))  nameEff <- names(modeldf)[eff]
@@ -501,7 +502,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         sstyles <- sstyles[-idx]
         risksurv <- TRUE
       }
-      
+
       xList[[nameEff]] <- list(stats=sstatList, test=testout, label=labelEff,
                                            name=names(modeldf)[eff],
                                            type="survival", output=sstyles)
@@ -515,11 +516,11 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
                                            name=gsub("Surv","AtRisk",names(modeldf)[eff]),
                                            type="survival", output=srskstyles)
       }
-      
+
     } else if(any(c("numeric", "integer", "difftime") %in% c(mode(modeldf[,eff]),class(modeldf[,eff])))) {
-      
+
       ######## Continuous variable (numeric) ###############
-     
+
       #stats
       nstatList <- list()
       nstyles <- character()
@@ -552,40 +553,40 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         ## add Total
         if(control$total) {
           nstatList[[statfun]]$Total <- eval(call(statfun,modeldf[,eff], na.rm=TRUE, weights=weights))
-        } 
+        }
         ## old way to call with ind_var, group_var, may go back, so keep around:
         ##  nstatList[[statfun]] <- eval(call(statfun, modeldf[,eff], modeldf[,1]))
       }
       ## tests: anova and kruskal.test
       if(control$test) {
-        if(nchar(specialTests[eff]) > 0) {         
+        if(nchar(specialTests[eff]) > 0) {
           testout <- eval(call(specialTests[eff], modeldf[,eff], modeldf[,1]))
         } else {
-          testout <- eval(call(control$numeric.test, modeldf[,eff], modeldf[,1]))        
+          testout <- eval(call(control$numeric.test, modeldf[,eff], modeldf[,1]))
         }
       } else {
         testout <- NULL
-      }   
+      }
       ## label
       nameEff <- attributes(modeldf[,eff])$name
       if(is.null(nameEff))  nameEff <- names(modeldf)[eff]
       labelEff <-  attributes(modeldf[,eff])$label
-    
+
       if( is.null(labelEff)  | (grepl("\\(", names(modeldf)[eff]) & grepl("\\(", nameEff))) labelEff <- nameEff
-      
+
       xList[[nameEff]] <- list(stats=nstatList, test=testout, label=labelEff,
                                            name=names(modeldf)[eff],
-                                           type="numeric", output=nstyles)      
+                                           type="numeric", output=nstyles)
 
     }
   }
 
   options(warn = oldwarn)
-  
+
   ## attributes: label/long-names
   ## number of RHS variables
 
-  
+
   labelBy <- attributes(modeldf[,1])$label
   if(is.null(labelBy)) {
     labelBy <- names(modeldf)[1]
@@ -595,25 +596,25 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   yList[[names(modeldf)[1]]] <- list(stats=unlist(table(factor(modeldf[,1],
                                      levels=sort(unique(modeldf[,1]))),exclude=NA)),
                                      label=labelBy, name=names(modeldf)[1])
-  
+
   if(control$total) {
      yList[[names(modeldf)[1]]]$stats <- c(yList[[names(modeldf)[1]]]$stats,Total=sum(!is.na(modeldf[,1])))
   }
-  
+
   tblList <- list(y = yList, x = xList, control = control, Call = match.call(), weights=userWeights)
   class(tblList) <- "tableby"
   ##  if(!usingRCF() & !usingNCSA()) {
   ##    cat(paste0("R-", version$major,".", version$minor, "\t", system("echo $USER",intern=TRUE), "\t", Sys.Date(), "\n"),
-  ##        file="/projects/bsi/infrastructure/s200555.Rinfrastructure/rlogs/tableby.log",append=TRUE)  
+  ##        file="/projects/bsi/infrastructure/s200555.Rinfrastructure/rlogs/tableby.log",append=TRUE)
   ##  }
-  return(tblList) 
+  return(tblList)
 }
 
 
 #' @rdname tableby
 #' @export
 print.tableby <- function(x, ...) {
-  cat("Tableby Object\n\n")  
+  cat("Tableby Object\n\n")
   cat("Function Call: \n")
   print(x$Call)
   cat("\n")
@@ -621,7 +622,7 @@ print.tableby <- function(x, ...) {
   print(names(x$y))
   cat("x variables:\n")
   print(names(x$x))
-  
-  invisible(x)  
+
+  invisible(x)
 }
 
