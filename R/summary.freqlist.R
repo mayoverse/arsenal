@@ -1,5 +1,5 @@
 #' summary.freqlist
-#' 
+#'
 #' Summarize the \code{freqlist} object
 #'
 #' @param object an object of class \code{\link{freqlist}}
@@ -19,12 +19,12 @@
 #' summary(withby)
 #' @author Tina Gunderson
 #' @export
-#' 
+#'
 summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, ...){
   #require(knitr, quietly = TRUE)
   if (!is.logical(single)) stop("single must be TRUE or FALSE")
   if(!is.null(labelTranslations)) labels(object) <- labelTranslations
-  
+
   # fmtdups <- function(vec){
   #   x <- vec
   #   x[is.na(x)] <- "NA"
@@ -32,7 +32,7 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, .
   #   x[x==y] <- ""
   #   return(x)
   # }
-  
+
   ## changed on 11/18/16 by EPH. The other one wasn't working in cases like the second testthat example (bug reported by Emily Lundt)
   fmtdups <- function(tab)
   {
@@ -40,7 +40,7 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, .
     tab[is.na(tab)] <- "NA"
     output <- tab
     num <- max(stringr::str_count(tab, ","))
-    
+
     for(col in 1:ncol(tab))
     {
       tmp <- apply(tab[, 1:col, drop = FALSE], 1, paste, collapse = paste0(rep(",", num + 1), collapse = "")) # in R >= 3.3.0, we could use strrep instead
@@ -48,7 +48,7 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, .
     }
     output
   }
-  
+
   if(is.null(object[["labels"]])){
     cnames <- names(object[["freqlist"]])
   } else {
@@ -65,10 +65,10 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, .
     byVar <- object[["byVar"]]
     freqdf <- object[["freqlist"]]
     for(i in match(byVar, names(freqdf))) {
-      if(sum(is.na(freqdf[, i])) > 0) {freqdf[, i] <- addNA(freqdf[, i])}
+      if(sum(is.na(freqdf[[i]])) > 0) {freqdf[[i]] <- addNA(freqdf[[i]])}
     }
     printlist <- by(freqdf, freqdf[, rev(byVar)], FUN = data.frame)
-    names(printlist) <- gsub("[.]",", ", levels(interaction(rev(freqdf[,byVar]))))
+    names(printlist) <- gsub("[.]",", ", levels(interaction(rev(freqdf[,byVar, drop = FALSE]))))
     for(i in 1:length(printlist)){
       if(!is.null(printlist[[i]])){
         if(nrow(printlist[[i]]) > 1){
