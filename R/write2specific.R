@@ -1,7 +1,7 @@
 #' write2word, write2html, write2pdf
-#' 
+#'
 #' Functions to output tables to a single Word, HTML, or PDF document.
-#' 
+#'
 #' @inheritParams write2
 #' @return \code{object} is returned invisibly, and \code{file} is written.
 #' @details
@@ -19,7 +19,7 @@
 #' tab.ex <- table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany")
 #' noby <- freqlist(tab.ex, na.options = "include")
 #' write2pdf(noby, "~/trash2.pdf")
-#' 
+#'
 #' # A more complicated example
 #' write2word(tab1, "~/trash.doc",
 #'   keep.md = TRUE,

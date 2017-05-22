@@ -1,7 +1,7 @@
 #' Helper functions for \code{write2}
-#' 
+#'
 #' Helper functions for \code{\link{write2}}.
-#' 
+#'
 #' @param x An R object to coerce to class \code{"verbatim"} or such an object to print.
 #' @param ... Other arguments passed to \code{print}.
 #' @details
@@ -16,7 +16,7 @@ NULL
 print.verbatim <- function(x, ...)
 {
   cat("```\n")
-  
+
   # This line demands some explanation:
   #   its purpose is to make sure that the "verbatim" class doesn't confuse
   #   the downstream print methods. For example, character vectors would

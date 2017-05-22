@@ -27,7 +27,7 @@ magic8 <- function(question=NULL){
          'Make a 3-D pie chart',
          "Yes, if the figure is colorful",
          'Very doubtful',
-         "PC Load Letter", 
+         "PC Load Letter",
          "Not Sure",
          "The possibility of successfully answering your question is approximately three thousand seven hundred and twenty to one!",
          "Depends...did you want the two-tailed probability or the one-tailed?",

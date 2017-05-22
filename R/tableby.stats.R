@@ -27,11 +27,11 @@
 #}
 
 #' tableby Summary Statistics Functions
-#' 
+#'
 #' A collection of functions that will report summary statistics. To create a custom function,
 #'   consider using a function with all three arguments and \code{...}. See the \code{\link{tableby}} vignette
 #'   for an example.
-#' 
+#'
 #' @param x Usually a vector.
 #' @param na.rm Should NAs be removed?
 #' @param weights A vector of weights.
@@ -54,7 +54,7 @@ meansd <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 medianrange <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   if(na.rm & length(x)==sum(is.na(x))) {
     return(c(NA,NA,NA))
-  } 
+  }
   wtd.quantile(x, probs=c(.5,0,1), na.rm, weights=weights, ...)
 }
 
@@ -62,7 +62,7 @@ medianrange <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 median <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   if(na.rm & length(x)==sum(is.na(x))) {
     return(NA)
-  } 
+  }
   if(class(x)=="Date") {
     as.Date(wtd.quantile(as.integer(x), weights=weights, probs=0.5, na.rm=na.rm, ...), origin="1970/01/01")
   } else {
@@ -74,7 +74,7 @@ median <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 range <- function(x, na.rm=TRUE, ...) {
   if(na.rm & length(x)==sum(is.na(x))) {
     return(c(NA,NA))
-  } 
+  }
   if(class(x)=="Date") {
     as.Date(base::range(as.integer(x), na.rm=na.rm), origin="1970/01/01")
   } else {
@@ -88,7 +88,7 @@ range <- function(x, na.rm=TRUE, ...) {
 ##    kmsumm <- summary(survfit(Surv() ~ group))
 
 ## ' Nevents
-## ' 
+## '
 ## ' Number of events in a survival object, within a group
 ## ' @param x a thing
 ## ' @param ... other arguments
@@ -99,9 +99,9 @@ Nevents <- function(x, ...) {
   mat <- summary(x, ...)$table
   if(!any(c(grepl("^events", colnames(mat)),grepl("^events",names(mat))))) {
     stop("Survival endpoint may not be coded 0/1.\n")
-  }  
-  if (!is.null(nrow(mat))) {    
-    rownames(mat) <- substr(rownames(mat), regexpr("=", rownames(mat)) + 
+  }
+  if (!is.null(nrow(mat))) {
+    rownames(mat) <- substr(rownames(mat), regexpr("=", rownames(mat)) +
                               1, nchar(rownames(mat)))
     return(mat[, "events"])
   }
@@ -110,9 +110,9 @@ Nevents <- function(x, ...) {
 
 ## Median survival
 ## ' medSurv
-## ' 
+## '
 ## ' Calculate median survival
-## ' 
+## '
 ## ' @param x kaplan-meier summary object, used within tableby
 ## ' @param ... other arguments
 ## ' @return vector of median subjects who have survived by time point
@@ -126,18 +126,18 @@ medSurv <- function(x, ...) {
   if(!is.null(nrow(mat))) {
     rownames(mat) <- substr(rownames(mat), regexpr("=",rownames(mat))+1, nchar(rownames(mat)))
     return(mat[,'median'])
-  } 
+  }
   return(as.numeric(mat['median']))
 }
-## 
+##
 NeventsSurv <- function(x, times=1:5) {
-  ## x is result of survfit() 
+  ## x is result of survfit()
   xsumm <- summary(x, times=times)
   if(is.null(x$strata)) {
     byList <- data.frame(n.event=cumsum(xsumm$n.event), surv=100*xsumm$surv, row.names=xsumm$time)
   } else {
-    
-    mat <- with(xsumm, data.frame(time,n.risk, n.event, n.censor, surv, strata))    
+
+    mat <- with(xsumm, data.frame(time,n.risk, n.event, n.censor, surv, strata))
     byList <- list()
     for(strat in unique(mat$strata)) {
       stratTrim <- substr(strat, regexpr("=", strat)+1, nchar(strat))
@@ -158,7 +158,7 @@ NriskSurv <- function(x, times=1:5) {
   xsumm <- summary(x, times=times)
   if(is.null(x$strata)) {
     byList <- data.frame(n.risk=xsumm$n.risk, row.names=xsumm$time)
-  } else {    
+  } else {
     xsumm <- summary(x, times=times)
     mat <- with(xsumm, data.frame(time,n.risk, n.event, n.censor, surv, strata))
     byList <- list()
@@ -170,7 +170,7 @@ NriskSurv <- function(x, times=1:5) {
         byList[[stratTrim]] <- rbind.data.frame(byList[[stratTrim]],
                                                 byList[[stratTrim]][nrow(byList[[stratTrim]]),])
         rownames(byList[[stratTrim]])[nrow(byList[[stratTrim]])] <- times[length(times)]
-        
+
       }
     }
   }
@@ -182,15 +182,15 @@ NriskSurv <- function(x, times=1:5) {
 ## Can write similar functions for NcensorTime, NriskTime, etc.
 
 ## ' survNinterval
-## ' 
+## '
 ## ' survival summary stat per N units of time. Default is years.
-## ' 
+## '
 ## ' @param x              a Surv() variable within tableby formula
 ## ' @param x.by           the by-variable in tableby
 ## ' @param time.interval  the interval of units of time over which to summarize in categories
 ## ' @return     vector of number of events per time interval
 survNinterval <- function(x, x.by, time.interval=1) {
-  #kmsumm <- survfit(x~x.by,type="kaplan-meier") 
+  #kmsumm <- survfit(x~x.by,type="kaplan-meier")
   nsurv <- as.matrix(x)[,1]
   breaks <- seq(0,max(nsurv)+time.interval, by=time.interval)
   tapply(cut(nsurv, breaks, levels=breaks[1:(length(breaks)-1)]), x.by, table, exclude=NA)
@@ -202,8 +202,8 @@ survNinterval <- function(x, x.by, time.interval=1) {
 q1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   if(na.rm & length(x)==sum(is.na(x))) {
     return(c(NA,NA))
-  } 
-  wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm, ...)  
+  }
+  wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm, ...)
 }
 
 #' @rdname tableby.stats
@@ -211,7 +211,7 @@ q1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   if(na.rm & length(x)==sum(is.na(x))) {
     return(c(NA,NA,NA))
-  } 
+  }
   wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, .75), na.rm=na.rm, ...)
 }
 
@@ -233,22 +233,22 @@ Nmiss2 <- Nmiss
 #' @rdname tableby.stats
 #' @export
 N <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  sum(weights[!is.na(x)])    
+  sum(weights[!is.na(x)])
 }
 
-## count within group variable 
+## count within group variable
 #' @rdname tableby.stats
 #' @export
 count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, length(x)), ...)  {
-    wtbl <- wtd.table(factor(x[!is.na(x)], levels = levels), 
+    wtbl <- wtd.table(factor(x[!is.na(x)], levels = levels),
         weights = weights[!is.na(x)], ...)
-    df <- data.frame(count = as.vector(wtbl$sum.of.weights), 
-        row.names = if (length(wtbl$x) == length(levels)) 
+    df <- data.frame(count = as.vector(wtbl$sum.of.weights),
+        row.names = if (length(wtbl$x) == length(levels))
           levels
         else names(wtbl$sum.of.weights))
     if (nrow(df) < length(levels)) {
         misslevs <- levels[!(levels %in% rownames(df))]
-        df <- rbind.data.frame(df, data.frame(count = rep(0, 
+        df <- rbind.data.frame(df, data.frame(count = rep(0,
             length(misslevs)),  row.names = misslevs))
     }
     return(df[as.character(levels), ,drop=FALSE])
@@ -281,10 +281,10 @@ format.countpct <- function(x,digits=5, pct='') {
     xformat <- cbind.data.frame(format(x[,1], digits=digits), format(x[,2], digits=digits))
     rownames(xformat) <- rownames(x)
     digits <- digits - 2
-    return (apply (xformat, 1, function(xrow) paste (xrow[1], " (", format (round (as.numeric (xrow[2]), digits), nsmall = digits), 
+    return (apply (xformat, 1, function(xrow) paste (xrow[1], " (", format (round (as.numeric (xrow[2]), digits), nsmall = digits),
                                                      pct, ")", sep = "")))
   } else {
     ## just one row
     return(paste(signif(x[1],digits=digits), "(",signif(x[2],digits=digits), ")",sep=""))
-  } 
+  }
 }

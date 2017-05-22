@@ -3,9 +3,9 @@
 ## Updated 7/23/2014 by Jason Sinnwell
 
 #' Convert numeric dates to Date object, and vice versa
-#' 
+#'
 #' Convert numeric dates for month, day, and year to Date object, and vice versa.
-#' 
+#'
 #' @param month integer, month (1-12).
 #' @param day integer, day of the month (1-31, depending on the month).
 #' @param year integer, either 2- or 4-digit year. If two-digit number, will add 1900 onto it, depending on range.
@@ -16,7 +16,7 @@
 #' @seealso \code{\link{Date}}, \code{\link{DateTimeClasses}}
 #' @examples
 #' mdy.Date(9, 2, 2013)
-#' 
+#'
 #' tmp <- mdy.Date(9, 2, 2013)
 #' Date.mdy(tmp)
 #' @name mdy.Date
@@ -34,7 +34,7 @@ mdy.Date <- function(month, day, year, yearcut=120) {
 
     month <- as.numeric(month)
     month <- ifelse(month < 1 | month > 12 | month != floor(month), NA, month)
-    
+
     year <- ifelse(year < yearcut, year + 1900, year)
     temp <- cbind(year, month, day)  # force them all to the same length
     ## allow NAs

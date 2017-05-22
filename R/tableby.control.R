@@ -14,9 +14,9 @@
 ## These are extra functions defined specifically for this function.
 
 #' Control settings for \code{tableby} function
-#' 
+#'
 #' Control test and summary settings for the \code{\link{tableby}} function.
-#' 
+#'
 #' @param test logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.
 #' @param total logical, telling \code{tableby} whether to calculate a column of totals across group variable.
 #' @param test.pname character string denoting the p-value column name in \code{\link{summary.tableby}}.
@@ -48,25 +48,25 @@
 #' @param nsmall digits to print after decimal point for numerics
 #' @param nsmall.pct digits to print after decimal point for percentages
 #' @param ... additional arguments to be passed to internal \code{tableby} functions and kept for summary method options, such as digits.
-#' @details 
+#' @details
 #' All tests can be turned off by setting \code{test} to FALSE.
 #'   Otherwise, test are set to default settings in this list, or set explicitly in the formula of \code{tableby}.
-#' 
+#'
 #' @return A list with settings to be used within the \code{tableby} function.
 #' @export
-#' 
+#'
 #' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby}}, \code{\link{summary.tableby}}
-#' 
+#'
 #' @author Jason Sinnwell, Beth Atkinson, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
-#' 
-#' @examples 
+#'
+#' @examples
 #' set.seed(100)
 #' ## make 3+ categories for Response
 #' mdat <- data.frame(Response=c(0,0,0,0,0,1,1,1,1,1),
 #'                    Sex=sample(c("Male", "Female"), 10,replace=TRUE),
 #'                    Age=round(rnorm(10,mean=40, sd=5)),
 #'                    HtIn=round(rnorm(10,mean=65,sd=5)))
-#'                    
+#'
 #' ## allow default summaries in RHS variables, and pass control args to
 #' ## main function, to be picked up with ... when calling tableby.control
 #' outResp <- tableby(Response ~ Sex + Age + HtIn, data=mdat, total=FALSE, test=TRUE)
@@ -79,7 +79,7 @@
 tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=FALSE,
    numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt",
    numeric.stats=c("Nmiss","meansd","q1q3","range"),
-   cat.stats=c("Nmiss","countpct"), 
+   cat.stats=c("Nmiss","countpct"),
    ordered.stats=c("Nmiss", "countpct"),
    surv.stats=c("Nevents","medSurv"),
    date.stats=c("Nmiss", "median","range"),
@@ -108,11 +108,11 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
   if(!is.null(nsmall) && (nsmall < 1)) {
 	  warning("nsmall must be positive integer, or NULL. Set to NULL. \n")
 	  nsmall <- NULL
-  }  
+  }
   if(!is.null(nsmall.pct) && (nsmall.pct < 1)) {
 	  warning("nsmall.pct must be positive integer, or NULL. Set to NULL. \n")
 	  nsmall.pct <- NULL
-  }  
+  }
   ## validate all test names
   if(!exists(numeric.test)) {
     stop("numeric test does not exist: ", numeric.test, "\n")
@@ -130,7 +130,7 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
     stop("date test does not exist: ", date.test, "\n")
   }
  ## validate summary stat function names
-  
+
   if(any(!exists(numeric.stats))) {
     stop("One or more numeric summary statistic functions do not exist.\n")
   }
@@ -149,10 +149,10 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
   return(list(test=test, total=total, test.pname=test.pname, cat.simplify=cat.simplify,
               numeric.test=numeric.test, cat.test=cat.test,
               ordered.test=ordered.test, surv.test=surv.test,
-              numeric.stats=numeric.stats, cat.stats=cat.stats, 
+              numeric.stats=numeric.stats, cat.stats=cat.stats,
               ordered.stats=ordered.stats,  surv.stats=surv.stats,
               date.test=date.test, date.stats=date.stats,
               stats.labels=stats.labels,
               digits=digits, digits.test=digits.test, nsmall=nsmall, nsmall.pct=nsmall.pct))
-  
+
 }

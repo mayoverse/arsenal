@@ -3,9 +3,9 @@
 ## Created: 9/3/2015
 
 #' Control settings for \code{modelsum} function
-#' 
+#'
 #' Control test and summary settings for \code{\link{modelsum}} function.
-#' 
+#'
 #' @param digits Numeric, denoting the number of significant digits for beta coefficients and standard errors.
 #' @param digits.test Numeric, denoting the number of significant digits for p-values.
 #' @param nsmall Numeric, denoting the number of digits after the decimal point for beta coefficients and standard errors.
@@ -26,12 +26,12 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
             poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","concordance","Nmiss"),
             survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),	...)
 {
-		
+
   ## validate digits
   if(is.null(digits)) {
     digits <- 3
   }
- 
+
   if(digits < 1) {
 	  warning("digits must be positive integer. Set to default. \n")
 	  digits <- 3
@@ -53,7 +53,7 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
 
   if(any(!(binomial.stats %in% binomial.stats.valid))) {
     stop(paste0("Invalid binomial stats: ",
-           paste(binomial.stats[!(binomial.stats %in% binomial.stats.valid)],collapse=","), "\n"))   
+           paste(binomial.stats[!(binomial.stats %in% binomial.stats.valid)],collapse=","), "\n"))
   }
   ## let CI.OR decode to CI.lower.OR and CI.upper.OR
   if(any(grepl("CI.OR", binomial.stats))) {
@@ -62,7 +62,7 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
   if(any(grepl("CI.estimate", binomial.stats))) {
     binomial.stats <- unique(c("CI.lower.estimate","CI.upper.estimate", binomial.stats[-grep("CI.estimate",binomial.stats)]))
   }
-  
+
   ##########################
   ## Gaussian stats:
   ##########################
@@ -80,7 +80,7 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
     gaussian.stats <- unique(c("CI.lower.estimate","CI.upper.estimate", gaussian.stats[-grep("CI.estimate",gaussian.stats)]))
   }
 
-  
+
 ##########################
   ## Poisson stats:
   ##########################
@@ -91,7 +91,7 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
   poisson.stats.valid <- c(c("RR","CI.lower.RR","CI.upper.RR", "p.value","concordance", "Nmiss"), # default
                    c("CI.RR","CI.estimate","CI.lower.estimate","CI.upper.estimate", "CI.RR", "Nmiss2", "std.error", "estimate", "statistic","endpoint"),
                    c("AIC", "BIC","logLik","dispersion","null.deviance","deviance","df.residual","df.null"))
-  
+
   if(any(!(poisson.stats %in% poisson.stats.valid))) {
       stop(paste0("Invalid poisson stats: ",
            paste(poisson.stats[!(poisson.stats %in% poisson.stats.valid)],collapse=","), "\n"))
@@ -128,5 +128,5 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
               show.adjust=show.adjust, show.intercept=show.intercept, conf.level=conf.level,
               binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
               poisson.stats=poisson.stats, survival.stats=survival.stats))
-  
+
 }

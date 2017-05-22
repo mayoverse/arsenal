@@ -5,9 +5,9 @@
 ## Helper functions for modelsum:  merge, subset, and labels (work like names)
 
 #' Helper functions for modelsum
-#' 
+#'
 #' A set of helper functions for \code{\link{modelsum}}.
-#' 
+#'
 #' @param object A \code{data.frame} resulting form evaluating \code{modelsum} formula.
 #' @param ... Other arguments, or a vector of indices for extracting.
 #' @param x,y A \code{modelsum} object.
@@ -36,7 +36,7 @@ lm.beta  <- function (MOD) {
     sx <- rep(NA,length(b))
     b.idx <- 1
     for(k in 2:ncol(MOD$model)) {
-      ## skip factors and char variables, 
+      ## skip factors and char variables,
       ## psplines consider doing sx, but need a second for loop for the ncol of those
       if(any(class(MOD$model[,k]) %in% c("character","factor", "pspline"))) {
         b.idx <- b.idx + ifelse(is.null(ncol(MOD$model[,k])), length(unique(MOD$model[,k]))-1, ncol(MOD$model[,k]))
@@ -81,7 +81,7 @@ labels.modelsum <- function(object, ...) {
   ##  get the formal labels from a tableby object's data variables
   ## y and x labels
   allLabels <- c(object$fits[[1]]$glance$endlabel, unlist(sapply(object$fits, function(obj) obj$label)))
-  ##, sapply(object$x, function(obj) obj$label))  
+  ##, sapply(object$x, function(obj) obj$label))
   names(allLabels) <- c(object$fits[[1]]$glance$endpoint, unlist(sapply(object$fits, function(obj) obj$xterm)))
   ## add on labels for adj vars
   if(!is.null(object$fits[[1]]$adjterms)) {
@@ -89,7 +89,7 @@ labels.modelsum <- function(object, ...) {
     allLabels <- c(allLabels, object$fits[[1]]$adjlabels)
     names(allLabels)[(length(allLabels)-nadj+1):length(allLabels)] <- object$fits[[1]]$adjterms
   }
-  
+
   return(allLabels)
 }
 
@@ -113,7 +113,7 @@ labels.modelsum <- function(object, ...) {
     }
     if(!is.null(x$fits[[k]]$adjterms)) {
       v2adj.idx <- match(vNames, x$fits[[k]]$adjterms)
-      adj2v.idx <- match(x$fits[[k]]$adjterms,vNames)     
+      adj2v.idx <- match(x$fits[[k]]$adjterms,vNames)
       if(sum(!is.na(adj2v.idx))>0) {
         x$fits[[k]]$adjlabels[v2adj.idx[!is.na(v2adj.idx)]] <- value[adj2v.idx[!is.na(adj2v.idx)]]
         used.idx <- unique(c(used.idx, adj2v.idx[!is.na(adj2v.idx)]))
@@ -124,16 +124,16 @@ labels.modelsum <- function(object, ...) {
       x$fits[[k]]$glance$endlabel <- value[y2v.idx]
       used.idx <- unique(c(used.idx, y2v.idx))
     }
-    
+
   }
-    
+
   if(any(!((1:length(value)) %in% used.idx))) {
     warning("Named value(s): ", paste(vNames[!((1:length(value)) %in% used.idx)],collapse=", "),
             " not matched in modelsum object \n")
-  }   
-    
+  }
+
   ## return modelsum object with updated labels
-  return(x)  
+  return(x)
 }
 
 
@@ -143,9 +143,9 @@ labels.modelsum <- function(object, ...) {
 #' @rdname modelsum.internal
 #' @export
 merge.modelsum <- function(x, y, ...) {
-   
+
   newobj <- list(x, y)
   class(newobj) <- "modelsumList"
-  return(newobj) 
+  return(newobj)
 }
 

@@ -1,7 +1,7 @@
 #' Mock study data for examples
-#' 
+#'
 #' Mock clinical study data for examples to test data manipulation and statistical functions
-#' 
+#'
 #' @format A data frame with 1499 observations on the following 15 variables:
 #'   \describe{
 #'     \item{\code{case}}{a numeric identifier-patient ID}

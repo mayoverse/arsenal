@@ -52,7 +52,7 @@ trend <- function(x, x.by) {
 }
 
 ## ' logrank
-## ' 
+## '
 ## ' survdiff logrank test
 ## ' @param x  surv variable
 ## ' @param x.by  by, categorical variable
