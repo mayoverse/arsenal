@@ -85,7 +85,7 @@ mdat <- data.frame(Response=c(0,0,0,0,0,1,1,1,1,1),
                    Sex=sample(c("Male", "Female"), 10,replace=TRUE),
                    Age=round(rnorm(10,mean=40, sd=5)),
                    HtIn=round(rnorm(10,mean=65,sd=5)))
-                   
+
 ## allow default summaries in RHS variables, and pass control args to
 ## main function, to be picked up with ... when calling tableby.control
 outResp <- tableby(Response ~ Sex + Age + HtIn, data=mdat, total=FALSE, test=TRUE)
@@ -95,10 +95,9 @@ outCtl <- tableby(Response ~ Sex + Age + HtIn, data=mdat,
 summary(outResp, text=TRUE)
 summary(outCtl, text=TRUE)
 }
-\author{
-Jason Sinnwell, Beth Atkinson, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
-}
 \seealso{
 \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby}}, \code{\link{summary.tableby}}
 }
-
+\author{
+Jason Sinnwell, Beth Atkinson, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
+}

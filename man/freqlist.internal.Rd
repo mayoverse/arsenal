@@ -2,8 +2,8 @@
 % Please edit documentation in R/freqlist.internal.R
 \name{freqlist.internal}
 \alias{freqlist.internal}
-\alias{labels.freqlist}
 \alias{labels<-.freqlist}
+\alias{labels.freqlist}
 \title{Helper functions for freqlist}
 \usage{
 \method{labels}{freqlist}(x) <- value
@@ -20,4 +20,3 @@
 \description{
 A set of helper functions for \code{\link{freqlist}}.
 }
-

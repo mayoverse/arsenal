@@ -14,20 +14,20 @@
 
 \item{title}{Title for the table, defaults to \code{NULL} (no title)}
 
-\item{labelTranslations}{List where name is the label in the output, and value is the label you 
+\item{labelTranslations}{List where name is the label in the output, and value is the label you
 want displayed e.g. \code{list(q1q3 = "Q1, Q3", medsurv = "Median Survival")}.}
 
-\item{digits}{Maximum number of digits to display for floating point numbers. 
-If \code{NA} (default), it uses the value from \code{object$control$digits} 
+\item{digits}{Maximum number of digits to display for floating point numbers.
+If \code{NA} (default), it uses the value from \code{object$control$digits}
 (whose default is 3, which would result in, e.g., 12.3, 1.23, 0.123, and 0.012).}
 
-\item{nsmall}{Minimum number of digits to the right of the decimal point to display for 
-floating point numbers.  If \code{NA} (default), it uses the value from \code{object$control$nsmall}. 
+\item{nsmall}{Minimum number of digits to the right of the decimal point to display for
+floating point numbers.  If \code{NA} (default), it uses the value from \code{object$control$nsmall}.
 Allowed non-\code{NA} values are \code{0 <= nsmall <= 20}.}
 
-\item{nsmall.ratio}{Minimum number of digits to the right of the decimal point to display 
-for the ratio statistics (OR, HR, RR). If \code{NA} (default) it uses the value from 
-\code{object$control$nsmall.ratio} (whose default is 2).  
+\item{nsmall.ratio}{Minimum number of digits to the right of the decimal point to display
+for the ratio statistics (OR, HR, RR). If \code{NA} (default) it uses the value from
+\code{object$control$nsmall.ratio} (whose default is 2).
 Allowed values are \code{0 <= nsmall.ratio <= 20}.}
 
 \item{digits.test}{Number of digits to display for a p-value. Default is 5 (e.g. 0.12345).}
@@ -38,13 +38,13 @@ Allowed values are \code{0 <= nsmall.ratio <= 20}.}
 
 \item{text}{Logical, denoting whether to print out the text version.}
 
-\item{removeBlanks}{Logical, denoting if any blank lines should be removed from the output. 
+\item{removeBlanks}{Logical, denoting if any blank lines should be removed from the output.
 Default is value of \code{"text"}, and will be set to \code{FALSE} if text is \code{FALSE}.}
 
-\item{labelSize}{Relative size difference between label column and other columns. 
+\item{labelSize}{Relative size difference between label column and other columns.
 Default is 1.2: label column ~20\% bigger than other columns}
 
-\item{pfootnote}{Logical denoting if a footnote should be added describing the test used 
+\item{pfootnote}{Logical denoting if a footnote should be added describing the test used
 to generate the p value.  Default is \code{FALSE}.}
 
 \item{...}{Other arguments (not implemented a this time).}
@@ -55,10 +55,9 @@ Results are cat'ed to stdout, and returned invisibly as a character vector.
 \description{
 Format the information in \code{object} as a table using Pandoc coding or plain text, and cat it to stdout.
 }
-\author{
-Greg Dougherty
-}
 \seealso{
 \code{\link{modelsum}}, \code{\link{print.modelsum}}, \code{\link{as.data.frame.modelsum}}
 }
-
+\author{
+Greg Dougherty
+}

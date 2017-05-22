@@ -16,20 +16,20 @@
 
 \item{title}{Title for the table, defaults to \code{NULL} (no title)}
 
-\item{labelTranslations}{List where name is the label in the output, and value is the label you 
+\item{labelTranslations}{List where name is the label in the output, and value is the label you
 want displayed e.g. \code{list(q1q3 = "Q1, Q3", medsurv = "Median Survival")}.}
 
-\item{digits}{Maximum number of digits to display for floating point numbers. 
-If \code{NA} (default), it uses the value from \code{object$control$digits} 
+\item{digits}{Maximum number of digits to display for floating point numbers.
+If \code{NA} (default), it uses the value from \code{object$control$digits}
 (whose default is 3, which would result in, e.g., 12.3, 1.23, 0.123, and 0.012).}
 
-\item{nsmall}{Minimum number of digits to the right of the decimal point to display for 
-floating point numbers.  If \code{NA} (default), it uses the value from \code{object$control$nsmall}. 
+\item{nsmall}{Minimum number of digits to the right of the decimal point to display for
+floating point numbers.  If \code{NA} (default), it uses the value from \code{object$control$nsmall}.
 Allowed non-\code{NA} values are \code{0 <= nsmall <= 20}.}
 
-\item{nsmall.ratio}{Minimum number of digits to the right of the decimal point to display 
-for the ratio statistics (OR, HR, RR). If \code{NA} (default) it uses the value from 
-\code{object$control$nsmall.ratio} (whose default is 2).  
+\item{nsmall.ratio}{Minimum number of digits to the right of the decimal point to display
+for the ratio statistics (OR, HR, RR). If \code{NA} (default) it uses the value from
+\code{object$control$nsmall.ratio} (whose default is 2).
 Allowed values are \code{0 <= nsmall.ratio <= 20}.}
 
 \item{digits.test}{Number of digits to display for a p-value. Default is 5 (e.g. 0.12345).}
@@ -38,7 +38,7 @@ Allowed values are \code{0 <= nsmall.ratio <= 20}.}
 
 \item{show.adjust}{Logical, denoting if the adjust variables should be shown for each line.}
 
-\item{pFootnote}{Logical denoting if a footnote should be added describing the test used 
+\item{pFootnote}{Logical denoting if a footnote should be added describing the test used
 to generate the p value.  Default is \code{TRUE}.}
 }
 \value{
@@ -50,4 +50,3 @@ Build a data.frame from the modelsum object and parameters, and return it
 \author{
 Greg Dougherty
 }
-

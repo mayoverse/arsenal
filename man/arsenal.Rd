@@ -9,7 +9,8 @@
 An Arsenal of 'R' functions for large-scale statistical summaries,
   which are streamlined to work within the latest reporting tools in 'R' and 'RStudio' and
   which use formulas and versatile summary statistics for summary tables and models.
-  
+}
+\details{
 The package download, NEWS, and README are available on CRAN: \url{https://cran.r-project.org/package=arsenal}
 }
 \section{Functions}{
@@ -40,8 +41,8 @@ Below are listed some of the most widely used functions available in \code{arsen
 
 \code{\link{mockstudy}}: Mock study data for examples.
 }
+
 \examples{
 library(arsenal)
 
 }
-

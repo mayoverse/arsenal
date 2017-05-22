@@ -24,10 +24,9 @@ The not-in operator for R.
 1 \%nin\% 2:10
 c("a", "b") \%nin\% c("a", "c", "d")
 }
-\author{
-Raymond Moore
-}
 \seealso{
 \code{\link{\%in\%}}
 }
-
+\author{
+Raymond Moore
+}

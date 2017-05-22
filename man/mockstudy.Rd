@@ -34,4 +34,3 @@ data(mockstudy)
 str(mockstudy)
 }
 \keyword{datasets}
-

@@ -2,6 +2,7 @@
 % Please edit documentation in R/modelsum.R
 \name{modelsum}
 \alias{modelsum}
+\alias{modelsum}
 \alias{print.modelsum}
 \alias{print.modelsumList}
 \title{Fit models over each of a set of independent variables with a response variable}
@@ -73,10 +74,9 @@ tab2.df <- as.data.frame(tab2)
 
 tab2.df[1:5,]
 }
-\author{
-Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, adapted from SAS Macro of the same name
-}
 \seealso{
 \code{\link{modelsum.control}}, \code{\link{summary.modelsum}}, \code{\link{formulize}}
 }
-
+\author{
+Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, adapted from SAS Macro of the same name
+}

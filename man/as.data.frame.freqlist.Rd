@@ -17,4 +17,3 @@ A data.frame corresponding to the \code{freqlist} object.
 \description{
 Convert \code{\link{freqlist}} object to a data.frame.
 }
-

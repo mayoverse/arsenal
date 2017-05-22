@@ -2,6 +2,7 @@
 % Please edit documentation in R/freqlist.R
 \name{freqlist}
 \alias{freqlist}
+\alias{freqlist}
 \alias{print.freqlist}
 \title{freqlist}
 \usage{
@@ -46,10 +47,9 @@ summary(noby)
 withby <- freqlist(tab.ex, groupBy = c("arm","sex"), na.options = "showexclude")
 summary(withby)
 }
-\author{
-Tina Gunderson
-}
 \seealso{
 \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
 }
-
+\author{
+Tina Gunderson
+}

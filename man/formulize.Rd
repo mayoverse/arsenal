@@ -43,4 +43,3 @@ summary(lm(form, data = mockstudy))
 \author{
 Ethan Heinzen
 }
-

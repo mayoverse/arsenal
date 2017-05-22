@@ -2,15 +2,16 @@
 % Please edit documentation in R/write2.R, R/write2.default.R
 \name{write2}
 \alias{write2}
-\alias{write2.character}
-\alias{write2.default}
+\alias{write2}
+\alias{write2.tableby}
+\alias{write2.modelsum}
 \alias{write2.freqlist}
 \alias{write2.knitr_kable}
-\alias{write2.list}
-\alias{write2.modelsum}
-\alias{write2.tableby}
-\alias{write2.verbatim}
 \alias{write2.xtable}
+\alias{write2.character}
+\alias{write2.list}
+\alias{write2.verbatim}
+\alias{write2.default}
 \title{write2}
 \usage{
 write2(object, file, ..., output_format)
@@ -70,15 +71,15 @@ character string. It's expected that \code{FUN(object, ...)} looks "good" when p
 Functions to output tables to a single document. (Also the S3 backbone behind the \code{write2*} functions.)
 }
 \details{
-\code{write2} is an S3 method. The default prints the object (using \code{\link{print}}) 
+\code{write2} is an S3 method. The default prints the object (using \code{\link{print}})
    inside a section surrounded by three back ticks. See \code{\link{verbatim}} for details.
-   
+
    There are methods implemented for \code{\link{tableby}}, \code{\link{modelsum}}, and \code{\link{freqlist}}, all of which use the
    \code{summary} function. There are also methods compatible with \code{\link[knitr]{kable}}, \code{\link[xtable]{xtable}},
    and \code{\link[pander]{pander_return}}. Another option is to coerce an object using \code{\link{verbatim}()} to print out the
    results monospaced (as if they were in the terminal). To output multiple tables into a document, simply make a list of them
    and call the same function as before.
-   
+
    For more information, see \code{vignette("write2")}.
 }
 \examples{
@@ -93,12 +94,11 @@ write2(tab1, "~/trash.rtf",
   output_format = rmarkdown::rtf_document)
 }
 }
-\author{
-Ethan Heinzen, adapted from code from Krista Goergen
-}
 \seealso{
 \code{\link{write2word}}, \code{\link{write2pdf}}, \code{\link{write2html}},
   \code{\link[rmarkdown]{render}}, \code{\link[rmarkdown]{word_document}}, \code{\link[rmarkdown]{html_document}}, \code{\link[rmarkdown]{pdf_document}},
   \code{\link[rmarkdown]{rtf_document}}, \code{\link[rmarkdown]{md_document}}, \code{\link[rmarkdown]{odt_document}}
 }
-
+\author{
+Ethan Heinzen, adapted from code from Krista Goergen
+}

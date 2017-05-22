@@ -41,4 +41,3 @@ Control test and summary settings for \code{\link{modelsum}} function.
 \seealso{
 \code{\link{modelsum}}, \code{\link{summary.modelsum}}
 }
-

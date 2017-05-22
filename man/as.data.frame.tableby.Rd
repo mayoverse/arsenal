@@ -13,33 +13,33 @@
 
 \item{...}{Other arguments (not in use at this time).}
 
-\item{title}{Title that will appear on the top of the header in the pretty-table rendering 
+\item{title}{Title that will appear on the top of the header in the pretty-table rendering
 of the tableby object}
 
-\item{labelTranslations}{All labels that are to appear in the pretty rendering of the \code{tableby} 
-results have both summary-statistic labels that are replaced by a formal label 
-(e.g., \code{meansd} by \code{"Mean (SD)"}), and the variables from the formula can be replaced 
+\item{labelTranslations}{All labels that are to appear in the pretty rendering of the \code{tableby}
+results have both summary-statistic labels that are replaced by a formal label
+(e.g., \code{meansd} by \code{"Mean (SD)"}), and the variables from the formula can be replaced
 by a more formal name.}
 
-\item{digits}{Digits to round for significant digits of numeric, non-integer values. 
+\item{digits}{Digits to round for significant digits of numeric, non-integer values.
 If \code{digits.test} is not set, \code{digits} is used for that setting.}
 
-\item{nsmall}{Minimum number of digits to the right of the decimal point to display 
-for floating point numbers.  If \code{NA} (default), it uses the value from 
+\item{nsmall}{Minimum number of digits to the right of the decimal point to display
+for floating point numbers.  If \code{NA} (default), it uses the value from
 \code{object$control$nsmall}. Allowed non-\code{NA} values are \code{0 <= nsmall <= 20}.}
 
-\item{nsmall.pct}{Minimum number of digits to the right of the decimal point to display 
+\item{nsmall.pct}{Minimum number of digits to the right of the decimal point to display
 for percent numbers.  If \code{NA} (default), it uses the value from \code{object$control$nsmall.pct}.}
 
-\item{digits.test}{Significant digits by which to round for numeric test statistic p-values, 
+\item{digits.test}{Significant digits by which to round for numeric test statistic p-values,
 if the test was performed.}
 
-\item{test}{Logical, denoting whether the "p value" value should be printed. 
+\item{test}{Logical, denoting whether the "p value" value should be printed.
 If \code{NA} (default), it uses the value from \code{object$control$test}.}
 
 \item{test.pname}{Title for p-value (only matters if test is \code{TRUE}; default is "p value").}
 
-\item{total}{Logical, denoting whether to include the "total" value. 
+\item{total}{Logical, denoting whether to include the "total" value.
 If \code{NA} (default), it uses the value from \code{object$control$total}.}
 }
 \value{
@@ -51,4 +51,3 @@ Build a data.frame from the tableby object and parameters, and return it
 \author{
 Gregory Dougherty, Jason Sinnwell, Beth Atkinson, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 }
-
