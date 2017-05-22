@@ -121,7 +121,6 @@
 #' tab.test <- tableby(arm ~ kwt(age) + anova(bmi) + kwt(ast), data=mockstudy)
 #' tests(tab.test)
 #' @author Jason Sinnwell, Beth Atkinson, Gregory Dougherty, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
-#' @import stringr
 #' @name tableby
 NULL
 #> NULL

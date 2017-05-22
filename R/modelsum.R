@@ -60,7 +60,6 @@
 #' tab2.df <- as.data.frame(tab2)
 #'
 #' tab2.df[1:5,]
-#' @import broom
 #' @name modelsum
 NULL
 #> NULL
