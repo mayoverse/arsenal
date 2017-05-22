@@ -134,7 +134,7 @@ makeTitleCell <- function(element, colSize, translations, boldMark, indentStr, c
 
   for (i in seq_len(numStats)) {
     statistic <- statistics[[i]]
-    subRows <- rownames(statistic[[1]])
+    subRows <- row.names(statistic[[1]])
     if (length(subRows > 0)) {
       for (label in subRows) {
         label <- lookupHumanTitle(label, translations)

@@ -239,7 +239,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
     }
     ## see if more rows were removed for NAs by na.action
     if(sum(subset) != nrow(basedf)) {
-      subset[subset==TRUE & rownames(data) %nin% rownames(basedf)] <- FALSE
+      subset[subset==TRUE & row.names(data) %nin% row.names(basedf)] <- FALSE
     }
     svars <- stringr::str_trim(strsplit(names(basedf)[1],split=",")[[1]],side="both")
     rparidx <- ifelse(grepl("\\)", svars), regexpr("\\)",svars)-1,nchar(svars))

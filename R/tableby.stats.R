@@ -101,8 +101,8 @@ Nevents <- function(x, ...) {
     stop("Survival endpoint may not be coded 0/1.\n")
   }
   if (!is.null(nrow(mat))) {
-    rownames(mat) <- substr(rownames(mat), regexpr("=", rownames(mat)) +
-                              1, nchar(rownames(mat)))
+    row.names(mat) <- substr(row.names(mat), regexpr("=", row.names(mat)) +
+                              1, nchar(row.names(mat)))
     return(mat[, "events"])
   }
   return(as.numeric(mat["events"]))
@@ -124,7 +124,7 @@ medSurv <- function(x, ...) {
     stop("Survival endpoint may not be coded 0/1.\n")
   }
   if(!is.null(nrow(mat))) {
-    rownames(mat) <- substr(rownames(mat), regexpr("=",rownames(mat))+1, nchar(rownames(mat)))
+    row.names(mat) <- substr(row.names(mat), regexpr("=",row.names(mat))+1, nchar(row.names(mat)))
     return(mat[,'median'])
   }
   return(as.numeric(mat['median']))
@@ -147,7 +147,7 @@ NeventsSurv <- function(x, times=1:5) {
       if(nrow(byList[[stratTrim]]) < length(times)) {
         byList[[stratTrim]] <- rbind.data.frame(byList[[stratTrim]],
                                                 byList[[stratTrim]][nrow(byList[[stratTrim]]),])
-        rownames(byList[[stratTrim]])[nrow(byList[[stratTrim]])] <- times[length(times)]
+        row.names(byList[[stratTrim]])[nrow(byList[[stratTrim]])] <- times[length(times)]
       }
     }
   }
@@ -169,7 +169,7 @@ NriskSurv <- function(x, times=1:5) {
       if(nrow(byList[[stratTrim]]) < length(times)) {
         byList[[stratTrim]] <- rbind.data.frame(byList[[stratTrim]],
                                                 byList[[stratTrim]][nrow(byList[[stratTrim]]),])
-        rownames(byList[[stratTrim]])[nrow(byList[[stratTrim]])] <- times[length(times)]
+        row.names(byList[[stratTrim]])[nrow(byList[[stratTrim]])] <- times[length(times)]
 
       }
     }
@@ -247,7 +247,7 @@ count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, l
           levels
         else names(wtbl$sum.of.weights))
     if (nrow(df) < length(levels)) {
-        misslevs <- levels[!(levels %in% rownames(df))]
+        misslevs <- levels[!(levels %in% row.names(df))]
         df <- rbind.data.frame(df, data.frame(count = rep(0,
             length(misslevs)),  row.names = misslevs))
     }
@@ -268,7 +268,7 @@ countpct <- function(x, levels=sort(unique(x)), na.rm=TRUE, weights=rep(1, lengt
             ## names(wtbl$sum.of.weights))
   ## make sure all levels are in df. If not, add them and re-order.
   if(nrow(df) < length(levels) ) {
-    misslevs <- levels[!(levels %in% rownames(df))]
+    misslevs <- levels[!(levels %in% row.names(df))]
     df <- rbind.data.frame(df, data.frame(count=rep(0, length(misslevs)), pct=rep(0, length(misslevs)), row.names=misslevs))
   }
   return(df[as.character(levels),])
@@ -279,7 +279,7 @@ format.countpct <- function(x,digits=5, pct='') {
   if(!is.null(ncol(x))) {
     ## multiple rows
     xformat <- cbind.data.frame(format(x[,1], digits=digits), format(x[,2], digits=digits))
-    rownames(xformat) <- rownames(x)
+    row.names(xformat) <- row.names(x)
     digits <- digits - 2
     return (apply (xformat, 1, function(xrow) paste (xrow[1], " (", format (round (as.numeric (xrow[2]), digits), nsmall = digits),
                                                      pct, ")", sep = "")))

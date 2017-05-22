@@ -691,7 +691,7 @@ numStats <- function(statistics) {
 	if(size != 1)
 		return(size)
 
-	numRows <- length(rownames(statistics[[1]][[1]]))
+	numRows <- length(row.names(statistics[[1]][[1]]))
 
 	if(numRows > 0)
 		return(numRows)

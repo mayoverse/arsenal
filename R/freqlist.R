@@ -103,7 +103,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
     factorIndex <- match(groupBy, names(tableout))
     tableout <- cbind(tableout[, groupBy, drop = FALSE], tableout[, -factorIndex, drop = FALSE])
     names(tableout)[1:length(groupBy)] <- groupBy
-    rownames(tableout) <- NULL
+    row.names(tableout) <- NULL
     tableout <- tableout[do.call(order, tableout), ]
   } else {
     tableout <- internalTable(tab.freq, na.options = na.options, digits = digits)
