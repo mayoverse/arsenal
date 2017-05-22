@@ -5,7 +5,7 @@
 \title{summary.freqlist}
 \usage{
 \method{summary}{freqlist}(object, single = FALSE, labelTranslations = NULL,
-  ...)
+  dupLabels = FALSE, ...)
 }
 \arguments{
 \item{object}{an object of class \code{\link{freqlist}}}
@@ -13,6 +13,9 @@
 \item{single}{a logical value indicating whether to collapse results created using a groupBy variable into a single table for printing}
 
 \item{labelTranslations}{A character vector giving the labels. Overrides the labels in `freqlist`.}
+
+\item{dupLabels}{Should labels which are the same as the row above be printed? The default (\code{FALSE}) more
+closely approximates \code{PROC FREQ} output from SAS, where a label carried down from the row above is left blank.}
 
 \item{...}{additional arguments passed to the \code{\link[knitr]{kable}} function}
 }
@@ -30,6 +33,7 @@ noby <- freqlist(tab.ex, na.options = "include")
 summary(noby)
 withby <- freqlist(tab.ex, groupBy = c("arm","sex"), na.options = "showexclude")
 summary(withby)
+summary(withby, dupLabels = TRUE)
 }
 \seealso{
 \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
