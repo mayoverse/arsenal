@@ -391,9 +391,9 @@ myStrJoin <- function(theStr, firstColSize, colSize)
 	strLen <- nchar(theStr[1])
 	row <- singleSplit(theStr[1], firstColSize, colSize, strLen)
 	if(len == 1)
-		return(str_trim(row))
+		return(stringr::str_trim(row))
 
-	results <- str_trim(row, "left")
+	results <- stringr::str_trim(row, "left")
 	numCols <- length(row)
 	for(i in 2:len)
 	{
@@ -404,13 +404,13 @@ myStrJoin <- function(theStr, firstColSize, colSize)
 			size <- nchar(results[j])
 			toAdd <- row[j]
 			if(size == 0)
-				results[j] <- str_trim(toAdd, "left")
+				results[j] <- stringr::str_trim(toAdd, "left")
 			else
 			{
-				cur <- str_trim(results[j], "right")
+				cur <- stringr::str_trim(results[j], "right")
 				doPad <- (nchar(cur) < size) && !endsWithPad(cur)
 				size <- nchar(toAdd)
-				toAdd <- str_trim(toAdd, "left")
+				toAdd <- stringr::str_trim(toAdd, "left")
 				addSize <- nchar(toAdd)
 				doPad <- (doPad || (addSize < size)) && (addSize > 0) && !beginsWithPad(toAdd)
 				if(doPad)
@@ -421,7 +421,7 @@ myStrJoin <- function(theStr, firstColSize, colSize)
 		}
 	}
 
-	return(str_trim(results, "right"))
+	return(stringr::str_trim(results, "right"))
 }
 
 

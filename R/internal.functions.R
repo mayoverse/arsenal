@@ -736,7 +736,7 @@ trimNumber <- function(number) {
   if (len <= 1)
     return(number)
 
-  dotPos <- str_locate(number, fixed ("."))[1]
+  dotPos <- stringr::str_locate(number, stringr::fixed("."))[1]
   if (is.na(dotPos))
     return(number)
 

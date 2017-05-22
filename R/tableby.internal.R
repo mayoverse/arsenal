@@ -456,11 +456,11 @@ addListElement <- function(theFrame, headers, rows, varName, firstColSize, colSi
 		start <- 1
 		end <- firstColSize
 		while (whichCol <= numCols) {
-			col <- str_trim(substr(line, start, end))
+			col <- stringr::str_trim(substr(line, start, end))
 
 			if(length(cols) > whichCol) {
 				if(nchar(col) > 0) {
-					cols[whichCol] <- str_trim(paste(cols[whichCol], col))
+					cols[whichCol] <- stringr::str_trim(paste(cols[whichCol], col))
 				}
 			}
 			else {	# Always add, even if adding an empty string
@@ -548,7 +548,7 @@ getName <- function(nameText, boldMark, indentStr) {
 		}
 	}
 
-	nameText <- str_trim(nameText)
+	nameText <- stringr::str_trim(nameText)
 	return(nameText)
 }
 
@@ -562,7 +562,7 @@ getName <- function(nameText, boldMark, indentStr) {
 ## '
 ## ' @author m082166
 process <- function(theText) {
-	locations <- str_locate_all(theText, "-*[0-9.%]+")[[1]]
+	locations <- stringr::str_locate_all(theText, "-*[0-9.%]+")[[1]]
 	numResults <- nrow(locations)
 	results <- c()
 

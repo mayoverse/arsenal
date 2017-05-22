@@ -128,10 +128,10 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
      ## fix subsetting
     oldwarn <- options()$warn
     options(warn=-1)
-    subsetVars <- unlist(str_match_all(as.character(Call[indx.subset]),names(data)))
+    subsetVars <- unlist(stringr::str_match_all(as.character(Call[indx.subset]),names(data)))
     ##Subset to only those not already in formula
     subsetVarsAdd <- subsetVars[subsetVars %nin%
-                       unlist(str_match_all(paste0(as.character(formula),collapse=""), subsetVars))]
+                       unlist(stringr::str_match_all(paste0(as.character(formula),collapse=""), subsetVars))]
 
     if(length(subsetVarsAdd)>0 ) {
       formula[[j]] <- call("+", formula[[j]], call("(",as.name(subsetVarsAdd)))
@@ -166,13 +166,13 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
     ybase <- ""
   } else {
     ybase <- unlist(tapply(as.character(baseFormula[[2]]), 1:length(baseFormula[[2]]),
-              function(x) {tmp <- str_match(x, colnames(data)); tmp[!is.na(tmp),1]}))
+              function(x) {tmp <- stringr::str_match(x, colnames(data)); tmp[!is.na(tmp),1]}))
     ## if length > 1, choose one without parens "("
     ybase <- ybase[!grepl("\\(",ybase)]
     if(length(ybase)>1) {
       ## if still > 1, choose one that matches best
       ypct <- unlist(tapply(as.character(baseFormula[[2]]), 1:length(baseFormula[[2]]),
-              function(x) {tmp <- str_match(x, colnames(data)); tmp <- tmp[!is.na(tmp),1]; nchar(tmp)/nchar(x)}))
+              function(x) {tmp <- stringr::str_match(x, colnames(data)); tmp <- tmp[!is.na(tmp),1]; nchar(tmp)/nchar(x)}))
       ybase <- ybase[which(abs(ypct-1) == min(abs(ypct-1)))]
     }
   }
@@ -185,7 +185,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       next
     }
     if(xform %nin% c("+","*","|")) {
-      xbase <- str_match(xform, colnames(data))
+      xbase <- stringr::str_match(xform, colnames(data))
       xvars <- c(xvars, xbase[!is.na(xbase),1])
     }
   }
@@ -241,7 +241,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
     if(sum(subset) != nrow(basedf)) {
       subset[subset==TRUE & rownames(data) %nin% rownames(basedf)] <- FALSE
     }
-    svars <- str_trim(strsplit(names(basedf)[1],split=",")[[1]],side="both")
+    svars <- stringr::str_trim(strsplit(names(basedf)[1],split=",")[[1]],side="both")
     rparidx <- ifelse(grepl("\\)", svars), regexpr("\\)",svars)-1,nchar(svars))
     svars <- substr(svars, 1, rparidx)
     lparidx <- ifelse(grepl("\\(", svars), regexpr("\\(",svars)+1,1)
@@ -292,7 +292,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
       lmfit <- eval(call("lm", formula=formulaStr, data=basedf, x=TRUE, weights=weights), envir=tabenv)
   ## lmfit <- stats::lm(formulaStr, data=basedf, weights="weights", )
-      coeffTidy <- tidy(lmfit, conf.int=TRUE, conf.level=control$conf.level)
+      coeffTidy <- broom::tidy(lmfit, conf.int=TRUE, conf.level=control$conf.level)
 
       if(any(grepl("(weights)", colnames(lmfit$model)))) {
         lmfit$model <- lmfit$model[,-grep("(weights)", colnames(lmfit$model))]
@@ -322,7 +322,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
       ## Continuous variable (numeric) ###############
       ## Note: Using tidy changes colname from 't value' to 'statistic'
-      modelGlance <- c(glance(lmfit),N=sum(!is.na(modeldf[,eff])),
+      modelGlance <- c(broom::glance(lmfit),N=sum(!is.na(modeldf[,eff])),
                                Nmiss=sum(is.na(modeldf[,eff])))
       names(modelGlance) <- gsub("p.value","p.value.F", names(modelGlance))
       if(any(grepl("Nmiss2",control$gaussian.stats))) {
@@ -349,9 +349,9 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       rocOut <- pROC::roc(fit$y ~ predict(fit, type='response'))
       #coeffbeta <- summary(fit)$coef
       ## find out that broom:::tidy.lm allows conf.int and exp
-      coeffORTidy <- tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
+      coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
       coeffORTidy[grep("Intercept",coeffORTidy$term),-1] <- NA
-      coeffTidy <- tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
+      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
       names(coeffTidy) <- gsub("conf.low","CI.lower.estimate",
                                gsub("conf.high", "CI.upper.estimate",names(coeffTidy)))
 
@@ -380,7 +380,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       }
       ## tidy data frame has extra column for terms (row names), shift col index +1
       ## 'z value' changed to 'statistic'
-      modelGlance <- c(glance(fit),concordance=pROC::auc(rocOut),
+      modelGlance <- c(broom::glance(fit),concordance=pROC::auc(rocOut),
                        N=sum(!is.na(modeldf[,eff])), Nmiss=sum(is.na(modeldf[,eff])))
       if(any(grepl("Nmiss2",control$binomial.stats))) {
         names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
@@ -400,9 +400,9 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 ##      fit <- glm(formulaStr, data=basedf, family=family, x=TRUE, weights=weights)
       #coeffbeta <- summary(fit)$coef
       ## find out that broom:::tidy.lm allows conf.int and exp
-      coeffRRTidy <- tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
+      coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
       coeffRRTidy[grep("Intercept",coeffRRTidy$term),-1] <- NA
-      coeffTidy <- tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
+      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
       names(coeffTidy) <- gsub("conf.low","CI.lower.estimate",
                             gsub("conf.high", "CI.upper.estimate",names(coeffTidy)))
 
@@ -432,7 +432,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       ## tidy data frame has extra column for terms (row names), shift col index +1
       ## 'z value' changed to 'statistic'
 
-      modelGlance <- c(glance(fit),N=sum(!is.na(modeldf[,eff])), Nmiss=sum(is.na(modeldf[,eff])))
+      modelGlance <- c(broom::glance(fit),N=sum(!is.na(modeldf[,eff])), Nmiss=sum(is.na(modeldf[,eff])))
       if(any(grepl("Nmiss2",control$poisson.stats))) {
         names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
       }
@@ -451,8 +451,8 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
       #ph <- coxph(stats::as.formula(formulaStr), data=data, weights=weights) ## should be this:modeldf)
       ## use tidy to get both CIs, merge
-      coeffHRTidy <- tidy(ph, exponentiate=TRUE, conf.int=.95)
-      coeffTidy <- tidy(ph, exponentiate=FALSE, conf.int=.95)
+      coeffHRTidy <- broom::tidy(ph, exponentiate=TRUE, conf.int=.95)
+      coeffTidy <- broom::tidy(ph, exponentiate=FALSE, conf.int=.95)
       names(coeffTidy) <- gsub("conf.low","CI.lower.estimate",
                             gsub("conf.high", "CI.upper.estimate",names(coeffTidy)))
       coeffTidy <- data.frame(coeffTidy, HR=coeffHRTidy$estimate,
@@ -482,7 +482,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       }
 
       ## work with fit to get hr, try summary(fit) as above
-      modelGlance <-  c(glance(ph),Nmiss=sum(is.na(modeldf[,eff])))
+      modelGlance <-  c(broom::glance(ph),Nmiss=sum(is.na(modeldf[,eff])))
       names(modelGlance) <- gsub("n$","N", gsub("nevent","Nevent", names(modelGlance)))
       if(any(grepl("Nmiss2",control$survival.stats))) {
         names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
@@ -491,7 +491,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       fitList[[xname]] <- list(coeff=coeffTidy,
                            family="survival", label=labelEff,
                            xterms=xterms, adjterms=adjterms,
-                           glance=c(glance(ph),
+                           glance=c(broom::glance(ph),
                            N=sum(!is.na(modeldf[,eff])),Nmiss=sum(is.na(modeldf[,eff]))))
     }
 ## put xname and endpoint in glance, summary and as.data.frame to pull from there
