@@ -33,11 +33,24 @@ The two most important things to recognize with `write2()` are the following:
 2. How the `...` arguments are passed. To change the options for the summary-like or print-like function,
    you can pass named arguments which will in turn get passed to the appropriate function.
    Details for each object specifically are described below.
+   
+# A note on piping
+
+`arsenal` is piping-compatible!
+
+The `write2*()` functions are probably the most useful place to take advantage of
+the `magrittr` package's piping framework, since commands are often nested several functions deep in the context
+of `write2*()`. Piping also allows the `arsenal` package to become a part of more standard analysis pipelines;
+instead of needing to write separate R Markdown programs, intermediate analysis tables and output can be easily
+incorporated into piped statements.
+
+This vignette will sprinkle the foward pipe (`%>%`) throughout as a hint at the power and flexibility of `arsenal` and piping.
 
 # Examples Using `arsenal` Objects
 
 ```{r}
 library(arsenal)
+library(magrittr)
 data(mockstudy)
 tmpdir <- tempdir()
 ```
@@ -78,11 +91,12 @@ write2pdf(tab2, paste0(tmpdir, "/test.modelsum.pdf"), quiet = TRUE,
 For `freqlist` objects, the output function in `write2()` is `summary()`. For available arguments, see the help pages for `summary.freqlist()`.
 
 ```{r}
-tab3 <- freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex"))
-
-write2word(tab3, paste0(tmpdir, "/test.freqlist.doc"), quiet = TRUE,
-           single = FALSE # passed to summary.freqlist
-           )
+mockstudy[, c("arm", "sex", "mdquality.s")] %>% 
+  table(useNA = "ifany") %>% 
+  freqlist(groupBy = c("arm", "sex")) %>% 
+  write2word(paste0(tmpdir, "/test.freqlist.doc"), quiet = TRUE,
+             single = FALSE # passed to summary.freqlist
+             )
 ```
 
 # Examples Using Other Objects
@@ -92,7 +106,10 @@ write2word(tab3, paste0(tmpdir, "/test.freqlist.doc"), quiet = TRUE,
 For objects resulting from a call to `kable()`, the output function in `write2()` is `print()`. There aren't any arguments to the `print.knitr_kable()` function.
 
 ```{r}
-write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.html"), quiet = TRUE)
+mockstudy %>% 
+  head() %>% 
+  knitr::kable() %>% 
+  write2html(paste0(tmpdir, "/test.kable.html"), quiet = TRUE)
 ```
 
 ## `xtable::xtable()`
@@ -100,22 +117,28 @@ write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.html"), qu
 For `xtable` objects, the output function in `write2()` is `print()`. For available arguments, see the help pages for `print.xtable()`.
 
 ```{r}
-write2pdf(xtable::xtable(head(mockstudy), caption = "My xtable"), paste0(tmpdir, "/test.xtable.pdf"), quiet = TRUE,
-          comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
-          include.rownames = FALSE, # passed to print.xtable
-          caption.placement = "top" # passed to print.xtable
-          )
+mockstudy %>% 
+  head() %>% 
+  xtable::xtable(caption = "My xtable") %>% 
+  write2pdf(paste0(tmpdir, "/test.xtable.pdf"), quiet = TRUE,
+            comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
+            include.rownames = FALSE, # passed to print.xtable
+            caption.placement = "top" # passed to print.xtable
+            )
 ```
 
 To make an HTML document, use the `print.xtable()` option `type = "html"`.
 
 ```{r}
-write2html(xtable::xtable(head(mockstudy), caption = "My xtable"), paste0(tmpdir, "/test.xtable.html"), quiet = TRUE,
-           type = "html",            # passed to print.xtable
-           comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
-           include.rownames = FALSE, # passed to print.xtable
-           caption.placement = "top" # passed to print.xtable
-           )
+mockstudy %>% 
+  head() %>% 
+  xtable::xtable(caption = "My xtable") %>% 
+  write2html(paste0(tmpdir, "/test.xtable.html"), quiet = TRUE,
+             type = "html",            # passed to print.xtable
+             comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
+             include.rownames = FALSE, # passed to print.xtable
+             caption.placement = "top" # passed to print.xtable
+             )
 ```
 
 User beware! `xtable()` is not compatible with `write2word()`.
@@ -166,8 +189,9 @@ It may be useful at times to write output that would normally be copied from the
 does this automatically. To output the results of `summary.lm()`, for example:
 
 ```{r}
-age.lm <- summary(lm(age ~ sex, data = mockstudy))
-write2pdf(age.lm, paste0(tmpdir, "/test.lm.pdf"), quiet = TRUE)
+lm(age ~ sex, data = mockstudy) %>% 
+  summary() %>% 
+  write2pdf(paste0(tmpdir, "/test.lm.pdf"), quiet = TRUE)
 ```
 
 The `verbatim()` function is another option to explicitly alert `write2()` to do this. This
