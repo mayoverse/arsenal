@@ -24,6 +24,9 @@ Description: An Arsenal of 'R' functions for large-scale statistical summaries,
   freqlist(), a powerful frequency table across many categorical variables; and
   write2(), a function to output tables to a document.
 Suggests:
+    broom,
+    stringr,
+    magrittr,
     knitr,
     rmarkdown,
     xtable,
@@ -38,9 +41,6 @@ Suggests:
 Depends:
     R (>= 3.2.0),
     stats (>= 3.2.0)
-Imports:
-    broom,
-    stringr
 VignetteBuilder: knitr
 License: GPL (>= 2)
 RoxygenNote: 6.0.1

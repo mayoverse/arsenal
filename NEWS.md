@@ -4,6 +4,9 @@
 
 * Changed the `...` vs. `control=` action in `tableby()` and `modelsum()` to fix which
   arguments are used over which other arguments.
+  
+* Moved import `broom` and `stringr` to "Suggests",
+  adding `magrittr` for piping.
 
 # arsenal 0.3.0
 
