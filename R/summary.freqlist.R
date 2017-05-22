@@ -29,7 +29,6 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, d
   if(!is.null(labelTranslations)) labels(object) <- labelTranslations
   if(!is.logical(dupLabels) || length(dupLabels) != 1) stop("'dupLabels' must be TRUE or FALSE")
 
-  ## changed on 11/18/16 by EPH. The other one wasn't working in cases like the second testthat example (bug reported by Emily Lundt)
   fmtdups <- function(tab)
   {
     tab <- as.matrix(tab)
