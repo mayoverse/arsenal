@@ -1,5 +1,7 @@
 # arsenal 0.3.?
 
+* Tweaked `freqlist()` to behave better with data.frame subsetting and the infamous `drop=TRUE`.
+
 * Added a label for `medianq1q3()` in `tableby.control()`.
 
 * Changed the `...` vs. `control=` action in `tableby()` and `modelsum()` to fix which
