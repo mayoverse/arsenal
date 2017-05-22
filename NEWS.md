@@ -2,6 +2,8 @@
 
 * Tweaked `freqlist()` to behave better with data.frame subsetting and the infamous `drop=TRUE`.
 
+* Added `dupLabels=` argument to `summary.freqlist()`.
+
 * Added a label for `medianq1q3()` in `tableby.control()`.
 
 * Changed the `...` vs. `control=` action in `tableby()` and `modelsum()` to fix which
