@@ -243,9 +243,8 @@ count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, l
     wtbl <- wtd.table(factor(x[!is.na(x)], levels = levels),
         weights = weights[!is.na(x)], ...)
     df <- data.frame(count = as.vector(wtbl$sum.of.weights),
-        row.names = if (length(wtbl$x) == length(levels))
-          levels
-        else names(wtbl$sum.of.weights))
+        row.names = if (length(wtbl$x) == length(levels)) levels else wtbl$x)
+##        else names(wtbl$sum.of.weights))
     if (nrow(df) < length(levels)) {
         misslevs <- levels[!(levels %in% row.names(df))]
         df <- rbind.data.frame(df, data.frame(count = rep(0,
@@ -262,10 +261,13 @@ countpct <- function(x, levels=sort(unique(x)), na.rm=TRUE, weights=rep(1, lengt
   ##  tbl <- table(x[!is.na(x)])
   ## data.frame(count=as.vector(tbl), pct=100*as.vector(tbl)/sum(tbl), row.names=levels)
   wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)], ...)
+ 
   df <- data.frame(count=as.vector(wtbl$sum.of.weights),
-                   pct=100*as.vector(wtbl$sum.of.weights)/sum(wtbl$sum.of.weights),
-                   row.names=if(length(wtbl$x)==length(levels)) levels else wtbl$x)
-            ## names(wtbl$sum.of.weights))
+             pct=100*as.vector(wtbl$sum.of.weights)/sum(wtbl$sum.of.weights),
+             row.names=if(length(wtbl$x)==length(levels)) levels else wtbl$x)
+                   ##names(wtbl$sum.of.weights))
+                   
+
   ## make sure all levels are in df. If not, add them and re-order.
   if(nrow(df) < length(levels) ) {
     misslevs <- levels[!(levels %in% row.names(df))]

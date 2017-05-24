@@ -1,6 +1,10 @@
 ## Tests for tableby
 
 
+## Jason's code for sourcing .R files
+## fl <- list.files(path="../../R", pattern="*.R", full.names=TRUE, include.dirs=TRUE)
+## for(file in fl) source(file)
+
 context("Testing the tableby output")
 
 options(stringsAsFactors=FALSE)
@@ -513,5 +517,23 @@ test_that("04/12/2017: Katherine King's cat.simplify vs tableby.control", {
   )
 })
 
-
-
+data(mockstudy)
+temp <- mockstudy[1:5,]
+test_that("05/24/2017: Katherine King's count vs countpct", {
+  expect_identical(
+    capture.output(summary(tableby(arm ~ sex + age, data=temp,cat.stats="count"), text = TRUE)),
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------------------------",
+      "                      A: IFL (N=2)      F: FOLFOX (N=2)   G: IROX (N=1)     Total (N=5)       p value         ",
+      "-------------------- ----------------- ----------------- ----------------- ----------------- -----------------",
+      "Sex                                                                                                      0.392",
+      "   Male              0                 1                 0                 1                ",
+      "   Female            2                 1                 1                 4                ",
+      "Age                                                                                                      0.817",
+      "   Mean (SD)         62 (17)           68 (1.41)         71 (NaN)          66.2 (9.42)      ",
+      "   Q1, Q3            56, 68            67.5, 68.5        71, 71            67, 71           ",
+      "   Range             50 - 74           67 - 69           71 - 71           50 - 74          ",
+      "--------------------------------------------------------------------------------------------------------------"
+    )
+  )
+})
