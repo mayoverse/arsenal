@@ -537,3 +537,23 @@ test_that("05/24/2017: Katherine King's count vs countpct", {
     )
   )
 })
+
+
+df <- data.frame(x = c("a ", "a ", "b", "b ", "c", "c"), y = c("A", "A", "A", "B", "B", "B"), stringsAsFactors = FALSE)
+##table(df$x, df$y)
+test_that("05/24/2017: Missy Larson and Ethan Heinzen trailing spaces on char x variable", {
+  expect_identical(
+    capture.output(summary(tableby(y ~ x, data = df), text = TRUE)
+    c(""                                                                        ,
+      "------------------------------------------------------------------------",
+      "                  A (N=3)       B (N=3)       Total (N=6)   p value     ",
+      "---------------- ------------- ------------- ------------- -------------",
+      "x                                                                  0.112",
+      "   a             2 (66.7%)     0 (0%)        2 (33.3%)    ",
+      "   b             1 (33.3%)     0 (0%)        1 (16.7%)    ",
+      "   b             0 (0%)        1 (33.3%)     1 (16.7%)    ",
+      "   c             0 (0%)        2 (66.7%)     2 (33.3%)    ",
+      "------------------------------------------------------------------------"
+    )
+  ))})
+                 
