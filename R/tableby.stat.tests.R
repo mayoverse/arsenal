@@ -31,8 +31,9 @@ kwt <- function(x, x.by) {
 ## 1. chisq goodness of fit, equal proportions across table cells
 chisq <- function(x, x.by) {
   tab <- table(x, x.by, exclude=NA)
+  ctl <- dynGet("control") # envir=parent.frame)
   if(sum(rowSums(tab)>0)>1) {
-    stats::chisq.test(tab[rowSums(tab)>0,])
+    stats::chisq.test(tab[rowSums(tab)>0,], correct=ctl$chisq.correct, simulate.p.value=ctl$simulate.p.value, B=ctl$B)
   } else {
     list(statistic=0, p.value=1, method="Pearson's Chi-squared test")
   }
@@ -40,7 +41,8 @@ chisq <- function(x, x.by) {
 ## 2. Fisher's exact test for prob of as or more extreme table
 fe <- function(x, x.by) {
   tab <- table(x,x.by, exclude=NA)
-  stats::fisher.test(tab)
+  ctl <- dynGet("control")
+  stats::fisher.test(tab, simulate.p.value=ctl$simulate.p.value, B=ctl$B)
 }
 
 ## trend test for ordinal data

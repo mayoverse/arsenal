@@ -32,6 +32,9 @@
 #' @param cat.test  name of test for categorical variables: chisq, fe (Fisher's Exact)
 #' @param cat.stats summary statistics to include for categorical RHS variables of \code{tableby} within the levels of the group LHS variable.
 #'   Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.
+#' @param chisq.correct  logical, correction factor for chisq.test
+#' @param simulate.p.value  logical, simulate p-value for categorical tests (fe and chisq)
+#' @param B  number of simulations to perform for simulation-based p-value
 #' @param ordered.test name of test for ordered variables: trend
 #' @param ordered.stats summary statistics to include for categorical RHS variables of \code{tableby} within the levels of the group LHS variable.
 #'   Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.
@@ -85,7 +88,7 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
    date.stats=c("Nmiss", "median","range"),
    stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3",
                      range="Range", countpct="Count (Pct)", Nevents="Events", medsurv="Median Survival"),
-   digits=3, digits.test=NULL, nsmall=NULL, nsmall.pct=NULL, ...) {
+   digits=3, digits.test=NULL, nsmall=NULL, nsmall.pct=NULL, chisq.correct=TRUE, simulate.p.value=FALSE, B=2000, ...) {
 
   ## validate digits
   if(is.null(digits)) {
@@ -152,6 +155,7 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
               numeric.stats=numeric.stats, cat.stats=cat.stats,
               ordered.stats=ordered.stats,  surv.stats=surv.stats,
               date.test=date.test, date.stats=date.stats,
+              chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B,
               stats.labels=stats.labels,
               digits=digits, digits.test=digits.test, nsmall=nsmall, nsmall.pct=nsmall.pct))
 
