@@ -11,6 +11,10 @@
   
 * Moved import `broom` and `stringr` to "Suggests",
   adding `magrittr` for piping.
+  
+* Several `tableby()` fixes for counts and percents.
+
+* New options in `tableby.control()` to modify the statistical tests performed.
 
 # arsenal 0.3.0
 
