@@ -424,9 +424,10 @@ test_that("Changing tests", {
 
 #tmp <- tableby(Group ~ Sex + time + dt, data = mdat, subset=Group != "High")
 set.seed(1000)
+old <- options(width = 150)
 test_that("05/25/2017: simulate.p.value option for chisq.test", {
   expect_identical(
-    capture.output(print(tests(tableby(Group ~ Sex + time + dt, data = mdat,  subset=Group != "High",simulate.p.value=TRUE)), width = 105)),
+    capture.output(tests(tableby(Group ~ Sex + time + dt, data = mdat,  subset=Group != "High",simulate.p.value=TRUE))),
     c("     Variable   p.value                                                                           Method"  ,
       "Sex       Sex 0.6116942 Pearson's Chi-squared test with simulated p-value\\n\\t (based on 2000 replicates)",
       "time     time 0.2059543                                                               Linear Model ANOVA",
@@ -450,7 +451,7 @@ test_that("05/25/2017: chisq.correct=FALSE option for chisq.test", {
 set.seed(1000)
 test_that("05/25/2017: simulate.p.value=TRUE option for fisher.test", {
   expect_identical(
-    capture.output(print(tests(tableby(Group ~ fe(Sex) + time + dt, data = mdat,simulate.p.value=TRUE)), width = 120)),
+    capture.output(tests(tableby(Group ~ fe(Sex) + time + dt, data = mdat,simulate.p.value=TRUE))),
     c("     Variable    p.value                                                                                   Method",
       "Sex       Sex 0.80009995 Fisher's Exact Test for Count Data with simulated p-value\\n\\t (based on 2000 replicates)",
       "time     time 0.02480103                                                                       Linear Model ANOVA",
@@ -458,7 +459,7 @@ test_that("05/25/2017: simulate.p.value=TRUE option for fisher.test", {
     )
   )
 })
-
+options(old)
 
 ###########################################################################################################
 #### Reported bugs for tableby
