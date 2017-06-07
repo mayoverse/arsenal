@@ -13,7 +13,7 @@
 \arguments{
 \item{x, object}{A \code{freqlist} object.}
 
-\item{value}{A list of new labels.}
+\item{value}{A list or vector of new labels.}
 
 \item{...}{Other arguments (not in use at this time, but included for S3 consistency)}
 }

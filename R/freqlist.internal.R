@@ -16,7 +16,7 @@ as.data.frame.freqlist <- function(x, ...)
 #' A set of helper functions for \code{\link{freqlist}}.
 #'
 #' @param x,object A \code{freqlist} object.
-#' @param value A list of new labels.
+#' @param value A list or vector of new labels.
 #' @param ... Other arguments (not in use at this time, but included for S3 consistency)
 #' @name freqlist.internal
 NULL
@@ -32,6 +32,8 @@ NULL
     return(x)
   }
 
+  if(is.list(value)) value <- unlist(value)
+  
   if((!is.character(value) || length(value) != ncol(x$freqlist) - 4))
   {
     stop("New labels must be 'NULL' or character vector of length ", ncol(x$freqlist) - 4, ".")
