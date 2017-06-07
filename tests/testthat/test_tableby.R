@@ -422,6 +422,45 @@ test_that("Changing tests", {
 })
 
 
+#tmp <- tableby(Group ~ Sex + time + dt, data = mdat, subset=Group != "High")
+set.seed(1000)
+old <- options(width = 150)
+test_that("05/25/2017: simulate.p.value option for chisq.test", {
+  expect_identical(
+    capture.output(tests(tableby(Group ~ Sex + time + dt, data = mdat,  subset=Group != "High",simulate.p.value=TRUE))),
+    c("     Variable   p.value                                                                           Method"  ,
+      "Sex       Sex 0.6116942 Pearson's Chi-squared test with simulated p-value\\n\\t (based on 2000 replicates)",
+      "time     time 0.2059543                                                               Linear Model ANOVA",
+      "dt         dt 0.1714441                                                     Kruskal-Wallis rank sum test"
+    )
+  )
+})
+
+test_that("05/25/2017: chisq.correct=FALSE option for chisq.test", {
+  expect_identical(
+    capture.output(tests(tableby(Group ~ Sex + time + dt, data = mdat, subset=Group != "High", chisq.correct=FALSE))),
+    c("     Variable   p.value                       Method",
+      "Sex       Sex 0.4383235   Pearson's Chi-squared test",
+      "time     time 0.2059543           Linear Model ANOVA",
+      "dt         dt 0.1714441 Kruskal-Wallis rank sum test"
+    )
+  )
+})
+
+
+set.seed(1000)
+test_that("05/25/2017: simulate.p.value=TRUE option for fisher.test", {
+  expect_identical(
+    capture.output(tests(tableby(Group ~ fe(Sex) + time + dt, data = mdat,simulate.p.value=TRUE))),
+    c("     Variable    p.value                                                                                   Method",
+      "Sex       Sex 0.80009995 Fisher's Exact Test for Count Data with simulated p-value\\n\\t (based on 2000 replicates)",
+      "time     time 0.02480103                                                                       Linear Model ANOVA",
+      "dt         dt 0.39126924                                                             Kruskal-Wallis rank sum test"
+    )
+  )
+})
+options(old)
+
 ###########################################################################################################
 #### Reported bugs for tableby
 ###########################################################################################################
@@ -521,19 +560,19 @@ data(mockstudy)
 temp <- mockstudy[1:5,]
 test_that("05/24/2017: Katherine King's count vs countpct", {
   expect_identical(
-    capture.output(summary(tableby(arm ~ sex + age, data=temp,cat.stats="count"), text = TRUE)),
+    capture.output(summary(tableby(arm ~ sex + age, data=temp,cat.stats="count", test = FALSE), text = TRUE)),
     c(""                                                                                            ,
-      "--------------------------------------------------------------------------------------------------------------",
-      "                      A: IFL (N=2)      F: FOLFOX (N=2)   G: IROX (N=1)     Total (N=5)       p value         ",
-      "-------------------- ----------------- ----------------- ----------------- ----------------- -----------------",
-      "Sex                                                                                                      0.392",
+      "--------------------------------------------------------------------------------------------",
+      "                      A: IFL (N=2)      F: FOLFOX (N=2)   G: IROX (N=1)     Total (N=5)     ",
+      "-------------------- ----------------- ----------------- ----------------- -----------------",
+      "Sex                 "                                                                        ,
       "   Male              0                 1                 0                 1                ",
       "   Female            2                 1                 1                 4                ",
-      "Age                                                                                                      0.817",
+      "Age                 "                                                                        ,
       "   Mean (SD)         62 (17)           68 (1.41)         71 (NaN)          66.2 (9.42)      ",
       "   Q1, Q3            56, 68            67.5, 68.5        71, 71            67, 71           ",
       "   Range             50 - 74           67 - 69           71 - 71           50 - 74          ",
-      "--------------------------------------------------------------------------------------------------------------"
+      "--------------------------------------------------------------------------------------------"
     )
   )
 })
@@ -543,57 +582,17 @@ df <- data.frame(x = c("a ", "a ", "b", "b ", "c", "c"), y = c("A", "A", "A", "B
 ##table(df$x, df$y)
 test_that("05/24/2017: Missy Larson and Ethan Heinzen trailing spaces on char x variable", {
   expect_identical(
-    capture.output(summary(tableby(y ~ x, data = df), text = TRUE)),
-    c(""                                                                        ,
-      "------------------------------------------------------------------------",
-      "                  A (N=3)       B (N=3)       Total (N=6)   p value     ",
-      "---------------- ------------- ------------- ------------- -------------",
-      "x                                                                  0.112",
+    capture.output(summary(tableby(y ~ x, data = df, test = FALSE), text = TRUE)),
+    c(""                                                         ,
+      "----------------------------------------------------------",
+      "                  A (N=3)       B (N=3)       Total (N=6) ",
+      "---------------- ------------- ------------- -------------",
+      "x               "                                          ,
       "   a             2 (66.7%)     0 (0%)        2 (33.3%)    ",
       "   b             1 (33.3%)     0 (0%)        1 (16.7%)    ",
       "   b             0 (0%)        1 (33.3%)     1 (16.7%)    ",
       "   c             0 (0%)        2 (66.7%)     2 (33.3%)    ",
-      "------------------------------------------------------------------------"
+      "----------------------------------------------------------"
     )
-  )})
-                 
-
-
-#tmp <- tableby(Group ~ Sex + time + dt, data = mdat, subset=Group != "High")
-set.seed(1000)
-test_that("05/25/2017: simulate.p.value option for chisq.test", {
-  expect_identical(
-    capture.output(tests(tableby(Group ~ Sex + time + dt, data = mdat,  subset=Group != "High",simulate.p.value=TRUE))),
-c(
-"     Variable   p.value",
-"Sex       Sex 0.6116942",
-"time     time 0.2059543",
-"dt         dt 0.1714441",
-"                                                                               Method",
-"Sex  Pearson's Chi-squared test with simulated p-value\\n\\t (based on 2000 replicates)",
-"time                                                               Linear Model ANOVA",
-"dt                                                       Kruskal-Wallis rank sum test")
-)})
-
-test_that("05/25/2017: chisq.correct=FALSE option for chisq.test", {
-  expect_identical(
-    capture.output(tests(tableby(Group ~ Sex + time + dt, data = mdat, subset=Group != "High", chisq.correct=FALSE))),
-c("     Variable   p.value                       Method",
-  "Sex       Sex 0.4383235   Pearson's Chi-squared test",
-  "time     time 0.2059543           Linear Model ANOVA",
-  "dt         dt 0.1714441 Kruskal-Wallis rank sum test")
-)})
-
-
-set.seed(1000)
-test_that("05/25/2017: simulate.p.value=TRUE option for fisher.test", {
-  expect_identical(
-    capture.output(tests(tableby(Group ~ fe(Sex) + time + dt, data = mdat,simulate.p.value=TRUE))),
- c("     Variable    p.value",                                                                       
-   "Sex       Sex 0.80009995",                                                                       
-  "time     time 0.02480103",                                                                       
-  "dt         dt 0.39126924",                                                                       
-  "                                                                                       Method",
-  "Sex  Fisher's Exact Test for Count Data with simulated p-value\\n\\t (based on 2000 replicates)",
-  "time                                                                       Linear Model ANOVA",  
-  "dt                                                               Kruskal-Wallis rank sum test"))})
+  )
+})

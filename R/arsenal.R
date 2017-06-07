@@ -47,8 +47,8 @@ NULL
 # devtools::test()
 # devtools::check()
 # withr::with_libpaths(c("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/testinstalls/", .libPaths()),
-#                      devtools::install("../arsenal-eph-git/", build_vignettes = TRUE, dependencies = FALSE))
-# devtools::build("../arsenal-eph-git/")
+#                      devtools::install("../rpkg-arsenal/", build_vignettes = TRUE, dependencies = FALSE))
+# devtools::build("../rpkg-arsenal/")
 ## < restart R >
 ## library(arsenal, lib.loc = "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/testinstalls/")
 

@@ -14,7 +14,8 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   meansd = "Mean (SD)", medianq1q3 = "Median (Q1, Q3)", q1q3 = "Q1, Q3", range =
   "Range", countpct = "Count (Pct)", Nevents = "Events", medsurv =
   "Median Survival"), digits = 3, digits.test = NULL, nsmall = NULL,
-  nsmall.pct = NULL, ...)
+  nsmall.pct = NULL, chisq.correct = TRUE, simulate.p.value = FALSE,
+  B = 2000, ...)
 }
 \arguments{
 \item{test}{logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.}
@@ -65,6 +66,12 @@ e.g., list(countpct="Count(Pct)").}
 \item{nsmall}{digits to print after decimal point for numerics}
 
 \item{nsmall.pct}{digits to print after decimal point for percentages}
+
+\item{chisq.correct}{logical, correction factor for chisq.test}
+
+\item{simulate.p.value}{logical, simulate p-value for categorical tests (fe and chisq)}
+
+\item{B}{number of simulations to perform for simulation-based p-value}
 
 \item{...}{additional arguments to be passed to internal \code{tableby} functions and kept for summary method options, such as digits.}
 }

@@ -1,4 +1,4 @@
-# arsenal 0.3.?
+# arsenal 0.4.0
 
 * Tweaked `freqlist()` to behave better with data.frame subsetting and the infamous `drop=TRUE`.
 
@@ -11,6 +11,12 @@
   
 * Moved import `broom` and `stringr` to "Suggests",
   adding `magrittr` for piping.
+  
+* Added piping to `write2*()` vignette.
+  
+* Several `tableby()` fixes for counts and percents.
+
+* New options in `tableby.control()` to modify the statistical tests performed.
 
 # arsenal 0.3.0
 
