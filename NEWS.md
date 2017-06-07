@@ -1,3 +1,7 @@
+# arsenal 0.4.1
+
+* Updated `tableby()` vignette.
+
 # arsenal 0.4.0
 
 * Tweaked `freqlist()` to behave better with data.frame subsetting and the infamous `drop=TRUE`.
