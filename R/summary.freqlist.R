@@ -4,7 +4,9 @@
 #'
 #' @param object an object of class \code{\link{freqlist}}
 #' @param single a logical value indicating whether to collapse results created using a groupBy variable into a single table for printing
-#' @param labelTranslations A character vector giving the labels. Overrides the labels in `freqlist`.
+#' @param labelTranslations A named list (or vector) where the name is the label in the output to 
+#'        be replaced in the pretty rendering of freqlist by the character string value for the named
+#'        element of the list, e.g., list(age="Age(years)", bmi="Body Mass Index").
 #' @param dupLabels Should labels which are the same as the row above be printed? The default (\code{FALSE}) more
 #'   closely approximates \code{PROC FREQ} output from SAS, where a label carried down from the row above is left blank.
 #' @param ... additional arguments passed to the \code{\link[knitr]{kable}} function

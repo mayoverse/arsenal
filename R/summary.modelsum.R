@@ -13,8 +13,11 @@ modelsum.translations <- list() ## adj.r.squared = "adj.rsq", sex = "Sex", sexM 
 #'
 #' @param object The data defining the table to display
 #' @param title	Title for the table, defaults to \code{NULL} (no title)
-#' @param labelTranslations List where name is the label in the output, and value is the label you
-#' 		want displayed e.g. \code{list(q1q3 = "Q1, Q3", medsurv = "Median Survival")}.
+#' @param labelTranslations A named list (or vector) where the name is the label in the
+#'        output to be replaced in the pretty rendering of modelsum by the character
+#'        string value for the named element of the list, e.g., 
+#'        \code{list(age = "Age(years)", medsurv = "Median Survival")}. This applies to the statistic
+#'        labels and the variable labels in the output.
 #' @param digits Maximum number of digits to display for floating point numbers.
 #' 		If \code{NA} (default), it uses the value from \code{object$control$digits}
 #' 		(whose default is 3, which would result in, e.g., 12.3, 1.23, 0.123, and 0.012).
