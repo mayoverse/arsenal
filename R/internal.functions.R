@@ -841,12 +841,12 @@ sumStrLen <- function(strings) {
 ## ' Take a string, and see if we have a human readable version of that string
 ## '
 ## ' @param label			The label to convert, or a vector of labels to convert
-## ' @param translations	The List to use for conversion of labels, defaults to format.translations
+## ' @param translations	The List to use for conversion of labels, defaults to defaultLabelTranslations().
 ## ' @return More human readable version of the label, if have one, else the passed in label.
 ## ' If was passed a Vector, will return a Vector of translations
 ## '
 ## ' @author m082166
-lookupHumanTitle <- function(label, translations = format.translations) {
+lookupHumanTitle <- function(label, translations = defaultLabelTranslations()) {
   if (length(label) == 1)	{	# Can have single string, or vector of strings
     humanText <- translations[[label]]
     if (!is.null(humanText))
@@ -886,7 +886,7 @@ lookupHumanTitle <- function(label, translations = format.translations) {
 ## ' @return Current translation list
 ## '
 ## ' @author m082166
-format.addTranslations <- function(object, transList, baseList = format.translations,
+format.addTranslations <- function(object, transList, baseList = defaultLabelTranslations(),
                                     elemCol = "x", nameCol = "name")
 {
   elements <- object[[elemCol]]
