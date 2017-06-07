@@ -15,10 +15,10 @@
 \item{title}{Title that will appear on the top of the header in the pretty-table rendering
 of the tableby object}
 
-\item{labelTranslations}{All labels that are to appear in the pretty rendering of the \code{tableby}
-results have both summary-statistic labels that are replaced by a formal label
-(e.g., \code{meansd} by \code{"Mean (SD)"}), and the variables from the formula can be replaced
-by a more formal name.}
+\item{labelTranslations}{A named list (or vector) where the name is the label in the
+     output to be replaced in the pretty rendering of tableby by the character string
+     value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.
+This applies to both the statistic labels and the variables from the formula.}
 
 \item{digits}{Digits to round for significant digits of numeric, non-integer values.
 If \code{digits.test} is not set, \code{digits} is used for that setting.}
