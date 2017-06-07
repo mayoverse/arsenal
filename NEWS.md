@@ -1,3 +1,11 @@
+# arsenal 0.4.2
+
+* Updated `labelTranslation` documentation
+
+* Changed `format.translations` list to `defaultLabelTranslations()` function, and removed labels for sex and age.
+
+* Tweaked `labels<-.freqlist` to allow for list input.
+
 # arsenal 0.4.1
 
 * Updated `tableby()` vignette.
