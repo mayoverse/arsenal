@@ -207,6 +207,30 @@ tab.test <- tableby(arm ~ kwt(ast, "Nmiss2","median") + anova(age, "N","mean") +
 summary(tab.test)
 ```
 
+## Controlling Options for Categorical Tests (Chisq and Fisher's)
+
+The formal tests for categorical variables against the levels of the by variable, chisq and fe, have
+options to simulate p-values. We show how to turn on the simulations for these with 500 replicates
+for the Fisher's test (fe).
+
+```{r, simfe, results='asis'}
+set.seed(100)
+tab.catsim <- tableby(arm ~ sex + race, cat.test="fe", simulate.p.value=TRUE, B=500, data=mockstudy)
+tests(tab.catsim)
+```
+
+The chis-square test on 2x2 tables applies Yates' continuity correction by default, so we provide an option
+to turn off the correction. We show the results with and without the correction that is applied to
+treatment arm by sex, if we use subset to ignore one of the three treatment arms.
+
+```{r, chisqcorrect, results='asis'}
+cat.correct <- tableby(arm ~ sex + race, cat.test="chisq", subset = !grepl("^F", arm), data=mockstudy)
+tests(cat.correct)
+cat.nocorrect <- tableby(arm ~ sex + race, cat.test="chisq", subset = !grepl("^F", arm),
+     chisq.correct=FALSE, data=mockstudy)
+tests(cat.nocorrect)
+```
+
 ## Modifying the look & feel in Word documents 
 
 You can easily create Word versions of `tableby` output via an Rmarkdown report and the default options will give you a reasonable table in Word - just select the "Knit Word" option in RStudio.
