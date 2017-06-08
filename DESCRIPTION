@@ -1,6 +1,6 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical Summaries
-Version: 0.4.2
+Version: 0.4.2.9000
 Date: 2017-06-07
 URL: https://cran.r-project.org/package=arsenal
 Authors@R: c(
