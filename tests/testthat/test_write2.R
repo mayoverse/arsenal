@@ -8,7 +8,7 @@ data(mockstudy)
 expect_write2_worked <- function(FUN, object, reference, ...)
 {
   FUN <- match.fun(FUN)
-  filename <- tempfile(fileext = ".html")
+  filename <- tempfile()
   on.exit(expect_true(file.remove(paste0(filename, ".md"))))
   if(!file.exists(reference)) skip("Couldn't find the reference file.")
   if(!file.create(paste0(filename, ".md"))) skip("Couldn't create the temporary file.")
