@@ -44,3 +44,4 @@ Depends:
 VignetteBuilder: knitr
 License: GPL (>= 2)
 RoxygenNote: 6.0.1
+LazyData: true
