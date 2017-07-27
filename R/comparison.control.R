@@ -1,0 +1,70 @@
+
+#' Control settings for `compare` function
+#'
+#' Control tolerance definitions for the \code{\link{compare.data.frame}} function.
+#'
+#' @param tol.num Numeric; maximum value of abs(delta) or abs(\%delta) to tolerate as
+#'   a non-difference for numeric variables (i.e., summarize differences when abs(delta) > tol.num).
+#'   Expressed as absolute or percent (see tol.num.type).
+#' @param tol.num.type Character; should absolute or percent differences be reported? Can be abbreviated.
+#' @param int.as.num Logical; should integers be coerced to numeric before comparison? Default FALSE.
+#' @param tol.char Character; character tolerance criteria, referring to whitespace and character case. Options are
+#'   \code{"none"} (compare character strings exactly as they are),
+#'   \code{"trim"} (left-justify and trim all trailing white space),
+#'   \code{"case"} (allow differences in upper/lower case), and
+#'   \code{"both"} (combine \code{"trim"} and \code{"case"}).
+#'   Can be abbreviated.
+#' @param tol.factor Character; factor tolerance criteria. Options are
+#'   \code{"none"} (match both character labels and numeric levels),
+#'   \code{"levels"} (match only the numeric levels), and
+#'   \code{"labels"} (match only the labels).
+#' @param factor.as.char Logical; should factors be coerced to character before comparison? Default FALSE.
+#' @param tol.date In development...
+#' @param tol.vars Either \code{"none"} (the default), denoting that variable names are to be matched as-is, or a
+#'   character vector denoting equivalence classes for characters in the variable names. See "details", below.
+#' @param ... Other arguments (not in use at this time).
+#' @return A list containing the necessary parameters for the \code{\link{compare.data.frame}} function.
+#' @details
+#' If not set to \code{"none"} (the default), the \code{tol.vars} argument is a character vector denoting equivalence classes
+#'   for the characters in the variable names. A single character in this vector means to replace that character
+#'   with \code{""}. All other strings in this vector are split by character and replaced by the first character in the string.
+#'
+#' E.g., a character vector \code{c("._", "aA", " ")} would denote that the dot and underscore are equivalent (to be translated to a dot),
+#'   that "a" and "A" are equivalent (to be translated to "a"), and that spaces should be removed.
+#'
+#' The special character string \code{"case"} in this vector is the same as specifying \code{paste0(letters, LETTERS)}.
+#' @examples
+#' comparison.control(tol.num.type = "pct", # calculate percent differences
+#'                 tol.vars = c("case",  # ignore case
+#'                              "._",    # set all underscores to dots.
+#'                              "e"))    # remove all letter e's
+#' @seealso \code{\link{compare.data.frame}}
+#' @author Ethan Heinzen
+#' @export
+comparison.control <- function(tol.num = sqrt(.Machine$double.eps),
+                               tol.num.type = c("absolute", "percent", "pct", "%"),
+                               int.as.num = FALSE,
+                               tol.char = c("none", "trim", "case", "both"),
+                               tol.factor = c("none", "levels", "labels"),
+                               factor.as.char = FALSE,
+                               tol.date = NULL,
+                               tol.vars = "none", ...)
+{
+  if(!is.numeric(tol.num) || length(tol.num) != 1 || tol.num < 0)
+  {
+    warning("'tol.num' is less than zero or is not numeric constant! Setting to default = 0.")
+    tol.num <- 0
+  }
+  tol.num.type <- match.arg(tol.num.type, several.ok = FALSE)
+  if(!is.logical(int.as.num) || length(int.as.num) != 1 || is.na(int.as.num)) stop("'int.as.num' should be TRUE or FALSE.")
+  tol.char <- match.arg(tol.char, several.ok = FALSE)
+  tol.factor <- match.arg(tol.factor, several.ok = FALSE)
+  if(!is.logical(factor.as.char) || length(factor.as.char) != 1 || is.na(factor.as.char)) stop("'factor.as.char' should be TRUE or FALSE.")
+
+  if(!is.character(tol.vars)){stop("'tol.vars' must be a character string or vector.")}
+  if("none" %in% tol.vars || length(tol.vars) == 0) tol.vars <- "none"
+  if("case" %in% tol.vars) tol.vars <- c(paste0(letters, LETTERS), tol.vars[tol.vars != "case"])
+
+  return(list(tol.num = tol.num, tol.num.type = tol.num.type, int.as.num = int.as.num, tol.char = tol.char,
+              tol.factor = tol.factor, factor.as.char = factor.as.char, tol.date = tol.date, tol.vars = tol.vars))
+}
