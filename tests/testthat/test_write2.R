@@ -12,8 +12,8 @@ expect_write2_worked <- function(FUN, object, reference, ...)
   on.exit(expect_true(file.remove(paste0(filename, ".md"))))
   if(!file.exists(reference)) skip("Couldn't find the reference file.")
   if(!file.create(paste0(filename, ".md"))) skip("Couldn't create the temporary file.")
-  if(!grepl("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/rpkg-arsenal/", getwd(), fixed = TRUE) &&
-     !grepl("/people/biostat6/m144326/consult/packages/rpkg-arsenal/", getwd(), fixed = TRUE)) skip("These tests only run in Ethan's space.")
+  if(!grepl("rpkg-arsenal/", getwd(), fixed = TRUE) &&
+     !grepl("rpkg-arsenal/", getwd(), fixed = TRUE)) skip("These tests only run in Ethan's space.")
   FUN(object, file = filename, ..., render. = FALSE, keep.md = TRUE, append. = FALSE)
   generated <- readLines(paste0(filename, ".md"))
   expect_output_file(cat(generated, sep = "\n"), reference)
