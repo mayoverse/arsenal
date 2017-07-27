@@ -46,11 +46,11 @@ NULL
 # devtools::check_man()
 # devtools::test()
 # devtools::check()
-# withr::with_libpaths(c("/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/testinstalls/", .libPaths()),
+# withr::with_libpaths(c("../testinstalls/", .libPaths()),
 #                      devtools::install("../rpkg-arsenal/", build_vignettes = TRUE, dependencies = FALSE))
 # devtools::build("../rpkg-arsenal/")
 ## < restart R >
-## library(arsenal, lib.loc = "/data5/bsi/adhoc/s200555.R-infrastructure/devel/eph/testinstalls/")
+## library(arsenal, lib.loc = "../testinstalls/")
 
 #### to upload to CRAN
 ## Update DESCRIPTION, README.md, NEWS.md, and cran-comments.md
