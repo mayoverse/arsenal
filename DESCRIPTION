@@ -2,7 +2,6 @@ Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical Summaries
 Version: 0.4.2.9000
 Date: 2017-06-07
-URL: https://cran.r-project.org/package=arsenal
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
     person("Jason", "Sinnwell", role="aut"),
@@ -41,6 +40,8 @@ Suggests:
 Depends:
     R (>= 3.2.0),
     stats (>= 3.2.0)
+URL: https://github.com/eheinzen/arsenal, https://cran.r-project.org/package=arsenal
+BugReports: https://github.com/eheinzen/arsenal/issues
 VignetteBuilder: knitr
 License: GPL (>= 2)
 RoxygenNote: 6.0.1
