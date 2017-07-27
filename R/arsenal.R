@@ -42,6 +42,11 @@
 #'
 NULL
 
+#' @importFrom testthat compare
+#' @seealso \code{\link{compare.data.frame}}
+#' @export
+testthat::compare
+
 #### commands to build the package using devtools
 # devtools::check_man()
 # devtools::test()
