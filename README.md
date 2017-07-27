@@ -1,3 +1,8 @@
+
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/arsenal)](http://cran.r-project.org/web/packages/arsenal)
+[![Downloads](http://cranlogs.r-pkg.org/badges/arsenal)](http://cran.rstudio.com/package=arsenal)
+[![Travis-CI Build Status](https://travis-ci.org/eheinzen/arsenal.svg?branch=master)](https://travis-ci.org/eheinzen/arsenal)
+
 # The `arsenal` Package
 
 The goal of `library(arsenal)` is to make statistical reporting easy. It includes many functions which the useR will find useful to have
