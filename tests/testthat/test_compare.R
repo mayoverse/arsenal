@@ -89,6 +89,27 @@ test_that("Basic comparison works: by row.names for x and something else for y",
   )
 })
 
+df1$listcol <- list(1:3, "hi there", FALSE)
+df2$listcol <- list(FALSE, "bye now", 1:2)
+
+test_that("List-column comparison works: by id", {
+  expect_identical(
+    capture.output(print(compare(df1, df2, by = "id"))),
+    c("Compare Object"                                     ,
+      ""                                                   ,
+      "Function Call: "                                    ,
+      "compare.data.frame(x = df1, y = df2, by = \"id\")"  ,
+      ""                                                   ,
+      "Shared: 4 variables and 3 observations."            ,
+      "Not shared: 2 variables and 0 observations."        ,
+      ""                                                   ,
+      "Differences found in 2/3 variables compared."       ,
+      "0 variables compared have non-identical attributes."
+    )
+  )
+  expect_true(n.diffs(compare(df1, df1, by = "id")) == 0)
+})
+
 test_that("Basic mockstudy comparison works: by id", {
   expect_identical(
     capture.output(print(compare(mockstudy, mockstudy2, by = 'case'))),

@@ -86,55 +86,58 @@ compare_values <- function(i, v, df, byvars, contr)
     var.y <- as.character(var.y)
   }
 
-  idx.na <- (is.na(var.x) & !is.na(var.y)) | (is.na(var.y) & !is.na(var.x))
+  idx.na <- function(vx, vy, ix)
+  {
+    (is.na(vx) & !is.na(vy)) | (is.na(vy) & !is.na(vx)) | (!is.na(vx) & !is.na(vy) & ix)
+  }
 
   if(is.logical(var.x) && is.logical(var.y))
   {
-    idx <- (var.x != var.y)
+    idx <- idx.na(var.x, var.y, var.x != var.y)
   } else if(is.numeric(var.x) && is.numeric(var.y))
   {
     if(contr$tol.num.type == "absolute")
     {
-      idx <- (abs(var.x - var.y) > contr$tol.num)
+      idx <- idx.na(var.x, var.y, abs(var.x - var.y) > contr$tol.num)
     } else
     {
-      idx <- (abs((var.x - var.y)/var.x) > contr$tol.num)
+      idx <- idx.na(var.x, var.y, abs((var.x - var.y)/var.x) > contr$tol.num)
     }
   } else if(is.factor(var.x) && is.factor(var.y))
   {
     if(contr$tol.factor == "none")
     {
-      idx <- (as.character(var.x) != as.character(var.y)) | (as.numeric(var.x) != as.numeric(var.y))
+      idx.tmp <- (as.character(var.x) != as.character(var.y)) | (as.numeric(var.x) != as.numeric(var.y))
+      idx <- idx.na(var.x, var.y, idx.tmp)
     } else if(contr$tol.factor == "levels")
     {
-      idx <- (as.numeric(var.x) != as.numeric(var.y))
+      idx <- idx.na(var.x, var.y, as.numeric(var.x) != as.numeric(var.y))
     } else
     {
-      idx <- (as.character(var.x) != as.character(var.y))
+      idx <- idx.na(var.x, var.y, as.character(var.x) != as.character(var.y))
     }
   } else if(is.character(var.x) && is.character(var.y))
   {
     if(contr$tol.char == "both")
     {
-      idx <- (tolower(trimws(var.x)) != tolower(trimws(var.y)))
+      idx <- idx.na(var.x, var.y, tolower(trimws(var.x)) != tolower(trimws(var.y)))
     } else if(contr$tol.char == "case")
     {
-      idx <- (tolower(var.x) != tolower(var.y))
+      idx <- idx.na(var.x, var.y, tolower(var.x) != tolower(var.y))
     } else if(contr$tol.char == "trim")
     {
-      idx <- (trimws(var.x) != trimws(var.y))
+      idx <- idx.na(var.x, var.y, trimws(var.x) != trimws(var.y))
     } else
     {
-      idx <- (var.x != var.y)
+      idx <- idx.na(var.x, var.y, var.x != var.y)
     }
   } else
   {
-    return(NULL)
+    idx <- unlist(Map(Negate(identical), var.x, var.y))
   }
-  idx <- idx.na | (!is.na(var.x) & !is.na(var.y) & idx)
 
-  out <- data.frame(values.x = var.x[idx],
-                    values.y = var.y[idx],
+  out <- data.frame(values.x = I(var.x[idx]), # just in case list-column
+                    values.y = I(var.y[idx]),
                     row.x = df[["..row.x.."]][idx],
                     row.y = df[["..row.y.."]][idx])
 
