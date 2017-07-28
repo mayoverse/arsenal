@@ -239,10 +239,10 @@ diffs.compare.data.frame <- function(object, ..., by.var = FALSE)
 
   if(by.var) return(diffs[, c("var.x", "var.y", "n", "NAs")])
 
-  tochar <- function(df)
+  tolist <- function(df)
   {
-    df$values.x <- as.character(df$values.x)
-    df$values.y <- as.character(df$values.y)
+    df$values.x <- as.list(df$values.x)
+    df$values.y <- as.list(df$values.y)
     df
   }
 
@@ -250,7 +250,7 @@ diffs.compare.data.frame <- function(object, ..., by.var = FALSE)
   if(nrow(diffs1) > 0)
   {
     diffs.table <- do.call(rbind, lapply(Map(cbind, var.x = diffs1$var.x, var.y = diffs1$var.y, diffs1$values,
-                                             MoreArgs = list(stringsAsFactors = FALSE)), tochar))
+                                             MoreArgs = list(stringsAsFactors = FALSE)), tolist))
   } else diffs.table <- cbind(var.x = character(0), var.y = character(0), diffs$values[[1]], stringsAsFactors = FALSE)
 
   diffs.table
