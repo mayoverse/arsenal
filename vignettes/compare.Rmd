@@ -114,33 +114,44 @@ replace all instances of `"A"` with `"a"` and all instances of `"b"`, `"C"`, or 
 This is one way to ignore case for certain letters. Otherwise, it's possible to combine
 the equivalence classes with ignoring case, by passing (e.g.) `c("._", "case")`.
 
-Passing a single character in this vector will replace that character with the empty string.
+Passing a single character as an element this vector will replace that character with the empty string.
 For example, passing c(" ", ".") would remove all spaces and dots from the column names.
 
+For mockstudy, let's treat dots, underscores, and spaces as the same, and ignore case:
+
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case")))
+summary(compare(mockstudy, mockstudy2, by = "case",
+                tol.vars = c("._ ", "case") # dots=underscores=spaces, ignore case
+))
 ```
 
 # Column comparison options
 
 ## Numeric tolerance
 
-To allow numeric differences of a certain tolerance, use the `tol.num=` and `tol.num.type=` options.
-`tol.num=` determines the maximum (unsigned) difference tolerated if `tol.num.type="absolute"` (default),
-and determines the maximum (unsigned) percent difference tolerated if `tol.num.type="percent"`.
+To allow numeric differences of a certain tolerance, use the `tol.num=` and `tol.num.val=` options.
+`tol.num.val=` determines the maximum (unsigned) difference tolerated if `tol.num="absolute"` (default),
+and determines the maximum (unsigned) percent difference tolerated if `tol.num="percent"`.
 
 Also note the option `int.as.num=`, which determines whether integers and numerics should be compared despite
-their class difference. If `TRUE`, the integeres are coerced to numeric.
+their class difference. If `TRUE`, the integers are coerced to numeric.
 Note that `mockstudy$ast` is integer, while `mockstudy2$ast` is numeric:
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._", "case"), int.as.num = TRUE))
+summary(compare(mockstudy, mockstudy2, by = "case",
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE            # compare integers and numerics
+))
 ```
 
 Suppose a tolerance of up to 10 is allowed for `ast`:
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._", "case"), int.as.num = TRUE, tol.num = 10))
+summary(compare(mockstudy, mockstudy2, by = "case",
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE,           # compare integers and numerics
+                tol.num.val = 10             # allow absolute differences <= 10
+))
 ```
 
 ## Factor tolerance
@@ -150,8 +161,12 @@ numeric levels. Set `tol.factor="levels"` to match only the numeric levels, or s
 `tol.factor="labels"` to match only the labels.
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._", "case"),
-                int.as.num = TRUE, tol.num = 10, tol.factor = "labels"))
+summary(compare(mockstudy, mockstudy2, by = "case",
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE,           # compare integers and numerics
+                tol.num.val = 10,            # allow absolute differences <= 10
+                tol.factor = "labels"        # match only factor labels
+))
 ```
 
 Also note the option `factor.as.char=`, which determines whether factors and characters should be compared despite
@@ -159,9 +174,13 @@ their class difference. If `TRUE`, the factors are coerced to characters.
 Note that `mockstudy$race` is a character, while `mockstudy2$race` is a factor:
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._", "case"),
-                int.as.num = TRUE, tol.num = 10,
-                tol.factor = "labels", factor.as.char = TRUE))
+summary(compare(mockstudy, mockstudy2, by = "case",
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE,           # compare integers and numerics
+                tol.num.val = 10,            # allow absolute differences <= 10
+                tol.factor = "labels",       # match only factor labels
+                factor.as.char = TRUE        # compare factors and characters
+))
 ```
 
 ## Character tolerance
@@ -171,10 +190,83 @@ By default, they are compared as-is, but they can be compared after ignoring cas
 or trimming whitespace or both.
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._", "case"),
-                int.as.num = TRUE, tol.num = 10,
-                tol.factor = "labels", factor.as.char = TRUE, tol.char = "case"))
+summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE,           # compare integers and numerics
+                tol.num.val = 10,            # allow absolute differences <= 10
+                tol.factor = "labels",       # match only factor labels
+                factor.as.char = TRUE,       # compare factors and characters
+                tol.char = "case"            # ignore case in character vectors
+))
 ```
+
+## Date tolerance
+
+Use the `tol.date=` argument to change how dates are compared.
+
+## User-defined tolerance functions
+
+### Details
+
+The `comparison.control()` function accepts functions for any of the tolerance arguments in addition
+to the short-hand character strings. This allows the user to create custom tolerance functions to suit his/her needs.
+
+Any custom tolerance function must accept two vectors as arguments and return a logical vector of the same length. The `TRUE`s in
+the results should correspond to elements which are deemed "different". Note that the numeric and date tolerance functions should also
+include a third argument for tolerance size (even if it's not used).
+
+CAUTION: the results should not include NAs, since the logical vector is used to subset the input data.frames. The `tol.NA()` function
+is useful for considering any NAs in the two vectors (but not both) as differences, in addition to other criteria.
+
+```{r results='markup'}
+tol.NA
+```
+
+The `tol.NA()` function is used in all default tolerance functions to help handle NAs.
+
+### Example 1
+
+Suppose we want to ignore any dates which are later in the second dataset than the first. We define a custom tolerance function.
+
+```{r results = 'markup'}
+my.tol <- function(x, y, tol)
+{
+  tol.NA(x, y, x > y)
+}
+
+date.df1 <- data.frame(dt = as.Date(c("2017-09-07", "2017-08-08", "2017-07-09", NA)))
+date.df2 <- data.frame(dt = as.Date(c("2017-10-01", "2017-08-08", "2017-07-10", "2017-01-01")))
+n.diffs(compare(date.df1, date.df2)) # default finds any differences
+n.diffs(compare(date.df1, date.df2, tol.date = my.tol)) # our function identifies only the NA as different...
+n.diffs(compare(date.df2, date.df1, tol.date = my.tol)) # ... until we change the argument order
+
+```
+
+### Example 2
+
+(Continuing our mockstudy example)
+
+Suppose we're okay with NAs getting replaced by -9.
+
+```{r}
+tol.minus9 <- function(x, y, tol)
+{
+  idx1 <- is.na(x) & !is.na(y) & y == -9
+  idx2 <- tol.num.absolute(x, y, tol) # find other absolute differences
+  return(!idx1 & idx2)
+}
+
+summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE,           # compare integers and numerics
+                tol.num.val = 10,            # allow absolute differences <= 10
+                tol.factor = "labels",       # match only factor labels
+                factor.as.char = TRUE,       # compare factors and characters
+                tol.char = "case",           # ignore case in character vectors
+                tol.num = tol.minus9         # ignore NA -> -9 changes
+))
+```
+
 
 # Appendix
 
