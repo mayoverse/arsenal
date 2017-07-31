@@ -121,10 +121,10 @@ compare_attrs <- function(i, v, x_, y_)
   attr.y <- attributes(y_[[v$var.y[i]]])
   if(is.null(attr.x) && is.null(attr.y)) return(NULL)
 
-  empty <- data.frame(name = character(0), attr = I(list()))
+  empty <- data.frame(name = character(0), attr = I(list()), stringsAsFactors = FALSE)
 
-  out <- merge(if(!is.null(attr.x)) data.frame(name = names(attr.x), attr = I(attr.x)) else empty,
-               if(!is.null(attr.y)) data.frame(name = names(attr.y), attr = I(attr.y)) else empty,
+  out <- merge(if(!is.null(attr.x)) data.frame(name = names(attr.x), attr = I(attr.x), stringsAsFactors = FALSE) else empty,
+               if(!is.null(attr.y)) data.frame(name = names(attr.y), attr = I(attr.y), stringsAsFactors = FALSE) else empty,
                by = "name", all = TRUE)
   out$attr.x <- lapply(out$attr.x, cleanup.null.na)
   out$attr.y <- lapply(out$attr.y, cleanup.null.na)
