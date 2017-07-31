@@ -15,7 +15,7 @@ NULL
 
 #' @rdname comparison.tolerances
 #' @export
-tol.num.absolute <- function(x, y, tol)
+tol.num.absolute <- tol.date.absolute <- function(x, y, tol)
 {
   abs(x - y) > tol
 }
@@ -26,6 +26,10 @@ tol.num.percent <- tol.num.pct <- function(x, y, tol)
 {
   abs((x - y)/x) > tol
 }
+
+#' @rdname comparison.tolerances
+#' @export
+tol.num.pct <- tol.num.percent
 
 #' @rdname comparison.tolerances
 #' @export
@@ -75,3 +79,7 @@ tol.char.none <- function(x, y)
 {
   x != y
 }
+
+#' @rdname comparison.tolerances
+#' @export
+tol.date.absolute <- tol.num.absolute

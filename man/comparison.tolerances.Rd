@@ -4,6 +4,7 @@
 \alias{comparison.tolerances}
 \alias{tol.num.absolute}
 \alias{tol.num.percent}
+\alias{tol.num.pct}
 \alias{tol.factor.none}
 \alias{tol.factor.levels}
 \alias{tol.factor.labels}
@@ -11,11 +12,14 @@
 \alias{tol.char.case}
 \alias{tol.char.trim}
 \alias{tol.char.none}
+\alias{tol.date.absolute}
 \title{Comparison tolerances}
 \usage{
 tol.num.absolute(x, y, tol)
 
 tol.num.percent(x, y, tol)
+
+tol.num.pct(x, y, tol)
 
 tol.factor.none(x, y)
 
@@ -30,6 +34,8 @@ tol.char.case(x, y)
 tol.char.trim(x, y)
 
 tol.char.none(x, y)
+
+tol.date.absolute(x, y, tol)
 }
 \arguments{
 \item{x, y}{vectors of the appropriate lengths and types.}

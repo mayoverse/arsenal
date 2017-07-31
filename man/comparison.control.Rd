@@ -8,7 +8,7 @@ comparison.control(tol.num = c("absolute", "percent", "pct"),
   tol.num.val = sqrt(.Machine$double.eps), int.as.num = FALSE,
   tol.char = c("none", "trim", "case", "both"), tol.factor = c("none",
   "levels", "labels"), factor.as.char = FALSE, tol.date = "absolute",
-  tol.vars = "none", ...)
+  tol.date.val = 0, tol.vars = "none", ...)
 }
 \arguments{
 \item{tol.num, tol.char, tol.factor, tol.date}{A function or one of the shortcut character strings,
@@ -19,6 +19,8 @@ denoting the tolerance function to use for a given data type. See "details", bel
 \item{int.as.num}{Logical; should integers be coerced to numeric before comparison? Default FALSE.}
 
 \item{factor.as.char}{Logical; should factors be coerced to character before comparison? Default FALSE.}
+
+\item{tol.date.val}{Numeric; maximum value of differences allowed in dates (fed to the function given in \code{tol.date}).}
 
 \item{tol.vars}{Either \code{"none"} (the default), denoting that variable names are to be matched as-is, or a
 character vector denoting equivalence classes for characters in the variable names. See "details", below.}
@@ -43,6 +45,7 @@ The following character strings are accepted:
   \item{\code{tol.factor = "none"}: match both character labels and numeric levels.}
   \item{\code{tol.factor = "levels"}: match only the numeric levels.}
   \item{\code{tol.factor = "labels"}: match only the labels.}
+  \item{\code{tol.date = "absolute"}: compare absolute differences in dates.}
 }
 
 \code{tol.vars}: If not set to \code{"none"} (the default), the \code{tol.vars} argument is a character vector denoting equivalence classes
