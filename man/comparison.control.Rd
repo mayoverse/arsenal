@@ -59,10 +59,12 @@ E.g., a character vector \code{c("._", "aA", " ")} would denote that the dot and
 The special character string \code{"case"} in this vector is the same as specifying \code{paste0(letters, LETTERS)}.
 }
 \examples{
-comparison.control(tol.num.type = "pct", # calculate percent differences
-                tol.vars = c("case",  # ignore case
-                             "._",    # set all underscores to dots.
-                             "e"))    # remove all letter e's
+cntl <- comparison.control(
+  tol.num = "pct",     # calculate percent differences
+  tol.vars = c("case", # ignore case
+               "._",   # set all underscores to dots.
+               "e")    # remove all letter e's
+)
 }
 \seealso{
 \code{\link{compare.data.frame}}, \code{\link{comparison.tolerances}}
