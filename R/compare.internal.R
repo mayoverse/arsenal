@@ -85,27 +85,22 @@ compare_values <- function(i, v, df, byvars, contr)
     var.y <- as.character(var.y)
   }
 
-  idx.na <- function(vx, vy, ix)
-  {
-    (is.na(vx) & !is.na(vy)) | (is.na(vy) & !is.na(vx)) | (!is.na(vx) & !is.na(vy) & ix)
-  }
-
   if(is.logical(var.x) && is.logical(var.y))
   {
-    idx <- idx.na(var.x, var.y, var.x != var.y)
+    idx <- tol.NA(var.x, var.y, var.x != var.y)
   } else if(is.numeric(var.x) && is.numeric(var.y))
   {
-    idx <- idx.na(var.x, var.y, contr$tol.num(var.x, var.y, contr$tol.num.val))
+    idx <- contr$tol.num(var.x, var.y, contr$tol.num.val)
   } else if(is.factor(var.x) && is.factor(var.y))
   {
-    idx <- idx.na(var.x, var.y, contr$tol.factor(var.x, var.y))
+    idx <- contr$tol.factor(var.x, var.y)
 
   } else if(is.character(var.x) && is.character(var.y))
   {
-    idx <- idx.na(var.x, var.y, contr$tol.char(var.x, var.y))
+    idx <- contr$tol.char(var.x, var.y)
   } else if(is.Date(var.x) && is.Date(var.y))
   {
-    idx <- idx.na(var.x, var.y, contr$tol.date(var.x, var.y, contr$tol.date.val))
+    idx <- contr$tol.date(var.x, var.y, contr$tol.date.val)
   } else
   {
     idx <- unlist(Map(Negate(identical), var.x, var.y))

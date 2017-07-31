@@ -2,6 +2,7 @@
 % Please edit documentation in R/comparison.tolerances.R
 \name{comparison.tolerances}
 \alias{comparison.tolerances}
+\alias{tol.NA}
 \alias{tol.num.absolute}
 \alias{tol.num.percent}
 \alias{tol.num.pct}
@@ -15,6 +16,8 @@
 \alias{tol.date.absolute}
 \title{Comparison tolerances}
 \usage{
+tol.NA(x, y, idx)
+
 tol.num.absolute(x, y, tol)
 
 tol.num.percent(x, y, tol)
@@ -40,6 +43,8 @@ tol.date.absolute(x, y, tol)
 \arguments{
 \item{x, y}{vectors of the appropriate lengths and types.}
 
+\item{idx}{A logical vector of appropriate length.}
+
 \item{tol}{A numeric tolerance}
 }
 \value{
@@ -48,6 +53,10 @@ A logical vector of length equal to that of \code{x} and \code{y}.
 \description{
 Internal functions defining tolerances for the \code{\link{comparison.control}} function.
   To create your own tolerance definitions, see the vignette.
+}
+\details{
+\code{tol.NA} takes as differences between two vectors any elements which are NA in one but not the other,
+  or which are non-NA in both and TRUE in \code{idx}. It is useful for handling NAs in custom tolerance functions.
 }
 \seealso{
 \code{\link{comparison.control}}, \code{\link{compare.data.frame}}
