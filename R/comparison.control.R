@@ -58,11 +58,7 @@ comparison.control <- function(tol.num = c("absolute", "percent", "pct"),
 {
 
   #### Numerics ####
-  if(!is.numeric(tol.num.val) || length(tol.num.val) != 1 || tol.num.val < 0)
-  {
-    warning("'tol.num.val' is less than zero or is not numeric constant! Setting to default = sqrt(.Machine$double.eps).")
-    tol.num.val <- sqrt(.Machine$double.eps)
-  }
+  if(!is.numeric(tol.num.val)) stop("'tol.num.val' needs to be numeric.")
   if(!is.function(tol.num)) tol.num <- match.fun(paste0("tol.num.", match.arg(tol.num, several.ok = FALSE)))
   if(!is.logical(int.as.num) || length(int.as.num) != 1 || is.na(int.as.num)) stop("'int.as.num' should be TRUE or FALSE.")
 
@@ -73,11 +69,7 @@ comparison.control <- function(tol.num = c("absolute", "percent", "pct"),
   if(!is.logical(factor.as.char) || length(factor.as.char) != 1 || is.na(factor.as.char)) stop("'factor.as.char' should be TRUE or FALSE.")
 
   #### Dates ####
-  if(!is.numeric(tol.date.val) || length(tol.date.val) != 1 || tol.date.val < 0)
-  {
-    warning("'tol.date.val' is less than zero or is not numeric constant! Setting to default = 0.")
-    tol.date.val <- 0
-  }
+  if(!is.numeric(tol.date.val)) stop("'tol.date.val' needs to be numeric.")
   if(!is.function(tol.date)) tol.date <- match.fun(paste0("tol.date.", match.arg(tol.date, several.ok = FALSE)))
 
   #### Variable names ####
