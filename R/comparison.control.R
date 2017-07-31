@@ -3,18 +3,20 @@
 #'
 #' Control tolerance definitions for the \code{\link{compare.data.frame}} function.
 #'
-#' @param tol.num Numeric; maximum value of abs(delta) or abs(\%delta) to tolerate as
-#'   a non-difference for numeric variables (i.e., summarize differences when abs(delta) > tol.num).
-#'   Expressed as absolute or percent (see tol.num.type).
-#' @param tol.num.type Character; should absolute or percent differences be reported? Can be abbreviated.
+#' @param tol.num A function, or one of the shortcut character strings; the tolerance to use for numerics.
+#'   Shortcut options (can be abbreviated) are:
+#'   \code{"absolute"} compare absolute differences,
+#'   \code{"percent"} or \code{"pct"} compare percent differences.
+#' @param tol.num.val Numeric; maximum value of differences allowed in numerics (fed to the function given in \code{tol.num}).
 #' @param int.as.num Logical; should integers be coerced to numeric before comparison? Default FALSE.
-#' @param tol.char Character; character tolerance criteria, referring to whitespace and character case. Options are
+#' @param tol.char A function, or one of the shortcut character strings; the tolerance to use for characters.
+#'   Shortcut options (can be abbreviated) are
 #'   \code{"none"} (compare character strings exactly as they are),
 #'   \code{"trim"} (left-justify and trim all trailing white space),
 #'   \code{"case"} (allow differences in upper/lower case), and
 #'   \code{"both"} (combine \code{"trim"} and \code{"case"}).
-#'   Can be abbreviated.
-#' @param tol.factor Character; factor tolerance criteria. Options are
+#' @param tol.factor A function, or one of the shortcut character strings; the tolerance to use for factors.
+#'   Shortcut options (can be abbreviated) are
 #'   \code{"none"} (match both character labels and numeric levels),
 #'   \code{"levels"} (match only the numeric levels), and
 #'   \code{"labels"} (match only the labels).
@@ -38,11 +40,11 @@
 #'                 tol.vars = c("case",  # ignore case
 #'                              "._",    # set all underscores to dots.
 #'                              "e"))    # remove all letter e's
-#' @seealso \code{\link{compare.data.frame}}
+#' @seealso \code{\link{compare.data.frame}}, \code{\link{comparison.tolerances}}
 #' @author Ethan Heinzen
 #' @export
-comparison.control <- function(tol.num = sqrt(.Machine$double.eps),
-                               tol.num.type = c("absolute", "percent", "pct", "%"),
+comparison.control <- function(tol.num = c("absolute", "percent", "pct"),
+                               tol.num.val = sqrt(.Machine$double.eps),
                                int.as.num = FALSE,
                                tol.char = c("none", "trim", "case", "both"),
                                tol.factor = c("none", "levels", "labels"),
@@ -50,21 +52,23 @@ comparison.control <- function(tol.num = sqrt(.Machine$double.eps),
                                tol.date = NULL,
                                tol.vars = "none", ...)
 {
-  if(!is.numeric(tol.num) || length(tol.num) != 1 || tol.num < 0)
+  if(!is.numeric(tol.num.val) || length(tol.num.val) != 1 || tol.num.val < 0)
   {
-    warning("'tol.num' is less than zero or is not numeric constant! Setting to default = 0.")
-    tol.num <- 0
+    warning("'tol.num.val' is less than zero or is not numeric constant! Setting to default = sqrt(.Machine$double.eps).")
+    tol.num.val <- sqrt(.Machine$double.eps)
   }
-  tol.num.type <- match.arg(tol.num.type, several.ok = FALSE)
+  if(!is.function(tol.num)) tol.num <- match.fun(paste0("tol.num.", match.arg(tol.num, several.ok = FALSE)))
   if(!is.logical(int.as.num) || length(int.as.num) != 1 || is.na(int.as.num)) stop("'int.as.num' should be TRUE or FALSE.")
-  tol.char <- match.arg(tol.char, several.ok = FALSE)
-  tol.factor <- match.arg(tol.factor, several.ok = FALSE)
+
+  if(!is.function(tol.char)) tol.char <- match.fun(paste0("tol.char.", match.arg(tol.char, several.ok = FALSE)))
+
+  if(!is.function(tol.factor)) tol.factor <- match.fun(paste0("tol.factor.", match.arg(tol.factor, several.ok = FALSE)))
   if(!is.logical(factor.as.char) || length(factor.as.char) != 1 || is.na(factor.as.char)) stop("'factor.as.char' should be TRUE or FALSE.")
 
   if(!is.character(tol.vars)){stop("'tol.vars' must be a character string or vector.")}
   if("none" %in% tol.vars || length(tol.vars) == 0) tol.vars <- "none"
   if("case" %in% tol.vars) tol.vars <- c(paste0(letters, LETTERS), tol.vars[tol.vars != "case"])
 
-  return(list(tol.num = tol.num, tol.num.type = tol.num.type, int.as.num = int.as.num, tol.char = tol.char,
+  return(list(tol.num = tol.num, tol.num.val = tol.num.val, int.as.num = int.as.num, tol.char = tol.char,
               tol.factor = tol.factor, factor.as.char = factor.as.char, tol.date = tol.date, tol.vars = tol.vars))
 }

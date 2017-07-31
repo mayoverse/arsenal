@@ -96,41 +96,14 @@ compare_values <- function(i, v, df, byvars, contr)
     idx <- idx.na(var.x, var.y, var.x != var.y)
   } else if(is.numeric(var.x) && is.numeric(var.y))
   {
-    if(contr$tol.num.type == "absolute")
-    {
-      idx <- idx.na(var.x, var.y, abs(var.x - var.y) > contr$tol.num)
-    } else
-    {
-      idx <- idx.na(var.x, var.y, abs((var.x - var.y)/var.x) > contr$tol.num)
-    }
+    idx <- idx.na(var.x, var.y, contr$tol.num(var.x, var.y, contr$tol.num.val))
   } else if(is.factor(var.x) && is.factor(var.y))
   {
-    if(contr$tol.factor == "none")
-    {
-      idx.tmp <- (as.character(var.x) != as.character(var.y)) | (as.numeric(var.x) != as.numeric(var.y))
-      idx <- idx.na(var.x, var.y, idx.tmp)
-    } else if(contr$tol.factor == "levels")
-    {
-      idx <- idx.na(var.x, var.y, as.numeric(var.x) != as.numeric(var.y))
-    } else
-    {
-      idx <- idx.na(var.x, var.y, as.character(var.x) != as.character(var.y))
-    }
+    idx <- idx.na(var.x, var.y, contr$tol.factor(var.x, var.y))
+
   } else if(is.character(var.x) && is.character(var.y))
   {
-    if(contr$tol.char == "both")
-    {
-      idx <- idx.na(var.x, var.y, tolower(trimws(var.x)) != tolower(trimws(var.y)))
-    } else if(contr$tol.char == "case")
-    {
-      idx <- idx.na(var.x, var.y, tolower(var.x) != tolower(var.y))
-    } else if(contr$tol.char == "trim")
-    {
-      idx <- idx.na(var.x, var.y, trimws(var.x) != trimws(var.y))
-    } else
-    {
-      idx <- idx.na(var.x, var.y, var.x != var.y)
-    }
+    idx <- idx.na(var.x, var.y, contr$tol.char(var.x, var.y))
   } else
   {
     idx <- unlist(Map(Negate(identical), var.x, var.y))
