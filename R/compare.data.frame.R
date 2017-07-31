@@ -173,10 +173,11 @@ print.compare.data.frame.frame.summary <- function(x, ...)
   tmp <- x
   f <- function(elt, txt1, txt2)
   {
-    if(is.list(elt)) paste0(length(elt), txt1) else if(is.null(elt)) txt2 else elt
+    if(is.data.frame(elt)) paste0(nrow(elt), txt1) else if(is.list(elt)) paste0(length(elt), txt1) else if(is.null(elt)) txt2 else elt
   }
 
   x$attrs <- vapply(x$attrs, f, character(1), txt1 = " attributes", txt2 = "0 attributes")
+  x$unique <- vapply(x$unique, f, character(1), txt1 = " unique obs", txt2 = "")
   NextMethod()
   invisible(tmp)
 }
