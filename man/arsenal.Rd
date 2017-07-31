@@ -36,6 +36,8 @@ Below are listed some of the most widely used functions available in \code{arsen
 \code{\link{mdy.Date}} and \code{\link{Date.mdy}}: Convert numeric dates for month, day, and year to Date object, and vice versa.
 
 \code{\link{is.Date}}: Test if an object is a date.
+
+\code{\link{\%nin\%}}: Test for "not in".
 }
 
 \section{Data}{

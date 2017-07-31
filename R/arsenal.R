@@ -32,6 +32,8 @@
 #'
 #' \code{\link{is.Date}}: Test if an object is a date.
 #'
+#' \code{\link{\%nin\%}}: Test for "not in".
+#'
 #' @section Data:
 #'
 #' \code{\link{mockstudy}}: Mock study data for examples.
