@@ -3,31 +3,30 @@
 #'
 #' Control tolerance definitions for the \code{\link{compare.data.frame}} function.
 #'
-#' @param tol.num A function, or one of the shortcut character strings; the tolerance to use for numerics.
-#'   Shortcut options (can be abbreviated) are:
-#'   \code{"absolute"} compare absolute differences,
-#'   \code{"percent"} or \code{"pct"} compare percent differences.
+#' @param tol.num,tol.char,tol.factor,tol.date A function or one of the shortcut character strings,
+#'   denoting the tolerance function to use for a given data type. See "details", below.
 #' @param tol.num.val Numeric; maximum value of differences allowed in numerics (fed to the function given in \code{tol.num}).
 #' @param int.as.num Logical; should integers be coerced to numeric before comparison? Default FALSE.
-#' @param tol.char A function, or one of the shortcut character strings; the tolerance to use for characters.
-#'   Shortcut options (can be abbreviated) are
-#'   \code{"none"} (compare character strings exactly as they are),
-#'   \code{"trim"} (left-justify and trim all trailing white space),
-#'   \code{"case"} (allow differences in upper/lower case), and
-#'   \code{"both"} (combine \code{"trim"} and \code{"case"}).
-#' @param tol.factor A function, or one of the shortcut character strings; the tolerance to use for factors.
-#'   Shortcut options (can be abbreviated) are
-#'   \code{"none"} (match both character labels and numeric levels),
-#'   \code{"levels"} (match only the numeric levels), and
-#'   \code{"labels"} (match only the labels).
 #' @param factor.as.char Logical; should factors be coerced to character before comparison? Default FALSE.
-#' @param tol.date In development...
 #' @param tol.vars Either \code{"none"} (the default), denoting that variable names are to be matched as-is, or a
 #'   character vector denoting equivalence classes for characters in the variable names. See "details", below.
 #' @param ... Other arguments (not in use at this time).
 #' @return A list containing the necessary parameters for the \code{\link{compare.data.frame}} function.
 #' @details
-#' If not set to \code{"none"} (the default), the \code{tol.vars} argument is a character vector denoting equivalence classes
+#' The following character strings are accepted:
+#' \itemize{
+#'   \item{\code{tol.num = "absolute"}: compare absolute differences in numerics.}
+#'   \item{\code{tol.num = "percent"}, \code{tol.num = "pct"} compare percent differences in numerics.}
+#'   \item{\code{tol.char = "none"}: compare character strings exactly as they are.}
+#'   \item{\code{tol.char = "trim"}: left-justify and trim all trailing white space.}
+#'   \item{\code{tol.char = "case"}: allow differences in upper/lower case.}
+#'   \item{\code{tol.char = "both"}: combine \code{"trim"} and \code{"case"}.}
+#'   \item{\code{tol.factor = "none"}: match both character labels and numeric levels.}
+#'   \item{\code{tol.factor = "levels"}: match only the numeric levels.}
+#'   \item{\code{tol.factor = "labels"}: match only the labels.}
+#' }
+#'
+#' \code{tol.vars}: If not set to \code{"none"} (the default), the \code{tol.vars} argument is a character vector denoting equivalence classes
 #'   for the characters in the variable names. A single character in this vector means to replace that character
 #'   with \code{""}. All other strings in this vector are split by character and replaced by the first character in the string.
 #'
@@ -51,7 +50,7 @@ comparison.control <- function(tol.num = c("absolute", "percent", "pct"),
                                tol.char = c("none", "trim", "case", "both"),
                                tol.factor = c("none", "levels", "labels"),
                                factor.as.char = FALSE,
-                               tol.date = NULL,
+                               tol.date = "absolute",
                                tol.vars = "none", ...)
 {
   if(!is.numeric(tol.num.val) || length(tol.num.val) != 1 || tol.num.val < 0)
