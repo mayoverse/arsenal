@@ -27,7 +27,7 @@ We reexport the `compare()` generic from the `testthat` package to avoid namespa
 and write a `data.frame` S3 method to compare data.frames.
 
 ```{r results = 'asis'}
-devtools::load_all()
+library(arsenal)
 ```
 
 # Basic examples
