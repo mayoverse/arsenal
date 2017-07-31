@@ -4,29 +4,31 @@
 \alias{comparison.control}
 \title{Control settings for `compare` function}
 \usage{
-comparison.control(tol.num = sqrt(.Machine$double.eps),
-  tol.num.type = c("absolute", "percent", "pct", "\%"), int.as.num = FALSE,
+comparison.control(tol.num = c("absolute", "percent", "pct"),
+  tol.num.val = sqrt(.Machine$double.eps), int.as.num = FALSE,
   tol.char = c("none", "trim", "case", "both"), tol.factor = c("none",
   "levels", "labels"), factor.as.char = FALSE, tol.date = NULL,
   tol.vars = "none", ...)
 }
 \arguments{
-\item{tol.num}{Numeric; maximum value of abs(delta) or abs(\%delta) to tolerate as
-a non-difference for numeric variables (i.e., summarize differences when abs(delta) > tol.num).
-Expressed as absolute or percent (see tol.num.type).}
+\item{tol.num}{A function, or one of the shortcut character strings; the tolerance to use for numerics.
+Shortcut options (can be abbreviated) are:
+\code{"absolute"} compare absolute differences,
+\code{"percent"} or \code{"pct"} compare percent differences.}
 
-\item{tol.num.type}{Character; should absolute or percent differences be reported? Can be abbreviated.}
+\item{tol.num.val}{Numeric; maximum value of differences allowed in numerics (fed to the function given in \code{tol.num}).}
 
 \item{int.as.num}{Logical; should integers be coerced to numeric before comparison? Default FALSE.}
 
-\item{tol.char}{Character; character tolerance criteria, referring to whitespace and character case. Options are
+\item{tol.char}{A function, or one of the shortcut character strings; the tolerance to use for characters.
+Shortcut options (can be abbreviated) are
 \code{"none"} (compare character strings exactly as they are),
 \code{"trim"} (left-justify and trim all trailing white space),
 \code{"case"} (allow differences in upper/lower case), and
-\code{"both"} (combine \code{"trim"} and \code{"case"}).
-Can be abbreviated.}
+\code{"both"} (combine \code{"trim"} and \code{"case"}).}
 
-\item{tol.factor}{Character; factor tolerance criteria. Options are
+\item{tol.factor}{A function, or one of the shortcut character strings; the tolerance to use for factors.
+Shortcut options (can be abbreviated) are
 \code{"none"} (match both character labels and numeric levels),
 \code{"levels"} (match only the numeric levels), and
 \code{"labels"} (match only the labels).}
@@ -63,7 +65,7 @@ comparison.control(tol.num.type = "pct", # calculate percent differences
                              "e"))    # remove all letter e's
 }
 \seealso{
-\code{\link{compare.data.frame}}
+\code{\link{compare.data.frame}}, \code{\link{comparison.tolerances}}
 }
 \author{
 Ethan Heinzen
