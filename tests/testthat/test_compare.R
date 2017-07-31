@@ -181,22 +181,22 @@ test_that("tol.vars is working correctly", {
 test_that("tolerances are working correctly", {
 
   tmp <- compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
-                 int.as.num = TRUE, tol.num = 10,
+                 int.as.num = TRUE, tol.num.val = 10,
                  tol.factor = "labels", factor.as.char = TRUE, tol.char = "case")
 
   expect_identical(
     capture.output(print(tmp)),
-    c("Compare Object"                                                          ,
-      ""                                                                        ,
-      "Function Call: "                                                         ,
-      "compare.data.frame(x = mockstudy, y = mockstudy2, by = \"case\", "       ,
-      "    tol.vars = c(\"._ \", \"case\"), int.as.num = TRUE, tol.num = 10, "  ,
-      "    tol.factor = \"labels\", factor.as.char = TRUE, tol.char = \"case\")",
-      ""                                                                        ,
-      "Shared: 13 variables and 1495 observations."                             ,
-      "Not shared: 1 variables and 4 observations."                             ,
-      ""                                                                        ,
-      "Differences found in 3/12 variables compared."                           ,
+    c("Compare Object"                                                            ,
+      ""                                                                          ,
+      "Function Call: "                                                           ,
+      "compare.data.frame(x = mockstudy, y = mockstudy2, by = \"case\", "         ,
+      "    tol.vars = c(\"._ \", \"case\"), int.as.num = TRUE, tol.num.val = 10, ",
+      "    tol.factor = \"labels\", factor.as.char = TRUE, tol.char = \"case\")"  ,
+      ""                                                                          ,
+      "Shared: 13 variables and 1495 observations."                               ,
+      "Not shared: 1 variables and 4 observations."                               ,
+      ""                                                                          ,
+      "Differences found in 3/12 variables compared."                             ,
       "4 variables compared have non-identical attributes."
     )
   )
