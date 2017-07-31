@@ -1,3 +1,4 @@
+is.Date <- function(x) inherits(x, "Date")
 
 tweakcolnames <- function(by.x, by.y, cn.x, cn.y, control)
 {
@@ -104,6 +105,9 @@ compare_values <- function(i, v, df, byvars, contr)
   } else if(is.character(var.x) && is.character(var.y))
   {
     idx <- idx.na(var.x, var.y, contr$tol.char(var.x, var.y))
+  } else if(is.Date(var.x) && is.Date(var.y))
+  {
+    idx <- idx.na(var.x, var.y, contr$tol.date(var.x, var.y, contr$tol.date.val))
   } else
   {
     idx <- unlist(Map(Negate(identical), var.x, var.y))

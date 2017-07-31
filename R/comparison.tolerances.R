@@ -15,7 +15,7 @@ NULL
 
 #' @rdname comparison.tolerances
 #' @export
-tol.num.absolute <- tol.date.absolute <- function(x, y, tol)
+tol.num.absolute <- function(x, y, tol)
 {
   abs(x - y) > tol
 }

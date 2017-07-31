@@ -78,5 +78,5 @@ comparison.control <- function(tol.num = c("absolute", "percent", "pct"),
   if("case" %in% tol.vars) tol.vars <- c(paste0(letters, LETTERS), tol.vars[tol.vars != "case"])
 
   return(list(tol.num = tol.num, tol.num.val = tol.num.val, int.as.num = int.as.num, tol.char = tol.char,
-              tol.factor = tol.factor, factor.as.char = factor.as.char, tol.date = tol.date, tol.vars = tol.vars))
+              tol.factor = tol.factor, factor.as.char = factor.as.char, tol.date = tol.date, tol.date.val = tol.date.val, tol.vars = tol.vars))
 }
