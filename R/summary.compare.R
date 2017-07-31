@@ -71,8 +71,8 @@ print.summary.compare.data.frame <- function(x, ...)
   {
     x$diffs.table <- do.call(rbind, by(x$diffs.table, factor(x$diffs.table$var.x, levels = unique(x$diffs.table$var.x)), utils::head, x$max.print.diff))
 
+    # Need this for knitr to output list-cols of factors and dates correctly
     as_char <- function(x) if(is.factor(x) || is.Date(x)) x <- as.character(x) else x
-
     x$diffs.table$values.x <- lapply(x$diffs.table$values.x, as_char)
     x$diffs.table$values.y <- lapply(x$diffs.table$values.y, as_char)
   }

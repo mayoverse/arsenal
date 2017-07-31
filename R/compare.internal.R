@@ -128,7 +128,13 @@ compare_attrs <- function(i, v, x_, y_)
                by = "name", all = TRUE)
   out$attr.x <- lapply(out$attr.x, cleanup.null.na)
   out$attr.y <- lapply(out$attr.y, cleanup.null.na)
-  out[vapply(1:nrow(out), function(i) !identical(out$attr.x[[i]], out$attr.y[[i]]), logical(1)), , drop = FALSE]
+
+  if(nrow(out) > 0)
+  {
+    out <- out[order(out$name), , drop = FALSE]
+    out <- out[vapply(1:nrow(out), function(i) !identical(out$attr.x[[i]], out$attr.y[[i]]), logical(1)), , drop = FALSE]
+  }
+  out
 }
 
 

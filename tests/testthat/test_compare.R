@@ -199,12 +199,12 @@ test_that("tol.vars is working correctly", {
   )
 })
 
+
+tmp <- compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
+               int.as.num = TRUE, tol.num.val = 10,
+               tol.factor = "labels", factor.as.char = TRUE, tol.char = "case")
+
 test_that("tolerances are working correctly", {
-
-  tmp <- compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
-                 int.as.num = TRUE, tol.num.val = 10,
-                 tol.factor = "labels", factor.as.char = TRUE, tol.char = "case")
-
   expect_identical(
     capture.output(print(tmp)),
     c("Compare Object"                                                            ,
@@ -232,4 +232,116 @@ test_that("helper functions are working correctly", {
   expect_identical(diffs(compare(df1, df2, by = "id")), diffs(summary(compare(df1, df2, by = "id"))))
 
 })
+
+###########################################################################################################
+#### Summary output
+###########################################################################################################
+
+test_that("Summary output looks right (i.e. for factors)", {
+  expect_identical(
+    capture.output(summary(compare(mockstudy, mockstudy2, by = "case"))),
+    c(
+      ""                                                                              ,
+      ""                                                                              ,
+      "Table: Variables not shared"                                                   ,
+      ""                                                                              ,
+      "version   variable    position  class     "                                    ,
+      "--------  ---------  ---------  ----------"                                    ,
+      "x         age                2  integer   "                                    ,
+      "x         arm                3  character "                                    ,
+      "x         fu.time            6  integer   "                                    ,
+      "x         fu.stat            7  integer   "                                    ,
+      "y         fu_time           11  integer   "                                    ,
+      "y         fu stat           12  integer   "                                    ,
+      "y         Arm               13  character "                                    ,
+      ""                                                                              ,
+      ""                                                                              ,
+      ""                                                                              ,
+      "Table: Other variables not compared"                                           ,
+      ""                                                                              ,
+      "var.x    pos.x  class.x     var.y    pos.y  class.y "                          ,
+      "------  ------  ----------  ------  ------  --------"                          ,
+      "race         5  character   race         3  factor  "                          ,
+      "ast         12  integer     ast          8  numeric "                          ,
+      ""                                                                              ,
+      ""                                                                              ,
+      ""                                                                              ,
+      "Table: Observations not shared"                                                ,
+      ""                                                                              ,
+      "version      case   observation"                                               ,
+      "--------  -------  ------------"                                               ,
+      "x           88989             9"                                               ,
+      "x           90158             8"                                               ,
+      "x           99508             7"                                               ,
+      "x          112263             5"                                               ,
+      ""                                                                              ,
+      ""                                                                              ,
+      ""                                                                              ,
+      "Table: Differences detected by variable"                                       ,
+      ""                                                                              ,
+      "var.x         var.y             n   NAs"                                       ,
+      "------------  ------------  -----  ----"                                       ,
+      "sex           sex            1495     0"                                       ,
+      "ps            ps                1     1"                                       ,
+      "hgb           hgb             266   266"                                       ,
+      "bmi           bmi               0     0"                                       ,
+      "alk.phos      alk.phos          0     0"                                       ,
+      "mdquality.s   mdquality.s       0     0"                                       ,
+      "age.ord       age.ord           0     0"                                       ,
+      ""                                                                              ,
+      ""                                                                              ,
+      ""                                                                              ,
+      "Table: First 10 differences detected per variable (1741 differences not shown)",
+      ""                                                                              ,
+      "var.x   var.y     case  values.x   values.y    row.x   row.y"                  ,
+      "------  ------  ------  ---------  ---------  ------  ------"                  ,
+      "sex     sex      76170  Male       Male           26      20"                  ,
+      "sex     sex      76240  Male       Male           27      21"                  ,
+      "sex     sex      76431  Female     Female         28      22"                  ,
+      "sex     sex      76712  Male       Male           29      23"                  ,
+      "sex     sex      76780  Female     Female         30      24"                  ,
+      "sex     sex      77066  Female     Female         31      25"                  ,
+      "sex     sex      77316  Male       Male           32      26"                  ,
+      "sex     sex      77355  Male       Male           33      27"                  ,
+      "sex     sex      77591  Male       Male           34      28"                  ,
+      "sex     sex      77851  Male       Male           35      29"                  ,
+      "ps      ps       86205  0          NA              6       3"                  ,
+      "hgb     hgb      88714  NA         -9            192     186"                  ,
+      "hgb     hgb      88955  NA         -9            204     198"                  ,
+      "hgb     hgb      89549  NA         -9            229     223"                  ,
+      "hgb     hgb      89563  NA         -9            231     225"                  ,
+      "hgb     hgb      89584  NA         -9            237     231"                  ,
+      "hgb     hgb      89591  NA         -9            238     232"                  ,
+      "hgb     hgb      89595  NA         -9            239     233"                  ,
+      "hgb     hgb      89647  NA         -9            243     237"                  ,
+      "hgb     hgb      89665  NA         -9            244     238"                  ,
+      "hgb     hgb      89827  NA         -9            255     249"                  ,
+      ""                                                                              ,
+      ""                                                                              ,
+      ""                                                                              ,
+      "Table: Non-identical attributes"                                               ,
+      ""                                                                              ,
+      "var.x   var.y   name   "                                                       ,
+      "------  ------  -------"                                                       ,
+      "sex     sex     label  "                                                       ,
+      "sex     sex     levels "                                                       ,
+      "race    race    class  "                                                       ,
+      "race    race    label  "                                                       ,
+      "race    race    levels "                                                       ,
+      "bmi     bmi     label  "                                                       ,
+      ""
+    )
+  )
+})
+
+
+
+
+
+
+
+
+
+
+
 
