@@ -214,8 +214,8 @@ diffs.compare.data.frame <- function(object, ..., by.var = FALSE)
 
   tolist <- function(df)
   {
-    df$values.x <- as.list(df$values.x)
-    df$values.y <- as.list(df$values.y)
+    df$values.x <- I(as.list(df$values.x)) # need the I() for factors and dates to show up right
+    df$values.y <- I(as.list(df$values.y))
     df
   }
 
