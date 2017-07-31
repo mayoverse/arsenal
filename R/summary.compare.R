@@ -70,6 +70,11 @@ print.summary.compare.data.frame <- function(x, ...)
   if(nrow(x$diffs.table) > 0)
   {
     x$diffs.table <- do.call(rbind, by(x$diffs.table, factor(x$diffs.table$var.x, levels = unique(x$diffs.table$var.x)), utils::head, x$max.print.diff))
+
+    as_char <- function(x) if(is.factor(x) || is.Date(x)) x <- as.character(x) else x
+
+    x$diffs.table$values.x <- lapply(x$diffs.table$values.x, as_char)
+    x$diffs.table$values.y <- lapply(x$diffs.table$values.y, as_char)
   }
 
   for(v in c("vars.ns", "vars.nc", "obs", "diffs.byvar", "diffs", "attrs"))
