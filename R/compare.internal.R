@@ -1,5 +1,3 @@
-is.Date <- function(x) inherits(x, "Date")
-
 tweakcolnames <- function(by.x, by.y, cn.x, cn.y, control)
 {
   if(any(by.x %in% setdiff(cn.y, by.y)))

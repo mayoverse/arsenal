@@ -4,11 +4,14 @@
 \alias{mdy.Date}
 \alias{mdy.Date}
 \alias{Date.mdy}
+\alias{is.Date}
 \title{Convert numeric dates to Date object, and vice versa}
 \usage{
 mdy.Date(month, day, year, yearcut = 120)
 
 Date.mdy(date)
+
+is.Date(x)
 }
 \arguments{
 \item{month}{integer, month (1-12).}
@@ -20,14 +23,19 @@ Date.mdy(date)
 \item{yearcut}{cutoff for method to know if to convert to 4-digit year.}
 
 \item{date}{A date value.}
+
+\item{x}{An object.}
 }
 \value{
 \code{mdy.Date} returns a Date object, and Date.mdy returns a list with integer values for month, day, and year.
+  \code{is.Date} returns a single logical value.
 }
 \description{
 Convert numeric dates for month, day, and year to Date object, and vice versa.
 }
 \details{
+Test if an object is a date.
+
 More work may need to be done with yearcut and 2-digit years. Best to give a full 4-digit year.
 }
 \examples{
@@ -35,6 +43,8 @@ mdy.Date(9, 2, 2013)
 
 tmp <- mdy.Date(9, 2, 2013)
 Date.mdy(tmp)
+
+is.Date(tmp)
 }
 \seealso{
 \code{\link{Date}}, \code{\link{DateTimeClasses}}

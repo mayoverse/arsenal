@@ -30,6 +30,8 @@
 #'
 #' \code{\link{mdy.Date}} and \code{\link{Date.mdy}}: Convert numeric dates for month, day, and year to Date object, and vice versa.
 #'
+#' \code{\link{is.Date}}: Test if an object is a date.
+#'
 #' @section Data:
 #'
 #' \code{\link{mockstudy}}: Mock study data for examples.
