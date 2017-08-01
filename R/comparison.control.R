@@ -3,7 +3,7 @@
 #'
 #' Control tolerance definitions for the \code{\link{compare.data.frame}} function.
 #'
-#' @param tol.num,tol.char,tol.factor,tol.date A function or one of the shortcut character strings,
+#' @param tol.logical,tol.num,tol.char,tol.factor,tol.date A function or one of the shortcut character strings,
 #'   denoting the tolerance function to use for a given data type. See "details", below.
 #' @param tol.num.val Numeric; maximum value of differences allowed in numerics (fed to the function given in \code{tol.num}).
 #' @param int.as.num Logical; should integers be coerced to numeric before comparison? Default FALSE.
@@ -16,6 +16,7 @@
 #' @details
 #' The following character strings are accepted:
 #' \itemize{
+#'   \item{\code{tol.logical = "none"}: compare logicals exactly as they are.}
 #'   \item{\code{tol.num = "absolute"}: compare absolute differences in numerics.}
 #'   \item{\code{tol.num = "percent"}, \code{tol.num = "pct"} compare percent differences in numerics.}
 #'   \item{\code{tol.char = "none"}: compare character strings exactly as they are.}
@@ -46,16 +47,20 @@
 #' @seealso \code{\link{compare.data.frame}}, \code{\link{comparison.tolerances}}
 #' @author Ethan Heinzen
 #' @export
-comparison.control <- function(tol.num = c("absolute", "percent", "pct"),
-                               tol.num.val = sqrt(.Machine$double.eps),
-                               int.as.num = FALSE,
-                               tol.char = c("none", "trim", "case", "both"),
-                               tol.factor = c("none", "levels", "labels"),
-                               factor.as.char = FALSE,
-                               tol.date = "absolute",
-                               tol.date.val = 0,
-                               tol.vars = "none", ...)
+comparison.control <- function(
+  tol.logical = "none",
+  tol.num = c("absolute", "percent", "pct"),
+  tol.num.val = sqrt(.Machine$double.eps),
+  int.as.num = FALSE,
+  tol.char = c("none", "trim", "case", "both"),
+  tol.factor = c("none", "levels", "labels"),
+  factor.as.char = FALSE,
+  tol.date = "absolute",
+  tol.date.val = 0,
+  tol.vars = "none", ...)
 {
+  #### Logical ####
+  if(!is.function(tol.logical)) tol.logical <- match.fun(paste0("tol.logical.", match.arg(tol.logical, several.ok = FALSE)))
 
   #### Numerics ####
   if(!is.numeric(tol.num.val)) stop("'tol.num.val' needs to be numeric.")
@@ -77,6 +82,6 @@ comparison.control <- function(tol.num = c("absolute", "percent", "pct"),
   if("none" %in% tol.vars || length(tol.vars) == 0) tol.vars <- "none"
   if("case" %in% tol.vars) tol.vars <- c(paste0(letters, LETTERS), tol.vars[tol.vars != "case"])
 
-  return(list(tol.num = tol.num, tol.num.val = tol.num.val, int.as.num = int.as.num, tol.char = tol.char,
+  return(list(tol.logical = tol.logical, tol.num = tol.num, tol.num.val = tol.num.val, int.as.num = int.as.num, tol.char = tol.char,
               tol.factor = tol.factor, factor.as.char = factor.as.char, tol.date = tol.date, tol.date.val = tol.date.val, tol.vars = tol.vars))
 }

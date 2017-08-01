@@ -95,3 +95,7 @@ tol.char.none <- function(x, y)
 #' @rdname comparison.tolerances
 #' @export
 tol.date.absolute <- tol.num.absolute
+
+#' @rdname comparison.tolerances
+#' @export
+tol.logical.none <- tol.char.none

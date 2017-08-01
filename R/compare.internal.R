@@ -87,8 +87,8 @@ compare_values <- function(i, v, df, byvars, contr)
 
   if(is.logical(var.x) && is.logical(var.y))
   {
-    idx <- tol.NA(var.x, var.y, var.x != var.y)
-  } else if(is.numeric(var.x) && is.numeric(var.y))
+    idx <- contr$tol.logical(var.x, var.y)
+  } else if(is.numeric(var.x) && is.numeric(var.y)) # this covers integers, too
   {
     idx <- contr$tol.num(var.x, var.y, contr$tol.num.val)
   } else if(is.factor(var.x) && is.factor(var.y))

@@ -4,14 +4,14 @@
 \alias{comparison.control}
 \title{Control settings for `compare` function}
 \usage{
-comparison.control(tol.num = c("absolute", "percent", "pct"),
-  tol.num.val = sqrt(.Machine$double.eps), int.as.num = FALSE,
+comparison.control(tol.logical = "none", tol.num = c("absolute", "percent",
+  "pct"), tol.num.val = sqrt(.Machine$double.eps), int.as.num = FALSE,
   tol.char = c("none", "trim", "case", "both"), tol.factor = c("none",
   "levels", "labels"), factor.as.char = FALSE, tol.date = "absolute",
   tol.date.val = 0, tol.vars = "none", ...)
 }
 \arguments{
-\item{tol.num, tol.char, tol.factor, tol.date}{A function or one of the shortcut character strings,
+\item{tol.logical, tol.num, tol.char, tol.factor, tol.date}{A function or one of the shortcut character strings,
 denoting the tolerance function to use for a given data type. See "details", below.}
 
 \item{tol.num.val}{Numeric; maximum value of differences allowed in numerics (fed to the function given in \code{tol.num}).}
@@ -36,6 +36,7 @@ Control tolerance definitions for the \code{\link{compare.data.frame}} function.
 \details{
 The following character strings are accepted:
 \itemize{
+  \item{\code{tol.logical = "none"}: compare logicals exactly as they are.}
   \item{\code{tol.num = "absolute"}: compare absolute differences in numerics.}
   \item{\code{tol.num = "percent"}, \code{tol.num = "pct"} compare percent differences in numerics.}
   \item{\code{tol.char = "none"}: compare character strings exactly as they are.}

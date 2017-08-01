@@ -14,6 +14,7 @@
 \alias{tol.char.trim}
 \alias{tol.char.none}
 \alias{tol.date.absolute}
+\alias{tol.logical.none}
 \title{Comparison tolerances}
 \usage{
 tol.NA(x, y, idx)
@@ -39,6 +40,8 @@ tol.char.trim(x, y)
 tol.char.none(x, y)
 
 tol.date.absolute(x, y, tol)
+
+tol.logical.none(x, y)
 }
 \arguments{
 \item{x, y}{vectors of the appropriate lengths and types.}
