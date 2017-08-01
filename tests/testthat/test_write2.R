@@ -38,6 +38,11 @@ test_that("write2.freqlist -> HTML", {
                        reference = "write2.freqlist.html.md", single = TRUE)
 })
 
+test_that("write2.freqlist -> doc", {
+  expect_write2_worked(write2word, freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
+                       reference = "write2.freqlist.doc.md", single = TRUE, caption = "My cool caption", format = "pandoc")
+})
+
 ###########################################################################################################
 #### External output
 ###########################################################################################################
@@ -120,6 +125,9 @@ test_that("write2.verbatim -> html", {
 #
 #  write2html(freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
 #             "tests/testthat/write2.freqlist.html", single = TRUE, render. = FALSE)
+#
+# write2word(freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
+#            "tests/testthat/write2.freqlist.doc", single = TRUE, caption = "My cool caption", format = "pandoc", render. = FALSE)
 #
 #  write2html(knitr::kable(head(mockstudy)),
 #             "tests/testthat/write2.kable.html", render. = FALSE)
