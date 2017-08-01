@@ -15,6 +15,7 @@
 \alias{tol.char.none}
 \alias{tol.date.absolute}
 \alias{tol.logical.none}
+\alias{tol.other.none}
 \title{Comparison tolerances}
 \usage{
 tol.NA(x, y, idx)
@@ -42,6 +43,8 @@ tol.char.none(x, y)
 tol.date.absolute(x, y, tol)
 
 tol.logical.none(x, y)
+
+tol.other.none(x, y)
 }
 \arguments{
 \item{x, y}{vectors of the appropriate lengths and types.}
@@ -51,7 +54,8 @@ tol.logical.none(x, y)
 \item{tol}{A numeric tolerance}
 }
 \value{
-A logical vector of length equal to that of \code{x} and \code{y}.
+A logical vector of length equal to that of \code{x} and \code{y}, where \code{TRUE} denotes a
+  difference between \code{x} and \code{y}, and \code{FALSE} denotes no difference between \code{x} and \code{y}.
 }
 \description{
 Internal functions defining tolerances for the \code{\link{comparison.control}} function.
@@ -59,7 +63,7 @@ Internal functions defining tolerances for the \code{\link{comparison.control}} 
 }
 \details{
 \code{tol.NA} takes as differences between two vectors any elements which are NA in one but not the other,
-  or which are non-NA in both and TRUE in \code{idx}. It is useful for handling NAs in custom tolerance functions.
+  or which are non-NA in both and \code{TRUE} in \code{idx}. It is useful for handling NAs in custom tolerance functions.
 }
 \seealso{
 \code{\link{comparison.control}}, \code{\link{compare.data.frame}}

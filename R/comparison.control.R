@@ -3,7 +3,7 @@
 #'
 #' Control tolerance definitions for the \code{\link{compare.data.frame}} function.
 #'
-#' @param tol.logical,tol.num,tol.char,tol.factor,tol.date A function or one of the shortcut character strings,
+#' @param tol.logical,tol.num,tol.char,tol.factor,tol.date,tol.other A function or one of the shortcut character strings,
 #'   denoting the tolerance function to use for a given data type. See "details", below.
 #' @param tol.num.val Numeric; maximum value of differences allowed in numerics (fed to the function given in \code{tol.num}).
 #' @param int.as.num Logical; should integers be coerced to numeric before comparison? Default FALSE.
@@ -27,6 +27,7 @@
 #'   \item{\code{tol.factor = "levels"}: match only the numeric levels.}
 #'   \item{\code{tol.factor = "labels"}: match only the labels.}
 #'   \item{\code{tol.date = "absolute"}: compare absolute differences in dates.}
+#'   \item{\code{tol.other = "none"}: expect objects of other classes to be exactly identical.}
 #' }
 #'
 #' \code{tol.vars}: If not set to \code{"none"} (the default), the \code{tol.vars} argument is a character vector denoting equivalence classes
@@ -57,6 +58,7 @@ comparison.control <- function(
   factor.as.char = FALSE,
   tol.date = "absolute",
   tol.date.val = 0,
+  tol.other = "none",
   tol.vars = "none", ...)
 {
   #### Logical ####
@@ -77,11 +79,15 @@ comparison.control <- function(
   if(!is.numeric(tol.date.val)) stop("'tol.date.val' needs to be numeric.")
   if(!is.function(tol.date)) tol.date <- match.fun(paste0("tol.date.", match.arg(tol.date, several.ok = FALSE)))
 
+  #### Other ####
+  if(!is.function(tol.other)) tol.other <- match.fun(paste0("tol.other.", match.arg(tol.other, several.ok = FALSE)))
+
   #### Variable names ####
   if(!is.character(tol.vars)){stop("'tol.vars' must be a character string or vector.")}
   if("none" %in% tol.vars || length(tol.vars) == 0) tol.vars <- "none"
   if("case" %in% tol.vars) tol.vars <- c(paste0(letters, LETTERS), tol.vars[tol.vars != "case"])
 
   return(list(tol.logical = tol.logical, tol.num = tol.num, tol.num.val = tol.num.val, int.as.num = int.as.num, tol.char = tol.char,
-              tol.factor = tol.factor, factor.as.char = factor.as.char, tol.date = tol.date, tol.date.val = tol.date.val, tol.vars = tol.vars))
+              tol.factor = tol.factor, factor.as.char = factor.as.char, tol.date = tol.date, tol.date.val = tol.date.val,
+              tol.other = tol.other, tol.vars = tol.vars))
 }

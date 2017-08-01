@@ -103,7 +103,7 @@ compare_values <- function(i, v, df, byvars, contr)
     idx <- contr$tol.date(var.x, var.y, contr$tol.date.val)
   } else
   {
-    idx <- unlist(Map(Negate(identical), var.x, var.y))
+    idx <- contr$tol.other(var.x, var.y)
   }
 
   out <- data.frame(values.x = I(var.x[idx]), # just in case list-column

@@ -8,10 +8,10 @@ comparison.control(tol.logical = "none", tol.num = c("absolute", "percent",
   "pct"), tol.num.val = sqrt(.Machine$double.eps), int.as.num = FALSE,
   tol.char = c("none", "trim", "case", "both"), tol.factor = c("none",
   "levels", "labels"), factor.as.char = FALSE, tol.date = "absolute",
-  tol.date.val = 0, tol.vars = "none", ...)
+  tol.date.val = 0, tol.other = "none", tol.vars = "none", ...)
 }
 \arguments{
-\item{tol.logical, tol.num, tol.char, tol.factor, tol.date}{A function or one of the shortcut character strings,
+\item{tol.logical, tol.num, tol.char, tol.factor, tol.date, tol.other}{A function or one of the shortcut character strings,
 denoting the tolerance function to use for a given data type. See "details", below.}
 
 \item{tol.num.val}{Numeric; maximum value of differences allowed in numerics (fed to the function given in \code{tol.num}).}
@@ -47,6 +47,7 @@ The following character strings are accepted:
   \item{\code{tol.factor = "levels"}: match only the numeric levels.}
   \item{\code{tol.factor = "labels"}: match only the labels.}
   \item{\code{tol.date = "absolute"}: compare absolute differences in dates.}
+  \item{\code{tol.other = "none"}: expect objects of other classes to be exactly identical.}
 }
 
 \code{tol.vars}: If not set to \code{"none"} (the default), the \code{tol.vars} argument is a character vector denoting equivalence classes
