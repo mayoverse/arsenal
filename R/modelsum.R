@@ -200,7 +200,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
   ## create the environment where the formula will be evalulated
   tabenv <- new.env(parent = environment(formula))
-  environment(temp.call$formula) <-  environment(base.call) <- tabenv
+  environment(temp.call$formula) <-  environment(base.call$formula) <- tabenv
 
   basedf <- eval.parent(base.call)
   modeldf <- eval.parent(temp.call)

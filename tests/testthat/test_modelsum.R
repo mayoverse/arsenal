@@ -237,7 +237,7 @@ test_that("04/12/2017: ... vs modelsum.control", {
 #################################################################################################################################
 
 data(mockstudy)
-test_that("08/01/2017: Beth Atkinson's subset problem (already fixed...?)", {
+test_that("08/01/2017: Beth Atkinson's subset problem", {
   idx <- mockstudy$sex == "Male"
   form <- fu.stat - 1 ~ age + hgb
   expect_identical(capture.output(summary(modelsum(form, data = mockstudy, subset = idx, adjust = ~arm, family="binomial"), text = TRUE)),
