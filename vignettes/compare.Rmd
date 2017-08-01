@@ -127,6 +127,10 @@ summary(compare(mockstudy, mockstudy2, by = "case",
 
 # Column comparison options
 
+## Logical tolerance
+
+Use the `tol.logical=` argument to change how logicals are compared. By default, they're expected to be equal to each other.
+
 ## Numeric tolerance
 
 To allow numeric differences of a certain tolerance, use the `tol.num=` and `tol.num.val=` options.
@@ -202,7 +206,12 @@ summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
 
 ## Date tolerance
 
-Use the `tol.date=` argument to change how dates are compared.
+Use the `tol.date=` argument to change how dates are compared. By default, they're expected to be equal to each other.
+
+## Other data type tolerances
+
+Use the `tol.other=` argument to change how other objects are compared. By default,
+they're expected to be `identical()`.
 
 ## User-defined tolerance functions
 
