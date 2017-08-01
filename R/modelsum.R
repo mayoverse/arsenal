@@ -498,11 +498,6 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
   } # end for: eff
 
-  ##  if(!usingRCF() & !usingNCSA()) {
-  ##    cat(paste0("R-", version$major,".", version$minor, "\t", system("echo $USER",intern=TRUE), "\t", Sys.Date(), "\n"),
-  ##        file="/projects/bsi/infrastructure/s200555.Rinfrastructure/rlogs/modelsum.log",append=TRUE)
-  ##  }
-
   msList <- list(fits=fitList, control = control, Call = Call, family=family)
                  ##, adjust=adjVars)
   class(msList) <- "modelsum"
