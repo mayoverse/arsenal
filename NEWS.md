@@ -2,6 +2,8 @@
 
 * Code all now in github
 
+* Included documentation for getting a caption with `write2()` and `freqlist()`. (#16)
+
 # arsenal 0.4.2
 
 * Updated `labelTranslation` documentation
@@ -18,12 +20,12 @@
 
 * Tweaked `freqlist()` to behave better with data.frame subsetting and the infamous `drop=TRUE`.
 
-* Added `dupLabels=` argument to `summary.freqlist()`.
+* Added `dupLabels=` argument to `summary.freqlist()`. (#6)
 
-* Added a label for `medianq1q3()` in `tableby.control()`.
+* Added a label for `medianq1q3()` in `tableby.control()`. (#4)
 
 * Changed the `...` vs. `control=` action in `tableby()` and `modelsum()` to fix which
-  arguments are used over which other arguments.
+  arguments are used over which other arguments. (#5)
   
 * Moved import `broom` and `stringr` to "Suggests",
   adding `magrittr` for piping.
@@ -32,7 +34,9 @@
   
 * Several `tableby()` fixes for counts and percents.
 
-* New options in `tableby.control()` to modify the statistical tests performed.
+* New options in `tableby.control()` to modify the statistical tests performed. (#2)
+
+* Fixed trailing whitespace issue in `tableby()` (#3)
 
 # arsenal 0.3.0
 
