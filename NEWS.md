@@ -1,6 +1,6 @@
 # arsenal 0.4.?
 
-* Code all now in github
+* Code all now in GitHub, with checking performed on Travis-CI
 
 # arsenal 0.4.2
 
