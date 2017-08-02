@@ -243,9 +243,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
   ## list of x variables
   xList <- list()
-  ## turn warnings off (for chisq test), set back later
-  oldwarn <- options()$warn
-  options(warn = -1)
 
   ## fix of droplevels on by factor suggested by Ethan Heinzen 4/12/2016
   if(is.factor(modeldf[,1])) {
@@ -580,11 +577,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     }
   }
 
-  options(warn = oldwarn)
-
   ## attributes: label/long-names
   ## number of RHS variables
-
 
   labelBy <- attributes(modeldf[,1])$label
   if(is.null(labelBy)) {

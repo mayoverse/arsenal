@@ -596,3 +596,8 @@ test_that("05/24/2017: Missy Larson and Ethan Heinzen trailing spaces on char x 
     )
   )
 })
+
+
+test_that("08/02/2017: Chi-square warnings are suppressed", {
+  expect_warning(tableby(arm ~ sex, data = mockstudy, subset = 1:5), NA)
+})
