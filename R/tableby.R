@@ -316,7 +316,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       cstyles <- character()
 
       ## convert logicals to factor
-      if(class(modeldf[,eff])=="logical") {
+      if(is.logical(modeldf[,eff])) {
         modeldf[,eff]<- factor(modeldf[,eff], levels=c(FALSE, TRUE))
       }
 
@@ -522,7 +522,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       nstyles <- character()
 
       ## for difftime, convert to numeric
-      if(class(modeldf[,eff])=="difftime") {
+      if(inherits(modeldf[,eff], "difftime")) {
         modeldf[,eff] <- as.numeric(modeldf[,eff])
       }
 

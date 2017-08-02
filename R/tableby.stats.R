@@ -63,7 +63,7 @@ median <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   if(na.rm & length(x)==sum(is.na(x))) {
     return(NA)
   }
-  if(class(x)=="Date") {
+  if(inherits(x, "Date")) {
     as.Date(wtd.quantile(as.integer(x), weights=weights, probs=0.5, na.rm=na.rm, ...), origin="1970/01/01")
   } else {
     wtd.quantile(x, weights=weights, probs=0.5, na.rm=na.rm, ...)
@@ -75,7 +75,7 @@ range <- function(x, na.rm=TRUE, ...) {
   if(na.rm & length(x)==sum(is.na(x))) {
     return(c(NA,NA))
   }
-  if(class(x)=="Date") {
+  if(inherits(x, "Date")) {
     as.Date(base::range(as.integer(x), na.rm=na.rm), origin="1970/01/01")
   } else {
     base::range(x, na.rm=na.rm)
