@@ -105,13 +105,6 @@ labels.tableby <- function(object, ...) {
   return(allLabels)
 }
 
-
-#' @rdname tableby.internal
-#' @export
-'labels<-' <- function(x, value) {
-  UseMethod("labels<-")
-}
-
 ## define generic function for tests, so tests(tbObj) will work
 
 #' @rdname tableby.internal
