@@ -24,7 +24,7 @@ Three of the main `arsenal` function use labels in their `summary()` output. The
 We'll use the `mockstudy` dataset for all examples here:
 
 ```{r}
-devtools::load_all()
+library(arsenal)
 data(mockstudy)
 library(magrittr)
 
