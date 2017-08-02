@@ -1,27 +1,34 @@
 
 #' Labels
 #'
-#' Assign the \code{'label'} attribute on an R object, and keep it there when subsetting.
+#' Assign and extract the \code{'label'} attribute on an R object.
 #'
-#'
-#'
-#' @author Ethan Heinzen, based on an idea from Brendan Broderick
+#' @param x,object An R object.
+#' @param value A vector or list containing labels to assign. Labels are assigned based on
+#'   names, if available; otherwise, they're assigned in order. Can pass \code{NULL}
+#'   to remove all labels.
+#' @param ... Other arguments (not in use at this time).
+#' @return The labels of \code{object}, or \code{object} with new labels.
+#' @details
+#'   The \code{\link{data.frame}} methods put labels on and extract labels from
+#'   the \emph{columns} of \code{object}.
+#' @author Ethan Heinzen
 #' @name labels
 NULL
 #> NULL
 
 #' @rdname labels
 #' @export
-labels.data.frame <- function(x, ...)
+labels.data.frame <- function(object, ...)
 {
-  lapply(x, attr, which = "label", exact = TRUE)
+  lapply(object, attr, which = "label", exact = TRUE)
 }
 
 #' @rdname labels
 #' @export
-labels.keep_labels <- function(x, ...)
+labels.keep_labels <- function(object, ...)
 {
-  attr(x, "label")
+  attr(object, "label")
 }
 
 #' @rdname labels

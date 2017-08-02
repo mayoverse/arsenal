@@ -1,11 +1,12 @@
 
 #' Keep Labels
 #'
-#' Assign the \code{'label'} attribute on an R object, and keep it there when subsetting.
+#' Keep the \code{'label'} attribute on an R object when subsetting.
 #'
-#'
-#'
-#' @author Ethan Heinzen, based on an idea from Brendan Broderick
+#' @param x An R object
+#' @param ... Other arguments (not in use at this time).
+#' @return A copy of \code{x} with a "keep labels" class appended on.
+#' @author Ethan Heinzen
 #' @name keep.labels
 NULL
 #> NULL
