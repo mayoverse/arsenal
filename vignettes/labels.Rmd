@@ -1,0 +1,113 @@
+---
+title: "A Few Notes on Labels"
+author: "Ethan Heinzen"
+date: '`r format(Sys.time(),"%d %B, %Y")`'
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: |
+  %\VignetteIndexEntry{A Few Notes on Labels}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(message = FALSE, results = 'asis')
+```
+
+# Introduction
+
+The `arsenal` package relies somewhat heavily on variable labels to make output more "pretty".
+A `label` here is understood to be a single character string with "pretty" text (i.e., not an "ugly" variable name).
+Three of the main `arsenal` function use labels in their `summary()` output. There are several ways to set these labels.
+
+We'll use the `mockstudy` dataset for all examples here:
+
+```{r}
+devtools::load_all()
+data(mockstudy)
+library(magrittr)
+
+# for 'freqlist' examples
+tab.ex <- table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA="ifany")
+```
+
+# Examples
+
+## Set labels in the function call
+
+The `summary()` method for `tableby()`, `modelsum()`, and `freqlist()` objects contains a `labelTranslations = ` argument to specify labels
+in the function call. Note that the `freqlist()` function matches labels in order, whereas the other two match labels by name. The labels
+can be input as a list or a character vector.
+
+```{r}
+summary(freqlist(tab.ex),
+        labelTranslations = c("Treatment Arm", "Gender", "LASA QOL"))
+summary(tableby(arm ~ sex + age, data = mockstudy),
+        labelTranslations = c(sex = "SEX", age = "Age, yrs"))
+summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy),
+        labelTranslations = list(sexFemale = "Female", age = "Age, yrs"))
+```
+
+## Modify labels after the fact
+
+Another option is to add labels after you have created the object. To do this, you can use the form
+`labels(x) <- value` or use the pipe-able version, `set_labels()`.
+
+```{r}
+# the non-pipe version; somewhat clunky
+tmp <- freqlist(tab.ex)
+labels(tmp) <- c("Treatment Arm", "Gender", "LASA QOL")
+summary(tmp)
+
+# piped--much cleaner
+mockstudy %>% 
+  tableby(arm ~ sex + age, data = .) %>% 
+  set_labels(c(sex = "SEX", age = "Age, yrs")) %>% 
+  summary()
+
+mockstudy %>% 
+  modelsum(bmi ~ age, adjust = ~ sex, data = .) %>% 
+  set_labels(list(sexFemale = "Female", age = "Age, yrs")) %>% 
+  summary()
+```
+
+## Add labels to a `data.frame`
+
+`tableby()` and `modelsum()` also allow you to have label attributes on the data. Note
+that by default these attributes get dropped upon subsetting, hence the call to `keep.labels()`.
+
+```{r}
+mockstudy.lab <- keep.labels(mockstudy)
+```
+
+You can set attributes one at a time:
+
+```{r}
+attr(mockstudy.lab$sex, "label") <- "Sex"
+attr(mockstudy.lab$age, "label") <- "Age, yrs"
+```
+
+...or all at once:
+
+```{r}
+labels(mockstudy.lab) <- list(sex = "Sex", age = "Age, yrs")
+summary(tableby(arm ~ sex + age, data = mockstudy.lab))
+```
+
+You can pipe this, too.
+
+```{r}
+mockstudy %>% 
+  set_labels(list(sex = "SEX", age = "Age, yrs")) %>% 
+  modelsum(bmi ~ age, adjust = ~ sex, data = .) %>% 
+  summary()
+```
+
+To extract labels from a `data.frame`, simply use the `labels()` function:
+
+```{r results='markdown'}
+labels(mockstudy.lab)
+```
+
+
