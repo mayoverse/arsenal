@@ -1,12 +1,12 @@
 # arsenal 0.4.?
 
-* Code all now in github
+* Code all now in github; issues can now be submitted there.
 
 * Included documentation for getting a caption with `write2()` and `freqlist()`. (#16)
 
-* Fixed subsetting in `modelsum()` (#14)
+* Fixed subsetting in `modelsum()`. (#14)
 
-* Fixed multiple class errors in `tableby()` (#17)
+* Fixed multiple class errors in `tableby()`. (#17)
 
 # arsenal 0.4.2
 
