@@ -33,6 +33,14 @@ Other S3 methods are implemented for objects of class `"modelsum"`, including `p
 The `freqlist()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
 Other S3 methods are implemented for objects of class `"freqlist"`, including `print()` and `as.data.frame()`.
 
+## The `compare.data.frame()` Function
+
+`compare.data.frame()` is the S3 method for comparing two data.frames and reporting any differences between them,
+much like SAS's `PROC COMPARE` procedure.
+
+The `compare.data.frame()` output is easily nknitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
+Other S3 methods are implemented for objects of class `"compare.data.frame"`, including `print()` and `diffs()`.
+
 ## The `write2*()` Family of Functions
 
 `write2word()`, `write2pdf()`, and `write2html()` are functions to output a table into a document, much like SAS's `ODS` procedure.

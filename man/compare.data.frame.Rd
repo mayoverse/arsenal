@@ -23,7 +23,8 @@ If set to \code{NULL} (default), merging will occur row-by-row.}
 \item{...}{Other arguments, passed to \code{\link{comparison.control}} when appropriate.}
 }
 \description{
-Compare two data.frames and report any differences between them.
+Compare two data.frames and report any differences between them,
+ much like SAS's \code{PROC COMPARE} procedure.
 }
 \examples{
 

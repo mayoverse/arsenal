@@ -12,6 +12,8 @@
 
 * Added a vignette discussing labels.
 
+* Add `compare.data.frame()`.
+
 # arsenal 0.4.2
 
 * Updated `labelTranslation` documentation

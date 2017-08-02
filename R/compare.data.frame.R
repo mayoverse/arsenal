@@ -3,7 +3,8 @@
 
 #' Compare two data.frames and report differences
 #'
-#' Compare two data.frames and report any differences between them.
+#' Compare two data.frames and report any differences between them,
+#'  much like SAS's \code{PROC COMPARE} procedure.
 #'
 #' @param x,y A data.frame to compare
 #' @param by,by.x,by.y Which variables are IDs to merge the two data.frames?
