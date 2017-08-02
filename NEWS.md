@@ -4,6 +4,10 @@
 
 * Included documentation for getting a caption with `write2()` and `freqlist()`. (#16)
 
+* Fixed subsetting in `modelsum()` (#14)
+
+* Fixed multiple class errors in `tableby()` (#17)
+
 # arsenal 0.4.2
 
 * Updated `labelTranslation` documentation
