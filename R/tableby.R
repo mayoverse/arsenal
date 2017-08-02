@@ -382,7 +382,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
                                name=names(modeldf)[eff],
                                type="categorical", output=cstyles)
 
-    } else if(inherits(modeldf[,eff], "Date")) {
+    } else if(is.Date(modeldf[,eff])) {
 
       ######## Date variable ###############
 
