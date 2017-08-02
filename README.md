@@ -51,4 +51,6 @@ Other S3 methods are implemented for objects of class `"freqlist"`, including `p
 
 * `mdy.Date()` and `Date.mdy()` convert numeric dates for month, day, and year to Date object, and vice versa.
 
+* `is.Date`: tests if an object is a date.
+
 * `%nin%` tests for "not in", the negation of `%in%`.

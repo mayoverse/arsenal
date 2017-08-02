@@ -32,6 +32,10 @@
 #'
 #' \code{\link{mdy.Date}} and \code{\link{Date.mdy}}: Convert numeric dates for month, day, and year to Date object, and vice versa.
 #'
+#' \code{\link{is.Date}}: Test if an object is a date.
+#'
+#' \code{\link{\%nin\%}}: Test for "not in".
+#'
 #' @section Data:
 #'
 #' \code{\link{mockstudy}}: Mock study data for examples.
@@ -43,6 +47,11 @@
 #' @name arsenal
 #'
 NULL
+
+#' @importFrom testthat compare
+#' @seealso \code{\link{compare.data.frame}}
+#' @export
+testthat::compare
 
 #### commands to build the package using devtools
 # devtools::check_man()

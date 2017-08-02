@@ -3,6 +3,8 @@
 \docType{data}
 \name{mockstudy}
 \alias{mockstudy}
+\alias{mockstudy}
+\alias{muck_up_mockstudy}
 \title{Mock study data for examples}
 \format{A data frame with 1499 observations on the following 15 variables:
   \describe{
@@ -25,9 +27,12 @@
   }}
 \usage{
 mockstudy
+
+muck_up_mockstudy()
 }
 \description{
-Mock clinical study data for examples to test data manipulation and statistical functions
+Mock clinical study data for examples to test data manipulation and statistical functions.
+  The function \code{muck_up_mockstudy()} is used in examples for \code{\link{compare.data.frame}}.
 }
 \examples{
 data(mockstudy)

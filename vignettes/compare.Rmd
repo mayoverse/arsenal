@@ -1,0 +1,333 @@
+---
+title: "The compare function"
+author: "Ethan Heinzen, Ryan Lennon, Andrew Hanson"
+date: '`r format(Sys.time(),"%d %B, %Y")`'
+output:
+  rmarkdown::html_vignette:
+    toc: yes
+    toc_depth: 3
+vignette: |
+  %\VignetteIndexEntry{The compare function}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(eval = TRUE, message = FALSE, results = 'asis', comment='')
+options(width = 120)
+```
+
+# Introduction
+
+The `compare()` function (or more precisely, the `compare.data.frame()` function) can be used to
+determine and report differences between two data.frames. It was written in the spirit of replacing `PROC COMPARE`
+from SAS.
+
+We reexport the `compare()` generic from the `testthat` package to avoid namespace conflicts,
+and write a `data.frame` S3 method to compare data.frames.
+
+```{r results = 'asis'}
+library(arsenal)
+```
+
+# Basic examples
+
+We first build two similar data.frames to compare.
+
+```{r}
+df1 <- data.frame(id = paste0("person", 1:3),
+                  a = c("a", "b", "c"),
+                  b = c(1, 3, 4),
+                  c = c("f", "e", "d"),
+                  row.names = paste0("rn", 1:3),
+                  stringsAsFactors = FALSE)
+df2 <- data.frame(id = paste0("person", 3:1),
+                  a = c("c", "b", "a"),
+                  b = c(1, 3, 4),
+                  d = paste0("rn", 1:3),
+                  row.names = paste0("rn", c(1,3,2)),
+                  stringsAsFactors = FALSE)
+```
+
+To compare these datasets, simply pass them to the `compare()` function:
+
+```{r results='markup'}
+compare(df1, df2)
+```
+
+Use `summary()` to get a more detailed summary
+
+```{r}
+summary(compare(df1, df2))
+```
+
+By default, the datasets are compared row-by-row. To change this, use the `by=` or `by.x=` and `by.y=` arguments:
+
+```{r}
+summary(compare(df1, df2, by = "id"))
+```
+
+# A larger example
+
+Let's muck up the `mockstudy` data.
+
+```{r}
+data(mockstudy)
+mockstudy2 <- muck_up_mockstudy()
+```
+
+We've changed row order, so let's compare by the case ID:
+
+```{r}
+summary(compare(mockstudy, mockstudy2, by = "case"))
+```
+
+# Column name comparison options
+
+It is possible to change which column names are considered "the same variable".
+
+## Ignoring case
+
+For example, to ignore case in variable names (so that `Arm` and `arm` are considered the same), pass `tol.vars = "case"`.
+
+You can do this using `comparison.control()`
+
+```{r eval = FALSE}
+summary(compare(mockstudy, mockstudy2, by = "case", control = comparison.control(tol.vars = "case")))
+```
+
+or pass it through the `...` arguments.
+
+```{r}
+summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = "case"))
+```
+
+## Treating dots and underscores the same (equivalence classes)
+
+It is possible to treat certain characters or sets of characters as the same by
+passing a character vector of equivalence classes to the `tol.vars=` argument.
+
+In short, each string in the vector is split into single characters, and the resulting set of characters is
+replaced by the first character in the string. For example, passing `c("._")` would replace all
+underscores with dots in the column names of both datasets. Similarly, passing `c("aA", "BbCc")` would
+replace all instances of `"A"` with `"a"` and all instances of `"b"`, `"C"`, or `"c"` with `"B"`.
+This is one way to ignore case for certain letters. Otherwise, it's possible to combine
+the equivalence classes with ignoring case, by passing (e.g.) `c("._", "case")`.
+
+Passing a single character as an element this vector will replace that character with the empty string.
+For example, passing c(" ", ".") would remove all spaces and dots from the column names.
+
+For mockstudy, let's treat dots, underscores, and spaces as the same, and ignore case:
+
+```{r}
+summary(compare(mockstudy, mockstudy2, by = "case",
+                tol.vars = c("._ ", "case") # dots=underscores=spaces, ignore case
+))
+```
+
+# Column comparison options
+
+## Logical tolerance
+
+Use the `tol.logical=` argument to change how logicals are compared. By default, they're expected to be equal to each other.
+
+## Numeric tolerance
+
+To allow numeric differences of a certain tolerance, use the `tol.num=` and `tol.num.val=` options.
+`tol.num.val=` determines the maximum (unsigned) difference tolerated if `tol.num="absolute"` (default),
+and determines the maximum (unsigned) percent difference tolerated if `tol.num="percent"`.
+
+Also note the option `int.as.num=`, which determines whether integers and numerics should be compared despite
+their class difference. If `TRUE`, the integers are coerced to numeric.
+Note that `mockstudy$ast` is integer, while `mockstudy2$ast` is numeric:
+
+```{r}
+summary(compare(mockstudy, mockstudy2, by = "case",
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE            # compare integers and numerics
+))
+```
+
+Suppose a tolerance of up to 10 is allowed for `ast`:
+
+```{r}
+summary(compare(mockstudy, mockstudy2, by = "case",
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE,           # compare integers and numerics
+                tol.num.val = 10             # allow absolute differences <= 10
+))
+```
+
+## Factor tolerance
+
+By default, factors are compared to each other based on both the labels and the underlying
+numeric levels. Set `tol.factor="levels"` to match only the numeric levels, or set
+`tol.factor="labels"` to match only the labels.
+
+```{r}
+summary(compare(mockstudy, mockstudy2, by = "case",
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE,           # compare integers and numerics
+                tol.num.val = 10,            # allow absolute differences <= 10
+                tol.factor = "labels"        # match only factor labels
+))
+```
+
+Also note the option `factor.as.char=`, which determines whether factors and characters should be compared despite
+their class difference. If `TRUE`, the factors are coerced to characters.
+Note that `mockstudy$race` is a character, while `mockstudy2$race` is a factor:
+
+```{r}
+summary(compare(mockstudy, mockstudy2, by = "case",
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE,           # compare integers and numerics
+                tol.num.val = 10,            # allow absolute differences <= 10
+                tol.factor = "labels",       # match only factor labels
+                factor.as.char = TRUE        # compare factors and characters
+))
+```
+
+## Character tolerance
+
+Use the `tol.char=` argument to change how character variables are compared.
+By default, they are compared as-is, but they can be compared after ignoring case
+or trimming whitespace or both.
+
+```{r}
+summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE,           # compare integers and numerics
+                tol.num.val = 10,            # allow absolute differences <= 10
+                tol.factor = "labels",       # match only factor labels
+                factor.as.char = TRUE,       # compare factors and characters
+                tol.char = "case"            # ignore case in character vectors
+))
+```
+
+## Date tolerance
+
+Use the `tol.date=` argument to change how dates are compared. By default, they're expected to be equal to each other.
+
+## Other data type tolerances
+
+Use the `tol.other=` argument to change how other objects are compared. By default,
+they're expected to be `identical()`.
+
+## User-defined tolerance functions
+
+### Details
+
+The `comparison.control()` function accepts functions for any of the tolerance arguments in addition
+to the short-hand character strings. This allows the user to create custom tolerance functions to suit his/her needs.
+
+Any custom tolerance function must accept two vectors as arguments and return a logical vector of the same length. The `TRUE`s in
+the results should correspond to elements which are deemed "different". Note that the numeric and date tolerance functions should also
+include a third argument for tolerance size (even if it's not used).
+
+CAUTION: the results should not include NAs, since the logical vector is used to subset the input data.frames. The `tol.NA()` function
+is useful for considering any NAs in the two vectors (but not both) as differences, in addition to other criteria.
+
+```{r results='markup'}
+tol.NA
+```
+
+The `tol.NA()` function is used in all default tolerance functions to help handle NAs.
+
+### Example 1
+
+Suppose we want to ignore any dates which are later in the second dataset than the first. We define a custom tolerance function.
+
+```{r results = 'markup'}
+my.tol <- function(x, y, tol)
+{
+  tol.NA(x, y, x > y)
+}
+
+date.df1 <- data.frame(dt = as.Date(c("2017-09-07", "2017-08-08", "2017-07-09", NA)))
+date.df2 <- data.frame(dt = as.Date(c("2017-10-01", "2017-08-08", "2017-07-10", "2017-01-01")))
+n.diffs(compare(date.df1, date.df2)) # default finds any differences
+n.diffs(compare(date.df1, date.df2, tol.date = my.tol)) # our function identifies only the NA as different...
+n.diffs(compare(date.df2, date.df1, tol.date = my.tol)) # ... until we change the argument order
+
+```
+
+### Example 2
+
+(Continuing our mockstudy example)
+
+Suppose we're okay with NAs getting replaced by -9.
+
+```{r}
+tol.minus9 <- function(x, y, tol)
+{
+  idx1 <- is.na(x) & !is.na(y) & y == -9
+  idx2 <- tol.num.absolute(x, y, tol) # find other absolute differences
+  return(!idx1 & idx2)
+}
+
+summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE,           # compare integers and numerics
+                tol.num.val = 10,            # allow absolute differences <= 10
+                tol.factor = "labels",       # match only factor labels
+                factor.as.char = TRUE,       # compare factors and characters
+                tol.char = "case",           # ignore case in character vectors
+                tol.num = tol.minus9         # ignore NA -> -9 changes
+))
+```
+
+
+# Appendix
+
+## Stucture of the Object
+
+(This section is just as much for my use as for yours!)
+
+```{r}
+obj <- compare(mockstudy, mockstudy2, by = "case")
+```
+
+There are two main objects in the `"compare.data.frame"` object, each with its own print method.
+
+The `frame.summary` contains:
+
+- information about the number of columns and rows in each dataset
+
+- the by-variables for each dataset (which may not be the same)
+
+- the attributes for each dataset (which get counted in the print method)
+
+- a data.frame of by-variables and row numbers of observations not shared between datasets
+
+- the number of shared observations
+
+```{r results='markup'}
+print(obj$frame.summary)
+```
+
+The `vars.summary` contains:
+
+- variable name, column number, and class vector (with possibly more than one element) for each x and y.
+  These are all `NA` if there isn't a match in both datasets.
+  
+- values, a list-column of the text string `"by-variable"` for the by-variables,
+  `NULL` for columns that aren't compared, or a data.frame containing:
+
+    - The by-variables for differences found
+    
+    - The values which are different for x and y
+    
+    - The row numbers for differences found
+    
+- attrs, a list-column of `NULL` if there are no attributes, or
+  a data.frame containing:
+  
+    - The name of the attributes
+    
+    - The attributes for x and y, set to `NA` if non-existant
+
+```{r results='markup'}
+print(obj$vars.summary)
+```
+
+

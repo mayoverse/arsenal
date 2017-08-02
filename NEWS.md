@@ -1,6 +1,6 @@
 # arsenal 0.4.?
 
-* Code all now in github; issues can now be submitted there.
+* Code all now in GitHub; issues can now be submitted there. Checking is now performed on Travis-CI
 
 * Included documentation for getting a caption with `write2()` and `freqlist()`. (#16)
 

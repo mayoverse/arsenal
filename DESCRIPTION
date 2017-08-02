@@ -31,7 +31,6 @@ Suggests:
     xtable,
     pander,
     survival,
-    testthat,
     coin,
     pROC,
     MASS,
@@ -40,6 +39,8 @@ Suggests:
 Depends:
     R (>= 3.2.0),
     stats (>= 3.2.0)
+Imports:
+    testthat
 URL: https://github.com/eheinzen/arsenal, https://cran.r-project.org/package=arsenal
 BugReports: https://github.com/eheinzen/arsenal/issues
 VignetteBuilder: knitr
