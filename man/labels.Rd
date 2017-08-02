@@ -5,6 +5,7 @@
 \alias{labels.data.frame}
 \alias{labels.keep_labels}
 \alias{labels<-}
+\alias{set_labels}
 \alias{labels<-.keep_labels}
 \alias{labels<-.data.frame}
 \title{Labels}
@@ -14,6 +15,8 @@
 \method{labels}{keep_labels}(object, ...)
 
 labels(x) <- value
+
+set_labels(x, value)
 
 \method{labels}{keep_labels}(x) <- value
 
@@ -32,7 +35,8 @@ to remove all labels.}
 The labels of \code{object}, or \code{object} with new labels.
 }
 \description{
-Assign and extract the \code{'label'} attribute on an R object.
+Assign and extract the \code{'label'} attribute on an R object. \code{set_labels} is
+  does the same as \code{labels(x) <- value} but returns \code{x} for use in a pipe chain.
 }
 \details{
 The \code{\link{data.frame}} methods put labels on and extract labels from
