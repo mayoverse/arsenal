@@ -41,6 +41,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   if (length(digits) > 1) stop("digits must be a single numeric value")
   if ((digits %% 1) != 0 || (digits < 0)) stop("digits must be a positive whole number")
   if (!is.null(groupBy) && any(groupBy %nin% names(dimnames(tab)))) stop("groupBy variable not found in table names")
+  if (is.list(labelTranslations)) labelTranslations <- unlist(labelTranslations)
   if (!is.null(labelTranslations) && (!is.character(labelTranslations) || length(labelTranslations) != length(dim(tab))))
     stop("length of variable names does not match table object dimensions")
 
