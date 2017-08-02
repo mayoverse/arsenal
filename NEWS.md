@@ -1,6 +1,16 @@
 # arsenal 0.4.?
 
-* Code all now in GitHub, with checking performed on Travis-CI
+* Code all now in GitHub; issues can now be submitted there. Checking is now performed on Travis-CI
+
+* Included documentation for getting a caption with `write2()` and `freqlist()`. (#16)
+
+* Fixed subsetting in `modelsum()`. (#14)
+
+* Fixed multiple class errors in `tableby()`. (#17)
+
+* Fixed subset dropping labels in `tableby()` and `modelsum()` with new function `keep.labels()` to make labels "stick". (#1)
+
+* Added a vignette discussing labels.
 
 # arsenal 0.4.2
 
@@ -18,12 +28,12 @@
 
 * Tweaked `freqlist()` to behave better with data.frame subsetting and the infamous `drop=TRUE`.
 
-* Added `dupLabels=` argument to `summary.freqlist()`.
+* Added `dupLabels=` argument to `summary.freqlist()`. (#6)
 
-* Added a label for `medianq1q3()` in `tableby.control()`.
+* Added a label for `medianq1q3()` in `tableby.control()`. (#4)
 
 * Changed the `...` vs. `control=` action in `tableby()` and `modelsum()` to fix which
-  arguments are used over which other arguments.
+  arguments are used over which other arguments. (#5)
   
 * Moved import `broom` and `stringr` to "Suggests",
   adding `magrittr` for piping.
@@ -32,7 +42,9 @@
   
 * Several `tableby()` fixes for counts and percents.
 
-* New options in `tableby.control()` to modify the statistical tests performed.
+* New options in `tableby.control()` to modify the statistical tests performed. (#2)
+
+* Fixed trailing whitespace issue in `tableby()` (#3)
 
 # arsenal 0.3.0
 

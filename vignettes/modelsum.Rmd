@@ -143,7 +143,7 @@ require(gam)
 fit3 <- lm(log(alk.phos) ~ arm + ns(age, df=2) + sex, data=mockstudy)
 
 # test whether there is a difference between models 
-anova(fit2,fit3)
+stats::anova(fit2,fit3)
 
 # look at functional form of age
 termplot(fit3, term=2, se=T, rug=T)
@@ -299,7 +299,7 @@ data(solder)
 hist(solder$skips)
 
 fit <- glm(skips ~ Opening + Solder + Mask , data=solder, family=poisson)
-anova(fit, test='Chi')
+stats::anova(fit, test='Chi')
 summary(fit)
 ```
 
@@ -436,6 +436,15 @@ tab1 <- modelsum(bmi ~  age, adjust=~sex, data=mockstudy)
 summary(tab1)
 ```
 
+You can also use the built-in `data.frame` method for `labels<-`:
+
+```{r, results = 'asis'}
+labels(mockstudy)  <- c(age = 'Age, yrs')
+
+tab1 <- modelsum(bmi ~  age, adjust=~sex, data=mockstudy)
+summary(tab1)
+```
+
 Another option is to add labels after you have created the table
 
 ```{r, results='asis'}
@@ -443,7 +452,7 @@ mylabels <- list(sexFemale = "Female", age ="Age, yrs")
 summary(tab1, labelTranslations = mylabels)
 ```
 
-Alternatively, you can check the variable labels and manipulate them with a function called labels, which works on the tableby object.
+Alternatively, you can check the variable labels and manipulate them with a function called `labels`, which works on the `modelsum` object.
 
 ```{r, eval=TRUE}
 labels(tab1)

@@ -41,6 +41,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   if (length(digits) > 1) stop("digits must be a single numeric value")
   if ((digits %% 1) != 0 || (digits < 0)) stop("digits must be a positive whole number")
   if (!is.null(groupBy) && any(groupBy %nin% names(dimnames(tab)))) stop("groupBy variable not found in table names")
+  if (is.list(labelTranslations)) labelTranslations <- unlist(labelTranslations)
   if (!is.null(labelTranslations) && (!is.character(labelTranslations) || length(labelTranslations) != length(dim(tab))))
     stop("length of variable names does not match table object dimensions")
 
@@ -119,10 +120,6 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   }
   outlist <- list(freqlist=tableout, byVar=groupBy, labels=variable_labels)
   class(outlist) <- "freqlist"
-  ##  if(!usingRCF() & !usingNCSA()) {
-  ##    cat(paste0("R-", version$major,".", version$minor, "\t", system("echo $USER",intern=TRUE), "\t", Sys.Date(), "\n"),
-  ##        file="/projects/bsi/infrastructure/s200555.Rinfrastructure/rlogs/freqlist.log",append=TRUE)
-  ##  }
   return(outlist)
 }
 

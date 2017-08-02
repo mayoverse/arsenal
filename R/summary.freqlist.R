@@ -4,12 +4,12 @@
 #'
 #' @param object an object of class \code{\link{freqlist}}
 #' @param single a logical value indicating whether to collapse results created using a groupBy variable into a single table for printing
-#' @param labelTranslations A named list (or vector) where the name is the label in the output to 
+#' @param labelTranslations A named list (or vector) where the name is the label in the output to
 #'        be replaced in the pretty rendering of freqlist by the character string value for the named
 #'        element of the list, e.g., list(age="Age(years)", bmi="Body Mass Index").
 #' @param dupLabels Should labels which are the same as the row above be printed? The default (\code{FALSE}) more
 #'   closely approximates \code{PROC FREQ} output from SAS, where a label carried down from the row above is left blank.
-#' @param ... additional arguments passed to the \code{\link[knitr]{kable}} function
+#' @param ... additional arguments passed to the \code{\link[knitr]{kable}} function (e.g., \code{format = "pandoc"})
 #' @return Invisibly returns \code{object}, and uses \code{\link[knitr]{kable}} to print the object.
 #' @seealso \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
 #'

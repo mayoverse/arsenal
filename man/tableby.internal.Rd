@@ -5,7 +5,6 @@
 \alias{merge.tableby}
 \alias{modpval.tableby}
 \alias{labels.tableby}
-\alias{labels<-}
 \alias{tests}
 \alias{tests.tableby}
 \alias{labels<-.tableby}
@@ -18,8 +17,6 @@
 modpval.tableby(x, pdata, use.pname = FALSE)
 
 \method{labels}{tableby}(object, ...)
-
-labels(x) <- value
 
 tests(x)
 

@@ -159,10 +159,11 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     warning("It appears you're using na.tableby with a one-sided formula... Results may not be what you expect.")
   }
   special <- c("anova", "kwt", "chisq", "fe", "logrank", "trend")
-  temp.call$formula <- if (missing(data)) {
-    stats::terms(formula, special)
+  if (missing(data)) {
+    temp.call$formula <- stats::terms(formula, special)
   } else {
-    stats::terms(formula, special, data = data)
+    temp.call$data <- call("keep.labels", temp.call$data)
+    temp.call$formula <- stats::terms(formula, special, data = keep.labels(data))
   }
   ##  set up new environment for
   ## if specials, assign dummy versions of those functions
@@ -243,9 +244,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
   ## list of x variables
   xList <- list()
-  ## turn warnings off (for chisq test), set back later
-  oldwarn <- options()$warn
-  options(warn = -1)
 
   ## fix of droplevels on by factor suggested by Ethan Heinzen 4/12/2016
   if(is.factor(modeldf[,1])) {
@@ -255,7 +253,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   for(eff in 2:ncol(modeldf)) {
 
     ## ordered factor
-    if("ordered" %in% class(modeldf[,eff])) {
+    if(is.ordered(modeldf[,eff])) {
 
       ## stats
       ostatList <- list()
@@ -309,7 +307,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
                                            name=names(modeldf)[eff],
                                            type="ordinal", output=ostyles)
 
-    } else if(any( c("character", "factor", "logical") %in% c(mode(modeldf[,eff]), class(modeldf[,eff])))) {
+    } else if(is.logical(modeldf[,eff]) || is.factor(modeldf[,eff]) || is.character(modeldf[,eff])) {
     ##############################################
     ## categorical variable (character or factor)
     ##############################################
@@ -319,7 +317,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       cstyles <- character()
 
       ## convert logicals to factor
-      if(class(modeldf[,eff])=="logical") {
+      if(is.logical(modeldf[,eff])) {
         modeldf[,eff]<- factor(modeldf[,eff], levels=c(FALSE, TRUE))
       }
 
@@ -384,7 +382,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
                                name=names(modeldf)[eff],
                                type="categorical", output=cstyles)
 
-    } else if("Date" %in% c(mode(modeldf[,eff]),class(modeldf[,eff]))) {
+    } else if(inherits(modeldf[,eff], "Date")) {
 
       ######## Date variable ###############
 
@@ -443,7 +441,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
                                            name=names(modeldf)[eff],
                                            type="Date", output=dstyles)
 
-    } else if("Surv" %in% class(modeldf[,eff])) {
+    } else if(survival::is.Surv(modeldf[,eff])) {
 
       ##### Survival (time to event) #######
 
@@ -516,7 +514,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
                                            type="survival", output=srskstyles)
       }
 
-    } else if(any(c("numeric", "integer", "difftime") %in% c(mode(modeldf[,eff]),class(modeldf[,eff])))) {
+    } else if(is.numeric(modeldf[,eff]) || inherits(modeldf[,eff], "difftime")) {
 
       ######## Continuous variable (numeric) ###############
 
@@ -525,7 +523,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       nstyles <- character()
 
       ## for difftime, convert to numeric
-      if(class(modeldf[,eff])=="difftime") {
+      if(inherits(modeldf[,eff], "difftime")) {
         modeldf[,eff] <- as.numeric(modeldf[,eff])
       }
 
@@ -580,11 +578,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     }
   }
 
-  options(warn = oldwarn)
-
   ## attributes: label/long-names
   ## number of RHS variables
-
 
   labelBy <- attributes(modeldf[,1])$label
   if(is.null(labelBy)) {
@@ -602,10 +597,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
   tblList <- list(y = yList, x = xList, control = control, Call = match.call(), weights=userWeights)
   class(tblList) <- "tableby"
-  ##  if(!usingRCF() & !usingNCSA()) {
-  ##    cat(paste0("R-", version$major,".", version$minor, "\t", system("echo $USER",intern=TRUE), "\t", Sys.Date(), "\n"),
-  ##        file="/projects/bsi/infrastructure/s200555.Rinfrastructure/rlogs/tableby.log",append=TRUE)
-  ##  }
   return(tblList)
 }
 

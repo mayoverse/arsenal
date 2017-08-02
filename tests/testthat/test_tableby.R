@@ -27,6 +27,8 @@ attr(mdat$ht_in, "label") <- "Height in Inches"
 attr(mdat$trt, "label") <- "Treatment Arm"
 attr(mdat$Age, "label") <- "Age in Years"
 
+class(mdat$Sex) <- c("dummyClassToTriggerErrors", class(mdat$Sex))
+
 ###########################################################################################################
 #### Basic two-sided tableby
 ###########################################################################################################
@@ -596,3 +598,9 @@ test_that("05/24/2017: Missy Larson and Ethan Heinzen trailing spaces on char x 
     )
   )
 })
+
+
+test_that("08/02/2017: Chi-square warnings are suppressed", {
+  expect_warning(tableby(arm ~ sex, data = mockstudy, subset = 1:5), NA)
+})
+
