@@ -26,6 +26,8 @@
 #' \code{\link{write2}}: Functions to output tables to a single document.
 #'   (Also the S3 backbone behind the \code{write2*} functions.)
 #'
+#' \code{\link{keep.labels}}: Keep the \code{'label'} attribute on an R object when subsetting.
+#'
 #' \code{\link{formulize}}: A shortcut to generate one-, two-, or many-sided formulas.
 #'
 #' \code{\link{mdy.Date}} and \code{\link{Date.mdy}}: Convert numeric dates for month, day, and year to Date object, and vice versa.

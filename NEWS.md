@@ -8,6 +8,10 @@
 
 * Fixed multiple class errors in `tableby()`. (#17)
 
+* Fixed subset dropping labels in `tableby()` and `modelsum()` with new function `keep.labels()` to make labels "stick". (#1)
+
+* Added a vignette discussing labels.
+
 # arsenal 0.4.2
 
 * Updated `labelTranslation` documentation

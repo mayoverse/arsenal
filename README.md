@@ -45,6 +45,8 @@ Other S3 methods are implemented for objects of class `"freqlist"`, including `p
 
 ## Other Notable Functions
 
+* `keep.labels()` keeps the `'label'` attribute on an R object when subsetting.
+
 * `formulize()` is a shortcut to collapse variable names into a formula.
 
 * `mdy.Date()` and `Date.mdy()` convert numeric dates for month, day, and year to Date object, and vice versa.

@@ -151,6 +151,11 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
   if(is.null(temp.call$na.action)) {
     temp.call$na.action <- na.modelsum
   }
+  if(!missing(data))
+  {
+    data <- keep.labels(data)
+    temp.call$data <- call("keep.labels", temp.call$data)
+  }
 
   ## if(is.null(temp.call$weights)) {
   ##    temp.call$weights <- rep(1, nrow())

@@ -159,10 +159,11 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     warning("It appears you're using na.tableby with a one-sided formula... Results may not be what you expect.")
   }
   special <- c("anova", "kwt", "chisq", "fe", "logrank", "trend")
-  temp.call$formula <- if (missing(data)) {
-    stats::terms(formula, special)
+  if (missing(data)) {
+    temp.call$formula <- stats::terms(formula, special)
   } else {
-    stats::terms(formula, special, data = data)
+    temp.call$data <- call("keep.labels", temp.call$data)
+    temp.call$formula <- stats::terms(formula, special, data = keep.labels(data))
   }
   ##  set up new environment for
   ## if specials, assign dummy versions of those functions

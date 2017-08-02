@@ -131,6 +131,15 @@ tab1 <- tableby(arm ~ sex + age, data=mockstudy)
 summary(tab1)
 ```
 
+You can also use the built-in `data.frame` method for `labels<-`:
+
+```{r, results = 'asis'}
+labels(mockstudy)  <- c(age = 'Age, yrs', sex = "Gender")
+
+tab1 <- tableby(arm ~ sex + age, data=mockstudy)
+summary(tab1)
+```
+
 Another option is to add labels after you have created the table
 
 ```{r, results='asis'}
@@ -138,7 +147,7 @@ mylabels <- list( sex = "SEX", age ="Age, yrs")
 summary(tab1, labelTranslations = mylabels)
 ```
 
-Alternatively, you can check the variable labels and manipulate them with a function called labels, which works on the tableby object.
+Alternatively, you can check the variable labels and manipulate them with a function called `labels`, which works on the `tableby` object.
 
 ```{r, assignlabels}
 labels(tab1)
