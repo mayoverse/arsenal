@@ -252,7 +252,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   for(eff in 2:ncol(modeldf)) {
 
     ## ordered factor
-    if("ordered" %in% class(modeldf[,eff])) {
+    if(is.ordered(modeldf[,eff])) {
 
       ## stats
       ostatList <- list()
@@ -306,7 +306,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
                                            name=names(modeldf)[eff],
                                            type="ordinal", output=ostyles)
 
-    } else if(any( c("character", "factor", "logical") %in% c(mode(modeldf[,eff]), class(modeldf[,eff])))) {
+    } else if(is.logical(modeldf[,eff]) || is.factor(modeldf[,eff]) || is.character(modeldf[,eff])) {
     ##############################################
     ## categorical variable (character or factor)
     ##############################################
@@ -381,7 +381,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
                                name=names(modeldf)[eff],
                                type="categorical", output=cstyles)
 
-    } else if("Date" %in% c(mode(modeldf[,eff]),class(modeldf[,eff]))) {
+    } else if(inherits(modeldf[,eff], "Date")) {
 
       ######## Date variable ###############
 
@@ -440,7 +440,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
                                            name=names(modeldf)[eff],
                                            type="Date", output=dstyles)
 
-    } else if("Surv" %in% class(modeldf[,eff])) {
+    } else if(survival::is.Surv(modeldf[,eff])) {
 
       ##### Survival (time to event) #######
 
@@ -513,7 +513,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
                                            type="survival", output=srskstyles)
       }
 
-    } else if(any(c("numeric", "integer", "difftime") %in% c(mode(modeldf[,eff]),class(modeldf[,eff])))) {
+    } else if(is.numeric(modeldf[,eff]) || inherits(modeldf[,eff], "difftime")) {
 
       ######## Continuous variable (numeric) ###############
 
