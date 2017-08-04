@@ -194,7 +194,7 @@ By default, they are compared as-is, but they can be compared after ignoring cas
 or trimming whitespace or both.
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
+summary(compare(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE,           # compare integers and numerics
                 tol.num.val = 10,            # allow absolute differences <= 10
@@ -265,7 +265,7 @@ tol.minus9 <- function(x, y, tol)
   return(!idx1 & idx2)
 }
 
-summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
+summary(compare(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE,           # compare integers and numerics
                 tol.num.val = 10,            # allow absolute differences <= 10
@@ -276,6 +276,29 @@ summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
 ))
 ```
 
+# Extract Differences
+
+Differences can be easily extracted using the `diffs()` function. If you only want to determine how many differences
+were found, use the `n.diffs()` function.
+
+```{r results = 'markup'}
+cmp <- compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"), int.as.num = TRUE)
+n.diffs(cmp)
+head(diffs(cmp))
+```
+
+Differences can also be summarized by variable.
+
+```{r results = 'markup'}
+diffs(cmp, by.var = TRUE)
+```
+
+To report differences from only a few variables, one can pass a list of variable names to `diffs()`.
+
+```{r results = 'markup'}
+diffs(cmp, vars = c("ps", "ast"), by.var = TRUE)
+diffs(cmp, vars = c("ps", "ast"))
+```
 
 # Appendix
 

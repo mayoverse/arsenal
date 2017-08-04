@@ -223,6 +223,43 @@ test_that("tolerances are working correctly", {
   )
 })
 
+tol.minus9 <- function(x, y, tol)
+{
+  idx1 <- is.na(x) & !is.na(y) & y == -9
+  idx2 <- tol.num.absolute(x, y, tol) # find other absolute differences
+  return(!idx1 & idx2)
+}
+
+tmp2 <- compare(mockstudy, mockstudy2, by = "case",
+                tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+                int.as.num = TRUE,           # compare integers and numerics
+                tol.num.val = 10,            # allow absolute differences <= 10
+                tol.factor = "labels",       # match only factor labels
+                factor.as.char = TRUE,       # compare factors and characters
+                tol.char = "case",           # ignore case in character vectors
+                tol.num = tol.minus9         # ignore NA -> -9 changes
+)
+
+test_that("custom tolerances are working correctly", {
+  expect_identical(
+    capture.output(print(tmp2)),
+    c("Compare Object"                                                            ,
+      ""                                                                          ,
+      "Function Call: "                                                           ,
+      "compare.data.frame(x = mockstudy, y = mockstudy2, by = \"case\", "         ,
+      "    tol.vars = c(\"._ \", \"case\"), int.as.num = TRUE, tol.num.val = 10, ",
+      "    tol.factor = \"labels\", factor.as.char = TRUE, tol.char = \"case\", " ,
+      "    tol.num = tol.minus9)"                                                 ,
+      ""                                                                          ,
+      "Shared: 13 variables and 1495 observations."                               ,
+      "Not shared: 1 variables and 4 observations."                               ,
+      ""                                                                          ,
+      "Differences found in 2/12 variables compared."                             ,
+      "4 variables compared have non-identical attributes."
+    )
+  )
+})
+
 ###########################################################################################################
 #### Using helper functions
 ###########################################################################################################
@@ -230,6 +267,11 @@ test_that("tolerances are working correctly", {
 test_that("helper functions are working correctly", {
   expect_true(n.diffs(compare(df1, df2, by = "id")) == n.diffs(summary(compare(df1, df2, by = "id"))))
   expect_identical(diffs(compare(df1, df2, by = "id")), diffs(summary(compare(df1, df2, by = "id"))))
+  expect_identical(diffs(compare(df1, df2, by = "id"), by.var = TRUE), diffs(summary(compare(df1, df2, by = "id")), by.var = TRUE))
+
+  expect_identical(diffs(compare(df1, df2, by = "id"), vars = "a"), diffs(summary(compare(df1, df2, by = "id")), vars = "a"))
+  expect_identical(diffs(compare(df1, df2, by = "id"), vars = "b"), diffs(summary(compare(df1, df2, by = "id")), vars = "b"))
+  expect_identical(diffs(compare(df1, df2, by = "id"), vars = "a", by.var = TRUE), diffs(summary(compare(df1, df2, by = "id")), vars = "a", by.var = TRUE))
 
 })
 

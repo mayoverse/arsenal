@@ -163,52 +163,53 @@ idx_var_sum <- function(object, which = c("vars.not.shared", "vars.compared", "v
   }
 }
 
-#' Internal Comparison Functions
+#' Extract differences
 #'
-#' Extract differences and number of differences from a compare object.
+#' Extract differences and number of differences from a \code{compare} object.
 #'
 #' @param object An object of class \code{compare.data.frame} or \code{summary.compare.data.frame}.
+#' @param vars A character vector of variable names to subset the results to.
 #' @param ... Other arguments (not in use at this time).
 #' @param by.var Logical: should the number of differences by variable be reported, or should
 #'   all differences be reported (the default).
 #' @author Ethan Heinzen
 #' @seealso \code{\link{compare.data.frame}} \code{\link{summary.compare.data.frame}}
-#' @name comparison.internal
+#' @name diffs
 NULL
 #> NULL
 
 
-#' @rdname comparison.internal
+#' @rdname diffs
 #' @export
 n.diffs <- function(object, ...)
 {
   UseMethod("n.diffs")
 }
 
-#' @rdname comparison.internal
+#' @rdname diffs
 #' @export
 n.diffs.compare.data.frame <- function(object, ...)
 {
   sum(vapply(object$vars.summary$values, function(elt) if(is.data.frame(elt)) nrow(elt) else 0, numeric(1)))
 }
 
-#' @rdname comparison.internal
+#' @rdname diffs
 #' @export
 n.diffs.summary.compare.data.frame <- function(object, ...)
 {
   nrow(object$diffs.table)
 }
 
-#' @rdname comparison.internal
+#' @rdname diffs
 #' @export
 diffs <- function(object, ...)
 {
   UseMethod("diffs")
 }
 
-#' @rdname comparison.internal
+#' @rdname diffs
 #' @export
-diffs.compare.data.frame <- function(object, ..., by.var = FALSE)
+diffs.compare.data.frame <- function(object, vars = NULL, ..., by.var = FALSE)
 {
   if(!is.logical(by.var) || length(by.var) != 1) stop("'by.var' must be a single logical value.")
   diffs <- as.data.frame(object$vars.summary[idx_var_sum(object, "vars.compared"), c("var.x", "var.y", "values")])
@@ -216,7 +217,10 @@ diffs.compare.data.frame <- function(object, ..., by.var = FALSE)
   sumNA <- function(df) sum(is.na(df$values.x) | is.na(df$values.y))
   diffs$NAs <- vapply(diffs$values, sumNA, numeric(1))
 
-  if(by.var) return(diffs[, c("var.x", "var.y", "n", "NAs")])
+  if(is.null(vars)) vars <- unique(diffs$var.x, diffs$var.y) else if(!is.character(vars)) stop("'vars' should be NULL or a character vector.")
+
+  rownames(diffs) <- NULL
+  if(by.var) return(diffs[diffs$var.x %in% vars | diffs$var.y %in% vars, c("var.x", "var.y", "n", "NAs"), drop = FALSE])
 
   tolist <- function(df)
   {
@@ -232,12 +236,17 @@ diffs.compare.data.frame <- function(object, ..., by.var = FALSE)
                                              MoreArgs = list(stringsAsFactors = FALSE)), tolist))
   } else diffs.table <- cbind(var.x = character(0), var.y = character(0), diffs$values[[1]], stringsAsFactors = FALSE)
 
-  diffs.table
+  rownames(diffs.table) <- NULL
+  diffs.table[diffs.table$var.x %in% vars | diffs.table$var.y %in% vars, , drop = FALSE]
 }
 
-#' @rdname comparison.internal
+#' @rdname diffs
 #' @export
-diffs.summary.compare.data.frame <- function(object, ..., by.var = FALSE)
+diffs.summary.compare.data.frame <- function(object, vars = NULL, ..., by.var = FALSE)
 {
-  if(by.var) object$diffs.byvar.table else object$diffs.table
+  tmp <- if(by.var) object$diffs.byvar.table else object$diffs.table
+
+  if(is.null(vars)) vars <- unique(tmp$var.x, tmp$var.y) else if(!is.character(vars)) stop("'vars' should be NULL or a character vector.")
+
+  tmp[tmp$var.x %in% vars | tmp$var.y %in% vars, , drop = FALSE]
 }
