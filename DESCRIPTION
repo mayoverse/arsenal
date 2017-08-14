@@ -10,6 +10,7 @@ Authors@R: c(
     person("Gregory", "Dougherty", role="aut"),
     person("Patrick", "Votruba", role="ctb"),
     person("Ryan", "Lennon", role="ctb"),
+    person("Andrew", "Hanson", role="ctb"),
     person("Krista", "Goergen", role="ctb"),
     person("Emily", "Lundt", role="ctb")
   )
