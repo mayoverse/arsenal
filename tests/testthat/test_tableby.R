@@ -424,44 +424,43 @@ test_that("Changing tests", {
 })
 
 
-#tmp <- tableby(Group ~ Sex + time + dt, data = mdat, subset=Group != "High")
+round.p <- function(x)
+{
+  x$p.value <- round(x$p.value, 5)
+  row.names(x) <- NULL
+  x
+}
+
 set.seed(1000)
-old <- options(width = 150)
 test_that("05/25/2017: simulate.p.value option for chisq.test", {
-  expect_identical(
-    capture.output(tests(tableby(Group ~ Sex + time + dt, data = mdat,  subset=Group != "High",simulate.p.value=TRUE))),
-    c("     Variable   p.value                                                                           Method"  ,
-      "Sex       Sex 0.6116942 Pearson's Chi-squared test with simulated p-value\\n\\t (based on 2000 replicates)",
-      "time     time 0.2059543                                                               Linear Model ANOVA",
-      "dt         dt 0.1714441                                                     Kruskal-Wallis rank sum test"
-    )
-  )
+  expect_true(identical(
+    round.p(tests(tableby(Group ~ Sex + time + dt, data = mdat,  subset=Group != "High",simulate.p.value=TRUE))),
+    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.61169, 0.20595, 0.17144),
+               Method = c("Pearson's Chi-squared test with simulated p-value\n\t (based on 2000 replicates)",
+                          "Linear Model ANOVA", "Kruskal-Wallis rank sum test"), stringsAsFactors = FALSE)
+  ))
 })
 
 test_that("05/25/2017: chisq.correct=FALSE option for chisq.test", {
-  expect_identical(
-    capture.output(tests(tableby(Group ~ Sex + time + dt, data = mdat, subset=Group != "High", chisq.correct=FALSE))),
-    c("     Variable   p.value                       Method",
-      "Sex       Sex 0.4383235   Pearson's Chi-squared test",
-      "time     time 0.2059543           Linear Model ANOVA",
-      "dt         dt 0.1714441 Kruskal-Wallis rank sum test"
-    )
-  )
+  expect_true(identical(
+    round.p(tests(tableby(Group ~ Sex + time + dt, data = mdat, subset=Group != "High", chisq.correct=FALSE))),
+    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.43832, 0.20595, 0.17144),
+               Method = c("Pearson's Chi-squared test", "Linear Model ANOVA", "Kruskal-Wallis rank sum test"),
+               stringsAsFactors = FALSE)
+  ))
 })
 
 
 set.seed(1000)
 test_that("05/25/2017: simulate.p.value=TRUE option for fisher.test", {
-  expect_identical(
-    capture.output(tests(tableby(Group ~ fe(Sex) + time + dt, data = mdat,simulate.p.value=TRUE))),
-    c("     Variable    p.value                                                                                   Method",
-      "Sex       Sex 0.80009995 Fisher's Exact Test for Count Data with simulated p-value\\n\\t (based on 2000 replicates)",
-      "time     time 0.02480103                                                                       Linear Model ANOVA",
-      "dt         dt 0.39126924                                                             Kruskal-Wallis rank sum test"
-    )
-  )
+  expect_true(identical(
+    round.p(tests(tableby(Group ~ fe(Sex) + time + dt, data = mdat, simulate.p.value=TRUE))),
+    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.80010, 0.02480, 0.39127),
+               Method = c("Fisher's Exact Test for Count Data with simulated p-value\n\t (based on 2000 replicates)",
+                          "Linear Model ANOVA", "Kruskal-Wallis rank sum test"), stringsAsFactors = FALSE)
+  ))
 })
-options(old)
+
 
 ###########################################################################################################
 #### Reported bugs for tableby
