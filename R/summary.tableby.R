@@ -47,7 +47,7 @@ defaultLabelTranslations <- function()
 #' @details
 #' For text-only, simply paste the summary stats together per variable, along with p-value and totals,
 #' with group variable in the header.  For other formats, the paste is done into a pandoc-style markup
-#' such that it can be translated into 3 formats: latex, html, rft.  The decision of which of those it
+#' such that it can be translated into 3 formats: latex, html, rtf.  The decision of which of those it
 #' is translated to is left for run-time for whatever format into which the report is being generated.
 #'
 #' For all interative development within R sessions, \code{text=TRUE} is recommended.

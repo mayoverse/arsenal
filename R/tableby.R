@@ -66,7 +66,7 @@
 #'     variables. When LHS variable has two levels, equivalent to Wilcoxon test.
 #'   }
 #'   \item{
-#'     \code{chisq}: chi-square good-ness of fit test for equal counts of a
+#'     \code{chisq}: chi-square goodness of fit test for equal counts of a
 #'     categorical variable across categories; the default for categorical
 #'     or factor variables
 #'   }
