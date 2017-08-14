@@ -1,24 +1,20 @@
-## Submission for arsenal 0.3.0
+## Submission for arsenal 0.5.0
 
 This is a new version. In this version:
 
-* `write2.list()` has been implemented, allowing multiple tables output into a single document.
-  `write2.verbatim()` has been implemented, allowing monospaced output.
-  The vignette has been updated along with all documentation.
-  
-* The `summary()` output for `tableby` and `modelsum` objects now prints an extra blank header line,
-  for better use inside R Markdown code chunks.
-    
-* Three bugs in `tableby()` were corrected.
+* All code has been moved to GitHub; issues can now be submitted there. Checking is now performed automatically on Travis-CI.
 
-* Two problems with survival models in `modelsum()` have been resolved.
+* > 9 known bugs have been fixed, and documentation has been improved.
 
-* Added `count()` function for tableby stats.
+* A vignette discussing labels has been added.
 
-* Tweaked the DESCRIPTION to include `write2()`.
+* The `compare.data.frame()` function has been added, with an accompanying vignette.
+
+* Imports and depends have changed slightly, as well as the description text.
 
 ## Test environments
-* ubuntu 12.04 (on travis-ci), R 3.3.1
+
+* ubuntu 14.04 (on travis-ci): R devel, R 3.4.1 (release), R 3.3.1
 * win-builder (devel and release)
 
 ## R CMD check results

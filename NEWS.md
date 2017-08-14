@@ -1,6 +1,6 @@
-# arsenal 0.4.?
+# arsenal 0.5.0
 
-* Code all now in GitHub; issues can now be submitted there. Checking is now performed on Travis-CI
+* Code all now in GitHub; issues can now be submitted there. Checking is now performed automatically on Travis-CI.
 
 * Included documentation for getting a caption with `write2()` and `freqlist()`. (#16)
 
@@ -12,7 +12,7 @@
 
 * Added a vignette discussing labels.
 
-* Add `compare.data.frame()`.
+* Add `compare.data.frame()`, with an accompanying vignette.
 
 # arsenal 0.4.2
 
