@@ -93,7 +93,7 @@ test_that("Two-sided formula, mixed input", {
       "Coefficients:"                                                      ,
       " (Intercept)  armF: FOLFOX    armG: IROX     sexFemale  "           ,
       "     60.1075        0.6927        0.1484       -1.2319  "           ,
-      ""                                                                   
+      ""
     )
   )
 })
@@ -102,3 +102,10 @@ test_that("Two-sided formula, mixed input", {
 ###########################################################################################################
 #### Reported bugs for formulize
 ###########################################################################################################
+
+test_that("08/26/2017: changing environment of resulting formula", {
+  expect_identical(
+    capture.output(print(environment())),
+    capture.output(print(environment(formulize("y", "x"))))
+  )
+})

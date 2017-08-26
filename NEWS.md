@@ -2,6 +2,8 @@
 
 * Fixed one-sided formula detection in `tableby()` when used with `formulize()`. (#21)
 
+* Changed environment of formula returned by `formulize()`.
+
 # arsenal 0.5.0
 
 * Code all now in GitHub; issues can now be submitted there. Checking is now performed automatically on Travis-CI.

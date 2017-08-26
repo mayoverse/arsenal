@@ -42,5 +42,5 @@ formulize <- function(y = "", x = "", ..., data = NULL)
   }
   trash <- lapply(dots, function(elt) if(!is.character(elt)) stop("One or more argument isn't a character vector"))
   elts <- vapply(dots, paste0, character(1), collapse = " + ")
-  stats::as.formula(paste0(elts, collapse = " ~ "))
+  stats::as.formula(paste0(elts, collapse = " ~ "), env = parent.frame())
 }
