@@ -180,19 +180,7 @@ test_that("A basic two-sided tableby call--no p-value, no total", {
   )
   expect_identical(
     capture.output(summary(tableby(Group ~ Age + Sex, data = mdat), test = FALSE, total = FALSE, text = TRUE)),
-    c(""                                                          ,
-      "----------------------------------------------------------",
-      "                  High (N=30)   Low (N=30)    Med (N=30)  ",
-      "---------------- ------------- ------------- -------------",
-      "Age in Years    "                                          ,
-      "   Mean (SD)     40 (6.22)     39.6 (3.87)   39.4 (5.57)  ",
-      "   Q1, Q3        36, 44.5      37.2, 41.8    35.2, 44     ",
-      "   Range         29 - 53       32 - 48       30 - 52      ",
-      "Sex             "                                          ,
-      "   Female        15 (50%)      17 (56.7%)    14 (46.7%)   ",
-      "   Male          15 (50%)      13 (43.3%)    16 (53.3%)   ",
-      "----------------------------------------------------------"
-    )
+    capture.output(summary(tableby(Group ~ Age + Sex, data = mdat, test = FALSE, total = FALSE), text = TRUE))
   )
 })
 
@@ -407,19 +395,7 @@ test_that("Changing tests", {
 
   expect_identical(
     capture.output(summary(tableby(Group ~ Sex + Age, data = mdat, numeric.test = "kwt", cat.test = "fe"), text = TRUE)),
-    c(""                                                                                            ,
-      "--------------------------------------------------------------------------------------------",
-      "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
-      "----------------- -------------- -------------- -------------- -------------- --------------",
-      "Sex                                                                                    0.806",
-      "   Female         15 (50%)       17 (56.7%)     14 (46.7%)     46 (51.1%)    "               ,
-      "   Male           15 (50%)       13 (43.3%)     16 (53.3%)     44 (48.9%)    "               ,
-      "Age in Years                                                                           0.869",
-      "   Mean (SD)      40 (6.22)      39.6 (3.87)    39.4 (5.57)    39.7 (5.26)   "               ,
-      "   Q1, Q3         36, 44.5       37.2, 41.8     35.2, 44       36, 43        "               ,
-      "   Range          29 - 53        32 - 48        30 - 52        29 - 53       "               ,
-      "--------------------------------------------------------------------------------------------"
-    )
+    capture.output(summary(tableby(Group ~ fe(Sex) + kwt(Age), data = mdat), text = TRUE))
   )
 })
 
