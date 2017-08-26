@@ -153,8 +153,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   temp.call[[1]] <- as.name("model.frame")
 
   if(is.null(temp.call$na.action)) {
-    temp.call$na.action <- if(length(temp.call$formula) == 2) stats::na.pass else na.tableby
-  } else if(length(temp.call$formula) == 2 && identical(na.action, na.tableby)) {
+    temp.call$na.action <- if(length(formula) == 2) stats::na.pass else na.tableby
+  } else if(length(formula) == 2 && identical(na.action, na.tableby)) {
     # purposely using na.action instead of temp.call$na.action here
     warning("It appears you're using na.tableby with a one-sided formula... Results may not be what you expect.")
   }

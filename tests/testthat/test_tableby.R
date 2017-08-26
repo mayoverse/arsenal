@@ -579,3 +579,12 @@ test_that("08/02/2017: Chi-square warnings are suppressed", {
   expect_warning(tableby(arm ~ sex, data = mockstudy, subset = 1:5), NA)
 })
 
+test_that("08/26/2017: Richard Pendegraft and using formulize and tableby", {
+  # tableby was having trouble identifying one-sided formulas when you use formulize
+  expect_warning(tableby(formulize(x = 11, data = mdat), data = mdat, na.action = na.tableby))
+
+  expect_identical(
+    capture.output(summary(tableby(Group ~ fe(Sex) + kwt(Age), data = mdat), text = TRUE)),
+    capture.output(summary(tableby(formulize("Group", c("fe(Sex)", "kwt(Age)")), data = mdat), text = TRUE))
+  )
+})
