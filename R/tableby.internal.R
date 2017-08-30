@@ -15,6 +15,7 @@
 #' @param object A \code{data.frame} resulting form evaluating \code{modelsum} formula.
 #' @param ... Other arguments, or a vector of indices for extracting.
 #' @param x,y A \code{tableby} object.
+#' @param i A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.
 #' @param value A list of new labels.
 #' @param pdata A named data.frame where the first column is the x variable names matched by name, the second is the
 #'   p-values (or some test stat), and the third column is the method name (optional)
@@ -187,20 +188,27 @@ tests.tableby <- function(x) {
 
 #' @rdname tableby.internal
 #' @export
-"[.tableby" <- function(x, ...) {
-   newx <- x
-   if(length(list(...)) != 1) {
-     stop ("Only 1 subscript allowed")
-   }
-   ## index vector
-   idx <- (1:length(x$x))[..1]
-   if(all(is.na(idx))) {
-     newx$x <- x$x[...]
-   } else {
-     newx$x <- x$x[idx]
-   }
-   return(newx)
- }
+"[.tableby" <- function(x, i) {
+  if(missing(i)) return(x)
+  newx <- x
+
+  if(is.character(i) && any(i %nin% names(x$x)))
+  {
+    tmp <- paste0(i[i %nin% names(x$x)], collapse = ", ")
+    warning(paste0("Some indices not found in tableby object: ", tmp))
+    i <- i[i %in% names(x$x)]
+  } else if(is.numeric(i) && any(i %nin% seq_along(x$x)))
+  {
+    tmp <- paste0(i[i %nin% seq_along(x$x)], collapse = ", ")
+    warning(paste0("Some indices not found in tableby object: ", tmp))
+    i <- i[i %in% seq_along(x$x)]
+  }
+
+  if(length(i) == 0 || anyNA(i)) stop("Indices must have nonzero length and no NAs.")
+
+  newx$x <- x$x[i]
+  return(newx)
+}
 
 
 

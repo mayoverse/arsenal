@@ -351,6 +351,23 @@ test_that("Reordering variables", {
       "--------------------------------------------------------------------------------------------"
     )
   )
+
+  expect_identical(
+    capture.output(summary(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[c(3,1,2)], text = TRUE)),
+    capture.output(summary(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[c("Age", "Sex", "dt")], text = TRUE))
+  )
+
+  expect_identical(
+    capture.output(summary(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[1:2], text = TRUE)),
+    capture.output(summary(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[c(TRUE, TRUE, FALSE)], text = TRUE))
+  )
+
+  expect_identical(
+    capture.output(summary(tableby(Group ~ fe(Sex) + dt + Age, data = mdat), text = TRUE)),
+    capture.output(summary(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[], text = TRUE))
+  )
+
+  expect_warning(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[1:4], "Some indices not found")
 })
 
 

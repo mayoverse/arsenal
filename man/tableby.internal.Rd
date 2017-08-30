@@ -24,7 +24,7 @@ tests(x)
 
 \method{labels}{tableby}(x) <- value
 
-\method{[}{tableby}(x, ...)
+\method{[}{tableby}(x, i)
 
 na.tableby(object, ...)
 }
@@ -42,6 +42,8 @@ in the output of the object.}
 \item{object}{A \code{data.frame} resulting form evaluating \code{modelsum} formula.}
 
 \item{value}{A list of new labels.}
+
+\item{i}{A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.}
 }
 \value{
 \code{na.tableby} returns a subsetted version of \code{object} (with attributes).
