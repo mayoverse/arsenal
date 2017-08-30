@@ -598,7 +598,7 @@ test_that("08/02/2017: Chi-square warnings are suppressed", {
   expect_warning(tableby(arm ~ sex, data = mockstudy, subset = 1:5), NA)
 })
 
-test_that("08/26/2017: Richard Pendegraft and using formulize and tableby", {
+test_that("08/26/2017: Richard Pendegraft and using formulize and tableby (#21)", {
   # tableby was having trouble identifying one-sided formulas when you use formulize
   expect_warning(tableby(formulize(x = 11, data = mdat), data = mdat, na.action = na.tableby))
 
@@ -607,3 +607,11 @@ test_that("08/26/2017: Richard Pendegraft and using formulize and tableby", {
     capture.output(summary(tableby(formulize("Group", c("fe(Sex)", "kwt(Age)")), data = mdat), text = TRUE))
   )
 })
+
+df <- data.frame(a = c("b", "b", "b", "a", "a"), d = NA_character_, e = c(1, 2, 2, 1, 2), stringsAsFactors = FALSE)
+test_that("08/30/2017: Brendan Broderick and zero-length levels (#22)", {
+  expect_warning(tableby(a ~ d + e, data = df), "Zero-length levels")
+  expect_error(suppressWarnings(tableby(a ~ d, data = df)), "No x-variables successfully")
+})
+
+

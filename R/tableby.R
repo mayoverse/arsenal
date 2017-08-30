@@ -269,7 +269,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       xlevels <- levels(currcol)
       if(length(xlevels) == 0)
       {
-        warning(paste0("Zero-length levels found for ", attributes(currcol)$name))
+        warning(paste0("Zero-length levels found for ", nameEff))
         next
       }
 
@@ -337,7 +337,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       }
       if(length(xlevels) == 0)
       {
-        warning(paste0("Zero-length levels found for ", attributes(currcol)$name))
+        warning(paste0("Zero-length levels found for ", nameEff))
         next
       }
 
@@ -567,6 +567,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
     }
   }
+
+  if(length(xList) == 0) stop("No x-variables successfully computed.")
 
   ## attributes: label/long-names
   ## number of RHS variables
