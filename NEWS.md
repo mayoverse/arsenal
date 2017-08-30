@@ -4,6 +4,8 @@
 
 * Changed environment of formula returned by `formulize()`.
 
+* Added variable-name subsetting to `[.tableby()`. One can now subset by logicals, numerics, or character vectors.
+
 # arsenal 0.5.0
 
 * Code all now in GitHub; issues can now be submitted there. Checking is now performed automatically on Travis-CI.

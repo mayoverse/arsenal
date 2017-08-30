@@ -368,6 +368,8 @@ test_that("Reordering variables", {
   )
 
   expect_warning(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[1:4], "Some indices not found")
+  expect_error(tableby(Group ~ fe(Sex) + dt + Age, data = mdat)[TRUE], "Logical vector")
+
 })
 
 

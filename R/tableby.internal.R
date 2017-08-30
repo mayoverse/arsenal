@@ -202,6 +202,9 @@ tests.tableby <- function(x) {
     tmp <- paste0(i[i %nin% seq_along(x$x)], collapse = ", ")
     warning(paste0("Some indices not found in tableby object: ", tmp))
     i <- i[i %in% seq_along(x$x)]
+  } else if(is.logical(i) && length(i) != length(x$x))
+  {
+    stop("Logical vector index not the right length.")
   }
 
   if(length(i) == 0 || anyNA(i)) stop("Indices must have nonzero length and no NAs.")
