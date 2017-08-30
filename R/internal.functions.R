@@ -90,11 +90,11 @@ addToRow <- function(rows, curRow, toAdd, sep = " ", padChar = ' ') {
 integerDigits <- function (aNumber) {
        aNumber <- as.numeric(aNumber)
        numDigits <- 0
-       if (!is.na(aNumber) && aNumber <0) {
+       if (!is.na(aNumber) && aNumber < 0) {
               aNumber <- -aNumber;
               numDigits <- 1;      # Account for the minus sign
        }
-       if (is.na(aNumber) || (aNumber <1) | is.infinite(aNumber))
+       if (is.na(aNumber) || (aNumber < 1) || is.infinite(aNumber))
               return(0)
 
        while (aNumber >=1) {
