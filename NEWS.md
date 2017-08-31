@@ -8,6 +8,8 @@
 
 * Fixed a bug in `tableby()` related to zero-length factor levels. (#22)
 
+* Updated documentation.
+
 # arsenal 0.5.0
 
 * Code all now in GitHub; issues can now be submitted there. Checking is now performed automatically on Travis-CI.

@@ -36,7 +36,7 @@ The labels of \code{object}, or \code{object} with new labels.
 }
 \description{
 Assign and extract the \code{'label'} attribute on an R object. \code{set_labels} is
-  does the same as \code{labels(x) <- value} but returns \code{x} for use in a pipe chain.
+  the same as \code{labels(x) <- value} but returns \code{x} for use in a pipe chain.
 }
 \details{
 The \code{\link{data.frame}} methods put labels on and extract labels from

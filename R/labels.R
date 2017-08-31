@@ -2,7 +2,7 @@
 #' Labels
 #'
 #' Assign and extract the \code{'label'} attribute on an R object. \code{set_labels} is
-#'   does the same as \code{labels(x) <- value} but returns \code{x} for use in a pipe chain.
+#'   the same as \code{labels(x) <- value} but returns \code{x} for use in a pipe chain.
 #'
 #' @param x,object An R object.
 #' @param value A vector or list containing labels to assign. Labels are assigned based on
