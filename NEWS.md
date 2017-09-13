@@ -8,6 +8,8 @@
 
 * Fixed a bug in `tableby()` related to zero-length factor levels. (#22)
 
+* Allow `nsmall = ` and `digits = ` to be 0, for rounding to integers. (#23)
+
 * Updated documentation.
 
 # arsenal 0.5.0
