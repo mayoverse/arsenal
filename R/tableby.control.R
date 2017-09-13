@@ -97,22 +97,16 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
   if(is.null(digits.test)){
     digits.test <- digits
   }
-#  if(is.null(nsmall)){
-#    nsmall <- 2
-#  }
-#  if(is.null(nsmall.pct)){
-#    nsmall.pct <- 2
-#  }
-  if(digits < 1 | digits.test < 1) {
-    warning("digits must be positive integer. Set to default. \n")
+  if(digits < 0 || digits.test < 0) {
+    warning("digits must be >= 0. Set to default. \n")
     digits <- 3
     digits.test <- digits
   }
-  if(!is.null(nsmall) && (nsmall < 1)) {
-	  warning("nsmall must be positive integer, or NULL. Set to NULL. \n")
+  if(!is.null(nsmall) && nsmall < 0) {
+	  warning("nsmall must be >= 0, or NULL. Set to NULL. \n")
 	  nsmall <- NULL
   }
-  if(!is.null(nsmall.pct) && (nsmall.pct < 1)) {
+  if(!is.null(nsmall.pct) && nsmall.pct < 0) {
 	  warning("nsmall.pct must be positive integer, or NULL. Set to NULL. \n")
 	  nsmall.pct <- NULL
   }

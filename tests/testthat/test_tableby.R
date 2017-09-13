@@ -615,3 +615,27 @@ test_that("08/30/2017: Brendan Broderick and zero-length levels (#22)", {
 })
 
 
+test_that("09/13/2017: Peter Martin and rounding to integers (#23)", {
+  expect_identical(
+    capture.output(summary(tableby(Group ~ Sex + time + dt, data = mdat, nsmall = 0, digits = 0, digits.test = 3, nsmall.pct = 1), text = TRUE)),
+    c(""                                                                                            ,
+      "--------------------------------------------------------------------------------------------",
+      "                   High (N=30)    Low (N=30)     Med (N=30)     Total (N=90)   p value      ",
+      "----------------- -------------- -------------- -------------- -------------- --------------",
+      "Sex                                                                                    0.733",
+      "   Female         15 (50.0%)     17 (56.7%)     14 (46.7%)     46 (51.1%)    "               ,
+      "   Male           15 (50.0%)     13 (43.3%)     16 (53.3%)     44 (48.9%)    "               ,
+      "time                                                                                   0.025",
+      "   Mean (SD)      5 (2)          3 (2)          4 (2)          4 (2)         "               ,
+      "   Q1, Q3         3, 6           1, 5           2, 5           2, 6          "               ,
+      "   Range          0 - 7          0 - 6          1 - 7          0 - 7         "               ,
+      "dt                                                                                     0.391",
+      "   median         1950-01-07     1951-06-13     1948-09-13     1949-10-07    "               ,
+      "   Range          1935-08-15 -   1937-02-08 -   1939-04-01 -   1935-08-15 -  "               ,
+      "                  1968-05-14     1959-09-06     1958-07-30     1968-05-14    "               ,
+      "--------------------------------------------------------------------------------------------"
+    )
+  )
+  expect_warning(tableby(Group ~ Sex + time + dt, data = mdat, nsmall = -1))
+  expect_warning(tableby(Group ~ Sex + time + dt, data = mdat, digits = -1))
+})
