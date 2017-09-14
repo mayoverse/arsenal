@@ -165,65 +165,43 @@ test_that("NA options in freqlist call", {
   )
 })
 
-test_that("Changing the labels", {
+test_that("Changing the labels on non-grouped freqlists", {
+
+  ref <- c(
+    ""                                                                 ,
+    ""                                                                 ,
+    "|Treatment |Ethan Rocks | Freq| cumFreq| freqPercent| cumPercent|",
+    "|:---------|:-----------|----:|-------:|-----------:|----------:|",
+    "|A         |Ethan       |   17|      17|       18.89|      18.89|",
+    "|          |Heinzen     |   16|      33|       17.78|      36.67|",
+    "|          |NA          |    3|      36|        3.33|      40.00|",
+    "|B         |Ethan       |   25|      61|       27.78|      67.78|",
+    "|          |Heinzen     |   29|      90|       32.22|     100.00|"
+  )
+
   expect_identical(
     capture.output(summary(freqlist(TAB.na, na.options = "include"), labelTranslations = c("Treatment", "Ethan Rocks"))),
-    c(""                                                                 ,
-      ""                                                                 ,
-      "|Treatment |Ethan Rocks | Freq| cumFreq| freqPercent| cumPercent|",
-      "|:---------|:-----------|----:|-------:|-----------:|----------:|",
-      "|A         |Ethan       |   17|      17|       18.89|      18.89|",
-      "|          |Heinzen     |   16|      33|       17.78|      36.67|",
-      "|          |NA          |    3|      36|        3.33|      40.00|",
-      "|B         |Ethan       |   25|      61|       27.78|      67.78|",
-      "|          |Heinzen     |   29|      90|       32.22|     100.00|"
-    )
+    ref
   )
 
   expect_identical(
     capture.output(summary(freqlist(TAB.na, na.options = "include", labelTranslations = list("Treatment", "Ethan Rocks")))),
-    c(""                                                                 ,
-      ""                                                                 ,
-      "|Treatment |Ethan Rocks | Freq| cumFreq| freqPercent| cumPercent|",
-      "|:---------|:-----------|----:|-------:|-----------:|----------:|",
-      "|A         |Ethan       |   17|      17|       18.89|      18.89|",
-      "|          |Heinzen     |   16|      33|       17.78|      36.67|",
-      "|          |NA          |    3|      36|        3.33|      40.00|",
-      "|B         |Ethan       |   25|      61|       27.78|      67.78|",
-      "|          |Heinzen     |   29|      90|       32.22|     100.00|"
-    )
+    ref
   )
 
   expect_identical(
     capture.output(summary(freqlist(TAB.na, na.options = "include", labelTranslations = c("Treatment", "Ethan Rocks")))),
-    c(""                                                                 ,
-      ""                                                                 ,
-      "|Treatment |Ethan Rocks | Freq| cumFreq| freqPercent| cumPercent|",
-      "|:---------|:-----------|----:|-------:|-----------:|----------:|",
-      "|A         |Ethan       |   17|      17|       18.89|      18.89|",
-      "|          |Heinzen     |   16|      33|       17.78|      36.67|",
-      "|          |NA          |    3|      36|        3.33|      40.00|",
-      "|B         |Ethan       |   25|      61|       27.78|      67.78|",
-      "|          |Heinzen     |   29|      90|       32.22|     100.00|"
-    )
+    ref
   )
 
   expect_error(freqlist(TAB.na, labelTranslations = c("Treatment", "Ethan Rocks", "Oops!")))
+  expect_error(freqlist(TAB.na, labelTranslations = c(hi = "Treatment", ethan = "Ethan Rocks")))
 
   tmp <- freqlist(TAB.na, na.options = "include")
   labels(tmp) <- c("Treatment", "Ethan Rocks")
   expect_identical(
     capture.output(summary(tmp)),
-    c(""                                                                 ,
-      ""                                                                 ,
-      "|Treatment |Ethan Rocks | Freq| cumFreq| freqPercent| cumPercent|",
-      "|:---------|:-----------|----:|-------:|-----------:|----------:|",
-      "|A         |Ethan       |   17|      17|       18.89|      18.89|",
-      "|          |Heinzen     |   16|      33|       17.78|      36.67|",
-      "|          |NA          |    3|      36|        3.33|      40.00|",
-      "|B         |Ethan       |   25|      61|       27.78|      67.78|",
-      "|          |Heinzen     |   29|      90|       32.22|     100.00|"
-    )
+    ref
   )
   labels(tmp) <- NULL
   expect_identical(
@@ -240,11 +218,40 @@ test_that("Changing the labels", {
     )
   )
 
+  labels(tmp) <- c(ethan = "Ethan Rocks", trt = "Treatment", dummy = "Dummy")
+  expect_identical(
+    capture.output(summary(tmp)),
+    ref
+  )
 })
 
 
+test_that("Changing the labels on grouped freqlists", {
+  expect_identical(
+    capture.output(summary(freqlist(TAB.na, options = "include", groupBy = "ethan", labelTranslations = c("Treatment", "Ethan")))),
+    c(""                                                             ,
+      ""                                                             ,
+      "|Ethan |Treatment | Freq| cumFreq| freqPercent| cumPercent|"  ,
+      "|:-----|:---------|----:|-------:|-----------:|----------:|"  ,
+      "|Ethan |A         |   17|      17|       40.48|      40.48|"  ,
+      "|      |B         |   25|      42|       59.52|     100.00|"  ,
+      ""                                                             ,
+      ""                                                             ,
+      "|Ethan   |Treatment | Freq| cumFreq| freqPercent| cumPercent|",
+      "|:-------|:---------|----:|-------:|-----------:|----------:|",
+      "|Heinzen |A         |   16|      16|       35.56|      35.56|",
+      "|        |B         |   29|      45|       64.44|     100.00|",
+      ""                                                             ,
+      ""                                                             ,
+      "|Ethan |Treatment | Freq| cumFreq| freqPercent| cumPercent|"  ,
+      "|:-----|:---------|----:|-------:|-----------:|----------:|"  ,
+      "|NA    |A         |    3|       3|         100|        100|"
+    )
+  )
+})
 
-test_that("A basic freqlist call", {
+
+test_that("dupLabels works", {
   expect_identical(
     capture.output(summary(freqlist(TAB), dupLabels = TRUE)),
     c(""                                                               ,

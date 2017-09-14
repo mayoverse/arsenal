@@ -33,8 +33,17 @@ NULL
   }
 
   if(is.list(value)) value <- unlist(value)
-  
-  if((!is.character(value) || length(value) != ncol(x$freqlist) - 4))
+
+  if(!is.null(names(value)))
+  {
+    nm <- utils::head(colnames(x$freqlist), -4)
+    value <- value[names(value) %in% nm]
+    idx <- match(names(value), nm)
+  } else idx <- seq_along(value)
+
+  value <- value[idx]
+
+  if(!is.character(value) || length(value) != ncol(x$freqlist) - 4)
   {
     stop("New labels must be 'NULL' or character vector of length ", ncol(x$freqlist) - 4, ".")
   }
