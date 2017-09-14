@@ -2,6 +2,8 @@
 
 * Update `freqlist()` to be more efficient. (#20)
 
+* Allow named labels for `freqlist()`.
+
 * Fixed one-sided formula detection in `tableby()` when used with `formulize()`. (#21)
 
 * Changed environment of formula returned by `formulize()`.
