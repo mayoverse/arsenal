@@ -113,12 +113,12 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
     tableout <- tableout[tableout$Freq != 0, ]
     tableout <- droplevels(tableout)
   }
-  variable_labels <- labelTranslations
+
   if (!is.null(labelTranslations)) {
     # applies new variable names, reordering to match current data frame output
-    variable_labels <- labelTranslations[match(names(tableout)[1:length(labelTranslations)], oldnames)]
+    labelTranslations <- labelTranslations[match(names(tableout)[1:length(labelTranslations)], oldnames)]
   }
-  outlist <- list(freqlist=tableout, byVar=groupBy, labels=variable_labels)
+  outlist <- list(freqlist=tableout, byVar=groupBy, labels=labelTranslations)
   class(outlist) <- "freqlist"
   return(outlist)
 }
