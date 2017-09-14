@@ -35,7 +35,7 @@ NULL
 freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude', 'remove'), digits = 2, labelTranslations = NULL, groupBy = NULL, ...)
 {
   na.options <- match.arg(na.options)
-  if (any(class(tab) %nin% c("table","xtabs"))) stop("table object is not of class 'table' or class 'xtabs'")
+  if (!is.table(tab) && !inherits(tab, "xtabs")) stop("table object is not of class 'table' or class 'xtabs'")
   if (min(dim(tab)) < 1) stop("table object has dimension of 0")
   if (!is.logical(sparse)) stop("sparse must be TRUE or FALSE")
   if (length(digits) > 1) stop("digits must be a single numeric value")
@@ -58,7 +58,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
     return(x2)
   }
   # create data frame from table object
-  if ("xtabs" %nin% class(tab)){
+  if (!inherits(tab, "xtabs")){
     tab.df <- data.frame(expand.grid(dimnames(tab)))
     oldnames <- names(tab.df)
     tab.freq <- data.frame(tab.df, Freq = as.vector(tab))
