@@ -1,5 +1,7 @@
 # arsenal 0.5.0.9000
 
+* Update `freqlist()` to be more efficient. (#20)
+
 * Fixed one-sided formula detection in `tableby()` when used with `formulize()`. (#21)
 
 * Changed environment of formula returned by `formulize()`.
