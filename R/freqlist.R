@@ -79,15 +79,15 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
       freqPct <- 100 * data$Freq / sum(data$Freq)
       cumPct <- cumsum(freqPct)
     } else if(na.options == 'include') {
-      cumFreq = cumsum(data$Freq)
-      freqPct = 100 * data$Freq / sum(data$Freq)
-      cumPct = cumsum(freqPct)
+      cumFreq <- cumsum(data$Freq)
+      freqPct <- 100 * data$Freq / sum(data$Freq)
+      cumPct <- cumsum(freqPct)
     } else if(na.options == 'showexclude') {
       freq_tmp <- data$Freq
       freq_tmp[na.index != 0] <- NA
-      cumFreq = cumfun(freq_tmp)
-      freqPct = 100 * freq_tmp / max(stats::na.omit(cumFreq), na.rm = TRUE)
-      cumPct = cumfun(freqPct)
+      cumFreq <- cumfun(freq_tmp)
+      freqPct <- 100 * freq_tmp / max(stats::na.omit(cumFreq), na.rm = TRUE)
+      cumPct <- cumfun(freqPct)
     }
     freqOut  <- data.frame(cumFreq = cumFreq, freqPercent = round(freqPct, digits), cumPercent = round(cumPct, digits))
     minitable  <- cbind(data, freqOut, row.names = NULL)
