@@ -25,7 +25,7 @@
 #' summary(noby)
 #' withby <- freqlist(tab.ex, groupBy = c("arm","sex"), na.options = "showexclude")
 #' summary(withby)
-#' @author Tina Gunderson
+#' @author Tina Gunderson, with revisions by Ethan Heinzen
 #' @name freqlist
 NULL
 #> NULL
@@ -35,7 +35,7 @@ NULL
 freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude', 'remove'), digits = 2, labelTranslations = NULL, groupBy = NULL, ...)
 {
   na.options <- match.arg(na.options)
-  if (!is.table(tab) && !inherits(tab, "xtabs")) stop("table object is not of class 'table' or class 'xtabs'")
+  if (!is.table(tab)) stop("'tab' must be a table!")
   if (min(dim(tab)) < 1) stop("table object has dimension of 0")
   if (!is.logical(sparse)) stop("sparse must be TRUE or FALSE")
   if (length(digits) > 1) stop("digits must be a single numeric value")
@@ -43,7 +43,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   if (!is.null(groupBy) && any(groupBy %nin% names(dimnames(tab)))) stop("groupBy variable not found in table names")
   if (is.list(labelTranslations)) labelTranslations <- unlist(labelTranslations)
   if (!is.null(labelTranslations) && (!is.character(labelTranslations) || length(labelTranslations) != length(dim(tab))))
-    stop("length of variable names does not match table object dimensions")
+    stop("length(labelTranslations) does not match table object dimensions")
 
   if("varnames" %in% names(list(...))){warning("The 'varnames' argument has been deprecated. Please use 'labelTranslations' instead.")}
 
@@ -59,15 +59,9 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
     return(x2)
   }
   # create data frame from table object
-  if (!inherits(tab, "xtabs")){
-    tab.freq <- as.data.frame(expand.grid(dimnames(tab)))
-    oldnames <- names(tab.freq)
-    tab.freq$Freq <- as.vector(tab)
-  } else {
-    tab.freq <- as.data.frame(tab)
-    oldnames <- names(tab.freq)[1:(ncol(tab.freq)-1)]
-  }
-  if (length(labelTranslations) > (ncol(tab.freq)-1)) stop("Number of variable names greater than number of variables")
+  tab.freq <- as.data.frame(tab)
+  names(labelTranslations) <- utils::head(names(tab.freq), -1)
+
   internalTable <- function(data, na.options = na.options, digits = digits) {
     # orders and performs calculations for the table
     # split into a function to be able to use with by statement
