@@ -60,11 +60,11 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   }
   # create data frame from table object
   if (!inherits(tab, "xtabs")){
-    tab.df <- data.frame(expand.grid(dimnames(tab)))
-    oldnames <- names(tab.df)
-    tab.freq <- data.frame(tab.df, Freq = as.vector(tab))
+    tab.freq <- as.data.frame(expand.grid(dimnames(tab)))
+    oldnames <- names(tab.freq)
+    tab.freq$Freq <- as.vector(tab)
   } else {
-    tab.freq <- data.frame(tab)
+    tab.freq <- as.data.frame(tab)
     oldnames <- names(tab.freq)[1:(ncol(tab.freq)-1)]
   }
   if (length(labelTranslations) > (ncol(tab.freq)-1)) stop("Number of variable names greater than number of variables")
