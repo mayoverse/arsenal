@@ -72,7 +72,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
     # orders and performs calculations for the table
     # split into a function to be able to use with by statement
     data <- data[do.call(order, data), ]
-    na.index <- apply(data, 1, function(x) sum(is.na(x)))
+    na.index <- rowSums(is.na(data))
     if (na.options == 'remove') {
       data  <- data[na.index == 0, ]
       cumFreq <- cumsum(data$Freq)
