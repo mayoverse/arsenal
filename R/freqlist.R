@@ -60,7 +60,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   }
   # create data frame from table object
   tab.freq <- as.data.frame(tab)
-  names(labelTranslations) <- utils::head(names(tab.freq), -1)
+  if(!is.null(labelTranslations)) names(labelTranslations) <- utils::head(names(tab.freq), -1)
 
   internalTable <- function(data, na.options = na.options, digits = digits) {
     # orders and performs calculations for the table
@@ -111,7 +111,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
 
   if (!is.null(labelTranslations)) {
     # applies new variable names, reordering to match current data frame output
-    labelTranslations <- labelTranslations[match(names(tableout)[1:length(labelTranslations)], oldnames)]
+    labelTranslations <- labelTranslations[utils::head(names(tableout), -4)]
   }
   outlist <- list(freqlist=tableout, byVar=groupBy, labels=labelTranslations)
   class(outlist) <- "freqlist"
