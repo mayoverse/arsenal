@@ -74,7 +74,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
     data <- data[do.call(order, data), ]
     na.index <- apply(data, 1, function(x) sum(is.na(x)))
     if (na.options == 'remove') {
-      data  <- subset(data, na.index == 0)
+      data  <- data[na.index == 0, ]
       cumFreq <- cumsum(data$Freq)
       freqPct <- 100 * data$Freq / sum(data$Freq)
       cumPct <- cumsum(freqPct)
