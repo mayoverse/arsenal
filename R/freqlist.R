@@ -9,7 +9,8 @@
 #'   'showexclude' (show NAs but exclude from cumulative counts and all percentages),
 #'   'remove' (remove values with NAs); default is 'include'
 #' @param digits a single number indicating the number of digits for percentages (passed to \code{\link{round}}; default is 2.
-#' @param labelTranslations an optional character string of labels to use for variable levels when summarizing.
+#' @param labelTranslations an optional character string (or list) of labels to use for variable levels when summarizing.
+#'   Names will be matched appropriately.
 #' @param groupBy an optional character string specifying a variable(s) to use for grouping when calculating cumulative
 #'   counts and percentages. \code{\link{summary.freqlist}} will also separate by grouping variable for printing.
 #' @param ... additional arguments passed to the \code{\link[knitr]{kable}} function
