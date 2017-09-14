@@ -50,10 +50,11 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   cumfun <- function(x) {
     # function to create a cumulative sum retaining NAs, but omitting in sum function
     x2 <- rep(NA, length(x))
-    if (length(stats::na.omit(x)) == 0) {
+    x.om <- stats::na.omit(x)
+    if (length(x.om) == 0) {
       warning("For at least one level, all entries have NAs")
     } else {
-      x2[!is.na(x)] <- cumsum(stats::na.omit(x))
+      x2[!is.na(x)] <- cumsum(x.om)
     }
     return(x2)
   }
