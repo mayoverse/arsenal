@@ -97,16 +97,14 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   }
   #if a grouping factor is given, will add NA as a factor level so it is not dropped when using the by function
   if(!is.null(groupBy)) {
-    if(na.options != 'exclude') {
-      for(i in match(groupBy, names(tab.freq))) {
+    if(na.options != 'remove') {
+      for(i in groupBy) {
         if(sum(is.na(tab.freq[[i]])) > 0) {tab.freq[[i]] <- addNA(tab.freq[[i]])}
       }
     }
     byObject <- by(tab.freq, tab.freq[, groupBy, drop = FALSE], FUN = internalTable, na.options = na.options, digits = digits)
     tableout <- do.call(rbind, byObject)
-    factorIndex <- match(groupBy, names(tableout))
-    tableout <- cbind(tableout[, groupBy, drop = FALSE], tableout[, -factorIndex, drop = FALSE])
-    names(tableout)[1:length(groupBy)] <- groupBy
+    tableout <- tableout[, c(groupBy, colnames(tableout)[colnames(tableout) %nin% groupBy]), drop = FALSE]
     row.names(tableout) <- NULL
     tableout <- tableout[do.call(order, tableout), ]
   } else {
