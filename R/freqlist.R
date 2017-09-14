@@ -89,9 +89,11 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
       freqPct <- 100 * freq_tmp / max(stats::na.omit(cumFreq), na.rm = TRUE)
       cumPct <- cumfun(freqPct)
     }
-    freqOut  <- data.frame(cumFreq = cumFreq, freqPercent = round(freqPct, digits), cumPercent = round(cumPct, digits))
-    minitable  <- cbind(data, freqOut, row.names = NULL)
-    return(minitable)
+    data$cumFreq <- cumFreq
+    data$freqPercent <- round(freqPct, digits)
+    data$cumPercent <- round(cumPct, digits)
+    row.names(data) <- NULL
+    return(data)
   }
   #if a grouping factor is given, will add NA as a factor level so it is not dropped when using the by function
   if(!is.null(groupBy)) {
