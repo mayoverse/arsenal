@@ -36,7 +36,7 @@ NULL
 
   if(!is.null(names(value)))
   {
-    nm <- head(colnames(x$freqlist), -4)
+    nm <- utils::head(colnames(x$freqlist), -4)
     value <- value[names(value) %in% nm]
     idx <- match(names(value), nm)
   } else idx <- seq_along(value)
