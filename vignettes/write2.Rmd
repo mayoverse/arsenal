@@ -182,7 +182,7 @@ One neat side-effect of this function is that you can output text and headers, e
 
 ```{r}
 mylist2 <- list("# Header 1",
-                "This is a small paragraph introducting tableby.",
+                "This is a small paragraph introducing tableby.",
                 tableby(sex ~ age, data = mockstudy),
                 "<hr>",
                 "# Header 2",
@@ -232,7 +232,7 @@ You can add a YAML header to `write2()` output using the `yaml()` function.
 mylist3 <- list(
   yaml(title = "Test YAML Title", author = "My cool author name"),
   "# Header 1",
-  "This is a small paragraph introducting tableby.",
+  "This is a small paragraph introducing tableby.",
   tableby(sex ~ age, data = mockstudy)
 )
 write2html(mylist3, paste0(tmpdir, "/test.yaml.html"), quiet = TRUE)
@@ -244,12 +244,12 @@ gives the same output as this one:
 ```{r}
 mylist4 <- list(
   "# Header 1",
-  "This is a small paragraph introducting tableby.",
+  "This is a small paragraph introducing tableby.",
   yaml(title = "Test YAML Title"),
   tableby(sex ~ age, data = mockstudy),
   yaml(author = "My cool author name")
 )
-write2html(mylist3, paste0(tmpdir, "/test.yaml.html"), quiet = TRUE)
+write2html(mylist3, paste0(tmpdir, "/test.yaml2.html"), quiet = TRUE)
 ```
 
 # FAQs
@@ -292,7 +292,7 @@ One can simply abuse the list S3 method for `write2()`!
 
 ```{r}
 mylist2 <- list("# Header 1",
-                "This is a small paragraph introducting tableby.",
+                "This is a small paragraph introducing tableby.",
                 tableby(sex ~ age, data = mockstudy),
                 "<hr>",
                 "# Header 2",
