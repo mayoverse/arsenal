@@ -11,6 +11,7 @@
 \alias{write2.character}
 \alias{write2.list}
 \alias{write2.verbatim}
+\alias{write2.yaml}
 \alias{write2.default}
 \title{write2}
 \usage{
@@ -32,6 +33,8 @@ write2(object, file, ..., output_format)
   keep.md = !render., output_format = NULL)
 
 \method{write2}{verbatim}(object, file, ..., output_format = NULL)
+
+\method{write2}{yaml}(object, file, ..., output_format = NULL)
 
 \method{write2}{default}(object, file, FUN = NULL, ..., append. = FALSE,
   render. = TRUE, keep.md = !render., output_format = NULL)
