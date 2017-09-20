@@ -224,6 +224,34 @@ chr <- paste0("MyVector", 1:10)
 write2pdf(verbatim(chr), paste0(tmpdir, "/test.character.pdf"), quiet = TRUE)
 ```
 
+# Add a YAML Header to the Output
+
+You can add a YAML header to `write2()` output using the `yaml()` function.
+
+```{r}
+mylist3 <- list(
+  yaml(title = "Test YAML Title", author = "My cool author name"),
+  "# Header 1",
+  "This is a small paragraph introducting tableby.",
+  tableby(sex ~ age, data = mockstudy)
+)
+write2html(mylist3, paste0(tmpdir, "/test.yaml.html"), quiet = TRUE)
+```
+
+In fact, all detected YAML pieces will be moved as the first output, so that the above code chunk
+gives the same output as this one:
+
+```{r}
+mylist4 <- list(
+  "# Header 1",
+  "This is a small paragraph introducting tableby.",
+  yaml(title = "Test YAML Title"),
+  tableby(sex ~ age, data = mockstudy),
+  yaml(author = "My cool author name")
+)
+write2html(mylist3, paste0(tmpdir, "/test.yaml.html"), quiet = TRUE)
+```
+
 # FAQs
 
 ## How do I suppress the note about my document getting rendered?
