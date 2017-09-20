@@ -20,6 +20,8 @@
 
 * Added the `yaml` package as a suggested package.
 
+* Added `write2()` methods for `compare.data.frame()` objects. (#27)
+
 * Updated documentation.
 
 # arsenal 0.5.0

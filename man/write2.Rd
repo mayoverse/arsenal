@@ -6,12 +6,14 @@
 \alias{write2.tableby}
 \alias{write2.modelsum}
 \alias{write2.freqlist}
+\alias{write2.compare.data.frame}
+\alias{write2.summary.compare.data.frame}
+\alias{write2.verbatim}
+\alias{write2.yaml}
 \alias{write2.knitr_kable}
 \alias{write2.xtable}
 \alias{write2.character}
 \alias{write2.list}
-\alias{write2.verbatim}
-\alias{write2.yaml}
 \alias{write2.default}
 \title{write2}
 \usage{
@@ -23,6 +25,15 @@ write2(object, file, ..., output_format)
 
 \method{write2}{freqlist}(object, file, ..., output_format = NULL)
 
+\method{write2}{compare.data.frame}(object, file, ..., output_format = NULL)
+
+\method{write2}{summary.compare.data.frame}(object, file, ...,
+  output_format = NULL)
+
+\method{write2}{verbatim}(object, file, ..., output_format = NULL)
+
+\method{write2}{yaml}(object, file, ..., output_format = NULL)
+
 \method{write2}{knitr_kable}(object, file, ..., output_format = NULL)
 
 \method{write2}{xtable}(object, file, ..., output_format = NULL)
@@ -31,10 +42,6 @@ write2(object, file, ..., output_format)
 
 \method{write2}{list}(object, file, ..., append. = FALSE, render. = TRUE,
   keep.md = !render., output_format = NULL)
-
-\method{write2}{verbatim}(object, file, ..., output_format = NULL)
-
-\method{write2}{yaml}(object, file, ..., output_format = NULL)
 
 \method{write2}{default}(object, file, FUN = NULL, ..., append. = FALSE,
   render. = TRUE, keep.md = !render., output_format = NULL)
