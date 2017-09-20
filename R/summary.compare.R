@@ -7,7 +7,7 @@
 #' @param ... Other arguments (not in use at this time).
 #' @param max.print.vars,max.print.obs,max.print.diff,max.print.attrs Integers denoting the maximum number of differences to report
 #'   for each of the three tables. Passing \code{NA} will print all differences.
-#' @return Results are printed, and \code{object} is returned invisibly.
+#' @return An object of class \code{"summary.compare.data.frame"} is returned.
 #' @seealso compare.data.frame
 #' @export
 summary.compare.data.frame <- function(object, ..., max.print.vars = NA, max.print.obs = NA, max.print.diff = 10, max.print.attrs = NA)

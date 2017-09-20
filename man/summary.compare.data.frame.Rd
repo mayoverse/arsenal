@@ -16,7 +16,7 @@
 for each of the three tables. Passing \code{NA} will print all differences.}
 }
 \value{
-Results are printed, and \code{object} is returned invisibly.
+An object of class \code{"summary.compare.data.frame"} is returned.
 }
 \description{
 Print a more detailed output of the \code{\link{compare.data.frame}} object.
