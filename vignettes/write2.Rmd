@@ -324,3 +324,18 @@ write2(knitr::kable(head(mockstudy[, 1:4])), paste0(tmpdir, "/test.kable.rtf"),
        output_format = rmarkdown::rtf_document
        )
 ```
+
+## How do I avoid prefixes on my table captions in PDF?
+
+You can do this pretty easily with the `yaml()` function:
+
+```{r}
+mylist5 <- list(
+  yaml("header-includes" = list("\\usepackage[labelformat=empty]{caption}")),
+  "# Header 1",
+  "This is a small paragraph introducing tableby.",
+  tableby(sex ~ age, data = mockstudy)
+)
+write2pdf(mylist5, paste0(tmpdir, "/test.noprefixes.pdf"), title = "My tableby")
+```
+
