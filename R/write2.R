@@ -59,44 +59,47 @@ write2 <- function(object, file, ..., output_format)
   UseMethod("write2")
 }
 
+write2_using_summary <- function(object, file, ..., output_format = NULL)
+{
+  write2.default(object = object, file = file, FUN = summary, ..., output_format = output_format)
+}
+
+write2_using_print <- function(object, file, ..., output_format = NULL)
+{
+  write2.default(object = object, file = file, FUN = print, ..., output_format = output_format)
+}
+
 ############################ write2 for arsenal objects ############################
 
 #' @rdname write2
 #' @export
-write2.tableby <- function(object, file, ..., output_format = NULL)
-{
-  write2.default(object = object, file = file, FUN = summary, ..., output_format = output_format)
-}
+write2.tableby <- write2_using_summary
 
 #' @rdname write2
 #' @export
-write2.modelsum <- function(object, file, ..., output_format = NULL)
-{
-  write2.default(object = object, file = file, FUN = summary, ..., output_format = output_format)
-}
+write2.modelsum <- write2_using_summary
 
 #' @rdname write2
 #' @export
-write2.freqlist <- function(object, file, ..., output_format = NULL)
-{
-  write2.default(object = object, file = file, FUN = summary, ..., output_format = output_format)
-}
+write2.freqlist <- write2_using_summary
+
+#' @rdname write2
+#' @export
+write2.verbatim <- write2_using_print
+
+#' @rdname write2
+#' @export
+write2.yaml <- write2_using_print
 
 ############################ write2 for external objects ############################
 
 #' @rdname write2
 #' @export
-write2.knitr_kable <- function(object, file, ..., output_format = NULL)
-{
-  write2.default(object = object, file = file, FUN = print, ..., output_format = output_format)
-}
+write2.knitr_kable <- write2_using_print
 
 #' @rdname write2
 #' @export
-write2.xtable <- function(object, file, ..., output_format = NULL)
-{
-  write2.default(object = object, file = file, FUN = print, ..., output_format = output_format)
-}
+write2.xtable <- write2_using_print
 
 #' @rdname write2
 #' @export
@@ -135,23 +138,5 @@ write2.list <- function(object, file, ..., append. = FALSE, render. = TRUE, keep
   write2("\n", file = file, ..., render. = render., append. = TRUE, keep.md = keep.md, output_format = output_format)
 
   invisible(object)
-}
-
-############################ write2 for raw output ############################
-
-#' @rdname write2
-#' @export
-write2.verbatim <- function(object, file, ..., output_format = NULL)
-{
-  write2.default(object = object, file = file, FUN = print, ..., output_format = output_format)
-}
-
-############################ write2 for YAML ############################
-
-#' @rdname write2
-#' @export
-write2.yaml <- function(object, file, ..., output_format = NULL)
-{
-  write2.default(object = object, file = file, FUN = print, ..., output_format = output_format)
 }
 
