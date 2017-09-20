@@ -37,6 +37,9 @@ y <- yaml("header-includes" = list("\\\\usepackage[labelformat=empty]{caption}")
 y
 c(x, y)
 }
+\seealso{
+\code{\link[yaml]{as.yaml}}, \code{\link{write2}}
+}
 \author{
 Ethan Heinzen, adapted from an idea by Brendan Broderick
 }

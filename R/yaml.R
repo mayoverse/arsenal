@@ -7,6 +7,7 @@
 #' @param recursive Not in use at this time.
 #' @return A text string of class \code{"yaml"}.
 #' @author Ethan Heinzen, adapted from an idea by Brendan Broderick
+#' @seealso \code{\link[yaml]{as.yaml}}, \code{\link{write2}}
 #' @examples
 #' x <- yaml(title = "My cool title", author = "Ethan P Heinzen")
 #' x
