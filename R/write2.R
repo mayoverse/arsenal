@@ -137,21 +137,12 @@ write2.verbatim <- function(object, file, ..., output_format = NULL)
   write2.default(object = object, file = file, FUN = print, ..., output_format = output_format)
 }
 
+############################ write2 for YAML ############################
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#' @rdname write2
+#' @export
+write2.yaml <- function(object, file, ..., output_format = NULL)
+{
+  write2.default(object = object, file = file, FUN = print, ..., output_format = output_format)
+}
 
