@@ -162,7 +162,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   if (missing(data)) {
     temp.call$formula <- stats::terms(formula, special)
   } else {
-    temp.call$data <- call("keep.labels", temp.call$data)
+    # instead of call("keep.labels", ...), which breaks when arsenal isn't loaded (Can't find "keep.labels")
+    temp.call$data <- as.call(list(keep.labels, temp.call$data))
     temp.call$formula <- stats::terms(formula, special, data = keep.labels(data))
   }
   ##  set up new environment for
