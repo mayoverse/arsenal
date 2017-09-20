@@ -38,7 +38,8 @@ Suggests:
     pROC,
     MASS,
     gam,
-    rpart
+    rpart,
+    yaml
 Depends:
     R (>= 3.2.0),
     stats (>= 3.2.0)
