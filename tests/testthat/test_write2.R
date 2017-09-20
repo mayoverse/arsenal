@@ -112,6 +112,34 @@ test_that("write2.verbatim -> html", {
                        reference = "write2.char.html.md")
 })
 
+
+###########################################################################################################
+#### YAML output
+###########################################################################################################
+
+mylist3 <- list(
+  "# Header 1",
+  "This is a small paragraph.",
+  tableby(sex ~ age, data = mockstudy),
+  yaml(title = "My title"),
+  my.lm,
+  yaml(author = "Ethan P Heinzen")
+)
+
+mylist4 <- list(
+  yaml(title = "My title", author = "Ethan P Heinzen"),
+  "# Header 1",
+  "This is a small paragraph.",
+  tableby(sex ~ age, data = mockstudy),
+  my.lm
+)
+
+test_that("write2.yaml -> PDF", {
+  expect_write2_worked(write2pdf, mylist3, reference = "write2.yaml.pdf.md")
+  expect_write2_worked(write2pdf, mylist4, reference = "write2.yaml.pdf.md")
+})
+
+
 ###########################################################################################################
 #### Code used to generate the files
 ###########################################################################################################
@@ -144,9 +172,10 @@ test_that("write2.verbatim -> html", {
 # write2word(mylist2, "tests/testthat/write2.mylist2.doc", render. = FALSE)
 # write2pdf(list(mylist2, mylist), "tests/testthat/write2.mylists.pdf", render. = FALSE)
 #
-# write2pdf(verbatim(my.lm), "tests/testthat/write2.lm.pdf", render. = FALSE)
+# write2pdf(my.lm, "tests/testthat/write2.lm.pdf", render. = FALSE)
 # write2html(verbatim(paste0("Hi.", 1:5)),
 #            "tests/testthat/write2.char.html", render. = FALSE)
+# write2pdf(mylist3, "tests/testthat/write2.yaml.pdf", render. = FALSE)
 
 ###########################################################################################################
 #### Reported bugs for write2
