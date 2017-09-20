@@ -20,7 +20,7 @@ is.yaml(x)
 \item{...}{For \code{yaml()}, arguments to be bundled into a list and passed to \code{\link[yaml]{as.yaml}}.
 For \code{print.yaml()}, extra arguments. For \code{c.yaml()}, "yaml" objects to be concatenated.}
 
-\item{x}{An object of class \code{"yaml"}}
+\item{x}{An object of class \code{"yaml"}.}
 
 \item{recursive}{Not in use at this time.}
 }
