@@ -30,6 +30,13 @@ A text string of class \code{"yaml"}.
 \description{
 Include a YAML header in \code{write2}
 }
+\examples{
+x <- yaml(title = "My cool title", author = "Ethan P Heinzen")
+x
+y <- yaml("header-includes" = list("\\\\usepackage[labelformat=empty]{caption}"))
+y
+c(x, y)
+}
 \author{
 Ethan Heinzen, adapted from an idea by Brendan Broderick
 }

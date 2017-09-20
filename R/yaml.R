@@ -7,6 +7,12 @@
 #' @param recursive Not in use at this time.
 #' @return A text string of class \code{"yaml"}.
 #' @author Ethan Heinzen, adapted from an idea by Brendan Broderick
+#' @examples
+#' x <- yaml(title = "My cool title", author = "Ethan P Heinzen")
+#' x
+#' y <- yaml("header-includes" = list("\\usepackage[labelformat=empty]{caption}"))
+#' y
+#' c(x, y)
 #' @name yaml
 NULL
 #> NULL
