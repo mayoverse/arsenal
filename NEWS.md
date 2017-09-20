@@ -16,6 +16,10 @@
 
 * Allow `nsmall = ` and `digits = ` to be 0, for rounding to integers. (#23)
 
+* Added `yaml()` function to use with `write2()`. (#28)
+
+* Added the `yaml` package as a suggested package.
+
 * Updated documentation.
 
 # arsenal 0.5.0
