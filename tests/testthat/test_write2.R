@@ -82,13 +82,11 @@ mylist2 <- list("# Header 1",
                 tableby(sex ~ age, data = mockstudy))
 
 test_that("write2.list -> PDF", {
-  expect_write2_worked(write2pdf, mylist,
-                       reference = "write2.mylist.pdf.md")
+  expect_write2_worked(write2pdf, mylist, reference = "write2.mylist.pdf.md")
 })
 
 test_that("write2.list -> Word", {
-  expect_write2_worked(write2word, mylist2,
-                       reference = "write2.mylist2.doc.md")
+  expect_write2_worked(write2word, mylist2, reference = "write2.mylist2.doc.md")
 })
 
 test_that("write2.list recursion -> PDF", {
