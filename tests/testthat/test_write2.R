@@ -121,11 +121,12 @@ mylist3 <- list(
   tableby(sex ~ age, data = mockstudy),
   yaml(title = "My title"),
   my.lm,
-  yaml(author = "Ethan P Heinzen")
+  yaml(author = "Ethan P Heinzen"),
+  yaml("header-includes" = list("\\usepackage[labelformat=empty]{caption}"))
 )
 
 mylist4 <- list(
-  yaml(title = "My title", author = "Ethan P Heinzen"),
+  yaml(title = "My title", author = "Ethan P Heinzen", "header-includes" = list("\\usepackage[labelformat=empty]{caption}")),
   "# Header 1",
   "This is a small paragraph.",
   tableby(sex ~ age, data = mockstudy),

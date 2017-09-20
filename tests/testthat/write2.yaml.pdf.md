@@ -1,6 +1,8 @@
 ---
 title: My title
 author: Ethan P Heinzen
+header-includes:
+- \usepackage[labelformat=empty]{caption}
 ---
 
 
