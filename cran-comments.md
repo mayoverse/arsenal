@@ -1,20 +1,16 @@
-## Submission for arsenal 0.5.0
+## Submission for arsenal 0.6.0
 
 This is a new version. In this version:
 
-* All code has been moved to GitHub; issues can now be submitted there. Checking is now performed automatically on Travis-CI.
+* >7 bugs reports/feature requests have been completed.
 
-* > 9 known bugs have been fixed, and documentation has been improved.
+* The `yaml` package is now suggested.
 
-* A vignette discussing labels has been added.
-
-* The `compare.data.frame()` function has been added, with an accompanying vignette.
-
-* Imports and depends have changed slightly, as well as the description text.
+* A new contributor has been added to the `DESCRIPTION`.
 
 ## Test environments
 
-* local Linux install: R 3.4.1 (release), R 3.3.1
+* local Linux install: R 3.4.1 (release)
 * ubuntu 14.04 (on travis-ci): R devel, R 3.4.1 (release), R 3.3.3
 * win-builder (devel and release)
 

@@ -1,4 +1,4 @@
-# arsenal 0.5.0.9000
+# arsenal 0.6.0
 
 * Update `freqlist()` to be more efficient. (#20)
 
