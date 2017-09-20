@@ -118,8 +118,17 @@ write2.list <- function(object, file, ..., append. = FALSE, render. = TRUE, keep
   filename <- paste0(file, ".md")
   if(!append. || !file.exists(filename)) file.create(filename)
 
-  # separate the tables with a few blank lines
-  object2 <- c(object, as.list(rep("\n\n", times = length(object))))[order(c(seq_along(object), seq_along(object) + 0.5))]
+  # find any YAML specifications
+  idx <- vapply(object, is.yaml, NA)
+  if(sum(idx) > 0)
+  {
+    yamls <- Reduce(c, object[idx])
+    object <- object[!idx]
+    write2(yamls, file = file, ..., keep.md = TRUE, append = TRUE, render. = FALSE, output_format = output_format)
+  }
+
+  # separate the tables with a few blank lines, leading with the blank lines
+  object2 <- c(object, as.list(rep("\n\n", times = length(object))))[order(c(seq_along(object), seq_along(object) - 0.5))]
 
   lapply(object2, write2, file = file, ..., keep.md = TRUE, append. = TRUE, render. = FALSE, output_format = output_format)
 
@@ -137,21 +146,12 @@ write2.verbatim <- function(object, file, ..., output_format = NULL)
   write2.default(object = object, file = file, FUN = print, ..., output_format = output_format)
 }
 
+############################ write2 for YAML ############################
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#' @rdname write2
+#' @export
+write2.yaml <- function(object, file, ..., output_format = NULL)
+{
+  write2.default(object = object, file = file, FUN = print, ..., output_format = output_format)
+}
 

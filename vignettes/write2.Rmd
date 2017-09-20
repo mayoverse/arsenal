@@ -182,7 +182,7 @@ One neat side-effect of this function is that you can output text and headers, e
 
 ```{r}
 mylist2 <- list("# Header 1",
-                "This is a small paragraph introducting tableby.",
+                "This is a small paragraph introducing tableby.",
                 tableby(sex ~ age, data = mockstudy),
                 "<hr>",
                 "# Header 2",
@@ -222,6 +222,34 @@ Or suppose you wanted to print a character vector (as if it were to print in the
 ```{r}
 chr <- paste0("MyVector", 1:10)
 write2pdf(verbatim(chr), paste0(tmpdir, "/test.character.pdf"), quiet = TRUE)
+```
+
+# Add a YAML Header to the Output
+
+You can add a YAML header to `write2()` output using the `yaml()` function.
+
+```{r}
+mylist3 <- list(
+  yaml(title = "Test YAML Title", author = "My cool author name"),
+  "# Header 1",
+  "This is a small paragraph introducing tableby.",
+  tableby(sex ~ age, data = mockstudy)
+)
+write2html(mylist3, paste0(tmpdir, "/test.yaml.html"), quiet = TRUE)
+```
+
+In fact, all detected YAML pieces will be moved as the first output, so that the above code chunk
+gives the same output as this one:
+
+```{r}
+mylist4 <- list(
+  "# Header 1",
+  "This is a small paragraph introducing tableby.",
+  yaml(title = "Test YAML Title"),
+  tableby(sex ~ age, data = mockstudy),
+  yaml(author = "My cool author name")
+)
+write2html(mylist3, paste0(tmpdir, "/test.yaml2.html"), quiet = TRUE)
 ```
 
 # FAQs
@@ -264,7 +292,7 @@ One can simply abuse the list S3 method for `write2()`!
 
 ```{r}
 mylist2 <- list("# Header 1",
-                "This is a small paragraph introducting tableby.",
+                "This is a small paragraph introducing tableby.",
                 tableby(sex ~ age, data = mockstudy),
                 "<hr>",
                 "# Header 2",
@@ -296,3 +324,18 @@ write2(knitr::kable(head(mockstudy[, 1:4])), paste0(tmpdir, "/test.kable.rtf"),
        output_format = rmarkdown::rtf_document
        )
 ```
+
+## How do I avoid prefixes on my table captions in PDF?
+
+You can do this pretty easily with the `yaml()` function:
+
+```{r}
+mylist5 <- list(
+  yaml("header-includes" = list("\\usepackage[labelformat=empty]{caption}")),
+  "# Header 1",
+  "This is a small paragraph introducing tableby.",
+  tableby(sex ~ age, data = mockstudy)
+)
+write2pdf(mylist5, paste0(tmpdir, "/test.noprefixes.pdf"), title = "My tableby")
+```
+
