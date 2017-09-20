@@ -12,6 +12,8 @@
 
 * Fixed a bug in `tableby()` related to zero-length factor levels. (#22)
 
+* Fixed a bug in `tableby()` and `modelsum()` when calling them without loading the package. (#25)
+
 * Allow `nsmall = ` and `digits = ` to be 0, for rounding to integers. (#23)
 
 * Updated documentation.
