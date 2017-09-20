@@ -85,6 +85,14 @@ write2.freqlist <- write2_using_summary
 
 #' @rdname write2
 #' @export
+write2.compare.data.frame <- write2_using_summary
+
+#' @rdname write2
+#' @export
+write2.summary.compare.data.frame <- write2_using_print
+
+#' @rdname write2
+#' @export
 write2.verbatim <- write2_using_print
 
 #' @rdname write2

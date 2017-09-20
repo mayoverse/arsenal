@@ -6,6 +6,8 @@
 \alias{write2.tableby}
 \alias{write2.modelsum}
 \alias{write2.freqlist}
+\alias{write2.compare.data.frame}
+\alias{write2.summary.compare.data.frame}
 \alias{write2.verbatim}
 \alias{write2.yaml}
 \alias{write2.knitr_kable}
@@ -22,6 +24,11 @@ write2(object, file, ..., output_format)
 \method{write2}{modelsum}(object, file, ..., output_format = NULL)
 
 \method{write2}{freqlist}(object, file, ..., output_format = NULL)
+
+\method{write2}{compare.data.frame}(object, file, ..., output_format = NULL)
+
+\method{write2}{summary.compare.data.frame}(object, file, ...,
+  output_format = NULL)
 
 \method{write2}{verbatim}(object, file, ..., output_format = NULL)
 
