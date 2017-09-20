@@ -12,7 +12,8 @@ Authors@R: c(
     person("Ryan", "Lennon", role="ctb"),
     person("Andrew", "Hanson", role="ctb"),
     person("Krista", "Goergen", role="ctb"),
-    person("Emily", "Lundt", role="ctb")
+    person("Emily", "Lundt", role="ctb"),
+    person("Brendan", "Broderick", role="ctb")
   )
 Description: An Arsenal of 'R' functions for large-scale statistical summaries,
   which are streamlined to work within the latest reporting tools in 'R' and
