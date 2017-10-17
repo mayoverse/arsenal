@@ -5,8 +5,8 @@ get_the_estimate <- function(fitList)
   labs <- c("(Intercept)", fitList$label, fitList$adjlabels)
   names(labs) <- c("(Intercept)", fitList$xterms, fitList$adjterms)
 
-  data.frame(
-    endpoint = fitList$glance$endpoint,
+  out <- data.frame(
+    endpoint = rep(fitList$glance$endpoint, times = length(fitList$coeff$term)),
     term = fitList$coeff$term,
     label = labs[fitList$coeff$term],
     term.type = ifelse(fitList$coeff$term == "(Intercept)", "Intercept", ifelse(fitList$coeff$term %in% fitList$adjterms, "Adjuster", "Term")),
@@ -14,9 +14,10 @@ get_the_estimate <- function(fitList)
     std.error = fitList$coeff$std.error,
     p.value = fitList$coeff$p.value,
     # even if the model doesn't have an adj.r.squared, that's okay.
-    adj.r.squared = fitList$glance$adj.r.squared,
     stringsAsFactors = FALSE
   )
+  out$adj.r.squared <- fitList$glance$adj.r.squared
+  out
 }
 
 as_data_frame.modelsum <- function(x, ..., labelTranslations = NULL, show.intercept = NA, show.adjust = NA)
