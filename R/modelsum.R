@@ -391,8 +391,9 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
         names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
       }
       fitList[[xname]] <- list(coeff=coeffTidy,
-                               family=family, label=labelEff,
-                               xterms=xterms, adjterms=adjterms,
+                               family=family,
+                               xterms=xterms, label=labelEff,
+                               adjterms=adjterms, adjlabels=adjlabels,
                                glance=modelGlance)
 
     } else if (family == "quasipoisson" || family == "poisson") {
@@ -442,8 +443,9 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
         names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
       }
       fitList[[xname]] <- list(coeff=coeffTidy,
-                            family=family, label=labelEff,
-                            xterms=xterms, adjterms=adjterms,
+                            family=family,
+                            xterms=xterms, label=labelEff,
+                            adjterms=adjterms, adjlabels=adjlabels,
                             glance=modelGlance)
 
     } else if(family=="survival") {
@@ -494,8 +496,9 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       }
       ## Survival (time to event) #######
       fitList[[xname]] <- list(coeff=coeffTidy,
-                           family="survival", label=labelEff,
-                           xterms=xterms, adjterms=adjterms,
+                           family="survival",
+                           xterms=xterms, label=labelEff,
+                           adjterms=adjterms, adjlabels=adjlabels,
                            glance=c(broom::glance(ph),
                            N=sum(!is.na(modeldf[,eff])),Nmiss=sum(is.na(modeldf[,eff]))))
     }
