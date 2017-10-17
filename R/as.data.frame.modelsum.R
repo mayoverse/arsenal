@@ -1,0 +1,32 @@
+
+get_the_estimate <- function(fitList)
+{
+  # even if the model doesn't have an intercept, that's okay
+  labs <- c("(Intercept)", fitList$label, fitList$adjlabels)
+  names(labs) <- c("(Intercept)", fitList$xterms, fitList$adjterms)
+
+  data.frame(
+    endpoint = fitList$glance$endpoint,
+    term = fitList$coeff$term,
+    label = labs[fitList$coeff$term],
+    term.type = ifelse(fitList$coeff$term == "(Intercept)", "Intercept", ifelse(fitList$coeff$term %in% fitList$adjterms, "Adjuster", "Term")),
+    estimate = fitList$coeff$estimate,
+    std.error = fitList$coeff$std.error,
+    p.value = fitList$coeff$p.value,
+    # even if the model doesn't have an adj.r.squared, that's okay.
+    adj.r.squared = fitList$glance$adj.r.squared,
+    stringsAsFactors = FALSE
+  )
+}
+
+as_data_frame.modelsum <- function(x, ..., labelTranslations = NULL, show.intercept = NA, show.adjust = NA)
+{
+  if(!is.null(labelTranslations)) labels(x) <- labelTranslations
+  if(is.na(show.intercept)) show.intercept <- x$control$show.intercept
+  if(is.na(show.adjust)) show.adjust <- x$control$show.adjust
+
+  out <- do.call(rbind, Map(cbind, model = seq_along(x$fits), lapply(x$fits, get_the_estimate))) # this step is almost magic
+  out <- out[out$term.type %in% c("Term", if(show.intercept) "Intercept", if(show.adjust) "Adjuster"), , drop = FALSE]
+  row.names(out) <- NULL
+  out
+}
