@@ -59,10 +59,10 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
   }
   ## let CI.OR decode to CI.lower.OR and CI.upper.OR
   if(any(binomial.stats == "CI.OR")) {
-    binomial.stats <- unique(c("CI.lower.OR", "CI.upper.OR", binomial.stats[binomial.stats != "CI.OR"]))
+    binomial.stats <- unique(c(binomial.stats[binomial.stats != "CI.OR"], "CI.lower.OR", "CI.upper.OR"))
   }
   if(any(binomial.stats == "CI.estimate")) {
-    binomial.stats <- unique(c("CI.lower.estimate", "CI.upper.estimate", binomial.stats[binomial.stats != "CI.estimate"]))
+    binomial.stats <- unique(c(binomial.stats[binomial.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
 
   ##########################
@@ -81,7 +81,7 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
            paste(gaussian.stats[gaussian.stats %nin% gaussian.stats.valid],collapse=","), "\n"))
   }
   if(any(gaussian.stats == "CI.estimate")) {
-    gaussian.stats <- unique(c("CI.lower.estimate", "CI.upper.estimate", gaussian.stats[gaussian.stats != "CI.estimate"]))
+    gaussian.stats <- unique(c(gaussian.stats[gaussian.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
 
 
@@ -104,10 +104,10 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
   }
    ## let CI.RR decode to CI.lower.RR and CI.upper.RR
   if(any(poisson.stats == "CI.RR")) {
-    poisson.stats <- unique(c("CI.lower.RR", "CI.upper.RR", poisson.stats[poisson.stats != "CI.RR"]))
+    poisson.stats <- unique(c(poisson.stats[poisson.stats != "CI.RR"], "CI.lower.RR", "CI.upper.RR"))
   }
   if(any(poisson.stats == "CI.estimate")) {
-    poisson.stats <- unique(c("CI.lower.estimate", "CI.upper.estimate", poisson.stats[poisson.stats == "CI.estimate"]))
+    poisson.stats <- unique(c(poisson.stats[poisson.stats == "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
   ##########################
   ## Survival stats:
@@ -128,10 +128,10 @@ modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=
 
   ## let CI.HR decode to CI.lower.HR and CI.upper.HR
   if(any(survival.stats == "CI.HR")) {
-    survival.stats <- unique(c("CI.lower.HR", "CI.upper.HR", survival.stats[survival.stats != "CI.HR"]))
+    survival.stats <- unique(c(survival.stats[survival.stats != "CI.HR"], "CI.lower.HR", "CI.upper.HR"))
   }
   if(any(survival.stats == "CI.estimate")) {
-    survival.stats <- unique(c("CI.lower.estimate", "CI.upper.estimate", survival.stats[survival.stats != "CI.estimate"]))
+    survival.stats <- unique(c(survival.stats[survival.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
   return(list(digits=digits, digits.test=digits.test, nsmall=nsmall, nsmall.ratio=nsmall.ratio,
               show.adjust=show.adjust, show.intercept=show.intercept, conf.level=conf.level,
