@@ -14,7 +14,7 @@ get_the_estimate <- function(fitList, expon)
   )
   if(expon && fitList$family %in% c("binomial", "quasibinomial", "survival", "poisson", "quasipoisson"))
   {
-    type <- ifelse(fitList$family %in% c("binomial", "quasibinomial"), "OR", ifelse(fitList$family == "survival", "HR", "RR"))
+    type <- if(fitList$family %in% c("binomial", "quasibinomial")) "OR" else if(fitList$family == "survival") "HR" else "RR"
     out[[type]] <- fitList$coeff[[type]]
     out[[paste0("CI.lower.", type)]] <- fitList$coeff[[paste0("CI.lower.", type)]]
     out[[paste0("CI.upper.", type)]] <- fitList$coeff[[paste0("CI.upper.", type)]]
