@@ -80,10 +80,10 @@ Note that you must supply `results="asis"` to properly format the markdown outpu
 summary(noby)
 ```
 
-Additional arguments (except digits) in the `kable` function can be passed through. Perhaps the most useful is `caption`.
+You can print a title for the table using the `title=` argument.
 
 ```{r, results = 'asis'}
-summary(noby, caption="Basic freqlist output")
+summary(noby, title="Basic freqlist output")
 ```
 
 You can also easily pull out the `freqlist` data frame for more complicated formatting or manipulation
