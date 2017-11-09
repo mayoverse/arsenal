@@ -117,6 +117,45 @@ test_that("A basic modelsum call--suppressing intercept and/or adjustment vars",
   )
 })
 
+
+test_that("Reordering variables", {
+  expect_identical(
+    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[c(3,1,2)], text = TRUE)),
+    c(""                                                                                  ,
+      "----------------------------------------------------------------------------------",
+      "                    estimate        std.error       p.value         adj.r.squared ",
+      "------------------ --------------- --------------- --------------- ---------------",
+      "(Intercept)        41              1               <0.001          0              ",
+      "time               0               0               0.182           .              ",
+      "(Intercept)        40              1               <0.001          0              ",
+      "Sex Male           0               1               0.818           .              ",
+      "(Intercept)        40              1               <0.001          0              ",
+      "Group Low          0               1               0.771           .              ",
+      "Group Med          -1              1               0.663           .              ",
+      "----------------------------------------------------------------------------------"
+    )
+  )
+
+  expect_identical(
+    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[c(3,1,2)], text = TRUE)),
+    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[c("time", "Sex", "Group")], text = TRUE))
+  )
+
+  expect_identical(
+    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[1:2], text = TRUE)),
+    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[c(TRUE, TRUE, FALSE)], text = TRUE))
+  )
+
+  expect_identical(
+    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat), text = TRUE)),
+    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[], text = TRUE))
+  )
+
+  expect_warning(modelsum(Age ~ Sex + Group + time, data = mdat)[1:4], "Some indices not found")
+  expect_error(modelsum(Age ~ Sex + Group + time, data = mdat)[TRUE], "Logical vector")
+
+})
+
 ###########################################################################################################
 #### Reported bugs for modelsum
 ###########################################################################################################

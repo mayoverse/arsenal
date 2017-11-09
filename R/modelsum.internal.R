@@ -58,20 +58,30 @@ lm.beta  <- function (MOD) {
 ## in future, maybe allow subsetting by names
 #' @rdname modelsum.internal
 #' @export
-"[.modelsum" <- function(x, ...) {
-   newx <- x
-   if (length(list(...)) != 1) {
-     stop ("Only 1 subscript allowed")
-   }
-   ## index vector
-   idx <- (1:length(x$fits))[..1]
-   if(all(is.na(idx))) {
-     newx$fits <- x$fits[...]
-   } else {
-     newx$fits <- x$fits[idx]
-   }
-   return(newx)
- }
+"[.modelsum" <- function(x, i) {
+  if(missing(i)) return(x)
+  newx <- x
+
+  if(is.character(i) && any(i %nin% names(x$fits)))
+  {
+    tmp <- paste0(i[i %nin% names(x$fits)], collapse = ", ")
+    warning(paste0("Some indices not found in modelsum object: ", tmp))
+    i <- i[i %in% names(x$fits)]
+  } else if(is.numeric(i) && any(i %nin% seq_along(x$fits)))
+  {
+    tmp <- paste0(i[i %nin% seq_along(x$fits)], collapse = ", ")
+    warning(paste0("Some indices not found in modelsum object: ", tmp))
+    i <- i[i %in% seq_along(x$fits)]
+  } else if(is.logical(i) && length(i) != length(x$fits))
+  {
+    stop("Logical vector index not the right length.")
+  }
+
+  if(length(i) == 0 || anyNA(i)) stop("Indices must have nonzero length and no NAs.")
+
+  newx$fits <- x$fits[i]
+  return(newx)
+}
 
 
 ## retrieve variable labels (y, x-vec) from tableby object
