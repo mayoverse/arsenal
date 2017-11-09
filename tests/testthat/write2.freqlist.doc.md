@@ -1,5 +1,5 @@
 
-Table: My cool caption
+Table: My cool title
 
 |arm       |sex    |mdquality.s | Freq| cumFreq| freqPercent| cumPercent|
 |:---------|:------|:-----------|----:|-------:|-----------:|----------:|
