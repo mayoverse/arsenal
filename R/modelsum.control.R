@@ -19,27 +19,43 @@
 #' @return A list with settings to be used within the \code{modelsum} function.
 #' @seealso \code{\link{modelsum}}, \code{\link{summary.modelsum}}
 #' @export
-modelsum.control <- function(digits=3, nsmall=NULL, nsmall.ratio=2, digits.test=3,
-            show.adjust=TRUE, show.intercept=TRUE, conf.level=0.95,
+modelsum.control <- function(digits = 3L, nsmall = 0L, nsmall.ratio = 0L, digits.test = 3L,
+            show.adjust = TRUE, show.intercept = TRUE, conf.level = 0.95,
             binomial.stats=c("OR","CI.lower.OR","CI.upper.OR","p.value", "concordance","Nmiss"),
             gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
             poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","concordance","Nmiss"),
             survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),	...)
 {
 
-  ## validate digits
-  if(is.null(digits)) {
-    digits <- 3
+  # digits and digits.test are OK to be NULL. See ?format
+  if(!is.null(digits) && digits < 0L)
+  {
+    warning("digits must be >= 0. Set to default.")
+    digits <- 3L
+  }
+  if(!is.null(digits.test) && digits.test < 0L)
+  {
+    warning("digits.test must be >= 0. Set to default.")
+    digits <- 3L
   }
 
-  if(digits < 1) {
-	  warning("digits must be positive integer. Set to default. \n")
-	  digits <- 3
+  # the nsmalls are NOT OK to be NULL.
+  if(is.null(nsmall) || nsmall < 0L)
+  {
+    warning("nsmall must be >= 0. Set to default.")
+    nsmall <- 3L
   }
+  if(is.null(nsmall.ratio) || nsmall.ratio < 0L)
+  {
+    warning("nsmall.ratio must be >= 0. Set to default.")
+    nsmall.ratio <- 3L
+  }
+
   if(conf.level <= 0 || conf.level >= 1) {
     warning("conf.level must be between (0,1). Setting to default.\n")
     conf.level <- 0.95
   }
+
 
   ##########################
   ## Binomial stats:
