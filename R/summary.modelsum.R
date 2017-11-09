@@ -3,6 +3,96 @@
 ## Updated: 9/29/2015
 
 
+#' Summarize a \code{modelsum} object.
+#'
+#' Format the information in \code{object} as a table using Pandoc coding or plain text, and cat it to stdout.
+#'
+#' @param object The data defining the table to display
+#' @param ... Other arguments; in \code{summary.modelsum}, these are passed to \code{\link{as.data.frame.modelsum}},
+#'   and in \code{print.summary.modelsum}, these are not used.
+#' @param labelTranslations A named list (or vector) where the name is the label in the
+#'   output to be replaced in the pretty rendering of modelsum by the character
+#'   string value for the named element of the list, e.g.,
+#'   \code{list(age = "Age(years)")}.
+#' @param text Logical, denoting whether to print out the text version.
+#' @param title	Title for the table, defaults to \code{NULL} (no title)
+#' @seealso \code{\link{modelsum}}, \code{\link{print.modelsum}}, \code{\link{as.data.frame.modelsum}}
+#' @return An object of class \code{"summary.modelsum"}
+#' @author Ethan Heinzen, based on code originally by Greg Dougherty
+#' @name modelsum
+NULL
+#> NULL
+
+#' @rdname summary.modelsum
+#' @export
+summary_modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL)
+{
+  object <- as_data_frame.modelsum(object, ..., labelTranslations = labelTranslations)
+  structure(list(
+    object = object,
+    control = attr(object, "control"),
+    text = text,
+    title = title
+  ), class = "summary.modelsum")
+}
+
+#' @rdname summary.modelsum
+#' @export
+print.summary.modelsum <- function(x, ...)
+{
+
+  #### format the digits and nsmall things ####
+  use.digits1 <- c("Nmiss", "N", "Nmiss2", "Nevents", "logLik", "AIC", "BIC", "null.deviance", "deviance",
+                   "df.residual", "df.null", "statistic.F", "dispersion", "statistic.sc")
+  use.digits2 <- c("estimate", "CI.lower.estimate", "CI.upper.estimate", "std.error", "statistic", "standard.estimate")
+
+  use.digits.ratio <- c("OR", "CI.lower.OR", "CI.upper.OR", "RR", "CI.lower.RR", "CI.upper.RR", "HR", "CI.lower.HR", "CI.upper.HR")
+  use.digits.test <- c("p.value", "concordance", "std.error.concordance", "adj.r.squared", "p.value.sc",
+                       "p.value.log", "p.value.wald", "r.squared", "p.value.F")
+
+  df <- x$object
+  cn <- colnames(df)
+
+  df[cn %in% c(use.digits1, use.digits2)] <- lapply(df[cn %in% c(use.digits1, use.digits2)], format, digits = x$control$digits, nsmall = x$control$nsmall)
+  df[cn %in% use.digits.ratio] <- lapply(df[cn %in% use.digits.ratio], format, digits = x$control$digits, nsmall = x$control$nsmall.ratio)
+  df[cn %in% use.digits.test] <- lapply(df[cn %in% use.digits.test], format, digits = x$control$digits.test)
+
+
+  #### don't show the same statistics more than once ####
+  pick_first <- function(vec, idx)
+  {
+    vec[idx] <- ""
+    vec
+  }
+  df[cn %in% c(use.digits1, use.digits.test)] <- lapply(df[cn %in% c(use.digits1, use.digits.test)], pick_first, idx = duplicated(df$model))
+
+  #### Format if necessary ####
+  if(!x$text) df$label <- ifelse(df$term.type == "Intercept", df$label, paste0("**", df$label, "**"))
+
+  #### get rid of unnecessary columns ####
+  df$model <- NULL
+  df$term <- NULL
+  df$term.type <- NULL
+
+
+  #### tweak column names according to specifications ####
+  cn <- stats::setNames(colnames(df), colnames(df))
+  if(length(x$control$stat.labels) > 0)
+  {
+    nm <- intersect(cn, names(x$control$stat.labels))
+    if(length(nm)) cn[nm] <- unlist(x$control$stat.labels[nm])
+  }
+  cn["label"] <- ""
+
+
+  #### finally print it out ####
+  if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
+  print(knitr::kable(df, col.names = cn, caption = NULL))
+
+  invisible(x)
+}
+
+
 ## should not need these, especially for variable names
 modelsum.translations <- list() ## adj.r.squared = "adj.rsq", sex = "Sex", sexM = "Sex", age = "Age")
 
