@@ -46,8 +46,6 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   if (!is.null(labelTranslations) && (!is.character(labelTranslations) || length(labelTranslations) != length(dim(tab))))
     stop("length(labelTranslations) does not match table object dimensions")
 
-  if("varnames" %in% names(list(...))){warning("The 'varnames' argument has been deprecated. Please use 'labelTranslations' instead.")}
-
   cumfun <- function(x) {
     # function to create a cumulative sum retaining NAs, but omitting in sum function
     x2 <- rep(NA, length(x))
