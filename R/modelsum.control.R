@@ -15,6 +15,7 @@
 #' @param conf.level Numeric, giving the confidence level.
 #' @param binomial.stats,survival.stats,gaussian.stats,poisson.stats
 #'   Character vectors denoting which stats to show for the various model types.
+#' @param stats.labels A named list of labels for all the stats used above.
 #' @param ... Other arguments (not in use at this time).
 #' @return A list with settings to be used within the \code{modelsum} function.
 #' @seealso \code{\link{modelsum}}, \code{\link{summary.modelsum}}
@@ -24,7 +25,8 @@ modelsum.control <- function(digits = 3L, nsmall = 0L, nsmall.ratio = 0L, digits
             binomial.stats=c("OR","CI.lower.OR","CI.upper.OR","p.value", "concordance","Nmiss"),
             gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
             poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","concordance","Nmiss"),
-            survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),	...)
+            survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),
+            stat.labels = list(), ...)
 {
 
   # digits and digits.test are OK to be NULL. See ?format
@@ -152,6 +154,6 @@ modelsum.control <- function(digits = 3L, nsmall = 0L, nsmall.ratio = 0L, digits
   return(list(digits=digits, digits.test=digits.test, nsmall=nsmall, nsmall.ratio=nsmall.ratio,
               show.adjust=show.adjust, show.intercept=show.intercept, conf.level=conf.level,
               binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
-              poisson.stats=poisson.stats, survival.stats=survival.stats))
+              poisson.stats=poisson.stats, survival.stats=survival.stats, stat.labels = stat.labels))
 
 }
