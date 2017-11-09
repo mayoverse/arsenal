@@ -529,24 +529,14 @@ mySeq <- function(from, to) {
 #' @rdname modelsum
 #' @export
 print.modelsum <- function(x, ...) {
-#  if (x$family == "gaussian") {
-#    printGaussian(x)
-#  }
-
-#  else {
-    cat("Modelsum S3 Object\n\n")
-    cat("Function Call: \n")
-    print(x$Call)
-    cat("\n")
-    cat("y variable:\n")
-    print(x$fits[[1]]$y)
-    cat("x variables:\n")
-    xvars <- NULL
-    for (ii in 1:length(x$fits)) {
-      xvars <- c(xvars, x$fits[[ii]]$x)
-    }
-    print(xvars)
-#  }
+  cat("Modelsum S3 Object\n\n")
+  cat("Function Call: \n")
+  print(x$Call)
+  cat("\n")
+  cat("y variable:\n")
+  print(x$fits[[1]]$glance$endpoint)
+  cat("x variables:\n")
+  print(unname(vapply(x$fits, function(tmp) tmp$x, "")))
   invisible(x)
 }
 
