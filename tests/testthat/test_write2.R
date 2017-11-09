@@ -40,7 +40,7 @@ test_that("write2.freqlist -> HTML", {
 
 test_that("write2.freqlist -> doc", {
   expect_write2_worked(write2word, freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
-                       reference = "write2.freqlist.doc.md", single = TRUE, caption = "My cool caption", format = "pandoc")
+                       reference = "write2.freqlist.doc.md", single = TRUE, title = "My cool title")
 })
 
 ###########################################################################################################
@@ -154,7 +154,7 @@ test_that("write2.yaml -> PDF", {
 #             "tests/testthat/write2.freqlist.html", single = TRUE, render. = FALSE)
 #
 # write2word(freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
-#            "tests/testthat/write2.freqlist.doc", single = TRUE, caption = "My cool caption", format = "pandoc", render. = FALSE)
+#            "tests/testthat/write2.freqlist.doc", single = TRUE, title = "My cool caption", render. = FALSE)
 #
 #  write2html(knitr::kable(head(mockstudy)),
 #             "tests/testthat/write2.kable.html", render. = FALSE)
