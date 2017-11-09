@@ -9,6 +9,7 @@
 #'        element of the list, e.g., list(age="Age(years)", bmi="Body Mass Index").
 #' @param dupLabels Should labels which are the same as the row above be printed? The default (\code{FALSE}) more
 #'   closely approximates \code{PROC FREQ} output from SAS, where a label carried down from the row above is left blank.
+#' @param title	Title for the table, defaults to \code{NULL} (no title)
 #' @param ... additional arguments passed to the \code{\link[knitr]{kable}} function (e.g., \code{format = "pandoc"})
 #' @return Invisibly returns \code{object}, and uses \code{\link[knitr]{kable}} to print the object.
 #' @seealso \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
@@ -25,7 +26,7 @@
 #' @author Tina Gunderson
 #' @export
 #'
-summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, dupLabels = FALSE, ...)
+summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, dupLabels = FALSE, title = NULL, ...)
 {
   if(!is.logical(single) || length(single) != 1) stop("'single' must be TRUE or FALSE")
   if(!is.null(labelTranslations)) labels(object) <- labelTranslations
@@ -60,7 +61,8 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, d
     {
       freqdf[, 1:(ncol(freqdf)-4)] <- fmtdups(freqdf[, 1:(ncol(freqdf)-4), drop = FALSE])
     }
-    print(knitr::kable(freqdf, row.names = FALSE, col.names = cnames, ...))
+    if(!is.null(title)) cat("\nTable: ", title, sep = "")
+    print(knitr::kable(freqdf, row.names = FALSE, col.names = cnames, caption = NULL, ...))
   } else
   {
     byVar <- object$byVar
@@ -73,16 +75,17 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, d
     names(printlist) <- gsub("[.]",", ", levels(interaction(rev(freqdf[, byVar, drop = FALSE]))))
     for(i in 1:length(printlist))
     {
+      if(i == 1L && !is.null(title)) cat("\nTable: ", title, sep = "")
       if(!is.null(printlist[[i]]))
       {
         if(nrow(printlist[[i]]) > 1)
         {
           sublist <- printlist[[i]]
           if(!dupLabels) sublist[, 1:(ncol(sublist)-4)] <- fmtdups(sublist[, 1:(ncol(sublist)-4), drop = FALSE])
-          print(knitr::kable(sublist, row.names = FALSE, col.names = cnames, ...))
+          print(knitr::kable(sublist, row.names = FALSE, col.names = cnames, caption = NULL, ...))
         } else
         {
-          print(knitr::kable(printlist[[i]], row.names = FALSE, col.names = cnames, ...))
+          print(knitr::kable(printlist[[i]], row.names = FALSE, col.names = cnames, caption = NULL, ...))
         }
       }
     }

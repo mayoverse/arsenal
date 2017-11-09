@@ -310,6 +310,48 @@ test_that("dupLabels works", {
   )
 })
 
+
+test_that("Adding a title", {
+  expect_identical(
+    capture.output(summary(freqlist(TAB.na, options = "include", labelTranslations = c("Treatment", "Ethan")), dupLabels = TRUE, title = "Ethan Rocks")),
+    c(""                                                             ,
+      "Table: Ethan Rocks"                                           ,
+      ""                                                             ,
+      "|Treatment |Ethan   | Freq| cumFreq| freqPercent| cumPercent|",
+      "|:---------|:-------|----:|-------:|-----------:|----------:|",
+      "|A         |Ethan   |   17|      17|       18.89|      18.89|",
+      "|A         |Heinzen |   16|      33|       17.78|      36.67|",
+      "|A         |NA      |    3|      36|        3.33|      40.00|",
+      "|B         |Ethan   |   25|      61|       27.78|      67.78|",
+      "|B         |Heinzen |   29|      90|       32.22|     100.00|"
+    )
+  )
+
+  expect_identical(
+    capture.output(summary(freqlist(TAB.na, options = "include", groupBy = "ethan",
+                                    labelTranslations = c("Treatment", "Ethan")), dupLabels = TRUE, title = "Ethan Rocks")),
+    c(""                                                             ,
+      "Table: Ethan Rocks"                                           ,
+      ""                                                             ,
+      "|Ethan |Treatment | Freq| cumFreq| freqPercent| cumPercent|"  ,
+      "|:-----|:---------|----:|-------:|-----------:|----------:|"  ,
+      "|Ethan |A         |   17|      17|       40.48|      40.48|"  ,
+      "|Ethan |B         |   25|      42|       59.52|     100.00|"  ,
+      ""                                                             ,
+      ""                                                             ,
+      "|Ethan   |Treatment | Freq| cumFreq| freqPercent| cumPercent|",
+      "|:-------|:---------|----:|-------:|-----------:|----------:|",
+      "|Heinzen |A         |   16|      16|       35.56|      35.56|",
+      "|Heinzen |B         |   29|      45|       64.44|     100.00|",
+      ""                                                             ,
+      ""                                                             ,
+      "|Ethan |Treatment | Freq| cumFreq| freqPercent| cumPercent|"  ,
+      "|:-----|:---------|----:|-------:|-----------:|----------:|"  ,
+      "|NA    |A         |    3|       3|         100|        100|"
+    )
+  )
+})
+
 ###########################################################################################################
 #### Reported bugs for freqlist
 ###########################################################################################################
@@ -338,3 +380,5 @@ test_that("11/18/16: Emily Lundt's subsetted table and duplicate label problem",
     )
   )
 })
+
+
