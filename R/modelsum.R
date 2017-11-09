@@ -527,7 +527,7 @@ print.modelsum <- function(x, ...) {
   cat("y variable:\n")
   print(x$fits[[1]]$glance$endpoint)
   cat("x variables:\n")
-  print(unname(vapply(x$fits, function(tmp) tmp$x, "")))
+  print(unname(vapply(x$fits, function(tmp) tmp$glance$x, "")))
   invisible(x)
 }
 
