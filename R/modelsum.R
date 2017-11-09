@@ -517,15 +517,6 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 ##   keep as private function
 survival <- function() list(family="survival")
 
-
-mySeq <- function(from, to) {
-	if (from > to)
-		return(seq_len(0))
-
-	return(seq(from, to))
-}
-
-
 #' @rdname modelsum
 #' @export
 print.modelsum <- function(x, ...) {
