@@ -6,7 +6,6 @@ get_the_estimate <- function(fitList, cntrl)
   names(labs) <- c("(Intercept)", fitList$xterms, fitList$adjterms)
 
   out <- data.frame(
-    endpoint = rep(fitList$glance$endpoint, times = length(fitList$coeff$term)),
     term = fitList$coeff$term,
     label = labs[fitList$coeff$term],
     term.type = ifelse(fitList$coeff$term == "(Intercept)", "Intercept", ifelse(fitList$coeff$term %in% fitList$adjterms, "Adjuster", "Term")),
