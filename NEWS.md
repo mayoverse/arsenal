@@ -1,8 +1,33 @@
+# arsenal 0.6.0.9000 (soon to be arsenal 1.0.0)
+
+**This is a non-backwards-compatible update.**
+
+Probable code-breaking changes:
+
+* The first argument to `freqlist()` has changed from `tab=` to `object=`, for S3 consistency. (#35)
+
+* The `title=` argument was added to `summary.freqlist()`. Passing `caption=` through the dots to `knitr::kable()`
+  will now throw an error. (#34)
+
+Possible code-breaking changes:
+
+* `freqlist()` is now an S3 generic. (#35)
+
+Non-breaking changes:
+
+* `freqlist.formula()` was implemented, piggybacking off of `stats::xtabs()`. (#35)
+
+* `freqlist()` will no longer issue a warning about using the deprecated `varnames=` argument.
+
+* `print.freqlist()` has been made slightly more concise. The printed output shouldn't change.
+
+* Documentation and the vignettes have been re-reviewed and updated where appropriate.
+
 # arsenal 0.6.0
 
-* Update `freqlist()` to be more efficient. (#20)
+* Updated `freqlist()` to be more efficient. (#20)
 
-* Allow named labels for `freqlist()`.
+* `freqlist()` now allows named labels.
 
 * Fixed one-sided formula detection in `tableby()` when used with `formulize()`. (#21)
 
@@ -14,7 +39,7 @@
 
 * Fixed a bug in `tableby()` and `modelsum()` when calling them without loading the package. (#25)
 
-* Allow `nsmall = ` and `digits = ` to be 0, for rounding to integers. (#23)
+* Allowed `nsmall = ` and `digits = ` to be 0, for rounding to integers. (#23)
 
 * Added `yaml()` function to use with `write2()`. (#28)
 
