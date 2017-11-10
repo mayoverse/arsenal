@@ -227,6 +227,8 @@ Nmiss <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 
 ## Nmiss2 make similar, but in tableby, always keep nmiss,
 ## even if there are no missings
+#' @rdname tableby.stats
+#' @export
 Nmiss2 <- Nmiss
 
 ## count of complete samples
