@@ -5,7 +5,7 @@
 \title{summary.freqlist}
 \usage{
 \method{summary}{freqlist}(object, single = FALSE, labelTranslations = NULL,
-  dupLabels = FALSE, ...)
+  dupLabels = FALSE, title = NULL, ...)
 }
 \arguments{
 \item{object}{an object of class \code{\link{freqlist}}}
@@ -18,6 +18,8 @@ element of the list, e.g., list(age="Age(years)", bmi="Body Mass Index").}
 
 \item{dupLabels}{Should labels which are the same as the row above be printed? The default (\code{FALSE}) more
 closely approximates \code{PROC FREQ} output from SAS, where a label carried down from the row above is left blank.}
+
+\item{title}{Title for the table, defaults to \code{NULL} (no title)}
 
 \item{...}{additional arguments passed to the \code{\link[knitr]{kable}} function (e.g., \code{format = "pandoc"})}
 }

@@ -3,23 +3,35 @@
 \name{freqlist}
 \alias{freqlist}
 \alias{freqlist}
+\alias{freqlist.table}
+\alias{freqlist.formula}
 \alias{print.freqlist}
 \title{freqlist}
 \usage{
-freqlist(tab, sparse = FALSE, na.options = c("include", "showexclude",
-  "remove"), digits = 2, labelTranslations = NULL, groupBy = NULL, ...)
+freqlist(object, ...)
+
+\method{freqlist}{table}(object, sparse = FALSE, na.options = c("include",
+  "showexclude", "remove"), digits = 2, labelTranslations = NULL,
+  groupBy = NULL, ...)
+
+\method{freqlist}{formula}(formula, data, subset, na.action, addNA, exclude,
+  drop.unused.levels, ...)
 
 \method{print}{freqlist}(x, ...)
 }
 \arguments{
-\item{tab}{an object of class \code{"table"} or class \code{"xtabs"}}
+\item{object}{An R object, usually of class \code{"table"} or class \code{"xtabs"}}
 
-\item{sparse}{a logical value indicating whether to keep rows with counts of zero. The default is \code{FALSE}.}
+\item{...}{additional arguments. These are only used in the formula method, and are passed to
+the table method.}
 
-\item{na.options}{a character string indicating how to handling missing values: 'include'
+\item{sparse}{a logical value indicating whether to keep rows with counts of zero.
+The default is \code{FALSE} (drop zero-count rows).}
+
+\item{na.options}{a character string indicating how to handling missing values: \code{"include"}
 (include values with NAs in counts and percentages),
-'showexclude' (show NAs but exclude from cumulative counts and all percentages),
-'remove' (remove values with NAs); default is 'include'}
+\code{"showexclude"} (show NAs but exclude from cumulative counts and all percentages),
+\code{"remove"} (remove values with NAs); default is \code{"include"}.}
 
 \item{digits}{a single number indicating the number of digits for percentages (passed to \code{\link{round}}; default is 2.}
 
@@ -29,7 +41,7 @@ Names will be matched appropriately.}
 \item{groupBy}{an optional character string specifying a variable(s) to use for grouping when calculating cumulative
 counts and percentages. \code{\link{summary.freqlist}} will also separate by grouping variable for printing.}
 
-\item{...}{additional arguments passed to the \code{\link[knitr]{kable}} function}
+\item{formula, data, subset, na.action, addNA, exclude, drop.unused.levels}{Arguments passed to \code{\link[stats]{xtabs}}.}
 
 \item{x}{an object of class \code{"freqlist"}}
 }
