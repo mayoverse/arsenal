@@ -3,17 +3,20 @@
 #' Approximate the output from SAS's \code{PROC FREQ} procedure when using the \code{/list} option of the \code{TABLE} statement.
 #'
 #' @param object An R object, usually of class \code{"table"} or class \code{"xtabs"}
-#' @param sparse a logical value indicating whether to keep rows with counts of zero. The default is \code{FALSE}.
-#' @param na.options a character string indicating how to handling missing values: 'include'
+#' @param sparse a logical value indicating whether to keep rows with counts of zero.
+#'   The default is \code{FALSE} (drop zero-count rows).
+#' @param na.options a character string indicating how to handling missing values: \code{"include"}
 #'   (include values with NAs in counts and percentages),
-#'   'showexclude' (show NAs but exclude from cumulative counts and all percentages),
-#'   'remove' (remove values with NAs); default is 'include'
+#'   \code{"showexclude"} (show NAs but exclude from cumulative counts and all percentages),
+#'   \code{"remove"} (remove values with NAs); default is \code{"include"}.
 #' @param digits a single number indicating the number of digits for percentages (passed to \code{\link{round}}; default is 2.
 #' @param labelTranslations an optional character string (or list) of labels to use for variable levels when summarizing.
 #'   Names will be matched appropriately.
 #' @param groupBy an optional character string specifying a variable(s) to use for grouping when calculating cumulative
 #'   counts and percentages. \code{\link{summary.freqlist}} will also separate by grouping variable for printing.
-#' @param ... additional arguments passed to the \code{\link[knitr]{kable}} function
+#' @param ... additional arguments. These are only used in the formula method, and are passed to
+#'   the table method.
+#' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}.
 #' @param x an object of class \code{"freqlist"}
 #' @return An object of class \code{"freqlist"} (invisibly for \code{print.freqlist})
 #' @seealso \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
@@ -40,7 +43,7 @@ freqlist <- function(object, ...)
 
 #' @rdname freqlist
 #' @export
-freqlist.table <- function(object, sparse = FALSE, na.options = c('include', 'showexclude', 'remove'), digits = 2, labelTranslations = NULL, groupBy = NULL, ...)
+freqlist.table <- function(object, sparse = FALSE, na.options = c("include", "showexclude", "remove"), digits = 2, labelTranslations = NULL, groupBy = NULL, ...)
 {
   na.options <- match.arg(na.options)
   if (!is.table(object)) stop("'object' must be a table!")
