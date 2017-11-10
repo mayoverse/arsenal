@@ -718,8 +718,8 @@ Any summary statistics standardly defined in R (e.g. mean, median, sd, med, rang
 however there are a number of extra functions defined specifically for the tableby function.
 
 * `N`: a count of the number of observations for a particular group
-* `Nmiss`: always show a count of the number of missing values for a variable within each group
-* `Nmiss2`: only show the count of the number of missing values if there are some missing values(not developed yet)
+* `Nmiss`: only show the count of the number of missing values if there are some missing values
+* `Nmiss2`: always show a count of the number of missing values for a variable within each group
 * `meansd`: print the mean and standard deviation in the format `mean(sd)`
 * `countpct`: print the number of values in a category plus the percentage in the format `N (%)`
 * `medianq1q3`: print the median, 25th, and 75th quantiles `median (Q1, Q3)`
