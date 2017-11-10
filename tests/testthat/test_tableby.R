@@ -639,3 +639,10 @@ test_that("09/13/2017: Peter Martin and rounding to integers (#23)", {
   expect_warning(tableby(Group ~ Sex + time + dt, data = mdat, nsmall = -1))
   expect_warning(tableby(Group ~ Sex + time + dt, data = mdat, digits = -1))
 })
+
+
+dat <- data.frame(a = c("b", "b", "b", "a", "a", "a"), b = c("a", "b", "a", "b", "a", "b"), stringsAsFactors = FALSE)
+attr(dat$a, "stats") <- c("countpct", "Nmiss")
+test_that("11/10/2017: trouble with 'stats' attribute (#39)", {
+  expect_error(tableby(~ a + b, data = dat), NA)
+})

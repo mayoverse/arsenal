@@ -346,7 +346,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
       ## if no missings, and control says not to show missings,
       ## remove Nmiss stat fun
-      cat.stats <- if(length(attributes(modeldf[[2]])$stats)>0) {
+      cat.stats <- if(length(attributes(currcol)$stats)>0) {
         attributes(currcol)$stats
       } else {
         control$cat.stats
