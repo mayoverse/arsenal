@@ -41,7 +41,8 @@ Names will be matched appropriately.}
 \item{groupBy}{an optional character string specifying a variable(s) to use for grouping when calculating cumulative
 counts and percentages. \code{\link{summary.freqlist}} will also separate by grouping variable for printing.}
 
-\item{formula, data, subset, na.action, addNA, exclude, drop.unused.levels}{Arguments passed to \code{\link[stats]{xtabs}}.}
+\item{formula, data, subset, na.action, addNA, exclude, drop.unused.levels}{Arguments passed to \code{\link[stats]{xtabs}}. Note
+that \code{addNA=} only works in R >= 3.4.0.}
 
 \item{x}{an object of class \code{"freqlist"}}
 }
