@@ -352,6 +352,14 @@ test_that("Adding a title", {
   )
 })
 
+
+test_that("Formula method works", {
+  expect_identical(
+    capture.output(summary(freqlist(TAB.na, options = "include"))),
+    capture.output(summary(freqlist(~ trt + ethan, data = mdat, addNA = TRUE)))
+  )
+})
+
 ###########################################################################################################
 #### Reported bugs for freqlist
 ###########################################################################################################
