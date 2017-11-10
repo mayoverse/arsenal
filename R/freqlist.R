@@ -150,6 +150,7 @@ print.freqlist <- function(x, ...)
 {
   cat("Freqlist Object\n\n")
   cat(ncol(x$freqlist) - 4, " variables:\n", sep = "")
-  print(colnames(x$freqlist)[1:(ncol(x$freqlist) - 4)])
+  print(utils::head(colnames(x$freqlist), -4L))
   invisible(x)
 }
+
