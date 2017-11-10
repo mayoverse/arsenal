@@ -16,7 +16,8 @@
 #'   counts and percentages. \code{\link{summary.freqlist}} will also separate by grouping variable for printing.
 #' @param ... additional arguments. These are only used in the formula method, and are passed to
 #'   the table method.
-#' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}.
+#' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}. Note
+#'   that \code{addNA=} only works in R >= 3.4.0.
 #' @param x an object of class \code{"freqlist"}
 #' @return An object of class \code{"freqlist"} (invisibly for \code{print.freqlist})
 #' @seealso \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
@@ -133,6 +134,10 @@ freqlist.table <- function(object, sparse = FALSE, na.options = c("include", "sh
 freqlist.formula <- function(formula, data, subset, na.action, addNA, exclude, drop.unused.levels, ...)
 {
   Call <- match.call()
+  if(!missing(addNA) && "addNA" %nin% names(formals(stats::xtabs)))
+  {
+    stop("The 'addNA' argument only works in R >=3.4.0. Consider using addNA() in 'formula' instead.")
+  }
   indx <- match(c("formula", "data", "subset", "na.action", "addNA", "exclude", "drop.unused.levels"), names(Call), nomatch = 0)
   if(indx[1] == 0) stop("A formula argument is required.")
 

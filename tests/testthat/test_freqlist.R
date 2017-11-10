@@ -355,8 +355,8 @@ test_that("Adding a title", {
 
 test_that("Formula method works", {
   expect_identical(
-    capture.output(summary(freqlist(TAB.na, options = "include"))),
-    capture.output(summary(freqlist(~ trt + ethan, data = mdat, addNA = TRUE)))
+    capture.output(summary(freqlist(TAB.na, options = "include"), labelTranslations = c("Trt", "Ethan"))),
+    capture.output(summary(freqlist(~ trt + addNA(ethan), data = mdat), labelTranslations = c("Trt", "Ethan")))
   )
 })
 

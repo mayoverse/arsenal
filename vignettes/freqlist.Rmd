@@ -94,8 +94,13 @@ Instead of passing a pre-computed table to `freqlist()`, you can instead pass a 
 in turn passed to the `xtabs()` function. Additional `freqlist()` arguments are passed through the `...`
 to the `freqlist()` table method.
 
+Note that the `addNA=` argument was added to `xtabs()` in R 3.4.0. In previous versions,
+NAs have to be added to relevant columns using `addNA()`.
+
 ```{r}
-summary(freqlist(~ arm + sex + mdquality.s, data = mockstudy, addNA = TRUE))
+### this works in R >= 3.4.0
+# summary(freqlist(~ arm + sex + mdquality.s, data = mockstudy, addNA = TRUE))
+summary(freqlist(~ arm + sex + addNA(mdquality.s), data = mockstudy))
 ```
 
 # Rounding percentage digits or changing variable names for printing
@@ -203,7 +208,7 @@ tab.d1
 
 `xtabs()` is similar to `table()`, but uses a formula-based syntax. However, there is not an option for retaining NAs in the
 `xtabs()` function; instead, NAs must be added to each level of the factor where present using the `addNA()` function,
-or using the argument `addNA = TRUE`.
+or (in R >= 3.4.0) using the argument `addNA = TRUE`.
 
 ```{r}
 # without specifying addNA
