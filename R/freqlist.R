@@ -2,7 +2,7 @@
 #'
 #' Approximate the output from SAS's \code{PROC FREQ} procedure when using the \code{/list} option of the \code{TABLE} statement.
 #'
-#' @param tab an object of class \code{"table"} or class \code{"xtabs"}
+#' @param object An R object, usually of class \code{"table"} or class \code{"xtabs"}
 #' @param sparse a logical value indicating whether to keep rows with counts of zero. The default is \code{FALSE}.
 #' @param na.options a character string indicating how to handling missing values: 'include'
 #'   (include values with NAs in counts and percentages),
@@ -33,17 +33,24 @@ NULL
 
 #' @rdname freqlist
 #' @export
-freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude', 'remove'), digits = 2, labelTranslations = NULL, groupBy = NULL, ...)
+freqlist <- function(object, ...)
+{
+  UseMethod("freqlist")
+}
+
+#' @rdname freqlist
+#' @export
+freqlist.table <- function(object, sparse = FALSE, na.options = c('include', 'showexclude', 'remove'), digits = 2, labelTranslations = NULL, groupBy = NULL, ...)
 {
   na.options <- match.arg(na.options)
-  if (!is.table(tab)) stop("'tab' must be a table!")
-  if (min(dim(tab)) < 1) stop("table object has dimension of 0")
+  if (!is.table(object)) stop("'object' must be a table!")
+  if (min(dim(object)) < 1) stop("table object has dimension of 0")
   if (!is.logical(sparse)) stop("sparse must be TRUE or FALSE")
   if (length(digits) > 1) stop("digits must be a single numeric value")
   if ((digits %% 1) != 0 || (digits < 0)) stop("digits must be a positive whole number")
-  if (!is.null(groupBy) && any(groupBy %nin% names(dimnames(tab)))) stop("groupBy variable not found in table names")
+  if (!is.null(groupBy) && any(groupBy %nin% names(dimnames(object)))) stop("groupBy variable not found in table names")
   if (is.list(labelTranslations)) labelTranslations <- unlist(labelTranslations)
-  if (!is.null(labelTranslations) && (!is.character(labelTranslations) || length(labelTranslations) != length(dim(tab))))
+  if (!is.null(labelTranslations) && (!is.character(labelTranslations) || length(labelTranslations) != length(dim(object))))
     stop("length(labelTranslations) does not match table object dimensions")
 
   cumfun <- function(x) {
@@ -58,7 +65,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
     return(x2)
   }
   # create data frame from table object
-  tab.freq <- as.data.frame(tab)
+  tab.freq <- as.data.frame(object)
   oldnames <- utils::head(names(tab.freq), -1)
 
   internalTable <- function(data, na.options = na.options, digits = digits) {
