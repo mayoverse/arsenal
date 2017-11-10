@@ -125,6 +125,21 @@ freqlist.table <- function(object, sparse = FALSE, na.options = c('include', 'sh
   return(outlist)
 }
 
+#' @rdname freqlist
+#' @export
+freqlist.formula <- function(formula, data, subset, na.action, addNA, exclude, drop.unused.levels, ...)
+{
+  Call <- match.call()
+  indx <- match(c("formula", "data", "subset", "na.action", "addNA", "exclude", "drop.unused.levels"), names(Call), nomatch = 0)
+  if(indx[1] == 0) stop("A formula argument is required.")
+
+  temp.call <- Call[c(1, indx)]
+  temp.call[[1L]] <- quote(stats::xtabs)
+
+  tab <- eval(temp.call, parent.frame())
+  freqlist(tab, ...)
+}
+
 
 #' @rdname freqlist
 #' @export
