@@ -42,9 +42,10 @@ print.summary.modelsum <- function(x, ...)
 {
 
   #### format the digits and nsmall things ####
-  use.digits1 <- c("Nmiss", "N", "Nmiss2", "Nevents", "logLik", "AIC", "BIC", "null.deviance", "deviance",
-                   "df.residual", "df.null", "statistic.F", "dispersion", "statistic.sc")
-  use.digits2 <- c("estimate", "CI.lower.estimate", "CI.upper.estimate", "std.error", "statistic", "standard.estimate")
+  use.digits0 <- c("Nmiss", "N", "Nmiss2", "Nevents", "df.residual", "df.null") # integers, one-per-model
+  use.digits1 <- c("logLik", "AIC", "BIC", "null.deviance", "deviance",
+                   "statistic.F", "dispersion", "statistic.sc") # non-integers, one-per-model
+  use.digits2 <- c("estimate", "CI.lower.estimate", "CI.upper.estimate", "std.error", "statistic", "standard.estimate") # non-integers, many-per-model
 
   use.digits.ratio <- c("OR", "CI.lower.OR", "CI.upper.OR", "RR", "CI.lower.RR", "CI.upper.RR", "HR", "CI.lower.HR", "CI.upper.HR")
   use.digits.test <- c("p.value", "concordance", "std.error.concordance", "adj.r.squared", "p.value.sc",
@@ -52,6 +53,13 @@ print.summary.modelsum <- function(x, ...)
 
   df <- x$object
   cn <- colnames(df)
+
+  # Get rid of Nmiss if none missing
+  if("Nmiss" %in% cn && all(df$Nmiss == 0))
+  {
+    df$Nmiss <- NULL
+    cn <- colnames(df)
+  }
 
   df[cn %in% c(use.digits1, use.digits2)] <- lapply(df[cn %in% c(use.digits1, use.digits2)], format, digits = x$control$digits, nsmall = x$control$nsmall)
   df[cn %in% use.digits.ratio] <- lapply(df[cn %in% use.digits.ratio], format, digits = x$control$digits, nsmall = x$control$nsmall.ratio)
@@ -64,7 +72,7 @@ print.summary.modelsum <- function(x, ...)
     vec[idx] <- ""
     vec
   }
-  df[cn %in% c(use.digits1, use.digits.test)] <- lapply(df[cn %in% c(use.digits1, use.digits.test)], pick_first, idx = duplicated(df$model))
+  df[cn %in% c(use.digits0, use.digits1, use.digits.test)] <- lapply(df[cn %in% c(use.digits0, use.digits1, use.digits.test)], pick_first, idx = duplicated(df$model))
 
   #### Format if necessary ####
   if(!x$text) df$label <- ifelse(df$term.type == "Intercept", df$label, paste0("**", df$label, "**"))
