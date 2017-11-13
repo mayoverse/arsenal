@@ -276,24 +276,28 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
   for(eff in effCols) {
 
-    formulaStr <- paste0(yTerm, "~", paste(colnames(modeldf)[c(eff, adjCols)], collapse="+"))
+    formulaStr <- formulize(yTerm, colnames(modeldf)[c(eff, adjCols)])
+
+    currCol <- modeldf[[eff]]
+
+    xname <- colnames(modeldf)[eff]
+    labelEff <-  attributes(currCol)$label
+    if(is.null(labelEff))  labelEff <- xname
+
 
     ## placeholder for ordered, don't do any fitting
     ## y is ordered factor
     if (family == "ordered") {
-      xname <- colnames(modeldf)[eff]
       ## look into using same ordered test from tableby
-      fitList[[xname]] <- list(#coeff=summary(coeff(p(modeldf[,1]~ modeldf[,eff]),
-                               N=sum(!is.na(modeldf[,eff])),
+      modelGlance <- list()
+
+      fitList[[xname]] <- list(#coeff=summary(coeff(p(modeldf[,1]~ currCol),
                                family="ordered", label=xname)
     } else if (family == "gaussian") {
       ## issue warning if appears categorical
-      if(length(unique(modeldf[,1])) <= 5) {
+      if(length(unique(modeldf[[1]])) <= 5) {
         warning("Input family=gaussian, but dependent variable has 5 or fewer categories\n")
       }
-      xname <- colnames(modeldf)[eff]
-      labelEff <-  attributes(modeldf[,eff])$label
-      if(is.null(labelEff))  labelEff <- xname
 
       lmfit <- eval(call("lm", formula=formulaStr, data=basedf, x=TRUE, weights=weights), envir=tabenv)
   ## lmfit <- stats::lm(formulaStr, data=basedf, weights="weights", )
@@ -327,30 +331,15 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
       ## Continuous variable (numeric) ###############
       ## Note: Using tidy changes colname from 't value' to 'statistic'
-      modelGlance <- c(broom::glance(lmfit),
-                       N = sum(!is.na(modeldf[,eff])),
-                       Nmiss = sum(is.na(modeldf[,eff])),
-                       Nmiss2 = sum(is.na(modeldf[,eff]))
-                      )
+      modelGlance <- broom::glance(lmfit)
       names(modelGlance) <- gsub("p.value","p.value.F", names(modelGlance))
-      if(any(grepl("Nmiss2",control$gaussian.stats))) {
-        names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
-      }
       fitList[[xname]] <- list(coeff=coeffTidy,
                                family="gaussian",
                                xterms=xterms, label=labelEff,
-                               adjterms=adjterms, adjlabels=adjlabels,
-                               glance=modelGlance)
+                               adjterms=adjterms, adjlabels=adjlabels)
 
     } else if (family == "binomial" || family == "quasibinomial") {
       ## These families are used in glm
-
-      ## I think this is taken care of with the pROC:: below
-      ## require(pROC, quietly=TRUE,warn.conflicts=FALSE)
-
-      xname <- colnames(modeldf)[eff]
-      labelEff <-  attributes(modeldf[,eff])$label
-      if(is.null(labelEff))  labelEff <- xname
 
       fit <- eval(call("glm", formula=formulaStr, data=basedf, family=family, x=TRUE, weights=weights), envir=tabenv)
      # fit <- glm(formulaStr, data=basedf, family=family, x=TRUE, weights="weights")
@@ -388,27 +377,17 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       }
       ## tidy data frame has extra column for terms (row names), shift col index +1
       ## 'z value' changed to 'statistic'
-      modelGlance <- c(broom::glance(fit),
-                       concordance = pROC::auc(rocOut),
-                       N = sum(!is.na(modeldf[,eff])),
-                       Nmiss = sum(is.na(modeldf[,eff])),
-                       Nmiss2 = sum(is.na(modeldf[,eff]))
-                      )
+      modelGlance <- c(broom::glance(fit), concordance = pROC::auc(rocOut))
       fitList[[xname]] <- list(coeff=coeffTidy,
                                family=family,
                                xterms=xterms, label=labelEff,
-                               adjterms=adjterms, adjlabels=adjlabels,
-                               glance=modelGlance)
+                               adjterms=adjterms, adjlabels=adjlabels)
 
     } else if (family == "quasipoisson" || family == "poisson") {
       ## These families use glm
-      xname <- colnames(modeldf)[eff]
-      labelEff <-  attributes(modeldf[,eff])$label
-      if(is.null(labelEff))  labelEff <- xname
+
       fit <- eval(call("glm", formula=formulaStr, data=basedf, family=family, x=TRUE, weights=weights), envir=tabenv)
 
-##      fit <- glm(formulaStr, data=basedf, family=family, x=TRUE, weights=weights)
-      #coeffbeta <- summary(fit)$coef
       ## find out that broom:::tidy.lm allows conf.int and exp
       coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
       coeffRRTidy[grep("Intercept",coeffRRTidy$term),-1] <- NA
@@ -442,26 +421,16 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       ## tidy data frame has extra column for terms (row names), shift col index +1
       ## 'z value' changed to 'statistic'
 
-      modelGlance <- c(broom::glance(fit),
-                       N = sum(!is.na(modeldf[,eff])),
-                       Nmiss = sum(is.na(modeldf[,eff])),
-                       Nmiss2 = sum(is.na(modeldf[,eff]))
-                      )
+      modelGlance <- broom::glance(fit)
       fitList[[xname]] <- list(coeff=coeffTidy,
                             family=family,
                             xterms=xterms, label=labelEff,
-                            adjterms=adjterms, adjlabels=adjlabels,
-                            glance=modelGlance)
+                            adjterms=adjterms, adjlabels=adjlabels)
 
     } else if(family=="survival") {
 
-      xname <- colnames(modeldf)[eff]
-      labelEff <-  attributes(modeldf[,eff])$label
-      if(is.null(labelEff))  labelEff <- xname
-
       ph <- eval(call("coxph", formula=stats::as.formula(formulaStr), data=basedf, weights=weights), envir=tabenv)
 
-      #ph <- coxph(stats::as.formula(formulaStr), data=data, weights=weights) ## should be this:modeldf)
       ## use tidy to get both CIs, merge
       coeffHRTidy <- broom::tidy(ph, exponentiate=TRUE, conf.int=.95)
       coeffTidy <- broom::tidy(ph, exponentiate=FALSE, conf.int=.95)
@@ -494,21 +463,22 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       }
 
       ## work with fit to get hr, try summary(fit) as above
-      modelGlance <-  c(broom::glance(ph),
-                        N = sum(!is.na(modeldf[,eff])),
-                        Nmiss = sum(is.na(modeldf[,eff])),
-                        Nmiss2 = sum(is.na(modeldf[,eff]))
-                       )
+      modelGlance <-  broom::glance(ph)
 
       ## Survival (time to event) #######
       fitList[[xname]] <- list(coeff=coeffTidy,
                            family="survival",
                            xterms=xterms, label=labelEff,
-                           adjterms=adjterms, adjlabels=adjlabels,
-                           glance=modelGlance)
+                           adjterms=adjterms, adjlabels=adjlabels)
     }
 ## put xname and endpoint in glance, summary and as.data.frame to pull from there
-    fitList[[xname]]$glance <- c(fitList[[xname]]$glance, endpoint=yTerm, endlabel=yLabel, x=xname)
+    fitList[[xname]]$glance <- c(modelGlance,
+                                 N = sum(!is.na(currCol)),
+                                 Nmiss = sum(is.na(currCol)),
+                                 Nmiss2 = sum(is.na(currCol)),
+                                 endpoint=yTerm,
+                                 endlabel=yLabel,
+                                 x=xname)
 
   } # end for: eff
 
