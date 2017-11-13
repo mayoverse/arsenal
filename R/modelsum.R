@@ -327,8 +327,11 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
       ## Continuous variable (numeric) ###############
       ## Note: Using tidy changes colname from 't value' to 'statistic'
-      modelGlance <- c(broom::glance(lmfit),N=sum(!is.na(modeldf[,eff])),
-                               Nmiss=sum(is.na(modeldf[,eff])))
+      modelGlance <- c(broom::glance(lmfit),
+                       N = sum(!is.na(modeldf[,eff])),
+                       Nmiss = sum(is.na(modeldf[,eff])),
+                       Nmiss2 = sum(is.na(modeldf[,eff]))
+                      )
       names(modelGlance) <- gsub("p.value","p.value.F", names(modelGlance))
       if(any(grepl("Nmiss2",control$gaussian.stats))) {
         names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
@@ -385,11 +388,12 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       }
       ## tidy data frame has extra column for terms (row names), shift col index +1
       ## 'z value' changed to 'statistic'
-      modelGlance <- c(broom::glance(fit),concordance=pROC::auc(rocOut),
-                       N=sum(!is.na(modeldf[,eff])), Nmiss=sum(is.na(modeldf[,eff])))
-      if(any(grepl("Nmiss2",control$binomial.stats))) {
-        names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
-      }
+      modelGlance <- c(broom::glance(fit),
+                       concordance = pROC::auc(rocOut),
+                       N = sum(!is.na(modeldf[,eff])),
+                       Nmiss = sum(is.na(modeldf[,eff])),
+                       Nmiss2 = sum(is.na(modeldf[,eff]))
+                      )
       fitList[[xname]] <- list(coeff=coeffTidy,
                                family=family,
                                xterms=xterms, label=labelEff,
@@ -438,10 +442,11 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       ## tidy data frame has extra column for terms (row names), shift col index +1
       ## 'z value' changed to 'statistic'
 
-      modelGlance <- c(broom::glance(fit),N=sum(!is.na(modeldf[,eff])), Nmiss=sum(is.na(modeldf[,eff])))
-      if(any(grepl("Nmiss2",control$poisson.stats))) {
-        names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
-      }
+      modelGlance <- c(broom::glance(fit),
+                       N = sum(!is.na(modeldf[,eff])),
+                       Nmiss = sum(is.na(modeldf[,eff])),
+                       Nmiss2 = sum(is.na(modeldf[,eff]))
+                      )
       fitList[[xname]] <- list(coeff=coeffTidy,
                             family=family,
                             xterms=xterms, label=labelEff,
@@ -489,18 +494,18 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       }
 
       ## work with fit to get hr, try summary(fit) as above
-      modelGlance <-  c(broom::glance(ph),Nmiss=sum(is.na(modeldf[,eff])))
-      names(modelGlance) <- gsub("n$","N", gsub("nevent","Nevent", names(modelGlance)))
-      if(any(grepl("Nmiss2",control$survival.stats))) {
-        names(modelGlance) <- gsub("Nmiss","Nmiss2", names(modelGlance))
-      }
+      modelGlance <-  c(broom::glance(ph),
+                        N = sum(!is.na(modeldf[,eff])),
+                        Nmiss = sum(is.na(modeldf[,eff])),
+                        Nmiss2 = sum(is.na(modeldf[,eff]))
+                       )
+
       ## Survival (time to event) #######
       fitList[[xname]] <- list(coeff=coeffTidy,
                            family="survival",
                            xterms=xterms, label=labelEff,
                            adjterms=adjterms, adjlabels=adjlabels,
-                           glance=c(broom::glance(ph),
-                           N=sum(!is.na(modeldf[,eff])),Nmiss=sum(is.na(modeldf[,eff]))))
+                           glance=modelGlance)
     }
 ## put xname and endpoint in glance, summary and as.data.frame to pull from there
     fitList[[xname]]$glance <- c(fitList[[xname]]$glance, endpoint=yTerm, endlabel=yLabel, x=xname)
