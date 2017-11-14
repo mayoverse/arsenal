@@ -28,7 +28,7 @@ NULL
 #' @export
 summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL)
 {
-  object <- as_data_frame.modelsum(object, ..., labelTranslations = labelTranslations)
+  object <- as.data.frame(object, ..., labelTranslations = labelTranslations)
   structure(list(
     object = object,
     control = attr(object, "control"),
