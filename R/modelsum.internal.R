@@ -11,6 +11,7 @@
 #' @param object A \code{data.frame} resulting form evaluating \code{modelsum} formula.
 #' @param ... Other arguments, or a vector of indices for extracting.
 #' @param x,y A \code{modelsum} object.
+#' @param i A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.
 #' @param value A list of new labels.
 #' @return \code{na.modelsum} returns a subsetted version of \code{object} (with attributes).
 #' @name modelsum.internal

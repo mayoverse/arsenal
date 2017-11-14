@@ -15,7 +15,7 @@
 #' @param conf.level Numeric, giving the confidence level.
 #' @param binomial.stats,survival.stats,gaussian.stats,poisson.stats
 #'   Character vectors denoting which stats to show for the various model types.
-#' @param stats.labels A named list of labels for all the stats used above.
+#' @param stat.labels A named list of labels for all the stats used above.
 #' @param ... Other arguments (not in use at this time).
 #' @return A list with settings to be used within the \code{modelsum} function.
 #' @details

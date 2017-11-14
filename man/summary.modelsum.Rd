@@ -2,58 +2,34 @@
 % Please edit documentation in R/summary.modelsum.R
 \name{summary.modelsum}
 \alias{summary.modelsum}
+\alias{summary.modelsum}
+\alias{print.summary.modelsum}
 \title{Summarize a \code{modelsum} object.}
 \usage{
-\method{summary}{modelsum}(object, title = NULL, labelTranslations = NULL,
-  digits = NA, nsmall = NA, nsmall.ratio = NA, digits.test = NA,
-  show.intercept = NA, show.adjust = NA, text = FALSE,
-  removeBlanks = text, labelSize = 1.2, pfootnote = TRUE, ...)
+\method{summary}{modelsum}(object, ..., labelTranslations = NULL,
+  text = FALSE, title = NULL)
+
+\method{print}{summary.modelsum}(x, ...)
 }
 \arguments{
-\item{object}{The data defining the table to display}
+\item{object}{A \code{\link{modelsum}} object.}
 
-\item{title}{Title for the table, defaults to \code{NULL} (no title)}
+\item{...}{Other arguments; in \code{summary.modelsum}, these are passed to \code{\link{as.data.frame.modelsum}},
+and in \code{print.summary.modelsum}, these are not used.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
 output to be replaced in the pretty rendering of modelsum by the character
-string value for the named element of the list, e.g., 
-\code{list(age = "Age(years)", medsurv = "Median Survival")}. This applies to the statistic
-labels and the variable labels in the output.}
-
-\item{digits}{Maximum number of digits to display for floating point numbers.
-If \code{NA} (default), it uses the value from \code{object$control$digits}
-(whose default is 3, which would result in, e.g., 12.3, 1.23, 0.123, and 0.012).}
-
-\item{nsmall}{Minimum number of digits to the right of the decimal point to display for
-floating point numbers.  If \code{NA} (default), it uses the value from \code{object$control$nsmall}.
-Allowed non-\code{NA} values are \code{0 <= nsmall <= 20}.}
-
-\item{nsmall.ratio}{Minimum number of digits to the right of the decimal point to display
-for the ratio statistics (OR, HR, RR). If \code{NA} (default) it uses the value from
-\code{object$control$nsmall.ratio} (whose default is 2).
-Allowed values are \code{0 <= nsmall.ratio <= 20}.}
-
-\item{digits.test}{Number of digits to display for a p-value. Default is 5 (e.g. 0.12345).}
-
-\item{show.intercept}{Logical, denoting if the intercept should be shown for each line}
-
-\item{show.adjust}{Logical, denoting if the adjust variables should be shown for each line.}
+string value for the named element of the list, e.g.,
+\code{list(age = "Age(years)")}.}
 
 \item{text}{Logical, denoting whether to print out the text version.}
 
-\item{removeBlanks}{Logical, denoting if any blank lines should be removed from the output.
-Default is value of \code{"text"}, and will be set to \code{FALSE} if text is \code{FALSE}.}
+\item{title}{Title for the table, defaults to \code{NULL} (no title)}
 
-\item{labelSize}{Relative size difference between label column and other columns.
-Default is 1.2: label column ~20\% bigger than other columns}
-
-\item{pfootnote}{Logical denoting if a footnote should be added describing the test used
-to generate the p value.  Default is \code{FALSE}.}
-
-\item{...}{Other arguments (not implemented a this time).}
+\item{x}{An object of class \code{"summary.modelsum"}.}
 }
 \value{
-Results are cat'ed to stdout, and returned invisibly as a character vector.
+An object of class \code{"summary.modelsum"}
 }
 \description{
 Format the information in \code{object} as a table using Pandoc coding or plain text, and cat it to stdout.
@@ -62,5 +38,5 @@ Format the information in \code{object} as a table using Pandoc coding or plain 
 \code{\link{modelsum}}, \code{\link{print.modelsum}}, \code{\link{as.data.frame.modelsum}}
 }
 \author{
-Greg Dougherty
+Ethan Heinzen, based on code originally by Greg Dougherty
 }

@@ -4,23 +4,23 @@
 \alias{modelsum.control}
 \title{Control settings for \code{modelsum} function}
 \usage{
-modelsum.control(digits = 3, nsmall = NULL, nsmall.ratio = 2,
-  digits.test = 3, show.adjust = TRUE, show.intercept = TRUE,
+modelsum.control(digits = 3L, digits.ratio = 3L, digits.p = 3L,
+  format.p = TRUE, show.adjust = TRUE, show.intercept = TRUE,
   conf.level = 0.95, binomial.stats = c("OR", "CI.lower.OR", "CI.upper.OR",
   "p.value", "concordance", "Nmiss"), gaussian.stats = c("estimate",
   "std.error", "p.value", "adj.r.squared", "Nmiss"), poisson.stats = c("RR",
   "CI.lower.RR", "CI.upper.RR", "p.value", "concordance", "Nmiss"),
   survival.stats = c("HR", "CI.lower.HR", "CI.upper.HR", "p.value",
-  "concordance", "Nmiss"), ...)
+  "concordance", "Nmiss"), stat.labels = list(), ...)
 }
 \arguments{
-\item{digits}{Numeric, denoting the number of significant digits for beta coefficients and standard errors.}
+\item{digits}{Numeric, denoting the number of digits after the decimal point for beta coefficients and standard errors.}
 
-\item{nsmall}{Numeric, denoting the number of digits after the decimal point for beta coefficients and standard errors.}
+\item{digits.ratio}{Numeric, denoting the number of digits after the decimal point for ratios, e.g. OR, RR, HR.}
 
-\item{nsmall.ratio}{Numeric, denoting the number of digits after the decimal point for ratios, e.g. OR, RR, HR.}
+\item{digits.p}{Numeric, denoting the number of digits for p-values. See "Details", below.}
 
-\item{digits.test}{Numeric, denoting the number of significant digits for p-values.}
+\item{format.p}{Logical, denoting whether to format p-values. See "Details", below.}
 
 \item{show.adjust}{Logical, denoting whether to show adjustment terms.}
 
@@ -30,6 +30,8 @@ modelsum.control(digits = 3, nsmall = NULL, nsmall.ratio = 2,
 
 \item{binomial.stats, survival.stats, gaussian.stats, poisson.stats}{Character vectors denoting which stats to show for the various model types.}
 
+\item{stat.labels}{A named list of labels for all the stats used above.}
+
 \item{...}{Other arguments (not in use at this time).}
 }
 \value{
@@ -37,6 +39,12 @@ A list with settings to be used within the \code{modelsum} function.
 }
 \description{
 Control test and summary settings for \code{\link{modelsum}} function.
+}
+\details{
+If \code{format.p} is \code{FALSE}, \code{digits.p} denotes the number of significant digits shown. The
+  p-values will be in exponential notation if necessary. If \code{format.p} is \code{TRUE},
+  \code{digits.p} will determine the number of digits after the decimal point to show. If the p-value
+  is less than the resulting number of places, it will be formatted to show so.
 }
 \seealso{
 \code{\link{modelsum}}, \code{\link{summary.modelsum}}

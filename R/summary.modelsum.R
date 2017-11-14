@@ -7,7 +7,7 @@
 #'
 #' Format the information in \code{object} as a table using Pandoc coding or plain text, and cat it to stdout.
 #'
-#' @param object The data defining the table to display
+#' @param object A \code{\link{modelsum}} object.
 #' @param ... Other arguments; in \code{summary.modelsum}, these are passed to \code{\link{as.data.frame.modelsum}},
 #'   and in \code{print.summary.modelsum}, these are not used.
 #' @param labelTranslations A named list (or vector) where the name is the label in the
@@ -16,10 +16,11 @@
 #'   \code{list(age = "Age(years)")}.
 #' @param text Logical, denoting whether to print out the text version.
 #' @param title	Title for the table, defaults to \code{NULL} (no title)
+#' @param x An object of class \code{"summary.modelsum"}.
 #' @seealso \code{\link{modelsum}}, \code{\link{print.modelsum}}, \code{\link{as.data.frame.modelsum}}
 #' @return An object of class \code{"summary.modelsum"}
 #' @author Ethan Heinzen, based on code originally by Greg Dougherty
-#' @name modelsum
+#' @name summary.modelsum
 NULL
 #> NULL
 
