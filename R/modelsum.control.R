@@ -20,7 +20,7 @@
 #' @return A list with settings to be used within the \code{modelsum} function.
 #' @seealso \code{\link{modelsum}}, \code{\link{summary.modelsum}}
 #' @export
-modelsum.control <- function(digits = 3L, nsmall = 0L, nsmall.ratio = 0L, digits.test = 3L,
+modelsum.control <- function(digits = 3L, nsmall = 0L, nsmall.ratio = 0L, digits.test = 3L, format.test = FALSE,
             show.adjust = TRUE, show.intercept = TRUE, conf.level = 0.95,
             binomial.stats=c("OR","CI.lower.OR","CI.upper.OR","p.value", "concordance","Nmiss"),
             gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
@@ -151,7 +151,7 @@ modelsum.control <- function(digits = 3L, nsmall = 0L, nsmall.ratio = 0L, digits
   if(any(survival.stats == "CI.estimate")) {
     survival.stats <- unique(c(survival.stats[survival.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
-  return(list(digits=digits, digits.test=digits.test, nsmall=nsmall, nsmall.ratio=nsmall.ratio,
+  return(list(digits=digits, digits.test=digits.test, nsmall=nsmall, nsmall.ratio=nsmall.ratio, format.test = format.test,
               show.adjust=show.adjust, show.intercept=show.intercept, conf.level=conf.level,
               binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
               poisson.stats=poisson.stats, survival.stats=survival.stats, stat.labels = stat.labels))

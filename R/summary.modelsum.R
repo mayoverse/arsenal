@@ -42,14 +42,19 @@ print.summary.modelsum <- function(x, ...)
 {
 
   #### format the digits and nsmall things ####
-  use.digits0 <- c("Nmiss", "N", "Nmiss2", "Nevents", "df.residual", "df.null") # integers, one-per-model
+  # integers, one-per-model
+  use.digits0 <- c("Nmiss", "N", "Nmiss2", "Nevents", "df.residual", "df.null")
+
+  # non-integers, one-per-model
   use.digits1 <- c("logLik", "AIC", "BIC", "null.deviance", "deviance",
-                   "statistic.F", "dispersion", "statistic.sc") # non-integers, one-per-model
-  use.digits2 <- c("estimate", "CI.lower.estimate", "CI.upper.estimate", "std.error", "statistic", "standard.estimate") # non-integers, many-per-model
+                   "statistic.F", "dispersion", "statistic.sc", "concordance", "std.error.concordance",
+                   "adj.r.squared", "r.squared")
+
+  # non-integers, many-per-model
+  use.digits2 <- c("estimate", "CI.lower.estimate", "CI.upper.estimate", "std.error", "statistic", "standard.estimate")
 
   use.digits.ratio <- c("OR", "CI.lower.OR", "CI.upper.OR", "RR", "CI.lower.RR", "CI.upper.RR", "HR", "CI.lower.HR", "CI.upper.HR")
-  use.digits.test <- c("p.value", "concordance", "std.error.concordance", "adj.r.squared", "p.value.sc",
-                       "p.value.log", "p.value.wald", "r.squared", "p.value.F")
+  use.digits.test <- c("p.value.sc", "p.value.log", "p.value.wald", "p.value.F") #"p.value"
 
   df <- x$object
   cn <- colnames(df)
@@ -61,10 +66,21 @@ print.summary.modelsum <- function(x, ...)
     cn <- colnames(df)
   }
 
-  df[cn %in% c(use.digits1, use.digits2)] <- lapply(df[cn %in% c(use.digits1, use.digits2)], format, digits = x$control$digits, nsmall = x$control$nsmall)
-  df[cn %in% use.digits.ratio] <- lapply(df[cn %in% use.digits.ratio], format, digits = x$control$digits, nsmall = x$control$nsmall.ratio)
-  df[cn %in% use.digits.test] <- lapply(df[cn %in% use.digits.test], format, digits = x$control$digits.test)
+  df[cn %in% c(use.digits1, use.digits2)] <- lapply(df[cn %in% c(use.digits1, use.digits2)], formatC, digits = x$control$nsmall, format = "f")
+  df[cn %in% use.digits.ratio] <- lapply(df[cn %in% use.digits.ratio], formatC, digits = x$control$nsmall.ratio, format = "f")
+  df[cn %in% c("p.value", use.digits.test)] <- lapply(df[cn %in% c("p.value", use.digits.test)], formatC, digits = x$control$digits.test,
+                                                     format = if(x$control$format.test) "f" else "g")
 
+  if(x$control$format.test)
+  {
+    cutoff <- 10^(-x$control$digits.test)
+    fmt <- paste0("< ", format(cutoff, digits = x$control$digits.test, format = "f"))
+
+    for(tst in c("p.value", use.digits.test))
+    {
+      if(tst %in% cn) df[[tst]][x$object[[tst]] < cutoff] <- fmt
+    }
+  }
 
   #### don't show the same statistics more than once ####
   pick_first <- function(vec, idx)
@@ -72,7 +88,7 @@ print.summary.modelsum <- function(x, ...)
     vec[idx] <- ""
     vec
   }
-  df[cn %in% c(use.digits0, use.digits1, use.digits.test)] <- lapply(df[cn %in% c(use.digits0, use.digits1, use.digits.test)], pick_first, idx = duplicated(df$model))
+  df[cn %in% c(use.digits0, use.digits1)] <- lapply(df[cn %in% c(use.digits0, use.digits1, use.digits.test)], pick_first, idx = duplicated(df$model))
 
   #### Format if necessary ####
   if(!x$text) df$label <- ifelse(df$term.type == "Intercept", df$label, paste0("**", df$label, "**"))
