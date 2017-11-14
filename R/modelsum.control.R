@@ -6,10 +6,10 @@
 #'
 #' Control test and summary settings for \code{\link{modelsum}} function.
 #'
-#' @param digits Numeric, denoting the number of significant digits for beta coefficients and standard errors.
-#' @param digits.test Numeric, denoting the number of significant digits for p-values.
-#' @param nsmall Numeric, denoting the number of digits after the decimal point for beta coefficients and standard errors.
-#' @param nsmall.ratio Numeric, denoting the number of digits after the decimal point for ratios, e.g. OR, RR, HR.
+#' @param digits Numeric, denoting the number of digits after the decimal point for beta coefficients and standard errors.
+#' @param digits.ratio Numeric, denoting the number of digits after the decimal point for ratios, e.g. OR, RR, HR.
+#' @param digits.p Numeric, denoting the number of digits for p-values. See "Details", below.
+#' @param format.p Logical, denoting whether to format p-values. See "Details", below.
 #' @param show.adjust Logical, denoting whether to show adjustment terms.
 #' @param show.intercept Logical, denoting whether to show intercept terms.
 #' @param conf.level Numeric, giving the confidence level.
@@ -18,9 +18,14 @@
 #' @param stats.labels A named list of labels for all the stats used above.
 #' @param ... Other arguments (not in use at this time).
 #' @return A list with settings to be used within the \code{modelsum} function.
+#' @details
+#'   If \code{format.p} is \code{FALSE}, \code{digits.p} denotes the number of significant digits shown. The
+#'   p-values will be in exponential notation if necessary. If \code{format.p} is \code{TRUE},
+#'   \code{digits.p} will determine the number of digits after the decimal point to show. If the p-value
+#'   is less than the resulting number of places, it will be formatted to show so.
 #' @seealso \code{\link{modelsum}}, \code{\link{summary.modelsum}}
 #' @export
-modelsum.control <- function(digits = 3L, nsmall = 0L, nsmall.ratio = 0L, digits.test = 3L, format.test = FALSE,
+modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, format.p = TRUE,
             show.adjust = TRUE, show.intercept = TRUE, conf.level = 0.95,
             binomial.stats=c("OR","CI.lower.OR","CI.upper.OR","p.value", "concordance","Nmiss"),
             gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
@@ -35,22 +40,15 @@ modelsum.control <- function(digits = 3L, nsmall = 0L, nsmall.ratio = 0L, digits
     warning("digits must be >= 0. Set to default.")
     digits <- 3L
   }
-  if(!is.null(digits.test) && digits.test < 0L)
+  if(!is.null(digits.ratio) && digits.ratio < 0L)
   {
-    warning("digits.test must be >= 0. Set to default.")
-    digits <- 3L
+    warning("digits.ratio must be >= 0. Set to default.")
+    digits.ratio <- 3L
   }
-
-  # the nsmalls are NOT OK to be NULL.
-  if(is.null(nsmall) || nsmall < 0L)
+  if(!is.null(digits.p) && digits.p < 0L)
   {
-    warning("nsmall must be >= 0. Set to default.")
-    nsmall <- 3L
-  }
-  if(is.null(nsmall.ratio) || nsmall.ratio < 0L)
-  {
-    warning("nsmall.ratio must be >= 0. Set to default.")
-    nsmall.ratio <- 3L
+    warning("digits.p must be >= 0. Set to default.")
+    digits.p <- 3L
   }
 
   if(conf.level <= 0 || conf.level >= 1) {
@@ -151,7 +149,7 @@ modelsum.control <- function(digits = 3L, nsmall = 0L, nsmall.ratio = 0L, digits
   if(any(survival.stats == "CI.estimate")) {
     survival.stats <- unique(c(survival.stats[survival.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
-  return(list(digits=digits, digits.test=digits.test, nsmall=nsmall, nsmall.ratio=nsmall.ratio, format.test = format.test,
+  return(list(digits=digits, digits.ratio=digits.ratio, digits.p = digits.p, format.p = format.p,
               show.adjust=show.adjust, show.intercept=show.intercept, conf.level=conf.level,
               binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
               poisson.stats=poisson.stats, survival.stats=survival.stats, stat.labels = stat.labels))

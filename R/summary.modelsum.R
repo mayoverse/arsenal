@@ -54,7 +54,7 @@ print.summary.modelsum <- function(x, ...)
   use.digits2 <- c("estimate", "CI.lower.estimate", "CI.upper.estimate", "std.error", "statistic", "standard.estimate")
 
   use.digits.ratio <- c("OR", "CI.lower.OR", "CI.upper.OR", "RR", "CI.lower.RR", "CI.upper.RR", "HR", "CI.lower.HR", "CI.upper.HR")
-  use.digits.test <- c("p.value.sc", "p.value.log", "p.value.wald", "p.value.F") #"p.value"
+  use.digits.p <- c("p.value.sc", "p.value.log", "p.value.wald", "p.value.F") #"p.value"
 
   df <- x$object
   cn <- colnames(df)
@@ -66,17 +66,17 @@ print.summary.modelsum <- function(x, ...)
     cn <- colnames(df)
   }
 
-  df[cn %in% c(use.digits1, use.digits2)] <- lapply(df[cn %in% c(use.digits1, use.digits2)], formatC, digits = x$control$nsmall, format = "f")
-  df[cn %in% use.digits.ratio] <- lapply(df[cn %in% use.digits.ratio], formatC, digits = x$control$nsmall.ratio, format = "f")
-  df[cn %in% c("p.value", use.digits.test)] <- lapply(df[cn %in% c("p.value", use.digits.test)], formatC, digits = x$control$digits.test,
-                                                     format = if(x$control$format.test) "f" else "g")
+  df[cn %in% c(use.digits1, use.digits2)] <- lapply(df[cn %in% c(use.digits1, use.digits2)], formatC, digits = x$control$digits, format = "f")
+  df[cn %in% use.digits.ratio] <- lapply(df[cn %in% use.digits.ratio], formatC, digits = x$control$digits.ratio, format = "f")
+  df[cn %in% c("p.value", use.digits.p)] <- lapply(df[cn %in% c("p.value", use.digits.p)], formatC, digits = x$control$digits.p,
+                                                     format = if(x$control$format.p) "f" else "g")
 
-  if(x$control$format.test)
+  if(x$control$format.p)
   {
-    cutoff <- 10^(-x$control$digits.test)
-    fmt <- paste0("< ", format(cutoff, digits = x$control$digits.test, format = "f"))
+    cutoff <- 10^(-x$control$digits.p)
+    fmt <- paste0("< ", format(cutoff, digits = x$control$digits.p, format = "f"))
 
-    for(tst in c("p.value", use.digits.test))
+    for(tst in c("p.value", use.digits.p))
     {
       if(tst %in% cn) df[[tst]][x$object[[tst]] < cutoff] <- fmt
     }
@@ -88,7 +88,7 @@ print.summary.modelsum <- function(x, ...)
     vec[idx] <- ""
     vec
   }
-  df[cn %in% c(use.digits0, use.digits1)] <- lapply(df[cn %in% c(use.digits0, use.digits1, use.digits.test)], pick_first, idx = duplicated(df$model))
+  df[cn %in% c(use.digits0, use.digits1)] <- lapply(df[cn %in% c(use.digits0, use.digits1, use.digits.p)], pick_first, idx = duplicated(df$model))
 
   #### Format if necessary ####
   if(!x$text) df$label <- ifelse(df$term.type == "Intercept", df$label, paste0("**", df$label, "**"))
@@ -129,7 +129,7 @@ modelsum.translations <- list() ## adj.r.squared = "adj.rsq", sex = "Sex", sexM 
 #' @param title	Title for the table, defaults to \code{NULL} (no title)
 #' @param labelTranslations A named list (or vector) where the name is the label in the
 #'        output to be replaced in the pretty rendering of modelsum by the character
-#'        string value for the named element of the list, e.g., 
+#'        string value for the named element of the list, e.g.,
 #'        \code{list(age = "Age(years)", medsurv = "Median Survival")}. This applies to the statistic
 #'        labels and the variable labels in the output.
 #' @param digits Maximum number of digits to display for floating point numbers.
