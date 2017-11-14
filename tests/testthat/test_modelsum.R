@@ -282,3 +282,25 @@ test_that("08/01/2017: Beth Atkinson's subset problem", {
   expect_identical(capture.output(summary(modelsum(form, data = mockstudy, subset = idx, adjust = ~arm, family="binomial"), text = TRUE)),
                    capture.output(summary(modelsum(form, data = mockstudy, subset = sex == "Male", adjust = ~arm, family="binomial"), text = TRUE)))
 })
+
+
+#################################################################################################################################
+set.seed(88)
+df <- data.frame(
+  y = rnorm(1000),
+  x1 = rnorm(1000),
+  x2 = rnorm(1000),
+  x3 = rpois(1000, 2),
+  x5 = rnorm(1000),
+  x7 = sample(LETTERS[1:5], 1000, replace = TRUE),
+  x8 = runif(1000)
+)
+
+data(mockstudy)
+test_that("07/27/2017: Too many adjustment vars in as.data.frame.modelsum (#12)", {
+  expect_equal(nrow(as.data.frame(modelsum(y ~ x1, adjust = ~ x7 + x2 + x3 + x5 + x8, data = df))), 10L)
+})
+
+
+
+

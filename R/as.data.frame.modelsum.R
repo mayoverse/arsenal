@@ -23,7 +23,18 @@ get_the_estimate <- function(fitList, cntrl)
   out
 }
 
-as_data_frame.modelsum <- function(x, ..., labelTranslations = NULL)
+#' as.data.frame.modelsum
+#'
+#' Coerce a \code{\link{modelsum}} object to a \code{data.frame}.
+#'
+#' @param x A \code{\link{modelsum}} object.
+#' @param ... Arguments to pass to \code{\link{modelsum.control}}.
+#' @inheritParams summary.modelsum
+#' @seealso \code{\link{modelsum}}, \code{\link{summary.modelsum}}
+#' @return A \code{data.frame}.
+#' @author Ethan Heinzen, based on code originally by Greg Dougherty
+#' @export
+as.data.frame.modelsum <- function(x, ..., labelTranslations = NULL)
 {
   if(!is.null(labelTranslations)) labels(x) <- labelTranslations
 

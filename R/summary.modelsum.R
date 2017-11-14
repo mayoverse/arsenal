@@ -164,30 +164,6 @@ summary.modelsum <- function(object, title = NULL, labelTranslations = NULL, dig
 }
 
 
-#' as.data.frame.modelsum
-#'
-#' Build a data.frame from the modelsum object and parameters, and return it
-#'
-#' @param x An object of class \code{\link{modelsum}}.
-#' @inheritParams summary.modelsum
-#' @param pFootnote	Logical denoting if a footnote should be added describing the test used
-#' 		to generate the p value.  Default is \code{TRUE}.
-#' @return A data.frame holding the modelsum
-#' @export
-#'
-#' @author Greg Dougherty
-as.data.frame.modelsum <- function(x, ..., title = NULL, labelTranslations = NULL, digits = NA,
-									nsmall = NA, nsmall.ratio = NA, digits.test = NA, show.intercept = NA,
-									show.adjust = NA, pFootnote = TRUE)
-{
-  if(length(list(...)) > 0) warning("The '...' in this function has changed. Are you passing positional arguments?")
-	results <- makeSummary.modelsum(x, title, labelTranslations, digits, nsmall, nsmall.ratio,
-									 digits.test, show.intercept, show.adjust, FALSE, FALSE, 1.2, pFootnote)
-
-	return(to.data.frame.modelsum(x, results))
-}
-
-
 ## ' Format the information in object as a Table using Pandoc coding or plain text, & cat it to stdout
 ## '
 ## ' @inheritParams summary.modelsum
