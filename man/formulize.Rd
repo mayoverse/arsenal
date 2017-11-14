@@ -40,6 +40,9 @@ form <- formulize(2, 3:4, data = mockstudy)
 summary(lm(form, data = mockstudy))
 
 }
+\seealso{
+\code{\link[stats]{reformulate}}
+}
 \author{
 Ethan Heinzen
 }
