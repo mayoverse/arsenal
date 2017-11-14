@@ -108,24 +108,25 @@ labels.modelsum <- function(object, ...) {
 #' @rdname modelsum.internal
 #' @export
 'labels<-.modelsum' <- function(x, value) {
-  ## if the value vector is named, then assign the labels to
-  ## those names that match those in x and y
+
+  if(is.list(value)) value <- unlist(value)
+
   if(is.null(names(value))) {
-    stop("  labels for modelsum requires a named vector.\n")
+    stop("labels for modelsum requires a named vector.")
   }
   vNames <- names(value)
   used.idx <- NULL
-  for(k in 1:length(x$fits)) {
+  for(k in seq_along(x$fits)) {
     v2x.idx <- match(vNames, x$fits[[k]]$xterm)
     x2v.idx <- match(x$fits[[k]]$xterm, vNames)
-    if(sum(!is.na(x2v.idx))>0) {
+    if(sum(!is.na(x2v.idx)) > 0) {
       x$fits[[k]]$label[v2x.idx[!is.na(v2x.idx)]] <- value[x2v.idx]
       used.idx <- unique(c(used.idx, x2v.idx[!is.na(x2v.idx)]))
     }
     if(!is.null(x$fits[[k]]$adjterms)) {
       v2adj.idx <- match(vNames, x$fits[[k]]$adjterms)
       adj2v.idx <- match(x$fits[[k]]$adjterms,vNames)
-      if(sum(!is.na(adj2v.idx))>0) {
+      if(sum(!is.na(adj2v.idx)) > 0) {
         x$fits[[k]]$adjlabels[v2adj.idx[!is.na(v2adj.idx)]] <- value[adj2v.idx[!is.na(adj2v.idx)]]
         used.idx <- unique(c(used.idx, adj2v.idx[!is.na(adj2v.idx)]))
       }
@@ -135,12 +136,11 @@ labels.modelsum <- function(object, ...) {
       x$fits[[k]]$glance$endlabel <- value[y2v.idx]
       used.idx <- unique(c(used.idx, y2v.idx))
     }
-
   }
 
-  if(any(!((1:length(value)) %in% used.idx))) {
-    warning("Named value(s): ", paste(vNames[!((1:length(value)) %in% used.idx)],collapse=", "),
-            " not matched in modelsum object \n")
+  if(any(seq_along(value) %nin% used.idx)) {
+    warning("Named value(s): ", paste(vNames[seq_along(value) %nin% used.idx], collapse=", "),
+            " not matched in modelsum object")
   }
 
   ## return modelsum object with updated labels
