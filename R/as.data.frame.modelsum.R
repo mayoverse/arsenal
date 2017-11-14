@@ -32,6 +32,10 @@ as_data_frame.modelsum <- function(x, ..., labelTranslations = NULL)
 
   out <- do.call(rbind, Map(cbind, model = seq_along(x$fits), lapply(x$fits, get_the_estimate, cntrl = control))) # this step is almost magic
   out <- out[out$term.type %in% c("Term", if(control$show.intercept) "Intercept", if(control$show.adjust) "Adjuster"), , drop = FALSE]
+
+  # Get rid of Nmiss if none missing
+  if("Nmiss" %in% colnames(out) && all(out$Nmiss == 0)) out$Nmiss <- NULL
+
   row.names(out) <- NULL
 
   attr(out, "control") <- control

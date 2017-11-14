@@ -59,13 +59,6 @@ print.summary.modelsum <- function(x, ...)
   df <- x$object
   cn <- colnames(df)
 
-  # Get rid of Nmiss if none missing
-  if("Nmiss" %in% cn && all(df$Nmiss == 0))
-  {
-    df$Nmiss <- NULL
-    cn <- colnames(df)
-  }
-
   df[cn %in% c(use.digits1, use.digits2)] <- lapply(df[cn %in% c(use.digits1, use.digits2)], formatC, digits = x$control$digits, format = "f")
   df[cn %in% use.digits.ratio] <- lapply(df[cn %in% use.digits.ratio], formatC, digits = x$control$digits.ratio, format = "f")
   df[cn %in% c("p.value", use.digits.p)] <- lapply(df[cn %in% c("p.value", use.digits.p)], formatC, digits = x$control$digits.p,
