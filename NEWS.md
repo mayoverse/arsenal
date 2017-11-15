@@ -51,7 +51,8 @@ Smaller changes:
 
     - `freqlist()` will no longer issue a warning about using the deprecated `varnames=` argument.
 
-    - `print.freqlist()` has been made slightly more concise. The printed output shouldn't change.
+    - `print.freqlist()` has been made slightly more concise. The only change to the printed output
+      is making "variables" singular ("variable") when only one variable is present.
 
 * `modelsum()`:
 

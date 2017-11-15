@@ -154,7 +154,7 @@ freqlist.formula <- function(formula, data, subset, na.action, addNA, exclude, d
 print.freqlist <- function(x, ...)
 {
   cat("Freqlist Object\n\n")
-  cat(ncol(x$freqlist) - 4, " variables:\n", sep = "")
+  cat(ncol(x$freqlist) - 4, " variable", if(ncol(x$freqlist) != 5) "s", ":\n", sep = "")
   print(utils::head(colnames(x$freqlist), -4L))
   invisible(x)
 }
