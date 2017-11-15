@@ -218,7 +218,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
   if(attributes(Terms)$response == 0) {
     ## no response, create a dummy one
-    modeldf <- data.frame(Total="Overall",modeldf, stringsAsFactors=FALSE)
+    modeldf <- data.frame(Total="Overall",modeldf, stringsAsFactors=FALSE, check.names = FALSE)
     control$total <- FALSE
     control$test <- FALSE
   }
