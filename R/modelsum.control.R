@@ -34,6 +34,10 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
             stat.labels = list(), ...)
 {
 
+  if("nsmall" %in% names(list(...))) .Deprecated(msg = "Using 'nsmall = ' is deprecated. Use 'digits = ' instead.")
+  if("nsmall.ratio" %in% names(list(...))) .Deprecated(msg = "Using 'nsmall.ratio = ' is deprecated. Use 'digits.ratio = ' instead.")
+  if("digits.test" %in% names(list(...))) .Deprecated(msg = "Using 'digits.test = ' is deprecated. Use 'digits.p = ' instead.")
+
   # digits and digits.test are OK to be NULL. See ?format
   if(!is.null(digits) && digits < 0L)
   {

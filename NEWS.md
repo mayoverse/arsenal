@@ -33,7 +33,7 @@ Major changes:
         * `labelTranslations=` no longer accepts labels for the statistics columns.
           Use `modelsum.control(stat.labels=)` for this instead.
 
-    - The arguments to `modelsum.control()` have changed. Warnings will not be issued for using old arguments.
+    - The arguments to `modelsum.control()` have changed. Warnings will be issued for using old arguments.
     
         * `nsmall=` has been removed. `digits=` takes its place.
         

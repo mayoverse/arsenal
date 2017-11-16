@@ -31,6 +31,7 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, d
   if(!is.logical(single) || length(single) != 1) stop("'single' must be TRUE or FALSE")
   if(!is.null(labelTranslations)) labels(object) <- labelTranslations
   if(!is.logical(dupLabels) || length(dupLabels) != 1) stop("'dupLabels' must be TRUE or FALSE")
+  if("caption" %in% names(list(...))) .Defunct(msg = "Using 'caption = ' is defunct. Use 'title = ' instead.")
 
   fmtdups <- function(tab)
   {
