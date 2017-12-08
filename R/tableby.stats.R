@@ -263,7 +263,7 @@ countpct <- function(x, levels=sort(unique(x)), na.rm=TRUE, weights=rep(1, lengt
 
   df <- data.frame(count=as.vector(wtbl$sum.of.weights),
              pct=100*as.vector(wtbl$sum.of.weights)/sum(wtbl$sum.of.weights),
-             row.names=if(length(wtbl$x)==length(levels)) levels else if (is.null(names(wtbl$sum.of.weights))) wtbl$x else names(wtbl$sum.of.weights))
+             row.names=if(length(wtbl$x)==length(levels)) levels else wtbl$x)
 
   ## make sure all levels are in df. If not, add them and re-order.
   if(nrow(df) < length(levels) ) {

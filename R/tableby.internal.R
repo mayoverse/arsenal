@@ -268,11 +268,10 @@ wtd.table <- function(x, weights=NULL, type=c("list","table"), normwt=FALSE, na.
             stop("program logic error")
         if(type == "table")
             return(weights)
-        x <- all.is.numeric(names(weights), "vector")
+        x <- names(weights)
         if(isdate)
             attributes(x) <- c(attributes(x), ax)
-        names(weights) <- NULL
-        return(list(x = x, sum.of.weights = weights))
+        return(list(x = x, sum.of.weights = unname(weights)))
     }
     xx <- x
     if(isdate)
@@ -395,18 +394,7 @@ testDateTime <- function(x, what = c("either", "both", "timeVaries")) {
         } else length(unique(format(x, "%H%M%S"))) > 1
     })
 }
-all.is.numeric <- function(x, what = c("test", "vector"), extras = c(".", "NA")) {
-    what <- match.arg(what)
-    x <- sub("[[:space:]]+$", "", x)
-    x <- sub("^[[:space:]]+", "", x)
-    xs <- x[x %nin% c("", extras)]
-    isnum <- suppressWarnings(!any(is.na(as.numeric(xs))))
-    if(what == "test")
-        isnum
-    else if(isnum)
-        as.numeric(x)
-    else x
-}
+
 
 ########## Note from Ethan: if we want these doc pages, just replace all instances of "## '" with "#'"
 

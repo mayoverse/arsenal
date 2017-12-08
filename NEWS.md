@@ -1,4 +1,4 @@
-# arsenal 0.6.0.9000 (soon to be arsenal 1.0.0)
+# arsenal 0.6.1.9000 (soon to be arsenal 1.0.0)
 
 **This is a non-backwards-compatible update.**
 
@@ -73,6 +73,13 @@ Smaller changes:
 * Documentation and vignettes have been re-reviewed and updated where appropriate.
 
 * Tests have been updated to reflect major changes.
+
+# arsenal 0.6.1
+
+This is a patch to fix an error appearing with R-devel. We anticipate releasing v1.0.0 soon, which
+will not be backwards-compatible.
+
+* Re-fix trailing whitespace problem in tableby. (#3)
 
 # arsenal 0.6.0
 
