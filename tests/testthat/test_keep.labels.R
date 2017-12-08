@@ -72,18 +72,15 @@ test_that("Keep labels in tableby", {
 test_that("Keep labels in modelsum", {
   expect_identical(
     capture.output(summary(modelsum(age ~ sex + arm, data = mockstudy, subset = age < 80), text = TRUE)),
-    c(""                                                                                  ,
-      "----------------------------------------------------------------------------------",
-      "                    estimate        std.error       p.value         adj.r.squared ",
-      "------------------ --------------- --------------- --------------- ---------------",
-      "(Intercept)        59.8            0.372           <0.001          0.002          ",
-      "sex Female         -1.1            0.595           0.071           .              ",
-      "(Intercept)        59.3            0.542           <0.001          -0.001         ",
-      "Treatment Arm F:   0.34            0.691           0.623           .              ",
-      "FOLFOX                                                                            ",
-      "Treatment Arm G:   -0.063          0.792           0.936           .              ",
-      "IROX                                                                              ",
-      "----------------------------------------------------------------------------------"
+    c(""                                                                       ,
+      ""                                                                       ,
+      "|                        |estimate |std.error |p.value |adj.r.squared |",
+      "|:-----------------------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept)             |59.850   |0.372     |< 0.001 |0.002         |",
+      "|sex Female              |-1.076   |0.595     |0.071   |              |",
+      "|(Intercept)             |59.290   |0.542     |< 0.001 |-0.001        |",
+      "|Treatment Arm F: FOLFOX |0.340    |0.691     |0.623   |              |",
+      "|Treatment Arm G: IROX   |-0.063   |0.792     |0.936   |              |"
     )
   )
 })

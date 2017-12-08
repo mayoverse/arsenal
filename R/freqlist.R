@@ -2,18 +2,22 @@
 #'
 #' Approximate the output from SAS's \code{PROC FREQ} procedure when using the \code{/list} option of the \code{TABLE} statement.
 #'
-#' @param tab an object of class \code{"table"} or class \code{"xtabs"}
-#' @param sparse a logical value indicating whether to keep rows with counts of zero. The default is \code{FALSE}.
-#' @param na.options a character string indicating how to handling missing values: 'include'
+#' @param object An R object, usually of class \code{"table"} or class \code{"xtabs"}
+#' @param sparse a logical value indicating whether to keep rows with counts of zero.
+#'   The default is \code{FALSE} (drop zero-count rows).
+#' @param na.options a character string indicating how to handling missing values: \code{"include"}
 #'   (include values with NAs in counts and percentages),
-#'   'showexclude' (show NAs but exclude from cumulative counts and all percentages),
-#'   'remove' (remove values with NAs); default is 'include'
+#'   \code{"showexclude"} (show NAs but exclude from cumulative counts and all percentages),
+#'   \code{"remove"} (remove values with NAs); default is \code{"include"}.
 #' @param digits a single number indicating the number of digits for percentages (passed to \code{\link{round}}; default is 2.
 #' @param labelTranslations an optional character string (or list) of labels to use for variable levels when summarizing.
 #'   Names will be matched appropriately.
 #' @param groupBy an optional character string specifying a variable(s) to use for grouping when calculating cumulative
 #'   counts and percentages. \code{\link{summary.freqlist}} will also separate by grouping variable for printing.
-#' @param ... additional arguments passed to the \code{\link[knitr]{kable}} function
+#' @param ... additional arguments. These are only used in the formula method, and are passed to
+#'   the table method.
+#' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}. Note
+#'   that \code{addNA=} only works in R >= 3.4.0.
 #' @param x an object of class \code{"freqlist"}
 #' @return An object of class \code{"freqlist"} (invisibly for \code{print.freqlist})
 #' @seealso \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
@@ -33,20 +37,25 @@ NULL
 
 #' @rdname freqlist
 #' @export
-freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude', 'remove'), digits = 2, labelTranslations = NULL, groupBy = NULL, ...)
+freqlist <- function(object, ...)
+{
+  UseMethod("freqlist")
+}
+
+#' @rdname freqlist
+#' @export
+freqlist.table <- function(object, sparse = FALSE, na.options = c("include", "showexclude", "remove"), digits = 2, labelTranslations = NULL, groupBy = NULL, ...)
 {
   na.options <- match.arg(na.options)
-  if (!is.table(tab)) stop("'tab' must be a table!")
-  if (min(dim(tab)) < 1) stop("table object has dimension of 0")
+  if (!is.table(object)) stop("'object' must be a table!")
+  if (min(dim(object)) < 1) stop("table object has dimension of 0")
   if (!is.logical(sparse)) stop("sparse must be TRUE or FALSE")
   if (length(digits) > 1) stop("digits must be a single numeric value")
   if ((digits %% 1) != 0 || (digits < 0)) stop("digits must be a positive whole number")
-  if (!is.null(groupBy) && any(groupBy %nin% names(dimnames(tab)))) stop("groupBy variable not found in table names")
+  if (!is.null(groupBy) && any(groupBy %nin% names(dimnames(object)))) stop("groupBy variable not found in table names")
   if (is.list(labelTranslations)) labelTranslations <- unlist(labelTranslations)
-  if (!is.null(labelTranslations) && (!is.character(labelTranslations) || length(labelTranslations) != length(dim(tab))))
+  if (!is.null(labelTranslations) && (!is.character(labelTranslations) || length(labelTranslations) != length(dim(object))))
     stop("length(labelTranslations) does not match table object dimensions")
-
-  if("varnames" %in% names(list(...))){warning("The 'varnames' argument has been deprecated. Please use 'labelTranslations' instead.")}
 
   cumfun <- function(x) {
     # function to create a cumulative sum retaining NAs, but omitting in sum function
@@ -60,7 +69,7 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
     return(x2)
   }
   # create data frame from table object
-  tab.freq <- as.data.frame(tab)
+  tab.freq <- as.data.frame(object)
   oldnames <- utils::head(names(tab.freq), -1)
 
   internalTable <- function(data, na.options = na.options, digits = digits) {
@@ -120,13 +129,33 @@ freqlist <- function(tab, sparse = FALSE, na.options = c('include', 'showexclude
   return(outlist)
 }
 
+#' @rdname freqlist
+#' @export
+freqlist.formula <- function(formula, data, subset, na.action, addNA, exclude, drop.unused.levels, ...)
+{
+  Call <- match.call()
+  if(!missing(addNA) && "addNA" %nin% names(formals(stats::xtabs)))
+  {
+    stop("The 'addNA' argument only works in R >=3.4.0. Consider using addNA() in 'formula' instead.")
+  }
+  indx <- match(c("formula", "data", "subset", "na.action", "addNA", "exclude", "drop.unused.levels"), names(Call), nomatch = 0)
+  if(indx[1] == 0) stop("A formula argument is required.")
+
+  temp.call <- Call[c(1, indx)]
+  temp.call[[1L]] <- quote(stats::xtabs)
+
+  tab <- eval(temp.call, parent.frame())
+  freqlist(tab, ...)
+}
+
 
 #' @rdname freqlist
 #' @export
 print.freqlist <- function(x, ...)
 {
   cat("Freqlist Object\n\n")
-  cat(ncol(x$freqlist) - 4, " variables:\n", sep = "")
-  print(colnames(x$freqlist)[1:(ncol(x$freqlist) - 4)])
+  cat(ncol(x$freqlist) - 4, " variable", if(ncol(x$freqlist) != 5) "s", ":\n", sep = "")
+  print(utils::head(colnames(x$freqlist), -4L))
   invisible(x)
 }
+

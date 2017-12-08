@@ -1,3 +1,79 @@
+# arsenal 0.6.1.9000 (soon to be arsenal 1.0.0)
+
+**This is a non-backwards-compatible update.**
+
+Major changes:
+
+* `freqlist()`:
+
+    - `freqlist()` is now an S3 generic. (#35)
+      
+    - The first argument to `freqlist()` has changed from `tab=` to `object=`, for S3 consistency. (#35)
+
+    - `freqlist.formula()` was implemented, piggybacking off of `stats::xtabs()`. (#35)
+    
+    - The `title=` argument was added to `summary.freqlist()`. Passing `caption=` through the dots to `knitr::kable()`
+      will now throw an error. (#34)
+
+* `modelsum()`:
+
+    - `as.data.frame.modelsum()` has been totally overhauled. It now gives exact
+      values instead of formatted values.
+
+    - `summary.modelsum()` has been totally overhauled.
+
+        * Most arguments are no longer named, but passed through the dots.
+    
+        * It now returns an object, abusing in the process `as.data.frame.modelsum()`.
+          `print.summary.modelsum()` prints the resulting object. (#37)
+        
+        * `print.summary.modelsum()` now uses `knitr::kable()` to print results, instead of internal functions.
+          As such, non-exported helper functions have all been removed.
+    
+        * `labelTranslations=` no longer accepts labels for the statistics columns.
+          Use `modelsum.control(stat.labels=)` for this instead.
+
+    - The arguments to `modelsum.control()` have changed. Warnings will be issued for using old arguments.
+    
+        * `nsmall=` has been removed. `digits=` takes its place.
+        
+        * `nsmall.ratio=` and `digits.test=` have been renamed to `digits.ratio=` and `digits.p=`, respectively.
+        
+        * `format.p=` has been added, to turn off formatting of p-values.
+        
+        * `stat.labels=` has been added, to label the statistics columns.
+    
+    - `"[.modelsum"()` now has a named argument, and accepts character, numeric, and logical subscripts.
+
+Smaller changes:
+
+* `freqlist()`:
+
+    - `freqlist()` will no longer issue a warning about using the deprecated `varnames=` argument.
+
+    - `print.freqlist()` has been made slightly more concise. The only change to the printed output
+      is making "variables" singular ("variable") when only one variable is present.
+
+* `modelsum()`:
+
+    - `modelsum()` has been made slightly more concise, and also now uses `formulize()`.
+    
+    - "Nmiss2" has been added to the `modelsum()` object and no longer replaces "Nmiss".
+    
+    - `as.data.frame.modelsum()` no longer turns "<0.001" into `NA`. (#31)
+    
+    - `as.data.frame.modelsum()` no longer breaks if there are too many adjustment variables. (#12)
+    
+    - `summary.modelsum()` now has working labels for factors. (#13)
+    
+    - `"labels<-.modelsum"()` has been tweaked slightly. The results shouldn't change.
+    
+    - `print.modelsum()` has been fixed to show its y-variable. (#33)
+    
+* Documentation and vignettes have been re-reviewed and updated where appropriate.
+
+* Tests have been updated to reflect major changes.
+
 # arsenal 0.6.1
 
 This is a patch to fix an error appearing with R-devel. We anticipate releasing v1.0.0 soon, which
@@ -7,9 +83,9 @@ will not be backwards-compatible.
 
 # arsenal 0.6.0
 
-* Update `freqlist()` to be more efficient. (#20)
+* Updated `freqlist()` to be more efficient. (#20)
 
-* Allow named labels for `freqlist()`.
+* `freqlist()` now allows named labels.
 
 * Fixed one-sided formula detection in `tableby()` when used with `formulize()`. (#21)
 
@@ -21,7 +97,7 @@ will not be backwards-compatible.
 
 * Fixed a bug in `tableby()` and `modelsum()` when calling them without loading the package. (#25)
 
-* Allow `nsmall = ` and `digits = ` to be 0, for rounding to integers. (#23)
+* Allowed `nsmall = ` and `digits = ` to be 0, for rounding to integers. (#23)
 
 * Added `yaml()` function to use with `write2()`. (#28)
 

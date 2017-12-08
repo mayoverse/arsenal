@@ -5,6 +5,7 @@
 #' @param y,x,... Character vectors to be collapsed (by \code{"+"}) and put left-to-right in the formula.
 #'   If \code{data} is supplied, these can also be numeric, denoting which column name to use. See examples.
 #' @param data An R object with non-null column names.
+#' @seealso \code{\link[stats]{reformulate}}
 #' @author Ethan Heinzen
 #' @examples
 #' ## two-sided formula

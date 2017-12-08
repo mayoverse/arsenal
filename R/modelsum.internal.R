@@ -11,6 +11,7 @@
 #' @param object A \code{data.frame} resulting form evaluating \code{modelsum} formula.
 #' @param ... Other arguments, or a vector of indices for extracting.
 #' @param x,y A \code{modelsum} object.
+#' @param i A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.
 #' @param value A list of new labels.
 #' @return \code{na.modelsum} returns a subsetted version of \code{object} (with attributes).
 #' @name modelsum.internal
@@ -58,20 +59,30 @@ lm.beta  <- function (MOD) {
 ## in future, maybe allow subsetting by names
 #' @rdname modelsum.internal
 #' @export
-"[.modelsum" <- function(x, ...) {
-   newx <- x
-   if (length(list(...)) != 1) {
-     stop ("Only 1 subscript allowed")
-   }
-   ## index vector
-   idx <- (1:length(x$fits))[..1]
-   if(all(is.na(idx))) {
-     newx$fits <- x$fits[...]
-   } else {
-     newx$fits <- x$fits[idx]
-   }
-   return(newx)
- }
+"[.modelsum" <- function(x, i) {
+  if(missing(i)) return(x)
+  newx <- x
+
+  if(is.character(i) && any(i %nin% names(x$fits)))
+  {
+    tmp <- paste0(i[i %nin% names(x$fits)], collapse = ", ")
+    warning(paste0("Some indices not found in modelsum object: ", tmp))
+    i <- i[i %in% names(x$fits)]
+  } else if(is.numeric(i) && any(i %nin% seq_along(x$fits)))
+  {
+    tmp <- paste0(i[i %nin% seq_along(x$fits)], collapse = ", ")
+    warning(paste0("Some indices not found in modelsum object: ", tmp))
+    i <- i[i %in% seq_along(x$fits)]
+  } else if(is.logical(i) && length(i) != length(x$fits))
+  {
+    stop("Logical vector index not the right length.")
+  }
+
+  if(length(i) == 0 || anyNA(i)) stop("Indices must have nonzero length and no NAs.")
+
+  newx$fits <- x$fits[i]
+  return(newx)
+}
 
 
 ## retrieve variable labels (y, x-vec) from tableby object
@@ -97,24 +108,25 @@ labels.modelsum <- function(object, ...) {
 #' @rdname modelsum.internal
 #' @export
 'labels<-.modelsum' <- function(x, value) {
-  ## if the value vector is named, then assign the labels to
-  ## those names that match those in x and y
+
+  if(is.list(value)) value <- unlist(value)
+
   if(is.null(names(value))) {
-    stop("  labels for modelsum requires a named vector.\n")
+    stop("labels for modelsum requires a named vector.")
   }
   vNames <- names(value)
   used.idx <- NULL
-  for(k in 1:length(x$fits)) {
+  for(k in seq_along(x$fits)) {
     v2x.idx <- match(vNames, x$fits[[k]]$xterm)
     x2v.idx <- match(x$fits[[k]]$xterm, vNames)
-    if(sum(!is.na(x2v.idx))>0) {
+    if(sum(!is.na(x2v.idx)) > 0) {
       x$fits[[k]]$label[v2x.idx[!is.na(v2x.idx)]] <- value[x2v.idx]
       used.idx <- unique(c(used.idx, x2v.idx[!is.na(x2v.idx)]))
     }
     if(!is.null(x$fits[[k]]$adjterms)) {
       v2adj.idx <- match(vNames, x$fits[[k]]$adjterms)
       adj2v.idx <- match(x$fits[[k]]$adjterms,vNames)
-      if(sum(!is.na(adj2v.idx))>0) {
+      if(sum(!is.na(adj2v.idx)) > 0) {
         x$fits[[k]]$adjlabels[v2adj.idx[!is.na(v2adj.idx)]] <- value[adj2v.idx[!is.na(adj2v.idx)]]
         used.idx <- unique(c(used.idx, adj2v.idx[!is.na(adj2v.idx)]))
       }
@@ -124,12 +136,11 @@ labels.modelsum <- function(object, ...) {
       x$fits[[k]]$glance$endlabel <- value[y2v.idx]
       used.idx <- unique(c(used.idx, y2v.idx))
     }
-
   }
 
-  if(any(!((1:length(value)) %in% used.idx))) {
-    warning("Named value(s): ", paste(vNames[!((1:length(value)) %in% used.idx)],collapse=", "),
-            " not matched in modelsum object \n")
+  if(any(seq_along(value) %nin% used.idx)) {
+    warning("Named value(s): ", paste(vNames[seq_along(value) %nin% used.idx], collapse=", "),
+            " not matched in modelsum object")
   }
 
   ## return modelsum object with updated labels

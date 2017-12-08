@@ -11,7 +11,7 @@
 \usage{
 na.modelsum(object, ...)
 
-\method{[}{modelsum}(x, ...)
+\method{[}{modelsum}(x, i)
 
 \method{labels}{modelsum}(object, ...)
 
@@ -25,6 +25,8 @@ na.modelsum(object, ...)
 \item{...}{Other arguments, or a vector of indices for extracting.}
 
 \item{x, y}{A \code{modelsum} object.}
+
+\item{i}{A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.}
 
 \item{value}{A list of new labels.}
 }
