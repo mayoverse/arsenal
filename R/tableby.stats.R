@@ -212,7 +212,7 @@ medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   if(na.rm & length(x)==sum(is.na(x))) {
     return(c(NA,NA,NA))
   }
-  wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, .75), na.rm=na.rm, ...)
+  wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm, ...)
 }
 
 ## Inner-quartile range has a function IQR in R, but a wrapper
@@ -227,6 +227,8 @@ Nmiss <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 
 ## Nmiss2 make similar, but in tableby, always keep nmiss,
 ## even if there are no missings
+#' @rdname tableby.stats
+#' @export
 Nmiss2 <- Nmiss
 
 ## count of complete samples

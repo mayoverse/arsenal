@@ -639,3 +639,51 @@ test_that("09/13/2017: Peter Martin and rounding to integers (#23)", {
   expect_warning(tableby(Group ~ Sex + time + dt, data = mdat, nsmall = -1))
   expect_warning(tableby(Group ~ Sex + time + dt, data = mdat, digits = -1))
 })
+
+
+dat <- data.frame(a = c("b", "b", "b", "a", "a", "a"), b = c("a", "b", "a", "b", "a", "b"), stringsAsFactors = FALSE)
+attr(dat$a, "stats") <- c("countpct", "Nmiss")
+test_that("11/10/2017: trouble with 'stats' attribute (#39)", {
+  expect_error(tableby(~ a + b, data = dat), NA)
+})
+
+
+colnames(dat) <- c("1y", "2x")
+test_that("11/15/2017: Krista Goergen and non-syntactic names (#41)", {
+  expect_identical(
+    capture.output(summary(tableby(`1y` ~ `2x`, data = dat), text = TRUE)),
+    c(""                                                                        ,
+      "------------------------------------------------------------------------",
+      "                  a (N=3)       b (N=3)       Total (N=6)   p value     ",
+      "---------------- ------------- ------------- ------------- -------------",
+      "2x                                                                 1.000",
+      "   a             1 (33.3%)     2 (66.7%)     3 (50%)      "              ,
+      "   b             2 (66.7%)     1 (33.3%)     3 (50%)      "              ,
+      "------------------------------------------------------------------------"
+    )
+  )
+  expect_identical(
+    capture.output(summary(tableby(`1y` ~ fe(`2x`), data = dat), text = TRUE)),
+    c(""                                                                        ,
+      "------------------------------------------------------------------------",
+      "                  a (N=3)       b (N=3)       Total (N=6)   p value     ",
+      "---------------- ------------- ------------- ------------- -------------",
+      "2x                                                                 1.000",
+      "   a             1 (33.3%)     2 (66.7%)     3 (50%)      "              ,
+      "   b             2 (66.7%)     1 (33.3%)     3 (50%)      "              ,
+      "------------------------------------------------------------------------"
+    )
+  )
+  expect_identical(
+    capture.output(summary(tableby( ~ `2x`, data = dat), text = TRUE)),
+    c(""                                  ,
+      "----------------------------------",
+      "                    Overall (N=6) ",
+      "------------------ ---------------",
+      "2x                "                ,
+      "   a               3 (50%)        ",
+      "   b               3 (50%)        ",
+      "----------------------------------"
+    )
+  )
+})
