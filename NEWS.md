@@ -1,3 +1,10 @@
+# arsenal 0.6.1
+
+This is a patch to fix an error appearing with R-devel. We anticipate releasing v1.0.0 soon, which
+will not be backwards-compatible.
+
+* Re-fix trailing whitespace problem in tableby. (#3)
+
 # arsenal 0.6.0
 
 * Update `freqlist()` to be more efficient. (#20)
