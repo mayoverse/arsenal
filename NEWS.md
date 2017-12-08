@@ -53,7 +53,16 @@ Smaller changes:
 
     - `print.freqlist()` has been made slightly more concise. The only change to the printed output
       is making "variables" singular ("variable") when only one variable is present.
+    
+* `tableby()`:
 
+    - `tableby()` has also been made slightly more concise and easier to read. The output shouldn't change.
+
+    - A bug was fixed when trying to specify "stats" attributes for categorical variables. (#39)
+
+    - The function `Nmiss2()` is now exported for `tableby()`. Note that it is exactly the same as `Nmiss()`, but
+      is interpreted differently in `tableby()`.
+      
 * `modelsum()`:
 
     - `modelsum()` has been made slightly more concise, and also now uses `formulize()`.
