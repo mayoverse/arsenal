@@ -27,8 +27,8 @@
 #'   Works as vector of logicals or an index.
 #' @param weights an optional vector specifying the weights to apply to each data observation (rows of \code{data})
 #' @param na.action a function which indicates what should happen when the data contain \code{NA}s.
-#'   The default is set by the \code{na.modelsum} setting of \code{options}, and is \code{na.fail} if that is unset. The default is
-#'   to include observations with \code{NA}s in x variables, but remove those with \code{NA} in response variable.
+#'   The default (\code{NULL}) is to use the defaults of \code{\link[stats]{lm}}, \code{\link[stats]{glm}}, or \code{\link[survival]{coxph}},
+#'   depending on the \code{family} specifications.
 #' @param control control parameters to handle optional settings within \code{modelsum}.  Arguments for \code{modelsum.control}
 #'   can be passed to \code{modelsum} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,
 #'   the latter are used. See \code{\link{modelsum.control}} for other details.
@@ -67,7 +67,7 @@ NULL
 #' @rdname modelsum
 #' @export
 
-modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=na.modelsum,
+modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action = NULL,
                      subset=NULL, weights=NULL, control = NULL, ...) {
   Call <- match.call()
 
@@ -107,7 +107,6 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
   }
   maindf <- eval(main.call, parent.frame())
   if(nrow(maindf) == 0) stop("No (non-missing) observations")
-  WEIGHTS <- if("(weights)" %in% colnames(maindf)) maindf[["(weights)"]] else rep(1, times = nrow(maindf))
 
   #### Set up "adjustment" dataset ####
   if(missing(adjust))
@@ -131,11 +130,14 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
   effCols <- seq_along(maindf)[-1]
   yTerm <- colnames(maindf)[1]
   yLabel <- attributes(maindf[[1]])$label
-  if(is.null(yLabel)) {
-    yLabel <- yTerm
-  }
-  form <- formulize(paste0("`", yTerm, "`"), ".")
+  if(is.null(yLabel)) yLabel <- yTerm
   fitList <- list()
+  ARGS <- list(
+    formula = formulize(paste0("`", yTerm, "`"), "."),
+    weights = if("(weights)" %in% colnames(maindf)) maindf[["(weights)"]] else rep(1, times = nrow(maindf))
+  )
+  ARGS$na.action <- na.action # in case it's NULL
+
 
   for(eff in effCols) {
     currdf <- if(is.null(adjustdf)) maindf[, c(1, eff), drop = FALSE] else cbind(maindf[, c(1, eff), drop = FALSE], adjustdf)
@@ -161,7 +163,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
         warning("Input family=gaussian, but dependent variable has 5 or fewer categories\n")
       }
 
-      lmfit <- stats::lm(form, data=currdf, x=TRUE, weights=WEIGHTS, na.action = na.action)
+      lmfit <- do.call(stats::lm, c(ARGS, list(data=currdf, x=TRUE)))
       coeffTidy <- broom::tidy(lmfit, conf.int=TRUE, conf.level=control$conf.level)
 
       if(any(grepl("(weights)", colnames(lmfit$model)))) {
@@ -200,7 +202,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
     } else if (family == "binomial" || family == "quasibinomial") {
       ## These families are used in glm
 
-      fit <- stats::glm(form, data=currdf, family=family, x=TRUE, weights=WEIGHTS, na.action = na.action)
+      fit <- do.call(stats::glm, c(ARGS, list(data=currdf, family=family, x=TRUE)))
 
       rocOut <- pROC::roc(fit$y ~ predict(fit, type='response'))
       #coeffbeta <- summary(fit)$coef
@@ -241,7 +243,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
     } else if (family == "quasipoisson" || family == "poisson") {
       ## These families use glm
 
-      fit <- stats::glm(form, data=currdf, family=family, x=TRUE, weights=WEIGHTS, na.action = na.action)
+      fit <- do.call(stats::glm, c(ARGS, list(data=currdf, family=family, x=TRUE)))
 
       ## find out that broom:::tidy.lm allows conf.int and exp
       coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
@@ -282,7 +284,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
     } else if(family=="survival") {
 
-      ph <- survival::coxph(form, data=currdf, weights=WEIGHTS, na.action = na.action)
+      ph <- do.call(survival::coxph, c(ARGS, list(data=currdf)))
 
       ## use tidy to get both CIs, merge
       coeffHRTidy <- broom::tidy(ph, exponentiate=TRUE, conf.int=.95)
