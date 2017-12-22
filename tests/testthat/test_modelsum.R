@@ -153,6 +153,11 @@ test_that("Reordering variables", {
 
 })
 
+test_that("offset() works", {
+  expect_error(summary(modelsum(fu.stat ~ age, adjust=~offset(log(fu.time+.01))+ sex + arm,
+                                data=mockstudy, family=poisson)), NA)
+})
+
 ###########################################################################################################
 #### Reported bugs for modelsum
 ###########################################################################################################
