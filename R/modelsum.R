@@ -134,7 +134,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
   if(is.null(yLabel)) {
     yLabel <- yTerm
   }
-  form <- formulize(yTerm, ".")
+  form <- formulize(paste0("`", yTerm, "`"), ".")
   fitList <- list()
 
   for(eff in effCols) {
