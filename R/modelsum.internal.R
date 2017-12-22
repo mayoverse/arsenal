@@ -18,6 +18,16 @@
 NULL
 #> NULL
 
+join_formula <- function(x, y)
+{
+  x <- formula(x)
+  if(is.null(y)) return(x)
+  y <- formula(y)
+  stopifnot(length(x) == 3 && length(y) == 2)
+  x[[3]] <- call("+", x[[3]], y[[2]])
+  x
+}
+
 #' @rdname modelsum.internal
 #' @export
 na.modelsum <- function (object, ...) {

@@ -93,20 +93,21 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   if(anyNA(match.idx)) warning("Unused arguments: ", paste(names(Call)[c(FALSE, is.na(match.idx))], collapse=", "), "\n")
 
   #### Set up "main effects" dataset ####
-  indx.main <- match(c("formula", "data", "subset", "weights"), names(Call), 0L)
+  indx.main <- match(c("formula", "data", "subset"), names(Call), 0L)
   if(indx.main[1] == 0) stop("A formula argument is required")
   if(length(formula) == 2) stop("'formula' should have a response variable!")
+  if(!is.null(adjust) && length(adjust) != 2) stop("'adjust' shouldn't have a response variable!")
   main.call <- Call[c(1, indx.main)]
   main.call[[1]] <- quote(stats::model.frame)
   main.call$na.action <- quote(stats::na.pass) # for now, keep all rows
   if(!missing(data))
   {
-    data <- keep.labels(data)
     # instead of call("keep.labels", ...), which breaks when arsenal isn't loaded (Can't find "keep.labels")
     main.call$data <- as.call(list(keep.labels, main.call$data))
   }
   maindf <- eval(main.call, parent.frame())
   if(nrow(maindf) == 0) stop("No (non-missing) observations")
+  Terms <- terms(maindf)
 
   #### Set up "adjustment" dataset ####
   if(missing(adjust))
@@ -115,16 +116,8 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   } else
   {
     adj.call <- main.call
-    adj.call$weights <- NULL
-
-    if(length(adjust) == 3)
-    {
-      warning("Ignoring the left-hand side of 'adjust'.")
-      adj.call$formula <- adjust[c(1, 3)]
-    } else adj.call$formula <- adjust
-
+    adj.call$formula <- adjust
     adjustdf <- eval(adj.call, parent.frame())
-    stopifnot(nrow(adjustdf) == nrow(maindf))
   }
 
   effCols <- seq_along(maindf)[-1]
@@ -132,22 +125,19 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   yLabel <- attributes(maindf[[1]])$label
   if(is.null(yLabel)) yLabel <- yTerm
   fitList <- list()
-  ARGS <- list(
-    formula = formulize(paste0("`", yTerm, "`"), "."),
-    weights = if("(weights)" %in% colnames(maindf)) maindf[["(weights)"]] else rep(1, times = nrow(maindf))
-  )
-  ARGS$na.action <- na.action # in case it's NULL
-
 
   for(eff in effCols) {
-    currdf <- if(is.null(adjustdf)) maindf[, c(1, eff), drop = FALSE] else cbind(maindf[, c(1, eff), drop = FALSE], adjustdf)
-    if(anyDuplicated(colnames(currdf))) currdf <- currdf[, !duplicated(colnames(currdf)), drop = FALSE]
+
     currCol <- maindf[[eff]]
-    adjVars <- colnames(currdf)[-(1:2)]
+    adj.formula <- join_formula(drop.terms(Terms, if(length(effCols) > 1) setdiff(effCols, eff) - 1L else NULL, keep.response = TRUE), adjust)
+    adjVars <- attr(terms(adj.formula), "term.labels")[-1]
 
     xname <- colnames(maindf)[eff]
     labelEff <-  attributes(currCol)$label
     if(is.null(labelEff))  labelEff <- xname
+
+    temp.call <- Call[c(1, indx.main)]
+    temp.call$formula <- adj.formula
 
     ## placeholder for ordered, don't do any fitting
     ## y is ordered factor
@@ -158,12 +148,13 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       fitList[[xname]] <- list(#coeff=summary(coeff(p(maindf[,1]~ currCol),
                                family="ordered", label=xname)
     } else if (family == "gaussian") {
-      ## issue warning if appears categorical
-      if(length(unique(currdf[[1]])) <= 5) {
+      # ## issue warning if appears categorical
+      if(length(unique(maindf[[1]])) <= 5) {
         warning("Input family=gaussian, but dependent variable has 5 or fewer categories\n")
       }
-
-      lmfit <- do.call(stats::lm, c(ARGS, list(data=currdf, x=TRUE)))
+      temp.call[[1]] <- quote(stats::lm)
+      temp.call$x <- TRUE
+      lmfit <- eval(temp.call, parent.frame())
       coeffTidy <- broom::tidy(lmfit, conf.int=TRUE, conf.level=control$conf.level)
 
       if(any(grepl("(weights)", colnames(lmfit$model)))) {
@@ -182,7 +173,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
         if(length(aterm) > 0)
         {
           adjterms <- c(adjterms, aterm)
-          alabel <- attributes(currdf[[adj]])$label
+          alabel <- attributes(adjustdf[[adj]])$label
           if(is.null(alabel)) alabel <- adj
           ## handle when adj term is categorical with level tagged on
           if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
@@ -202,7 +193,10 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
     } else if (family == "binomial" || family == "quasibinomial") {
       ## These families are used in glm
 
-      fit <- do.call(stats::glm, c(ARGS, list(data=currdf, family=family, x=TRUE)))
+      temp.call[[1]] <- quote(stats::glm)
+      temp.call$x <- TRUE
+      temp.call$family <- family
+      fit <- eval(temp.call, parent.frame())
 
       rocOut <- pROC::roc(fit$y ~ predict(fit, type='response'))
       #coeffbeta <- summary(fit)$coef
@@ -225,7 +219,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
         if(length(aterm) > 0)
         {
           adjterms <- c(adjterms, aterm)
-          alabel <- attributes(currdf[[adj]])$label
+          alabel <- attributes(adjustdf[[adj]])$label
           if(is.null(alabel)) alabel <- adj
           ## handle when adj term is categorical with level tagged on
           if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
@@ -243,7 +237,10 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
     } else if (family == "quasipoisson" || family == "poisson") {
       ## These families use glm
 
-      fit <- do.call(stats::glm, c(ARGS, list(data=currdf, family=family, x=TRUE)))
+      temp.call[[1]] <- quote(stats::glm)
+      temp.call$x <- TRUE
+      temp.call$family <- family
+      fit <- eval(temp.call, parent.frame())
 
       ## find out that broom:::tidy.lm allows conf.int and exp
       coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
@@ -265,7 +262,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
         if(length(aterm) > 0)
         {
           adjterms <- c(adjterms, aterm)
-          alabel <- attributes(currdf[[adj]])$label
+          alabel <- attributes(adjustdf[[adj]])$label
           if(is.null(alabel)) alabel <- adj
           ## handle when adj term is categorical with level tagged on
           if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
@@ -284,7 +281,8 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
     } else if(family=="survival") {
 
-      ph <- do.call(survival::coxph, c(ARGS, list(data=currdf)))
+      temp.call[[1]] <- quote(survival::coxph)
+      ph <- eval(temp.call, parent.frame())
 
       ## use tidy to get both CIs, merge
       coeffHRTidy <- broom::tidy(ph, exponentiate=TRUE, conf.int=.95)
@@ -305,7 +303,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
         if(length(aterm) > 0)
         {
           adjterms <- c(adjterms, aterm)
-          alabel <- attributes(currdf[[adj]])$label
+          alabel <- attributes(adjustdf[[adj]])$label
           if(is.null(alabel)) alabel <- adj
           ## handle when adj term is categorical with level tagged on
           if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
