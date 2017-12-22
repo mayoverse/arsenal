@@ -77,5 +77,5 @@ tab2.df[1:5,]
 \code{\link{modelsum.control}}, \code{\link{summary.modelsum}}, \code{\link{formulize}}
 }
 \author{
-Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, adapted from SAS Macro of the same name
+Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, and Ethan Heinzen, adapted from SAS Macro of the same name
 }

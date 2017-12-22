@@ -42,7 +42,7 @@
 #'   \item{Call}{Original call to modelsum}
 #'   \item{control}{list of control parameters used in \code{modelsum}, and to be used in \code{\link{summary.modelsum}},
 #'     the result of \code{\link{modelsum.control}}}
-#' @author Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, adapted from SAS Macro of the same name
+#' @author Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, and Ethan Heinzen, adapted from SAS Macro of the same name
 #' @seealso \code{\link{modelsum.control}}, \code{\link{summary.modelsum}}, \code{\link{formulize}}
 #' @examples
 #'
