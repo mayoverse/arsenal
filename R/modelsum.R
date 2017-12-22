@@ -174,14 +174,13 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
       ## handle when xterm is categorical with level tagged on
       if(nchar(xterms[1]) > nchar(xname)) labelEff <- gsub(xname, paste0(labelEff, " "), xterms, fixed = TRUE)
 
-
       adjterms <- adjlabels <- NULL
       for(adj in adjVars) { ## manage adj terms and labels
-        aterm <- coeffTidy$term[startsWith(adj, coeffTidy$term)]
+        aterm <- coeffTidy$term[startsWith(coeffTidy$term, adj)]
         if(length(aterm) > 0)
         {
           adjterms <- c(adjterms, aterm)
-          alabel <- attributes(maindf[[adj]])$label
+          alabel <- attributes(currdf[[adj]])$label
           if(is.null(alabel)) alabel <- adj
           ## handle when adj term is categorical with level tagged on
           if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
@@ -220,11 +219,11 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
       adjterms <- adjlabels <- NULL
       for(adj in adjVars) { ## manage adj terms and labels
-        aterm <- coeffTidy$term[startsWith(adj, coeffTidy$term)]
+        aterm <- coeffTidy$term[startsWith(coeffTidy$term, adj)]
         if(length(aterm) > 0)
         {
           adjterms <- c(adjterms, aterm)
-          alabel <- attributes(maindf[[adj]])$label
+          alabel <- attributes(currdf[[adj]])$label
           if(is.null(alabel)) alabel <- adj
           ## handle when adj term is categorical with level tagged on
           if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
@@ -260,11 +259,11 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
       adjterms <- adjlabels <- NULL
       for(adj in adjVars) { ## manage adj terms and labels
-        aterm <- coeffTidy$term[startsWith(adj, coeffTidy$term)]
+        aterm <- coeffTidy$term[startsWith(coeffTidy$term, adj)]
         if(length(aterm) > 0)
         {
           adjterms <- c(adjterms, aterm)
-          alabel <- attributes(maindf[[adj]])$label
+          alabel <- attributes(currdf[[adj]])$label
           if(is.null(alabel)) alabel <- adj
           ## handle when adj term is categorical with level tagged on
           if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
@@ -300,11 +299,11 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action=n
 
       adjterms <- adjlabels <- NULL
       for(adj in adjVars) { ## manage adj terms and labels
-        aterm <- coeffTidy$term[startsWith(adj, coeffTidy$term)]
+        aterm <- coeffTidy$term[startsWith(coeffTidy$term, adj)]
         if(length(aterm) > 0)
         {
           adjterms <- c(adjterms, aterm)
-          alabel <- attributes(maindf[[adj]])$label
+          alabel <- attributes(currdf[[adj]])$label
           if(is.null(alabel)) alabel <- adj
           ## handle when adj term is categorical with level tagged on
           if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
