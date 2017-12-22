@@ -44,6 +44,5 @@ keep.labels.default <- function(x, ...)
 `[.keep_labels` <- function(x, ...)
 {
   y <- NextMethod()
-  attr(y, "label") <- attr(x, "label")
-  keep.labels(y)
+  keep.labels(set_attr(y, "label", attr(x, "label")))
 }

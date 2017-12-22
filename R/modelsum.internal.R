@@ -25,8 +25,7 @@ na.modelsum <- function (object, ...) {
     xx <- object[!omit, , drop = FALSE]
     if (any(omit > 0L)) {
         temp <- stats::setNames(seq(omit)[omit], attr(object, "row.names")[omit])
-        attr(temp, "class") <- "omit"
-        attr(xx, "na.action") <- temp
+        attr(xx, "na.action") <- set_attr(temp, "class", "omit")
     }
     xx
 }

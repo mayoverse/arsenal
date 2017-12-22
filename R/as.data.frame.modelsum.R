@@ -49,6 +49,5 @@ as.data.frame.modelsum <- function(x, ..., labelTranslations = NULL)
 
   row.names(out) <- NULL
 
-  attr(out, "control") <- control
-  out
+  set_attr(out, "control", control)
 }
