@@ -21,7 +21,7 @@ NULL
 #' @rdname modelsum.internal
 #' @export
 na.modelsum <- function (object, ...) {
-    omit <- is.na(object[,1])
+    omit <- is.na(object[[1]])
     xx <- object[!omit, , drop = FALSE]
     if (any(omit > 0L)) {
         temp <- stats::setNames(seq(omit)[omit], attr(object, "row.names")[omit])
