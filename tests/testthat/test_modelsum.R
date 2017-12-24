@@ -296,4 +296,23 @@ test_that("07/27/2017: modelsum labels (#13)", {
 })
 
 
+#################################################################################################################################
+
+test_that("12/23/2017: non-syntactic column names trouble (#44)", {
+  dat <- data.frame(y = 1:10, x1x = rep(c("A", "B"), each = 5),
+                    `1x` = rep(c("C", "D"), each = 5),
+                    stringsAsFactors = FALSE, check.names = FALSE)
+  modelsum(y ~ x1x, data = dat)
+  expect_identical(
+    capture.output(summary(modelsum(y ~ x1x, data = dat))),
+    c(""                                                           ,
+      ""                                                           ,
+      "|            |estimate |std.error |p.value |adj.r.squared |",
+      "|:-----------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept) |3.000    |0.707     |0.003   |0.727         |",
+      "|**x1x B**   |5.000    |1.000     |0.001   |              |"
+    )
+  )
+})
+
 
