@@ -17,6 +17,13 @@ Major changes:
 
 * `modelsum()`:
 
+    - `modelsum()` has been totally overhauled:
+    
+        * It now uses `stats::model.frame()` and unevaluated calls instead of custom-creating
+          data.frames.
+          
+        * It now allows for non-syntactic names (#44, #45).
+
     - `as.data.frame.modelsum()` has been totally overhauled. It now gives exact
       values instead of formatted values.
 
