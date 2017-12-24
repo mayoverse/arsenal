@@ -153,6 +153,11 @@ test_that("Reordering variables", {
 
 })
 
+test_that("offset() works", {
+  expect_error(summary(modelsum(fu.stat ~ age, adjust=~offset(log(fu.time+.01))+ sex + arm,
+                                data=mockstudy, family=poisson)), NA)
+})
+
 ###########################################################################################################
 #### Reported bugs for modelsum
 ###########################################################################################################
@@ -214,7 +219,7 @@ test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
         "|:-------------|:-----|:-----------|:-----------|:-------|:-----------|:-----|",
         "|Sex Male      |0.612 |0.210       |1.786       |0.369   |0.592       |0     |",
         "|Age in Years  |1.061 |0.968       |1.164       |0.205   |            |      |",
-        "|ethan Heinzen |1.019 |0.297       |3.501       |0.976   |0.639       |2     |",
+        "|ethan Heinzen |1.019 |0.297       |3.501       |0.976   |0.639       |3     |",
         "|Age in Years  |1.058 |0.960       |1.166       |0.258   |            |      |"
       )
     )
@@ -290,5 +295,34 @@ test_that("07/27/2017: modelsum labels (#13)", {
   expect_warning(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = c(badvar = "Eek")), "badvar")
 })
 
+
+#################################################################################################################################
+
+test_that("12/23/2017: non-syntactic names (#44, #45)", {
+  dat <- data.frame(y = 1:10, x1x = rep(c("A", "B"), each = 5),
+                    `1x` = rep(c("C", "D"), each = 5),
+                    stringsAsFactors = FALSE, check.names = FALSE)
+  modelsum(y ~ x1x, data = dat)
+  expect_identical(
+    capture.output(summary(modelsum(y ~ x1x, data = dat))),
+    c(""                                                           ,
+      ""                                                           ,
+      "|            |estimate |std.error |p.value |adj.r.squared |",
+      "|:-----------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept) |3.000    |0.707     |0.003   |0.727         |",
+      "|**x1x B**   |5.000    |1.000     |0.001   |              |"
+    )
+  )
+  expect_identical(
+    capture.output(summary(modelsum(y ~ `1x`, data = dat))),
+    c(""                                                           ,
+      ""                                                           ,
+      "|            |estimate |std.error |p.value |adj.r.squared |",
+      "|:-----------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept) |3.000    |0.707     |0.003   |0.727         |",
+      "|**1x D**    |5.000    |1.000     |0.001   |              |"
+    )
+  )
+})
 
 

@@ -8,8 +8,7 @@
 \title{Fit models over each of a set of independent variables with a response variable}
 \usage{
 modelsum(formula, family = "gaussian", data, adjust = NULL,
-  na.action = na.modelsum, subset = NULL, weights = NULL,
-  control = NULL, ...)
+  na.action = NULL, subset = NULL, weights = NULL, control = NULL, ...)
 
 \method{print}{modelsum}(x, ...)
 
@@ -29,8 +28,8 @@ the environment from which \code{modelsum} is called.}
 like: \code{~Age+ Sex}.}
 
 \item{na.action}{a function which indicates what should happen when the data contain \code{NA}s.
-The default is set by the \code{na.modelsum} setting of \code{options}, and is \code{na.fail} if that is unset. The default is
-to include observations with \code{NA}s in x variables, but remove those with \code{NA} in response variable.}
+The default (\code{NULL}) is to use the defaults of \code{\link[stats]{lm}}, \code{\link[stats]{glm}}, or \code{\link[survival]{coxph}},
+depending on the \code{family} specifications.}
 
 \item{subset}{an optional vector specifying a subset of observations (rows of \code{data}) to be used in the results.
 Works as vector of logicals or an index.}
@@ -78,5 +77,5 @@ tab2.df[1:5,]
 \code{\link{modelsum.control}}, \code{\link{summary.modelsum}}, \code{\link{formulize}}
 }
 \author{
-Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, adapted from SAS Macro of the same name
+Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, and Ethan Heinzen, adapted from SAS Macro of the same name
 }

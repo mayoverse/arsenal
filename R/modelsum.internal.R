@@ -18,15 +18,24 @@
 NULL
 #> NULL
 
+join_formula <- function(x, y)
+{
+  x <- formula(x)
+  if(is.null(y)) return(x)
+  y <- formula(y)
+  stopifnot(length(x) == 3 && length(y) == 2)
+  x[[3]] <- call("+", x[[3]], y[[2]])
+  x
+}
+
 #' @rdname modelsum.internal
 #' @export
 na.modelsum <- function (object, ...) {
-    omit <- is.na(object[,1])
+    omit <- is.na(object[[1]])
     xx <- object[!omit, , drop = FALSE]
     if (any(omit > 0L)) {
         temp <- stats::setNames(seq(omit)[omit], attr(object, "row.names")[omit])
-        attr(temp, "class") <- "omit"
-        attr(xx, "na.action") <- temp
+        attr(xx, "na.action") <- set_attr(temp, "class", "omit")
     }
     xx
 }

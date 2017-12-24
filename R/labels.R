@@ -3,11 +3,14 @@
 #'
 #' Assign and extract the \code{'label'} attribute on an R object. \code{set_labels} is
 #'   the same as \code{labels(x) <- value} but returns \code{x} for use in a pipe chain.
+#'   \code{set_attr} is the same as \code{attr(x, which) <- value} but returns \code{x}
+#'   for use in a pipe chain.
 #'
 #' @param x,object An R object.
 #' @param value A vector or list containing labels to assign. Labels are assigned based on
 #'   names, if available; otherwise, they're assigned in order. Can pass \code{NULL}
 #'   to remove all labels.
+#' @param which See \code{\link{attr<-}}
 #' @param ... Other arguments (not in use at this time).
 #' @return The labels of \code{object}, or \code{object} with new labels.
 #' @details
@@ -41,18 +44,9 @@ labels.keep_labels <- function(object, ...)
 
 #' @rdname labels
 #' @export
-set_labels <- function(x, value)
-{
-  labels(x) <- value
-  x
-}
-
-#' @rdname labels
-#' @export
 `labels<-.keep_labels` <- function(x, value)
 {
-  attr(x, "label") <- value
-  x
+  set_attr(x, "label", value)
 }
 
 #' @rdname labels
@@ -80,3 +74,20 @@ set_labels <- function(x, value)
   }
   x
 }
+
+#' @rdname labels
+#' @export
+set_labels <- function(x, value)
+{
+  labels(x) <- value
+  x
+}
+
+#' @rdname labels
+#' @export
+set_attr <- function(x, which, value)
+{
+  attr(x, which) <- value
+  x
+}
+

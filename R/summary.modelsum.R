@@ -30,7 +30,7 @@ summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE
 {
   object <- as.data.frame(object, ..., labelTranslations = labelTranslations)
   structure(list(
-    object = object,
+    object = set_attr(object, "control", NULL),
     control = attr(object, "control"),
     text = text,
     title = title

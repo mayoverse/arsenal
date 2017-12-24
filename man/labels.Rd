@@ -5,9 +5,10 @@
 \alias{labels.data.frame}
 \alias{labels.keep_labels}
 \alias{labels<-}
-\alias{set_labels}
 \alias{labels<-.keep_labels}
 \alias{labels<-.data.frame}
+\alias{set_labels}
+\alias{set_attr}
 \title{Labels}
 \usage{
 \method{labels}{data.frame}(object, ...)
@@ -16,11 +17,13 @@
 
 labels(x) <- value
 
-set_labels(x, value)
-
 \method{labels}{keep_labels}(x) <- value
 
 \method{labels}{data.frame}(x) <- value
+
+set_labels(x, value)
+
+set_attr(x, which, value)
 }
 \arguments{
 \item{...}{Other arguments (not in use at this time).}
@@ -30,6 +33,8 @@ set_labels(x, value)
 \item{value}{A vector or list containing labels to assign. Labels are assigned based on
 names, if available; otherwise, they're assigned in order. Can pass \code{NULL}
 to remove all labels.}
+
+\item{which}{See \code{\link{attr<-}}}
 }
 \value{
 The labels of \code{object}, or \code{object} with new labels.
@@ -37,6 +42,8 @@ The labels of \code{object}, or \code{object} with new labels.
 \description{
 Assign and extract the \code{'label'} attribute on an R object. \code{set_labels} is
   the same as \code{labels(x) <- value} but returns \code{x} for use in a pipe chain.
+  \code{set_attr} is the same as \code{attr(x, which) <- value} but returns \code{x}
+  for use in a pipe chain.
 }
 \details{
 The \code{\link{data.frame}} methods put labels on and extract labels from

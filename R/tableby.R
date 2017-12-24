@@ -176,34 +176,22 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     ## Store this as attribute in the modeldf column, along with the actual name of the variable,
     ## rather than anova(age) showing up in the result (though anova(age) will be the column name in modeldf
     ## but we pull these attributes off later.
-    assign("anova", function(x, ...)
-           { extraArgs <- list(...); attr(x, "name") <- deparse(substitute(x)); attr(x, "stats") <- extraArgs; x},
-           envir = tabenv)
+    assign("anova", function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...)), envir = tabenv)
   }
   if (!is.null(attr(temp.call$formula, "specials")$chisq)) {
-    assign("chisq", function(x, ...)
-           { extraArgs <- list(...); attr(x, "name") <- deparse(substitute(x)); attr(x, "stats") <- extraArgs; x},
-           envir = tabenv)
+    assign("chisq", function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...)), envir = tabenv)
   }
   if (!is.null(attr(temp.call$formula, "specials")$trend)) {
-    assign("trend", function(x, ...)
-           { extraArgs <- list(...); attr(x, "name") <- deparse(substitute(x)); attr(x, "stats") <- extraArgs; x},
-           envir = tabenv)
+    assign("trend", function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...)), envir = tabenv)
   }
   if (!is.null(attr(temp.call$formula, "specials")$kwt)) {
-    assign("kwt", function(x, ...)
-           { extraArgs <- list(...); attr(x, "name") <- deparse(substitute(x)); attr(x, "stats") <- extraArgs; x},
-           envir = tabenv)
+    assign("kwt", function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...)), envir = tabenv)
   }
   if (!is.null(attr(temp.call$formula, "specials")$fe)) {
-    assign("fe", function(x, ...)
-           { extraArgs <- list(...); attr(x, "name") <- deparse(substitute(x)); attr(x, "stats") <- extraArgs; x},
-           envir = tabenv)
+    assign("fe", function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...)), envir = tabenv)
   }
   if (!is.null(attr(temp.call$formula, "specials")$logrank)) {
-    assign("logrank", function(x, ...)
-           { extraArgs <- list(...); attr(x, "name") <- deparse(substitute(x)); attr(x, "stats") <- extraArgs; x},
-           envir = tabenv)
+    assign("logrank", function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...)), envir = tabenv)
   }
   ## set tabenv as environment in which to evalulate formula
   #if(any(!is.null(attr(temp.call$formula, "specials"))))
