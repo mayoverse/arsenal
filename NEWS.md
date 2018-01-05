@@ -36,6 +36,8 @@ Major changes:
         
         * `print.summary.modelsum()` now uses `knitr::kable()` to print results, instead of internal functions.
           As such, non-exported helper functions have all been removed.
+          
+        * `print.summary.modelsum()` now strips leading and trailing whitespace from labels to fix formatting with `text=FALSE`. (#48)
     
         * `labelTranslations=` no longer accepts labels for the statistics columns.
           Use `modelsum.control(stat.labels=)` for this instead.
