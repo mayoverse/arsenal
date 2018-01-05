@@ -85,6 +85,7 @@ print.summary.modelsum <- function(x, ...)
   df[cn %in% c(use.digits0, use.digits1)] <- lapply(df[cn %in% c(use.digits0, use.digits1, use.digits.p)], pick_first, idx = duplicated(df$model))
 
   #### Format if necessary ####
+  df$label <- trimws(df$label) # regardless of formatting
   if(!x$text) df$label <- ifelse(df$term.type == "Intercept", df$label, paste0("**", df$label, "**"))
 
   #### get rid of unnecessary columns ####

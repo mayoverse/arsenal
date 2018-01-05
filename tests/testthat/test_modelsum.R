@@ -302,7 +302,6 @@ test_that("12/23/2017: non-syntactic names (#44, #45)", {
   dat <- data.frame(y = 1:10, x1x = rep(c("A", "B"), each = 5),
                     `1x` = rep(c("C", "D"), each = 5),
                     stringsAsFactors = FALSE, check.names = FALSE)
-  modelsum(y ~ x1x, data = dat)
   expect_identical(
     capture.output(summary(modelsum(y ~ x1x, data = dat))),
     c(""                                                           ,
@@ -325,4 +324,29 @@ test_that("12/23/2017: non-syntactic names (#44, #45)", {
   )
 })
 
+#################################################################################################################################
 
+test_that("01/05/2018: leading/trailing whitespace (#48)", {
+  expect_identical(
+    capture.output(summary(modelsum(age ~ arm, data = set_labels(mockstudy, list(arm = " Arm "))))),
+    c(""                                                                  ,
+      ""                                                                  ,
+      "|                   |estimate |std.error |p.value |adj.r.squared |",
+      "|:------------------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept)        |59.673   |0.557     |< 0.001 |-0.001        |",
+      "|**Arm  F: FOLFOX** |0.628    |0.709     |0.376   |              |",
+      "|**Arm  G: IROX**   |0.090    |0.812     |0.912   |              |"
+    )
+  )
+  expect_identical(
+    capture.output(summary(modelsum(age ~ arm, data = set_labels(mockstudy, list(arm = " Arm "))), text = TRUE)),
+    c(""                                                              ,
+      ""                                                              ,
+      "|               |estimate |std.error |p.value |adj.r.squared |",
+      "|:--------------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept)    |59.673   |0.557     |< 0.001 |-0.001        |",
+      "|Arm  F: FOLFOX |0.628    |0.709     |0.376   |              |",
+      "|Arm  G: IROX   |0.090    |0.812     |0.912   |              |"
+    )
+  )
+})
