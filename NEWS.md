@@ -74,7 +74,7 @@ Smaller changes:
       
 * `modelsum()`:
 
-    - `modelsum()` has been made slightly more concise, and also now uses `formulize()`.
+    - `modelsum()` has been made slightly more concise.
     
     - "Nmiss2" has been added to the `modelsum()` object and no longer replaces "Nmiss".
     
