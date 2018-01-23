@@ -237,14 +237,8 @@ N <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 #' @rdname tableby.stats
 #' @export
 count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, length(x)), ...)  {
-    wtbl <- wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)], ...)
-    df <- data.frame(count = as.vector(wtbl), row.names = levels)
-    if (nrow(df) < length(levels)) {
-        misslevs <- levels[!(levels %in% row.names(df))]
-        df <- rbind.data.frame(df, data.frame(count = rep(0,
-            length(misslevs)),  row.names = misslevs))
-    }
-    return(df[as.character(levels), ,drop=FALSE])
+  wtbl <- wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)], ...)
+  data.frame(count = as.vector(wtbl), row.names = levels)
 }
 
 
@@ -253,19 +247,11 @@ count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, l
 #' @export
 countpct <- function(x, levels=sort(unique(x)), na.rm=TRUE, weights=rep(1, length(x)), ...) {
   wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)], ...)
-
-  df <- data.frame(
+  data.frame(
     count=as.vector(wtbl),
     pct=100*as.vector(wtbl)/sum(wtbl),
     row.names = levels
   )
-
-  ## make sure all levels are in df. If not, add them and re-order.
-  if(nrow(df) < length(levels) ) {
-    misslevs <- levels[!(levels %in% row.names(df))]
-    df <- rbind.data.frame(df, data.frame(count=rep(0, length(misslevs)), pct=rep(0, length(misslevs)), row.names=misslevs))
-  }
-  return(df[as.character(levels),])
 }
 ## format the countpct result for better printing (should work for meansd as well)
 ## Greg to edit this one
