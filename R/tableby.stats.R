@@ -55,7 +55,7 @@ medianrange <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   if(na.rm & length(x)==sum(is.na(x))) {
     return(c(NA,NA,NA))
   }
-  wtd.quantile(x, probs=c(.5,0,1), na.rm, weights=weights, ...)
+  wtd.quantile(x, probs=c(.5,0,1), na.rm = na.rm, weights=weights, ...)
 }
 
 #' @rdname tableby.stats
