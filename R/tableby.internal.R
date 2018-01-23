@@ -232,46 +232,9 @@ na.tableby <- function(object, ...) {
 
 wtd.table <- function(x, weights = rep(1, length(x)), na.rm = TRUE)
 {
-  tmp <- tapply(weights, x, sum, default = 0, na.rm = na.rm)
-
-  list(x = names(tmp), sum.of.weights = tmp)
+  tapply(weights, x, sum, default = 0, na.rm = na.rm)
 }
 
-## wtd.mean, wtd.var, wtd.quantile (and wtd.table, wtd.Ecdf) all from Hmisc
-
-wtd.Ecdf <- function(x, weights=NULL, type=c("i/n","(i-1)/(n-1)","i/(n+1)"), na.rm=TRUE) {
-    type <- match.arg(type)
-    switch(type, `(i-1)/(n-1)` = {
-        a <- b <- -1
-    }, `i/(n+1)` = {
-        a <- 0
-        b <- 1
-    }, `i/n` = {
-        a <- b <- 0
-    })
-    if(!length(weights)) {
-        oldopt <- options(digits = 7)
-        on.exit(options(oldopt))
-        cumu <- table(x)
-        isdate <- testDateTime(x)
-        ax <- attributes(x)
-        ax$names <- NULL
-        x <- as.numeric(names(cumu))
-        if(isdate)
-            attributes(x) <- c(attributes(x), ax)
-        cumu <- cumsum(cumu)
-        cdf <- (cumu + a)/(cumu[length(cumu)] + b)
-        if(cdf[1] > 0) {
-            x <- c(x[1], x)
-            cdf <- c(0, cdf)
-        }
-        return(list(x = x, ecdf = cdf))
-    }
-    w <- wtd.table(x, weights, na.rm = na.rm)
-    cumu <- cumsum(w$sum.of.weights)
-    cdf <- (cumu + a)/(cumu[length(cumu)] + b)
-    list(x = c(if(cdf[1] > 0) w$x[1], w$x), ecdf = c(if(cdf[1] > 0) 0, cdf))
-}
 wtd.mean <- function(x, weights = NULL, na.rm = TRUE) {
     if(!length(weights)) return(mean(x, na.rm = na.rm))
     if(na.rm) {
@@ -281,33 +244,21 @@ wtd.mean <- function(x, weights = NULL, na.rm = TRUE) {
     }
     sum(weights * x)/sum(weights)
 }
-wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1),
-    type=c("quantile","(i-1)/(n-1)","i/(n+1)","i/n"), na.rm=TRUE) {
+wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1), na.rm=TRUE) {
 
-  if(!length(weights))
-    return(stats::quantile(x, probs = probs, na.rm = na.rm))
-  type <- match.arg(type)
-  if(any(probs < 0 | probs > 1))
-    stop("Probabilities must be between 0 and 1 inclusive")
-  nams <- paste(format(round(probs * 100, if(length(probs) >
-                 1) 2 - log10(diff(range(probs))) else 2)), "%", sep = "")
-  if(type == "quantile") {
-    w <- wtd.table(x, weights, na.rm = na.rm)
-    x <- w$x
-    wts <- w$sum.of.weights
-    n <- sum(wts)
-    order <- 1 + (n - 1) * probs
-    low <- pmax(floor(order), 1)
-    high <- pmin(low + 1, n)
-    order <- order%%1
-    allq <- stats::approx(cumsum(wts), x, xout = c(low, high), method = "constant", f = 1, rule = 2)$y
-    k <- length(probs)
-    quantiles <- (1 - order) * allq[1:k] + order * allq[-(1:k)]
-    names(quantiles) <- nams
-    return(quantiles)
-  }
-  w <- wtd.Ecdf(x, weights, na.rm = na.rm, type = type)
-  structure(stats::approx(w$ecdf, w$x, xout = probs, rule = 2)$y, names = nams)
+  if(!length(weights)) return(stats::quantile(x, probs = probs, na.rm = na.rm))
+  if(any(probs < 0) || any(probs > 1)) stop("Probabilities must be between 0 and 1 inclusive")
+
+  wts <- wtd.table(x, weights, na.rm = na.rm)
+  x <- as.numeric(names(wts))
+  n <- sum(wts)
+  order <- 1 + (n - 1) * probs
+  low <- pmax(floor(order), 1)
+  high <- pmin(low + 1, n)
+  order <- order%%1
+  allq <- stats::approx(cumsum(wts), x, xout = c(low, high), method = "constant", f = 1, rule = 2)$y
+  k <- length(probs)
+  stats::setNames((1 - order) * allq[1:k] + order * allq[-(1:k)], probs)
 }
 
 wtd.var <- function(x, weights = NULL, na.rm=TRUE, method = c("unbiased", "ML")) {
@@ -320,23 +271,6 @@ wtd.var <- function(x, weights = NULL, na.rm=TRUE, method = c("unbiased", "ML"))
         weights <- weights[idx]
     }
     as.numeric(stats::cov.wt(matrix(x, ncol = 1), weights, method = method)$cov)
-}
-
-## internal function borrowed from Hmisc
-testDateTime <- function(x, what = c("either", "both", "timeVaries")) {
-    what <- match.arg(what)
-    cl <- class(x)
-    if(!length(cl))
-        return(FALSE)
-    dc <- c("Date", "POSIXt", "POSIXct", "dates", "times", "chron")
-    dtc <- c("POSIXt", "POSIXct", "chron")
-    switch(what, either = any(cl %in% dc), both = any(cl %in%
-        dtc), timeVaries = {
-        if("chron" %in% cl || "Date" %in% cl) {
-            y <- as.numeric(x)
-            length(unique(round(y - floor(y), 13))) > 1
-        } else length(unique(format(x, "%H%M%S"))) > 1
-    })
 }
 
 
