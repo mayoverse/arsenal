@@ -311,26 +311,18 @@ wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1),
   structure(stats::approx(w$ecdf, w$x, xout = probs, rule = 2)$y, names = nams)
 }
 
-wtd.var <- function(x, weights = NULL, normwt=FALSE, na.rm=TRUE, method = c("unbiased","ML")) {
+wtd.var <- function(x, weights = NULL, na.rm=TRUE, method = c("unbiased", "ML")) {
     method <- match.arg(method)
-    if(!length(weights)) {
-        if(na.rm)
-            x <- x[!is.na(x)]
-        return(stats::var(x))
-    }
+    if(!length(weights)) return(stats::var(x, na.rm = na.rm))
+
     if(na.rm) {
-        s <- !is.na(x + weights)
-        x <- x[s]
-        weights <- weights[s]
+        idx <- !is.na(x + weights)
+        x <- x[idx]
+        weights <- weights[idx]
     }
-    if(normwt)
-        weights <- weights * length(x)/sum(weights)
-    if(method == "ML")
-        return(as.numeric(stats::cov.wt(cbind(x), weights, method = "ML")$cov))
-    sw <- sum(weights)
-    xbar <- sum(weights * x)/sw
-    sum(weights * ((x - xbar)^2))/(sw - (if(normwt) sum(weights^2)/sw else 1))
+    as.numeric(stats::cov.wt(matrix(x, ncol = 1), weights, method = method)$cov)
 }
+
 ## internal function borrowed from Hmisc
 testDateTime <- function(x, what = c("either", "both", "timeVaries")) {
     what <- match.arg(what)
