@@ -97,12 +97,9 @@ range <- function(x, na.rm=TRUE, ...) {
 #' @export
 Nevents <- function(x, ...) {
   mat <- summary(x, ...)$table
-  if(!any(c(grepl("^events", colnames(mat)),grepl("^events",names(mat))))) {
-    stop("Survival endpoint may not be coded 0/1.\n")
-  }
-  if (!is.null(nrow(mat))) {
-    row.names(mat) <- substr(row.names(mat), regexpr("=", row.names(mat)) +
-                              1, nchar(row.names(mat)))
+  if("events" %nin% colnames(mat) && "events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
+  if(!is.null(nrow(mat))) {
+    row.names(mat) <- stringr::str_extract(row.names(mat), "[^=]*$")
     return(mat[, "events"])
   }
   return(as.numeric(mat["events"]))
@@ -120,14 +117,12 @@ Nevents <- function(x, ...) {
 #' @export
 medSurv <- function(x, ...) {
   mat <- summary(x, ...)$table
-  if(!any(c(grepl("^events", colnames(mat)),grepl("^events",names(mat))))) {
-    stop("Survival endpoint may not be coded 0/1.\n")
-  }
+  if("events" %nin% colnames(mat) && "events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
   if(!is.null(nrow(mat))) {
-    row.names(mat) <- substr(row.names(mat), regexpr("=",row.names(mat))+1, nchar(row.names(mat)))
-    return(mat[,'median'])
+    row.names(mat) <- stringr::str_extract(row.names(mat), "[^=]*$")
+    return(mat[, "median"])
   }
-  return(as.numeric(mat['median']))
+  return(as.numeric(mat["median"]))
 }
 ##
 NeventsSurv <- function(x, times=1:5) {
