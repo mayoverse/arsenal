@@ -230,62 +230,16 @@ na.tableby <- function(object, ...) {
     xx
 }
 
-## wtd.mean, wtd.var, wtd.quantile (and wtd.table, wtd.Ecdf) all from Hmisc
-wtd.table <- function(x, weights=NULL, type=c("list","table"), normwt=FALSE, na.rm = TRUE) {
-    type <- match.arg(type)
-    if(!length(weights))
-        weights <- rep(1, length(x))
-    isdate <- testDateTime(x)
-    ax <- attributes(x)
-    ax$names <- NULL
-    if(is.character(x)) {
-      x <- as.factor(x)
-    }
-    lev <- levels(x)
-    x <- unclass(x)
-    if(na.rm) {
-        s <- !is.na(x + weights)
-        x <- x[s, drop = FALSE]
-        weights <- weights[s]
-    }
-    n <- length(x)
-    if(normwt)
-        weights <- weights * length(x)/sum(weights)
-    i <- order(x)
-    x <- x[i]
-    weights <- weights[i]
-    if(anyDuplicated(x)) {
-        weights <- tapply(weights, x, sum)
-        if(length(lev)) {
-            levused <- lev[sort(unique(x))]
-            if((length(weights) > length(levused)) && any(is.na(weights)))
-                weights <- weights[!is.na(weights)]
-            if(length(weights) != length(levused))
-                stop("program logic error")
-            names(weights) <- levused
-        }
-        if(!length(names(weights)))
-            stop("program logic error")
-        if(type == "table")
-            return(weights)
-        x <- names(weights)
-        if(isdate)
-            attributes(x) <- c(attributes(x), ax)
-        return(list(x = x, sum.of.weights = unname(weights)))
-    }
-    xx <- x
-    if(isdate)
-        attributes(xx) <- c(attributes(xx), ax)
-    if(type == "list")
-        list(x = if(length(lev)) lev[x] else xx, sum.of.weights = weights)
-    else {
-        names(weights) <- if(length(lev))
-            lev[x]
-        else xx
-        weights
-    }
+wtd.table <- function(x, weights = rep(1, length(x)), na.rm = TRUE)
+{
+  tmp <- tapply(weights, x, sum, default = 0, na.rm = na.rm)
+
+  list(x = names(tmp), sum.of.weights = tmp)
 }
-wtd.Ecdf <- function(x, weights=NULL, type=c("i/n","(i-1)/(n-1)","i/(n+1)"), normwt=FALSE, na.rm=TRUE) {
+
+## wtd.mean, wtd.var, wtd.quantile (and wtd.table, wtd.Ecdf) all from Hmisc
+
+wtd.Ecdf <- function(x, weights=NULL, type=c("i/n","(i-1)/(n-1)","i/(n+1)"), na.rm=TRUE) {
     type <- match.arg(type)
     switch(type, `(i-1)/(n-1)` = {
         a <- b <- -1
@@ -313,12 +267,12 @@ wtd.Ecdf <- function(x, weights=NULL, type=c("i/n","(i-1)/(n-1)","i/(n+1)"), nor
         }
         return(list(x = x, ecdf = cdf))
     }
-    w <- wtd.table(x, weights, normwt = normwt, na.rm = na.rm)
+    w <- wtd.table(x, weights, na.rm = na.rm)
     cumu <- cumsum(w$sum.of.weights)
     cdf <- (cumu + a)/(cumu[length(cumu)] + b)
     list(x = c(if(cdf[1] > 0) w$x[1], w$x), ecdf = c(if(cdf[1] > 0) 0, cdf))
 }
-wtd.mean <- function(x, weights = NULL, normwt = "ignored", na.rm = TRUE) {
+wtd.mean <- function(x, weights = NULL, na.rm = TRUE) {
     if(!length(weights))
         return(mean(x, na.rm = na.rm))
     if(na.rm) {
@@ -329,7 +283,7 @@ wtd.mean <- function(x, weights = NULL, normwt = "ignored", na.rm = TRUE) {
     sum(weights * x)/sum(weights)
 }
 wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1),
-    type=c("quantile","(i-1)/(n-1)","i/(n+1)","i/n"), normwt=FALSE, na.rm=TRUE) {
+    type=c("quantile","(i-1)/(n-1)","i/(n+1)","i/n"), na.rm=TRUE) {
 
   if(!length(weights))
     return(stats::quantile(x, probs = probs, na.rm = na.rm))
@@ -339,8 +293,7 @@ wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1),
   nams <- paste(format(round(probs * 100, if(length(probs) >
                  1) 2 - log10(diff(range(probs))) else 2)), "%", sep = "")
   if(type == "quantile") {
-    w <- wtd.table(x, weights, na.rm = na.rm, normwt = normwt,
-                   type = "list")
+    w <- wtd.table(x, weights, na.rm = na.rm)
     x <- w$x
     wts <- w$sum.of.weights
     n <- sum(wts)
@@ -354,7 +307,7 @@ wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1),
     names(quantiles) <- nams
     return(quantiles)
   }
-  w <- wtd.Ecdf(x, weights, na.rm = na.rm, type = type, normwt = normwt)
+  w <- wtd.Ecdf(x, weights, na.rm = na.rm, type = type)
   structure(stats::approx(w$ecdf, w$x, xout = probs, rule = 2)$y, names = nams)
 }
 
