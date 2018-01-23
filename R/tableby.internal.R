@@ -232,7 +232,9 @@ na.tableby <- function(object, ...) {
 
 wtd.table <- function(x, weights = rep(1, length(x)), na.rm = TRUE)
 {
-  tapply(weights, x, sum, default = 0, na.rm = na.rm)
+  tmp <- tapply(weights, x, sum, na.rm = na.rm)
+  tmp[is.na(tmp)] <- 0 # (tapply(default = 0) would be enough in R >= 3.4, but we'll make this backwards-compatible)
+  tmp
 }
 
 wtd.mean <- function(x, weights = NULL, na.rm = TRUE) {
