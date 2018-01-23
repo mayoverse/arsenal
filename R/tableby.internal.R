@@ -273,12 +273,11 @@ wtd.Ecdf <- function(x, weights=NULL, type=c("i/n","(i-1)/(n-1)","i/(n+1)"), na.
     list(x = c(if(cdf[1] > 0) w$x[1], w$x), ecdf = c(if(cdf[1] > 0) 0, cdf))
 }
 wtd.mean <- function(x, weights = NULL, na.rm = TRUE) {
-    if(!length(weights))
-        return(mean(x, na.rm = na.rm))
+    if(!length(weights)) return(mean(x, na.rm = na.rm))
     if(na.rm) {
-        s <- !is.na(x + weights)
-        x <- x[s]
-        weights <- weights[s]
+        idx <- !is.na(x + weights)
+        x <- x[idx]
+        weights <- weights[idx]
     }
     sum(weights * x)/sum(weights)
 }
