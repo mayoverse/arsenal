@@ -51,12 +51,6 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL)
   control <- do.call("tableby.control", control[!duplicated(names(control))])
 
   out <- do.call(rbind, lapply(x$x, get_tb_part, byLvls = names(x$y$Group$stats), statLabs = x$control$stats.labels))
-  idx <- colnames(out) %nin% c("variable", "term", "label", "variable.type", "test", "p.value")
-  out[idx] <- lapply(out[idx], as.tbstatcol)
-
-  # Get rid of Nmiss if none missing
-  # if("Nmiss" %in% colnames(out) && all(out$Nmiss == 0)) out$Nmiss <- NULL
-
   row.names(out) <- NULL
 
   set_attr(out, "control", control)

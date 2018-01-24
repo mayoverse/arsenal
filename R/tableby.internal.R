@@ -32,11 +32,6 @@ format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ..
   NextMethod("format")
 }
 
-format.tbstatcol <- function(x, ...)
-{
-  vapply(x, format, NA_character_, ...)
-}
-
 allNA <- function(x) all(is.na(x))
 
 as.tbstat <- function(x, old = NULL, sep = NULL, parens = NULL, sep2 = NULL, pct = NULL)
@@ -53,12 +48,6 @@ as.countpct <- function(x, ...)
 }
 
 is.countpct <- function(x) inherits(x, "tbstat_countpct")
-
-as.tbstatcol <- function(x)
-{
-  if(!inherits(x, "tbstatcol")) class(x) <- c("tbstatcol", class(x))
-  x
-}
 
 ## merge two tableby objects
 ## both must have same "by" variable and levels

@@ -87,7 +87,8 @@ print.summary.tableby <- function(x, ...)
   df <- x$object
 
   idx <- colnames(df) %nin% c("variable", "term", "label", "variable.type", "test", "p.value")
-  df[idx] <- lapply(df[idx], format, digits = x$control$digits,
+  format_all <- function(x, ...) vapply(x, format, NA_character_, ...)
+  df[idx] <- lapply(df[idx], format_all, digits = x$control$digits,
                     digits.count = x$control$digits.count, digits.pct = x$control$digits.pct)
   df[["p.value"]] <- formatC(df[["p.value"]], digits = x$control$digits.p, format = if(x$control$format.p) "f" else "g")
 
