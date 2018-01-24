@@ -46,24 +46,22 @@ NULL
 #' @rdname tableby.stats
 #' @export
 meansd <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  c(wtd.mean(x, weights=weights, na.rm=na.rm, ...), sqrt(wtd.var(x, weights=weights,na.rm=na.rm, ...)))
+  y <- c(wtd.mean(x, weights=weights, na.rm=na.rm, ...), sqrt(wtd.var(x, weights=weights, na.rm=na.rm, ...)))
+  structure(y, class = c("tbstat", if(is.Date(x)) class(x)), parens = c("(", ")"))
 }
 
 #' @rdname tableby.stats
 #' @export
 medianrange <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  if(na.rm & length(x)==sum(is.na(x))) {
-    return(c(NA,NA,NA))
-  }
-  wtd.quantile(x, probs=c(.5,0,1), na.rm = na.rm, weights=weights, ...)
+  y <- if(na.rm && allNA(x)) rep(NA_real_, times = 3) else wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights, ...)
+  structure(y, class = c("tbstat", if(is.Date(x)) class(x)), parens = c("(", ")"), sep2 = ", ")
 }
 
 #' @rdname tableby.stats
 median <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  if(na.rm & length(x)==sum(is.na(x))) {
-    return(NA)
-  }
-  if(is.Date(x)) {
+  if(na.rm && allNA(x)) {
+    NA_real_
+  } else if(is.Date(x)) {
     as.Date(wtd.quantile(as.integer(x), weights=weights, probs=0.5, na.rm=na.rm, ...), origin="1970/01/01")
   } else {
     wtd.quantile(x, weights=weights, probs=0.5, na.rm=na.rm, ...)
@@ -72,14 +70,14 @@ median <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 
 #' @rdname tableby.stats
 range <- function(x, na.rm=TRUE, ...) {
-  if(na.rm & length(x)==sum(is.na(x))) {
-    return(c(NA,NA))
-  }
-  if(is.Date(x)) {
+  y <- if(na.rm && allNA(x)) {
+    c(NA_real_, NA_real_)
+  } else if(is.Date(x)) {
     as.Date(base::range(as.integer(x), na.rm=na.rm), origin="1970/01/01")
   } else {
     base::range(x, na.rm=na.rm)
   }
+  structure(y, class = c("tbstat", if(is.Date(x)) class(x)), sep = " - ")
 }
 
 
@@ -195,19 +193,19 @@ survNinterval <- function(x, x.by, time.interval=1) {
 #' @rdname tableby.stats
 #' @export
 q1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  if(na.rm & length(x)==sum(is.na(x))) {
-    return(c(NA,NA))
-  }
-  wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm, ...)
+  y <- if(na.rm && allNA(x)) {
+    c(NA_real_, NA_real_)
+  } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm, ...)
+  structure(y, class = c("tbstat", if(is.Date(x)) class(x)), sep = ", ")
 }
 
 #' @rdname tableby.stats
 #' @export
 medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  if(na.rm & length(x)==sum(is.na(x))) {
-    return(c(NA,NA,NA))
-  }
-  wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm, ...)
+  y <- if(na.rm && allNA(x)) {
+    c(NA_real_, NA_real_, NA_real_)
+  } else wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm, ...)
+  structure(y, class = c("tbstat", if(is.Date(x)) class(x)), parens = c("(", ")"), sep2 = ", ")
 }
 
 ## Inner-quartile range has a function IQR in R, but a wrapper

@@ -4,6 +4,39 @@
 
 ## Helper functions for tableby:  merge, subset, and labels (work like names)
 
+get_attr <- function(x, which, default)
+{
+  x <- attr(x, which, exact = TRUE)
+  if(is.null(x)) default else x
+}
+
+# `[.tbstat` <- function(x, ...)
+# {
+#   class(x) <- class(x)[class(x) != "tbstat"]
+#   NextMethod("[")
+# }
+
+format.tbstat <- function(x, ...)
+{
+  class(x) <- class(x)[class(x) != "tbstat"]
+  if(length(x) == 1) return(paste0(x))
+
+  parens <- get_attr(x, "parens", c("", ""))
+  sep <- get_attr(x, "sep", " ")
+  sep2 <- get_attr(x, "sep2", " ")
+  pct <- get_attr(x, "pct", "")
+  if(length(x) == 2)
+  {
+    paste0(x[1], sep, parens[1], x[2], pct, parens[2])
+  } else paste0(x[1], sep, parens[1], x[2], sep2, x[3], parens[2])
+}
+
+allNA <- function(x) all(is.na(x))
+
+
+
+
+
 ## merge two tableby objects
 ## both must have same "by" variable and levels
 ## if some RHS variables have same names, keep both, the one in y add ".y"
