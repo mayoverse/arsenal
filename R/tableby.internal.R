@@ -10,12 +10,6 @@ get_attr <- function(x, which, default)
   if(is.null(x)) default else x
 }
 
-# `[.tbstat` <- function(x, ...)
-# {
-#   class(x) <- class(x)[class(x) != "tbstat"]
-#   NextMethod("[")
-# }
-
 format.tbstat <- function(x, ...)
 {
   class(x) <- class(x)[class(x) != "tbstat"]
@@ -33,9 +27,11 @@ format.tbstat <- function(x, ...)
 
 allNA <- function(x) all(is.na(x))
 
-
-
-
+as.tbstat <- function(vec, old = NULL, sep = NULL, parens = NULL, sep2 = NULL, pct = NULL)
+{
+  structure(vec, class = c("tbstat", if(is.Date(old)) class(old)),
+            sep = sep, parens = parens, sep2 = sep2, pct = pct)
+}
 
 ## merge two tableby objects
 ## both must have same "by" variable and levels
