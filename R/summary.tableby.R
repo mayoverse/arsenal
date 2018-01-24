@@ -119,6 +119,7 @@ print.summary.tableby <- function(x, ...)
 
   #### tweak column names according to specifications ####
   cn <- stats::setNames(colnames(df), colnames(df))
+  align <- paste0(c(rep("l", times = sum(cn != "p.value")), if("p.value" %in% cn) "r"), collapse = "")
   nm <- intersect(cn, names(x$totals))
   if(length(nm)) cn[nm] <- paste0(cn[nm], " (N=", x$totals[nm], ")")
   cn["label"] <- ""
@@ -126,7 +127,7 @@ print.summary.tableby <- function(x, ...)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  print(knitr::kable(df, col.names = cn, caption = NULL))
+  print(knitr::kable(df, col.names = cn, caption = NULL, align = align))
 
   invisible(x)
 }
