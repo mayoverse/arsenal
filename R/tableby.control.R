@@ -88,28 +88,34 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
    date.stats=c("Nmiss", "median","range"),
    stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3",
                      range="Range", countpct="Count (Pct)", Nevents="Events", medsurv="Median Survival"),
-   digits=3, digits.test=NULL, nsmall=NULL, nsmall.pct=NULL, chisq.correct=TRUE, simulate.p.value=FALSE, B=2000, ...) {
+   digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE,
+   chisq.correct=TRUE, simulate.p.value=FALSE, B=2000, ...) {
+
+  if("digits.test" %in% names(list(...))) .Deprecated(msg = "Using 'digits.test = ' is deprecated. Use 'digits.p = ' instead.")
 
   ## validate digits
-  if(is.null(digits)) {
-    digits <- 3
+  # digits and digits.test are OK to be NULL. See ?format
+  if(!is.null(digits) && digits < 0L)
+  {
+    warning("digits must be >= 0. Set to default.")
+    digits <- 3L
   }
-  if(is.null(digits.test)){
-    digits.test <- digits
+  if(!is.null(digits.count) && digits.count < 0L)
+  {
+    warning("digits.count must be >= 0. Set to default.")
+    digits.count <- 0L
   }
-  if(digits < 0 || digits.test < 0) {
-    warning("digits must be >= 0. Set to default. \n")
-    digits <- 3
-    digits.test <- digits
+  if(!is.null(digits.pct) && digits.pct < 0L)
+  {
+    warning("digits.pct must be >= 0. Set to default.")
+    digits.pct <- 1L
   }
-  if(!is.null(nsmall) && nsmall < 0) {
-	  warning("nsmall must be >= 0, or NULL. Set to NULL. \n")
-	  nsmall <- NULL
+  if(!is.null(digits.p) && digits.p < 0L)
+  {
+    warning("digits.p must be >= 0. Set to default.")
+    digits.p <- 3L
   }
-  if(!is.null(nsmall.pct) && nsmall.pct < 0) {
-	  warning("nsmall.pct must be positive integer, or NULL. Set to NULL. \n")
-	  nsmall.pct <- NULL
-  }
+
   ## validate all test names
   if(!exists(numeric.test)) {
     stop("numeric test does not exist: ", numeric.test, "\n")
@@ -143,14 +149,14 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
   if(any(!exists(date.stats))) {
     stop("One or more date summary statistic functions do not exist.\n")
   }
-  return(list(test=test, total=total, test.pname=test.pname, cat.simplify=cat.simplify,
-              numeric.test=numeric.test, cat.test=cat.test,
-              ordered.test=ordered.test, surv.test=surv.test,
-              numeric.stats=numeric.stats, cat.stats=cat.stats,
-              ordered.stats=ordered.stats,  surv.stats=surv.stats,
-              date.test=date.test, date.stats=date.stats,
-              chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B,
-              stats.labels=stats.labels,
-              digits=digits, digits.test=digits.test, nsmall=nsmall, nsmall.pct=nsmall.pct))
 
+  list(test=test, total=total, test.pname=test.pname, cat.simplify=cat.simplify,
+       numeric.test=numeric.test, cat.test=cat.test,
+       ordered.test=ordered.test, surv.test=surv.test,
+       numeric.stats=numeric.stats, cat.stats=cat.stats,
+       ordered.stats=ordered.stats,  surv.stats=surv.stats,
+       date.test=date.test, date.stats=date.stats,
+       chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B,
+       stats.labels=stats.labels,
+       digits=digits, digits.p=digits.p, digits.count = digits.count, digits.pct = digits.pct, format.p = format.p)
 }

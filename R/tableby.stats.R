@@ -235,34 +235,13 @@ N <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 #' @rdname tableby.stats
 #' @export
 count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, length(x)), ...)  {
-  wtbl <- wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)], ...)
-  data.frame(count = as.vector(wtbl), row.names = levels)
+  lapply(as.list(wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)], ...)), as.countpct)
 }
-
 
 ## count (pct) where pct is within group variable total
 #' @rdname tableby.stats
 #' @export
 countpct <- function(x, levels=sort(unique(x)), na.rm=TRUE, weights=rep(1, length(x)), ...) {
   wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)], ...)
-  data.frame(
-    count=as.vector(wtbl),
-    pct=100*as.vector(wtbl)/sum(wtbl),
-    row.names = levels
-  )
-}
-## format the countpct result for better printing (should work for meansd as well)
-## Greg to edit this one
-format.countpct <- function(x,digits=5, pct='') {
-  if(!is.null(ncol(x))) {
-    ## multiple rows
-    xformat <- cbind.data.frame(format(x[,1], digits=digits), format(x[,2], digits=digits))
-    row.names(xformat) <- row.names(x)
-    digits <- digits - 2
-    return (apply (xformat, 1, function(xrow) paste (xrow[1], " (", format (round (as.numeric (xrow[2]), digits), nsmall = digits),
-                                                     pct, ")", sep = "")))
-  } else {
-    ## just one row
-    return(paste(signif(x[1],digits=digits), "(",signif(x[2],digits=digits), ")",sep=""))
-  }
+  lapply(Map(c, wtbl, 100*wtbl/sum(wtbl)), as.countpct, parens = c("(", ")"), pct = "%")
 }

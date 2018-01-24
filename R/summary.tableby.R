@@ -1,7 +1,3 @@
-## Purpose: summary method for tableby object
-## Author: Greg Dougherty, Jason Sinnwell and Beth Atkinson
-## Updated: 9/29/2015
-
 
 defaultLabelTranslations <- function()
 {
@@ -73,134 +69,64 @@ defaultLabelTranslations <- function()
 #' summary(out, labelTranslations=c(meansd="Mean-SD"), text=TRUE)
 #'
 #' @export
-summary.tableby <- function (object, title = NULL, labelTranslations = NULL, digits = NA,
-							 nsmall = NA, nsmall.pct = NA, digits.test = NA, text = FALSE,
-							 removeBlanks = text, labelSize = 1.2, test = NA, test.pname = NA,
-							 pfootnote = NA, total = NA, ...) {
-	frameOut <- makeSummary.tableby(TRUE, object, title, labelTranslations, digits, nsmall,
-									nsmall.pct, digits.test, text, removeBlanks, labelSize, test,
-									test.pname, pfootnote, total)
-
-	invisible(frameOut)
-}
-
-
-#' as.data.frame.tableby
-#'
-#' Build a data.frame from the tableby object and parameters, and return it
-#'
-#' @inheritParams summary.tableby
-#' @param x An object of class \code{\link{tableby}}.
-#' @return Information is returned as a data.frame of the tableby
-#' @author Gregory Dougherty, Jason Sinnwell, Beth Atkinson, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
-#'
-#' @export
-as.data.frame.tableby <- function (x, ..., title = NULL, labelTranslations = NULL, digits = NA,
-									nsmall = NA, nsmall.pct = NA, digits.test = NA,
-									test = NA, test.pname = NA, total = NA)
+summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL)
 {
-  if(length(list(...)) > 0) warning("The '...' in this function has changed. Are you passing positional arguments?")
-	frameOut <- makeSummary.tableby(FALSE, x, title, labelTranslations, digits, nsmall,
-									nsmall.pct, digits.test, FALSE, FALSE, 1.2, test, test.pname,
-									NA, total)
-
-	return(frameOut)
+  dat <- as.data.frame.tableby(object, ..., labelTranslations = labelTranslations)
+  structure(list(
+    object = set_attr(dat, "control", NULL),
+    control = attr(dat, "control"),
+    totals = object$y[[1]]$stats,
+    text = text,
+    title = title
+  ), class = "summary.tableby")
 }
 
+print.summary.tableby <- function(x, ...)
+{
 
-## ' Format the information in object as a Table using Pandoc coding or plain text<br/>
-## ' If doText is TRUE, cat it to stdout, else just return the data.frame
-## '
-## ' @param doText			Do we print text output, or only do the data.frame
-## ' @inheritParams summary.tableby
-## '
-## ' @return Results are cat'ed to stdout, and returned invisibly as a Vector of Strings
-## '
-## ' @author m082166
-makeSummary.tableby <- function (doText, object, title, labelTranslations, digits, nsmall,
-								 nsmall.pct, digits.test, text, removeBlanks, labelSize, test,
-								 test.pname, pfootnote, total) {
-	control <- object$control
-	digits <- setParam(digits, control$digits)
-	digits.test <- setParam(digits.test, control$digits.test)
-	nsmall <- setParam(nsmall, control$nsmall)
-	nsmall.pct <- setParam(nsmall.pct, control$nsmall.pct)
-	keepTotalCol <- setParam3(total, control$total, TRUE)
-        if(!keepTotalCol & !any(grepl("Total", names(object$y[[1]]$stats)))) {
-          ## total column already not included, so tell method to keep last col, which it thinks is Total
-          keepTotalCol <- TRUE
-        }
-	hasPValue <- setParam3(test, control$test, TRUE)
-	pValueTitle <- setParam3(test.pname, control$test.pname, "p value")
-	pfootnote <- setParam3(pfootnote, control$pfootnote, FALSE)
-	collapse <- setParam(control$cat.simplify, FALSE)
+  df <- x$object
 
-	if (text) {
-		boldMark <- ""
-		indentStr <- " "
-	}
-	else {
-		boldMark <- "**"
-		indentStr <- "&nbsp;"
-		removeBlanks <- FALSE
-	}
+  idx <- colnames(df) %nin% c("variable", "term", "label", "variable.type", "test", "p.value")
+  df[idx] <- lapply(df[idx], format, digits = x$control$digits,
+                    digits.count = x$control$digits.count, digits.pct = x$control$digits.pct)
+  df[["p.value"]] <- formatC(df[["p.value"]], digits = x$control$digits.p, format = if(x$control$format.p) "f" else "g")
 
-	translations <- format.addTranslations(object, labelTranslations)
-	elements <- object$x
-	group <- object$y[[1]]
-	minColSize <- maxStrLen(lookupHumanTitle(names(elements), translations)) + (nchar(boldMark) * 2)
-	minColSize <- max(minColSize, maxNameLen(elements, translations))
+  if(x$control$format.p)
+  {
+    cutoff <- 10^(-x$control$digits.p)
+    fmt <- paste0("< ", format(cutoff, digits = x$control$digits.p, format = "f"))
 
-	header <- makeHeader(group, minColSize, keepTotalCol, hasPValue, pValueTitle, labelSize = labelSize)
-	lineSize <- as.integer(header$lineSize)
-	firstColSize <- as.integer(header$firstColSize)
-	colSize <- as.integer(header$colSize)
-	results <- header$header
-	headers <- c("variable", header$headers)
-	lastLine <- results[length(results)]	# Clip off last line, will need to add it back at end
-	results <- results[- length(results)]
-	if (pfootnote) {
-		methods <- list()
-	}
-	else {
-		methods <- NULL	# No footnotes are done when methods = NULL
-	}
+    df[["p.value"]][x$object[["p.value"]] < cutoff] <- fmt
+  }
 
-	frameLists <- list(term = NULL, variable = NULL)
-	for (element in elements) {
+  #### don't show the same statistics more than once ####
+  df[["p.value"]] <- replace(df[["p.value"]], duplicated(df$variable), "")
 
-		elmResults <- formatElement(element, lineSize, firstColSize, colSize, keepTotalCol, hasPValue,
-									translations, digits, digits.test, nsmall, nsmall.pct,
-									boldMark, indentStr, collapse, methods)
-		strings <- elmResults$strings
-		frameLists <- addListElement(frameLists, headers, strings, element$name, firstColSize,
-									 colSize, boldMark, indentStr)
-		if (doText) {
-			results <- c(results, strings, "")
-			methods <- elmResults$methods
-		}
-	}
+  #### Format if necessary ####
+  df$label <- trimws(df$label) # regardless of formatting
+  if(x$text)
+  {
+    df$label <- ifelse(duplicated(df$variable), paste0("-  ", df$label), df$label)
+  } else df$label <- ifelse(duplicated(df$variable), paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("**", df$label, "**"))
 
-	frameOut <- makeDataFrame(headers, frameLists)
+  #### get rid of unnecessary columns ####
+  df$variable <- NULL
+  df$term <- NULL
+  df$test <- NULL
+  df$variable.type <- NULL
+  if(!x$control$test) df$p.value <- NULL
+  if(!x$control$total) df[["Total"]] <- NULL
 
-	if (doText) {
-		results <- c(results, lastLine)
-		if (removeBlanks) {
-			results <- results[nchar(results) > 0]
-		}
+  #### tweak column names according to specifications ####
+  cn <- stats::setNames(colnames(df), colnames(df))
+  nm <- intersect(cn, names(x$totals))
+  if(length(nm)) cn[nm] <- paste0(cn[nm], " (N=", x$totals[nm], ")")
+  cn["label"] <- ""
+  if("p.value" %in% cn && !is.null(x$control$test.pname)) cn["p.value"] <- x$control$test.pname
 
-		if (!is.null(title) && !is.na(title)) {
-			if (text) {
-				results <- c(makeCenteredStr(title, lineSize), results)
-			}
-			else {	# Titles can be multi line, so have a blank line to clearly end title
-				results <- c(paste0("Table: ", boldMark, title, boldMark), "", results)
-			}
-		}
+  #### finally print it out ####
+  if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
+  print(knitr::kable(df, col.names = cn, caption = NULL))
 
-		results <- addMethods(results, methods)
-		cat(paste0(c("", results, ""), collapse = "\n")) # Table must have blank line before and after
-	}
-	return(frameOut)
+  invisible(x)
 }
-
