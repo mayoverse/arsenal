@@ -18,6 +18,11 @@
 NULL
 #> NULL
 
+starts_with <- function(x, prefix)
+{
+  substring(x, 1, nchar(prefix)) == prefix # this function is optimized in R >= 3.3 (startsWith)
+}
+
 join_formula <- function(x, y)
 {
   x <- formula(x)
