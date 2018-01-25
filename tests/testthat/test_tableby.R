@@ -664,3 +664,21 @@ test_that("11/15/2017: Krista Goergen and non-syntactic names (#41)", {
 test_that("7/27/2017: as.data.frame.tableby and dates (#10)", {
   expect_identical(as.data.frame(tableby(~ dt, data = mdat))$Overall[[3]][2], as.Date("1968-05-14"))
 })
+
+test_that("01/24/2018: count and countpct at the same time (#51)", {
+  dat <- data.frame(y = rep(c("C", "D"), times = 5), x = rep(c("A", "B"), each = 5), stringsAsFactors = FALSE)
+  expect_identical(
+    capture.output(summary(tableby(y ~ x, data = dat, cat.stats = c("count", "countpct")), text = TRUE)),
+    c(""                                                    ,
+      ""                                                    ,
+      "|     |C (N=5)   |D (N=5)   |Total (N=10) | p value|",
+      "|:----|:---------|:---------|:------------|-------:|",
+      "|x    |          |          |             |   1.000|",
+      "|-  A |3         |2         |5            |        |",
+      "|-  B |2         |3         |5            |        |",
+      "|-  A |3 (60.0%) |2 (40.0%) |5 (50.0%)    |        |",
+      "|-  B |2 (40.0%) |3 (60.0%) |5 (50.0%)    |        |"
+    )
+  )
+})
+
