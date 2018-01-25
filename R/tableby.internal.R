@@ -232,7 +232,7 @@ tests.tableby <- function(x) {
     if(any(v2objIndex == 1)) {
       x$y[[1]]$label <- value[v2objIndex == 1]
       value <- value[v2objIndex != 1]
-      v2objIndex <- v2objIndex[v2objIndex == 1]
+      v2objIndex <- v2objIndex[v2objIndex != 1]
     }
     if(length(v2objIndex) > 0) {
       ## prepare to iterate over the rest for x, if there are any
