@@ -659,3 +659,8 @@ test_that("11/15/2017: Krista Goergen and non-syntactic names (#41)", {
     )
   )
 })
+
+
+test_that("7/27/2017: as.data.frame.tableby and dates (#10)", {
+  expect_identical(as.data.frame(tableby(~ dt, data = mdat))$Overall[[3]][2], as.Date("1968-05-14"))
+})
