@@ -124,7 +124,7 @@ print.summary.tableby <- function(x, ...)
   nm <- intersect(cn, names(x$totals))
   if(length(nm)) cn[nm] <- paste0(cn[nm], " (N=", x$totals[nm], ")")
   cn["label"] <- ""
-  if("p.value" %in% cn && !is.null(x$control$test.pname)) cn["p.value"] <- x$control$test.pname
+  if("p.value" %in% cn && is.null(x$control$test.pname)) cn["p.value"] <- "p value" else if("p.value" %in% cn) cn["p.value"] <- x$control$test.pname
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
