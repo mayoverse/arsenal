@@ -71,7 +71,7 @@ defaultLabelTranslations <- function()
 #' @export
 summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL)
 {
-  dat <- as.data.frame.tableby(object, ..., labelTranslations = labelTranslations)
+  dat <- as.data.frame(object, ..., labelTranslations = labelTranslations)
   structure(list(
     object = set_attr(dat, "control", NULL),
     control = attr(dat, "control"),
