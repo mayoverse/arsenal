@@ -189,26 +189,33 @@ tests.tableby <- function(x) {
 'labels<-.tableby' <- function(x, value) {
   ## if the value vector is named, then assign the labels to
   ## those names that match those in x and y
-  if(!is.null(names(value))) {
+  if(is.list(value)) value <- unlist(value)
+  if(is.null(value))
+  {
+    x$y[[1]]$label <- x$y[[1]]$name
+    for(k in seq_along(x$x)) x$x[[k]]$label <- x$x[[k]]$name
+  } else if(!is.null(names(value))) {
     vNames <- names(value)
     objNames <- c(names(x$y), names(x$x))
     v2objIndex <- match(vNames, objNames)
-    if(any(is.na(v2objIndex))) {
-      warning("Named value(s): ", paste(vNames[is.na(v2objIndex)],collapse=","),
-              " not matched in x\n")
+    if(anyNA(v2objIndex))
+    {
+      idx <- is.na(v2objIndex)
+      warning("Named value(s) not matched in x: ", paste(vNames[idx],collapse=","), "\n")
+      vNames <- vNames[!idx]
+      v2objIndex <- v2objIndex[!idx]
     }
+
     ## handle y label first, then remove it
-    if(any(v2objIndex==1)) {
-      x$y[[1]]$label <- value[which(v2objIndex==1)]
-      value <- value[-which(v2objIndex==1)]
-      v2objIndex <- v2objIndex[-which(v2objIndex==1)]
+    if(any(v2objIndex == 1)) {
+      x$y[[1]]$label <- value[v2objIndex == 1]
+      value <- value[v2objIndex != 1]
+      v2objIndex <- v2objIndex[v2objIndex == 1]
     }
-    if(length(v2objIndex)>0) {
+    if(length(v2objIndex) > 0) {
       ## prepare to iterate over the rest for x, if there are any
       v2objIndex <- v2objIndex - 1
-      for(k in seq_len(length(v2objIndex))) {
-        x$x[[ v2objIndex[k] ]]$label <- value[k]
-      }
+      for(k in seq_along(v2objIndex)) x$x[[v2objIndex[k]]]$label <- value[k]
     }
   } else  {
 
@@ -217,15 +224,14 @@ tests.tableby <- function(x) {
     ## for each of the RHS vars of x (1:length(x)-3),
     ##assign strings in value to the 'label' element of the list for each RHS variable
 
-    if(length(value) != length(x$y + length(x$x))) {
+    if(length(value) != length(x$y) + length(x$x)) {
       stop("Length of new labels is not the same length as there are variables in the formula.\n")
     }
     x$y[[1]]$label <- value[1]
-    for(k in 1:length(x$x)) {
-      x$x[[k]]$label <- value[k-1]
+    for(k in seq_along(x$x)) {
+      x$x[[k]]$label <- value[k+1]
     }
   }
-  ## return tableby x with updated labels
   return(x)
 }
 
