@@ -79,7 +79,7 @@
 #' summary(outResp, text=TRUE)
 #' summary(outCtl, text=TRUE)
 
-tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=FALSE,
+tableby.control <- function(test=TRUE,total=TRUE, test.pname="p value", cat.simplify=FALSE,
    numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt",
    numeric.stats=c("Nmiss","meansd","q1q3","range"),
    cat.stats=c("Nmiss","countpct"),
