@@ -55,7 +55,7 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL)
       y$label[1] <- x$label[1]
       y
     }
-    out <- do.call(rbind, c(by(out, out$variable, cat_simplify, simplify = FALSE), stringsAsFactors = FALSE))
+    out <- do.call(rbind, c(by(out, factor(out$variable, levels = unique(out$variable)), cat_simplify, simplify = FALSE), stringsAsFactors = FALSE))
   }
 
   row.names(out) <- NULL
