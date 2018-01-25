@@ -53,6 +53,28 @@ as.tbstat_multirow <- function(x)
   x
 }
 
+extract_tbstat <- function(x, ...)
+{
+  x <- NextMethod("[")
+  class(x) <- class(x)[class(x) %nin% c("tbstat", "tbstat_countpct", "tbstat_multirow")]
+  x
+}
+
+extract2_tbstat <- function(x, ...)
+{
+  x <- NextMethod("[[")
+  class(x) <- class(x)[class(x) %nin% c("tbstat", "tbstat_countpct", "tbstat_multirow")]
+  x
+}
+
+`[.tbstat` <- extract_tbstat
+`[.tbstat_countpct` <- extract_tbstat
+`[.tbstat_multirow` <- extract_tbstat
+`[[.tbstat` <- extract2_tbstat
+`[[.tbstat_countpct` <- extract2_tbstat
+`[[.tbsta_multirowt` <- extract2_tbstat
+
+
 ## merge two tableby objects
 ## both must have same "by" variable and levels
 ## if some RHS variables have same names, keep both, the one in y add ".y"
