@@ -44,7 +44,7 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL)
   control <- c(list(...), x$control)
   control <- do.call("tableby.control", control[!duplicated(names(control))])
 
-  out <- do.call(rbind, lapply(x$x, get_tb_part, byLvls = names(x$y$Group$stats), statLabs = x$control$stats.labels))
+  out <- do.call(rbind, lapply(x$x, get_tb_part, byLvls = names(x$y[[1]]$stats), statLabs = x$control$stats.labels))
   row.names(out) <- NULL
 
   set_attr(out, "control", control)
