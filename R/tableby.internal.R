@@ -47,7 +47,11 @@ as.countpct <- function(x, ...)
   tmp
 }
 
-is.countpct <- function(x) inherits(x, "tbstat_countpct")
+as.tbstat_multirow <- function(x)
+{
+  class(x) <- c("tbstat_multirow", class(x))
+  x
+}
 
 ## merge two tableby objects
 ## both must have same "by" variable and levels

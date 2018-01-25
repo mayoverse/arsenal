@@ -1,31 +1,25 @@
 
 get_tb_part <- function(tbList, byLvls, statLabs)
 {
-  if(tbList$type %in% c("ordinal", "categorical"))
+  f <- function(x, nm, lab = FALSE)
   {
-    lvls <- names(tbList$stats[[1]][[1]])
-    out <- data.frame(
-      variable = tbList$name,
-      term = c(tbList$name, rep(lvls, times = length(tbList$stats))),
-      label = c(tbList$label, rep(lvls, times = length(tbList$stats))),
-      variable.type = tbList$type
-    )
-    for(lvl in byLvls)
-    {
-      out[[lvl]] <- c("", unlist(lapply(tbList$stats, function(x) x[[lvl]]), recursive = FALSE, use.names = FALSE))
-    }
-  } else if(tbList$type %in% c("Date", "numeric", "survival"))
+    if(inherits(x[[1]], "tbstat_multirow")) names(x[[1]]) else if(lab && !is.null(statLabs[[nm]])) statLabs[[nm]] else nm
+  }
+
+  out <- data.frame(
+    variable = tbList$name,
+    term = c(tbList$name, unlist(Map(f, tbList$stats, names(tbList$stats)), use.names = FALSE)),
+    label = c(tbList$label, unlist(Map(f, tbList$stats, names(tbList$stats), lab = TRUE), use.names = FALSE)),
+    variable.type = tbList$type
+  )
+
+  f <- function(x, lv)
   {
-    out <- data.frame(
-      variable = tbList$name,
-      term = c(tbList$name, names(tbList$stats)),
-      label = c(tbList$label, vapply(names(tbList$stats), function(x) if(is.null(statLabs[[x]])) x else statLabs[[x]], NA_character_)),
-      variable.type = tbList$type
-    )
-    for(lvl in byLvls)
-    {
-      out[[lvl]] <- c("", lapply(tbList$stats, function(x) x[[lvl]]))
-    }
+    if(inherits(x[[1]], "tbstat_multirow")) x[[lv]] else x[lv]
+  }
+  for(lvl in byLvls)
+  {
+    out[[lvl]] <- c("", unlist(lapply(tbList$stats, f, lv = lvl), recursive = FALSE, use.names = FALSE))
   }
   out$test <- tbList$test$method
   out$p.value <- tbList$test$p.value
