@@ -44,7 +44,20 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL)
   control <- c(list(...), x$control)
   control <- do.call("tableby.control", control[!duplicated(names(control))])
 
-  out <- do.call(rbind, lapply(x$x, get_tb_part, byLvls = names(x$y[[1]]$stats), statLabs = x$control$stats.labels))
+  out <- do.call(rbind, c(lapply(x$x, get_tb_part, byLvls = names(x$y[[1]]$stats), statLabs = x$control$stats.labels), stringsAsFactors = FALSE))
+  if(control$cat.simplify)
+  {
+    cat_simplify <- function(x)
+    {
+      if(nrow(x) != 3 || x$variable.type[1] %nin% c("categorical", "ordinal")) return(x)
+      y <- x[3, , drop = FALSE]
+      y$term[1] <- x$term[1]
+      y$label[1] <- x$label[1]
+      y
+    }
+    out <- do.call(rbind, c(by(out, out$variable, cat_simplify, simplify = FALSE), stringsAsFactors = FALSE))
+  }
+
   row.names(out) <- NULL
 
   set_attr(out, "control", control)
