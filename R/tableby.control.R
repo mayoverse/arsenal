@@ -91,7 +91,10 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname="p value", cat.simp
    digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE,
    chisq.correct=TRUE, simulate.p.value=FALSE, B=2000, ...) {
 
-  if("digits.test" %in% names(list(...))) .Deprecated(msg = "Using 'digits.test = ' is deprecated. Use 'digits.p = ' instead.")
+  nm <- names(list(...))
+  if("digits.test" %in% nm) .Deprecated(msg = "Using 'digits.test = ' is deprecated. Use 'digits.p = ' instead.")
+  if("nsmall" %in% names(list(...))) .Deprecated(msg = "Using 'nsmall = ' is deprecated. Use 'digits = ' instead.")
+  if("nsmall.pct" %in% names(list(...))) .Deprecated(msg = "Using 'nsmall.pct = ' is deprecated. Use 'digits.pct = ' instead.")
 
   ## validate digits
   # digits and digits.test are OK to be NULL. See ?format
