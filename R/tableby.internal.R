@@ -8,7 +8,7 @@ get_attr <- function(x, which, default)
 format.tbstat <- function(x, digits = NULL, ...)
 {
   class(x) <- class(x)[class(x) != "tbstat"]
-  if(is.numeric(x)) x <- formatC(x, digits = digits, format = "f")
+  if(is.numeric(x)) x <- trimws(formatC(x, digits = digits, format = "f"))
   if(length(x) == 1) return(paste0(x))
 
   parens <- get_attr(x, "parens", c("", ""))
