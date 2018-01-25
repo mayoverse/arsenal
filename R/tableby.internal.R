@@ -34,9 +34,9 @@ format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ..
 
 allNA <- function(x) all(is.na(x))
 
-as.tbstat <- function(x, old = NULL, sep = NULL, parens = NULL, sep2 = NULL, pct = NULL)
+as.tbstat <- function(x, oldClass = NULL, sep = NULL, parens = NULL, sep2 = NULL, pct = NULL)
 {
-  structure(x, class = c("tbstat", if(is.Date(old)) class(old)),
+  structure(x, class = c("tbstat", oldClass),
             sep = sep, parens = parens, sep2 = sep2, pct = pct)
 }
 

@@ -47,14 +47,14 @@ NULL
 #' @export
 meansd <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- c(wtd.mean(x, weights=weights, na.rm=na.rm, ...), sqrt(wtd.var(x, weights=weights, na.rm=na.rm, ...)))
-  as.tbstat(y, old = x, parens = c("(", ")"))
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"))
 }
 
 #' @rdname tableby.stats
 #' @export
 medianrange <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- if(na.rm && allNA(x)) rep(NA_real_, times = 3) else wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights, ...)
-  as.tbstat(y, old = x, parens = c("(", ")"), sep2 = ", ")
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
 
 #' @rdname tableby.stats
@@ -77,7 +77,7 @@ range <- function(x, na.rm=TRUE, ...) {
   } else {
     base::range(x, na.rm=na.rm)
   }
-  as.tbstat(y, old = x, sep = " - ")
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = " - ")
 }
 
 
@@ -196,7 +196,7 @@ q1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- if(na.rm && allNA(x)) {
     c(NA_real_, NA_real_)
   } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm, ...)
-  as.tbstat(y, old = x, sep = ", ")
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = ", ")
 }
 
 #' @rdname tableby.stats
@@ -205,7 +205,7 @@ medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- if(na.rm && allNA(x)) {
     c(NA_real_, NA_real_, NA_real_)
   } else wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm, ...)
-  as.tbstat(y, old = x, parens = c("(", ")"), sep2 = ", ")
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
 
 ## Inner-quartile range has a function IQR in R, but a wrapper
