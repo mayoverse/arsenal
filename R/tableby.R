@@ -136,9 +136,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   ## Tell user if they passed an argument that was not expected, either here or in control
   expectArgs <- c("formula","data","na.action","subset","weights", "control", names(control))
   match.idx <- match(names(Call)[-1], expectArgs)
-  if(any(is.na(match.idx))) {
-    warning("unused arguments: ", paste(names(Call)[1+which(is.na(match.idx))],collapse=", "), "\n")
-  }
+  if(anyNA(match.idx)) warning("unused arguments: ", paste(names(Call)[1+which(is.na(match.idx))],collapse=", "), "\n")
+
   ## pick up extra control arguments from command via ...
   control <- do.call("tableby.control", control)
 
@@ -250,12 +249,11 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     if(is.null(nameEff))  nameEff <- names(modeldf)[eff]
     labelEff <-  attributes(currcol)$label
     if(is.null(labelEff))  labelEff <- nameEff
+    statList <- list()
+    bystatlist <- list()
 
     ## ordered factor
     if(is.ordered(currcol)) {
-
-      ## stats
-      ostatList <- list()
       xlevels <- levels(currcol)
       if(length(xlevels) == 0)
       {
@@ -271,18 +269,15 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       }
       ## if no missings, and control says not to show missings,
       ## remove Nmiss stat fun
-      if(sum(is.na(currcol)) == 0 && any(ordered.stats == "Nmiss")) {
-        ordered.stats <- ordered.stats[ordered.stats != "Nmiss"]
-      }
+      if(!anyNA(currcol) && "Nmiss" %in% ordered.stats) ordered.stats <- ordered.stats[ordered.stats != "Nmiss"]
       for(statfun in ordered.stats) {
-        bystatlist <- list()
         for(bylev in by.levels) {
           idx <- by.col == bylev
           bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx]))
         }
         ## add Total
         bystatlist$Total <- eval(call(statfun,currcol, levels=xlevels, weights=weights))
-        ostatList[[statfun]] <- bystatlist
+        statList[[statfun]] <- bystatlist
       }
 
       ## test
@@ -296,16 +291,12 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         testout <- NULL
       }
 
-      xList[[nameEff]] <- list(stats=ostatList, test=testout, label=labelEff,
-                                           name=names(modeldf)[eff], type="ordinal")
+      xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type="ordinal")
 
     } else if(is.logical(currcol) || is.factor(currcol) || is.character(currcol)) {
     ##############################################
     ## categorical variable (character or factor)
     ##############################################
-
-      ## stats
-      cstatList <- list()
 
       ## convert logicals to factor
       if(is.logical(currcol)) {
@@ -331,25 +322,15 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       } else {
         control$cat.stats
       }
-      if(sum(is.na(currcol)) == 0 && any(cat.stats == "Nmiss")) {
-        cat.stats <- cat.stats[cat.stats != "Nmiss"]
-      }
+      if(!anyNA(currcol) && "Nmiss" %in% cat.stats) cat.stats <- cat.stats[cat.stats != "Nmiss"]
       for(statfun in cat.stats) {
-        bystatlist <- list()
         for(bylev in by.levels) {
           idx <- by.col == bylev
           bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx]))
         }
         ## add Total
         bystatlist$Total <- eval(call(statfun,currcol, levels=xlevels, weights=weights))
-        cstatList[[statfun]] <- bystatlist
-      }
-
-      ## simplify, only do if num-levels is 2
-      if(control$cat.simplify==TRUE &
-         !is.null(nrow(cstatList[[statfun]][[1]])) && nrow(cstatList[[statfun]][[1]])==2) {
-        ##length(xlevels)==2) {
-        cstatList[[statfun]] <- lapply(cstatList[[statfun]], function(x) x[-1,])
+        statList[[statfun]] <- bystatlist
       }
 
       ## test
@@ -363,15 +344,12 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         testout <- NULL
       }
 
-      xList[[nameEff]] <- list(stats=cstatList, test=testout, label=labelEff,
-                               name=names(modeldf)[eff], type="categorical")
+      xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type="categorical")
 
     } else if(is.Date(currcol)) {
 
       ######## Date variable ###############
 
-      #stats
-      dstatList <- list()
       ## if no missings, and control says not to show missings,
       ## remove Nmiss stat fun
       date.stats <-  if(length(attributes(currcol)$stats)>0) {
@@ -379,19 +357,15 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       } else {
         control$date.stats
       }
-      if(sum(is.na(currcol)) == 0 && any(date.stats == "Nmiss")) {
-        date.stats <- date.stats[date.stats != "Nmiss"]
-      }
-
+      if(!anyNA(currcol) && "Nmiss" %in% date.stats) date.stats <- date.stats[date.stats != "Nmiss"]
       for(statfun in date.stats) {
-        bystatlist <- list()
         for(bylev in by.levels) {
           idx <- modeldf[[1]] == bylev
           bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], na.rm=TRUE, weights=weights[idx]))
         }
         ## add Total
         bystatlist$Total <- eval(call(statfun, currcol, na.rm=TRUE, weights=weights))
-        dstatList[[statfun]] <- bystatlist
+        statList[[statfun]] <- bystatlist
       }
 
       ## tests: kruskal.test
@@ -405,15 +379,14 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         testout <- NULL
       }
 
-      xList[[nameEff]] <- list(stats=dstatList, test=testout, label=labelEff,
-                                           name=names(modeldf)[eff], type="Date")
+      xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type="Date")
 
     } else if(survival::is.Surv(currcol)) {
 
       ##### Survival (time to event) #######
 
       ## stats
-      sstatList <- stimestatList <- list()
+      stimestatList <- list()
       times <- list(...)$times
       if(is.null(times)) {
         times <- 1:5
@@ -421,9 +394,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       stratfit <- survival::survfit(currcol ~ by.col, weights=weights)
       totfit <- survival::survfit(currcol ~ 1, weights=weights)
       for(statfun in control$surv.stats) {
-        sstatList[[statfun]] <- as.list(eval(call(statfun, stratfit, times=times)))
+        statList[[statfun]] <- as.list(eval(call(statfun, stratfit, times=times)))
         ## add Total
-        sstatList[[statfun]]$Total <- eval(call(statfun,totfit, times=times))
+        statList[[statfun]]$Total <- eval(call(statfun,totfit, times=times))
       }
 
       ## test
@@ -440,20 +413,20 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       ## if statfuns contain NeventsSurv or NriskSurv, make new surv x variable
       ## and rm from ssstatList and sstyles
       evsurv <- risksurv <- FALSE
-      if("NeventsSurv" %in% names(sstatList)) {
-        idx <- which(names(sstatList) == "NeventsSurv")
-        sevstatList <- sstatList[[idx]]
-        sstatList[[idx]] <- NULL
+      if("NeventsSurv" %in% names(statList)) {
+        idx <- which(names(statList) == "NeventsSurv")
+        sevstatList <- statList[[idx]]
+        statList[[idx]] <- NULL
         evsurv <- TRUE
       }
-       if("NriskSurv" %in% names(sstatList) ) {
-        idx <- which(names(sstatList) == "NriskSurv")
-        srskstatList <- sstatList[[idx]]
-        sstatList[[idx]] <- NULL
+       if("NriskSurv" %in% names(statList) ) {
+        idx <- which(names(statList) == "NriskSurv")
+        srskstatList <- statList[[idx]]
+        statList[[idx]] <- NULL
         risksurv <- TRUE
       }
 
-      xList[[nameEff]] <- list(stats=sstatList, test=testout, label=labelEff,
+      xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff,
                                            name=names(modeldf)[eff], type="survival")
       if(evsurv) {
         xList[["NeventsSurv"]] <- list(stats=list(NeventsSurv=sevstatList), test=testout, label="NeventsSurv",
@@ -469,12 +442,10 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       ######## Continuous variable (numeric) ###############
 
       #stats
-      nstatList <- list()
+      statList <- list()
 
       ## for difftime, convert to numeric
-      if(inherits(currcol, "difftime")) {
-        currcol <- as.numeric(currcol)
-      }
+      if(inherits(currcol, "difftime")) currcol <- as.numeric(currcol)
 
       ## if no missings, and control says not to show missings,
       ## remove Nmiss stat fun
@@ -483,18 +454,15 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       } else {
         control$numeric.stats
       }
-      if(sum(is.na(currcol)) == 0 && any(num.stats == "Nmiss")) {
-        num.stats <- num.stats[num.stats != "Nmiss"]
-      }
+      if(!anyNA(currcol) && "Nmiss" %in% num.stats) num.stats <- num.stats[num.stats != "Nmiss"]
       for(statfun in num.stats) {
-        bystatlist <- list()
         for(bylev in by.levels) {
           idx <- by.col == bylev
           bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], na.rm=TRUE, weights=weights[idx]))
         }
         ## add Total
         bystatlist$Total <-  eval(call(statfun, currcol, na.rm=TRUE, weights=weights))
-        nstatList[[statfun]] <- bystatlist
+        statList[[statfun]] <- bystatlist
       }
       ## tests: anova and kruskal.test
       if(control$test) {
@@ -507,9 +475,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         testout <- NULL
       }
 
-      xList[[nameEff]] <- list(stats=nstatList, test=testout, label=labelEff,
-                                           name=names(modeldf)[eff], type="numeric")
-
+      xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type="numeric")
     }
   }
 
