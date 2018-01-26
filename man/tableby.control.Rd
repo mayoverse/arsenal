@@ -13,9 +13,9 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   "median", "range"), stats.labels = list(Nmiss = "N-Miss", Nmiss2 = "N-Miss",
   meansd = "Mean (SD)", medianq1q3 = "Median (Q1, Q3)", q1q3 = "Q1, Q3", range =
   "Range", countpct = "Count (Pct)", Nevents = "Events", medsurv =
-  "Median Survival"), digits = 3, digits.test = NULL, nsmall = NULL,
-  nsmall.pct = NULL, chisq.correct = TRUE, simulate.p.value = FALSE,
-  B = 2000, ...)
+  "Median Survival"), digits = 3L, digits.count = 0L, digits.pct = 1L,
+  digits.p = 3L, format.p = TRUE, chisq.correct = TRUE,
+  simulate.p.value = FALSE, B = 2000, ...)
 }
 \arguments{
 \item{test}{logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.}
@@ -59,13 +59,15 @@ Options are Nevents, medsurv.}
 and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
 e.g., list(countpct="Count(Pct)").}
 
-\item{digits}{digits to print for non-integer statistics}
+\item{digits}{Number of decimal places for numeric values.}
 
-\item{digits.test}{digits to print for test statistic p-values}
+\item{digits.count}{Number of decimal places for count values.}
 
-\item{nsmall}{digits to print after decimal point for numerics}
+\item{digits.pct}{Number of decimal places for percents.}
 
-\item{nsmall.pct}{digits to print after decimal point for percentages}
+\item{digits.p}{Number of decimal places for p-values.}
+
+\item{format.p}{Logical, denoting whether to format p-values. See "Details", below.}
 
 \item{chisq.correct}{logical, correction factor for chisq.test}
 
@@ -73,7 +75,7 @@ e.g., list(countpct="Count(Pct)").}
 
 \item{B}{number of simulations to perform for simulation-based p-value}
 
-\item{...}{additional arguments to be passed to internal \code{tableby} functions and kept for summary method options, such as digits.}
+\item{...}{additional arguments.}
 }
 \value{
 A list with settings to be used within the \code{tableby} function.
@@ -84,6 +86,11 @@ Control test and summary settings for the \code{\link{tableby}} function.
 \details{
 All tests can be turned off by setting \code{test} to FALSE.
   Otherwise, test are set to default settings in this list, or set explicitly in the formula of \code{tableby}.
+
+If \code{format.p} is \code{FALSE}, \code{digits.p} denotes the number of significant digits shown. The
+  p-values will be in exponential notation if necessary. If \code{format.p} is \code{TRUE},
+  \code{digits.p} will determine the number of digits after the decimal point to show. If the p-value
+  is less than the resulting number of places, it will be formatted to show so.
 }
 \examples{
 set.seed(100)

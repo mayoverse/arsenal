@@ -46,15 +46,20 @@
 #' @param stats.labels A named list of labels for all the statistics function names, where the function name is the named element in the list
 #'   and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
 #'   e.g., list(countpct="Count(Pct)").
-#' @param digits digits to print for non-integer statistics
-#' @param digits.test digits to print for test statistic p-values
-#' @param nsmall digits to print after decimal point for numerics
-#' @param nsmall.pct digits to print after decimal point for percentages
-#' @param ... additional arguments to be passed to internal \code{tableby} functions and kept for summary method options, such as digits.
+#' @param digits Number of decimal places for numeric values.
+#' @param digits.count Number of decimal places for count values.
+#' @param digits.pct Number of decimal places for percents.
+#' @param digits.p Number of decimal places for p-values.
+#' @param format.p Logical, denoting whether to format p-values. See "Details", below.
+#' @param ... additional arguments.
 #' @details
 #' All tests can be turned off by setting \code{test} to FALSE.
 #'   Otherwise, test are set to default settings in this list, or set explicitly in the formula of \code{tableby}.
 #'
+#' If \code{format.p} is \code{FALSE}, \code{digits.p} denotes the number of significant digits shown. The
+#'   p-values will be in exponential notation if necessary. If \code{format.p} is \code{TRUE},
+#'   \code{digits.p} will determine the number of digits after the decimal point to show. If the p-value
+#'   is less than the resulting number of places, it will be formatted to show so.
 #' @return A list with settings to be used within the \code{tableby} function.
 #' @export
 #'

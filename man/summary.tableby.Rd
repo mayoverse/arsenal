@@ -4,55 +4,24 @@
 \alias{summary.tableby}
 \title{The summary method for a \code{tableby} object}
 \usage{
-\method{summary}{tableby}(object, title = NULL, labelTranslations = NULL,
-  digits = NA, nsmall = NA, nsmall.pct = NA, digits.test = NA,
-  text = FALSE, removeBlanks = text, labelSize = 1.2, test = NA,
-  test.pname = NA, pfootnote = NA, total = NA, ...)
+\method{summary}{tableby}(object, ..., labelTranslations = NULL,
+  text = FALSE, title = NULL)
 }
 \arguments{
 \item{object}{An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.}
 
-\item{title}{Title that will appear on the top of the header in the pretty-table rendering
-of the tableby object}
+\item{...}{Other arguments passed to \code{\link{as.data.frame.tableby}}.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
      output to be replaced in the pretty rendering of tableby by the character string
      value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.
 This applies to both the statistic labels and the variables from the formula.}
 
-\item{digits}{Digits to round for significant digits of numeric, non-integer values.
-If \code{digits.test} is not set, \code{digits} is used for that setting.}
-
-\item{nsmall}{Minimum number of digits to the right of the decimal point to display
-for floating point numbers.  If \code{NA} (default), it uses the value from
-\code{object$control$nsmall}. Allowed non-\code{NA} values are \code{0 <= nsmall <= 20}.}
-
-\item{nsmall.pct}{Minimum number of digits to the right of the decimal point to display
-for percent numbers.  If \code{NA} (default), it uses the value from \code{object$control$nsmall.pct}.}
-
-\item{digits.test}{Significant digits by which to round for numeric test statistic p-values,
-if the test was performed.}
-
 \item{text}{Logical, tell R to print the raw text version of the summary to the screen.
 Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development.}
 
-\item{removeBlanks}{Logical, remove extra blanks in the pretty rendering of the table}
-
-\item{labelSize}{Relative size difference between label column and other columns.
-Default is 1.2: label column ~20\% bigger than other columns.}
-
-\item{test}{Logical, denoting whether the "p value" value should be printed.
-If \code{NA} (default), it uses the value from \code{object$control$test}.}
-
-\item{test.pname}{Title for p-value (only matters if test is \code{TRUE}; default is "p value").}
-
-\item{pfootnote}{Logical, denoting whether to add a footnote describing the test used to
-generate the p value. Default is \code{FALSE}.}
-
-\item{total}{Logical, denoting whether to include the "total" value.
-If \code{NA} (default), it uses the value from \code{object$control$total}.}
-
-\item{...}{Other arguments (not in use at this time).}
+\item{title}{Title that will appear on the top of the header in the pretty-table rendering
+of the tableby object}
 }
 \value{
 Results are cat'ed to stdout, and returned invisibly as a data.frame of the \code{tableby}
