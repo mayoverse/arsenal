@@ -280,12 +280,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
           idx <- by.col == bylev
           bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx]))
         }
-        ostatList[[statfun]] <- bystatlist
-
         ## add Total
-        if(control$total) {
-          ostatList[[statfun]]$Total <- eval(call(statfun,currcol, levels=xlevels, weights=weights))
-        }
+        bystatlist$Total <- eval(call(statfun,currcol, levels=xlevels, weights=weights))
+        ostatList[[statfun]] <- bystatlist
       }
 
       ## test
@@ -343,14 +340,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
           idx <- by.col == bylev
           bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx]))
         }
-        cstatList[[statfun]] <- bystatlist
-        ## without weights can do:
-        ##   tapply(currcol,by.col, statfun, levels=xlevels, na.rm=TRUE,simplify=FALSE, weights=weights, ...)
-
         ## add Total
-        if(control$total) {
-          cstatList[[statfun]]$Total <- eval(call(statfun,currcol, levels=xlevels, weights=weights))
-        }
+        bystatlist$Total <- eval(call(statfun,currcol, levels=xlevels, weights=weights))
+        cstatList[[statfun]] <- bystatlist
       }
 
       ## simplify, only do if num-levels is 2
@@ -397,14 +389,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
           idx <- modeldf[[1]] == bylev
           bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], na.rm=TRUE, weights=weights[idx]))
         }
-        dstatList[[statfun]] <- bystatlist
-        ## this works for median(date), but the above gets bad bc of list
-        ##  dstatList[[statfun]] <- lapply(as.list(as.integer(currcol), by.col, statfun, na.rm=TRUE),
-        ##      as.Date, origin="1970/01/01")
         ## add Total
-        if(control$total) {
-          dstatList[[statfun]]$Total <- eval(call(statfun,currcol, na.rm=TRUE, weights=weights))
-        }
+        bystatlist$Total <- eval(call(statfun, currcol, na.rm=TRUE, weights=weights))
+        dstatList[[statfun]] <- bystatlist
       }
 
       ## tests: kruskal.test
@@ -436,9 +423,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       for(statfun in control$surv.stats) {
         sstatList[[statfun]] <- as.list(eval(call(statfun, stratfit, times=times)))
         ## add Total
-        if(control$total) {
-          sstatList[[statfun]]$Total <- eval(call(statfun,totfit, times=times))
-        }
+        sstatList[[statfun]]$Total <- eval(call(statfun,totfit, times=times))
       }
 
       ## test
@@ -507,13 +492,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
           idx <- by.col == bylev
           bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], na.rm=TRUE, weights=weights[idx]))
         }
-        nstatList[[statfun]] <- bystatlist
         ## add Total
-        if(control$total) {
-          nstatList[[statfun]]$Total <- eval(call(statfun,currcol, na.rm=TRUE, weights=weights))
-        }
-        ## old way to call with ind_var, group_var, may go back, so keep around:
-        ##  nstatList[[statfun]] <- eval(call(statfun, currcol, by.col))
+        bystatlist$Total <-  eval(call(statfun, currcol, na.rm=TRUE, weights=weights))
+        nstatList[[statfun]] <- bystatlist
       }
       ## tests: anova and kruskal.test
       if(control$test) {
@@ -543,13 +524,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   }
   yList <- list()
 
-  yList[[names(modeldf)[1]]] <- list(stats=unlist(table(factor(by.col,
-                                     levels=by.levels),exclude=NA)),
+  yList[[names(modeldf)[1]]] <- list(stats=c(unlist(table(factor(by.col, levels=by.levels), exclude=NA)), Total=sum(!is.na(by.col))),
                                      label=labelBy, name=names(modeldf)[1])
-
-  if(control$total) {
-     yList[[names(modeldf)[1]]]$stats <- c(yList[[names(modeldf)[1]]]$stats,Total=sum(!is.na(by.col)))
-  }
 
   tblList <- list(y = yList, x = xList, control = control, Call = match.call(), weights=userWeights)
   class(tblList) <- "tableby"
