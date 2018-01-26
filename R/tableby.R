@@ -256,7 +256,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
       ## stats
       ostatList <- list()
-      ostyles <- character()
       xlevels <- levels(currcol)
       if(length(xlevels) == 0)
       {
@@ -276,8 +275,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         ordered.stats <- ordered.stats[ordered.stats != "Nmiss"]
       }
       for(statfun in ordered.stats) {
-        ostyles <- c(ostyles, ifelse(statfun == "countpct", "percent", NA))
-
         bystatlist <- list()
         for(bylev in by.levels) {
           idx <- by.col == bylev
@@ -303,8 +300,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       }
 
       xList[[nameEff]] <- list(stats=ostatList, test=testout, label=labelEff,
-                                           name=names(modeldf)[eff],
-                                           type="ordinal", output=ostyles)
+                                           name=names(modeldf)[eff], type="ordinal")
 
     } else if(is.logical(currcol) || is.factor(currcol) || is.character(currcol)) {
     ##############################################
@@ -313,7 +309,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
       ## stats
       cstatList <- list()
-      cstyles <- character()
 
       ## convert logicals to factor
       if(is.logical(currcol)) {
@@ -343,7 +338,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         cat.stats <- cat.stats[cat.stats != "Nmiss"]
       }
       for(statfun in cat.stats) {
-        cstyles <- c(cstyles, ifelse(statfun == "countpct", "percent",NA))
         bystatlist <- list()
         for(bylev in by.levels) {
           idx <- by.col == bylev
@@ -378,8 +372,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       }
 
       xList[[nameEff]] <- list(stats=cstatList, test=testout, label=labelEff,
-                               name=names(modeldf)[eff],
-                               type="categorical", output=cstyles)
+                               name=names(modeldf)[eff], type="categorical")
 
     } else if(is.Date(currcol)) {
 
@@ -387,7 +380,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
       #stats
       dstatList <- list()
-      dstyles <- character()
       ## if no missings, and control says not to show missings,
       ## remove Nmiss stat fun
       date.stats <-  if(length(attributes(currcol)$stats)>0) {
@@ -400,10 +392,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       }
 
       for(statfun in date.stats) {
-        dstyles <- c(dstyles, ifelse(statfun == "range", "range",
-                        ifelse(statfun == "q1q3", "list",
-                           ifelse(statfun %in% c("medianrange", "medianq1q3"), "medlist",NA))))
-
         bystatlist <- list()
         for(bylev in by.levels) {
           idx <- modeldf[[1]] == bylev
@@ -431,8 +419,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       }
 
       xList[[nameEff]] <- list(stats=dstatList, test=testout, label=labelEff,
-                                           name=names(modeldf)[eff],
-                                           type="Date", output=dstyles)
+                                           name=names(modeldf)[eff], type="Date")
 
     } else if(survival::is.Surv(currcol)) {
 
@@ -440,7 +427,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
       ## stats
       sstatList <- stimestatList <- list()
-      sstyles <- stimestyles <- character()  ## pass times to summary, delay to within loop
       times <- list(...)$times
       if(is.null(times)) {
         times <- 1:5
@@ -448,7 +434,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       stratfit <- survival::survfit(currcol ~ by.col, weights=weights)
       totfit <- survival::survfit(currcol ~ 1, weights=weights)
       for(statfun in control$surv.stats) {
-        sstyles <- c(sstyles, ifelse(statfun=="NeventsSurv", "pct", NA))
         sstatList[[statfun]] <- as.list(eval(call(statfun, stratfit, times=times)))
         ## add Total
         if(control$total) {
@@ -473,32 +458,25 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       if("NeventsSurv" %in% names(sstatList)) {
         idx <- which(names(sstatList) == "NeventsSurv")
         sevstatList <- sstatList[[idx]]
-        sevstyles <- sstyles[idx]
         sstatList[[idx]] <- NULL
-        sstyles <- sstyles[-idx]
         evsurv <- TRUE
       }
        if("NriskSurv" %in% names(sstatList) ) {
         idx <- which(names(sstatList) == "NriskSurv")
         srskstatList <- sstatList[[idx]]
-        srskstyles <- sstyles[idx]
         sstatList[[idx]] <- NULL
-        sstyles <- sstyles[-idx]
         risksurv <- TRUE
       }
 
       xList[[nameEff]] <- list(stats=sstatList, test=testout, label=labelEff,
-                                           name=names(modeldf)[eff],
-                                           type="survival", output=sstyles)
+                                           name=names(modeldf)[eff], type="survival")
       if(evsurv) {
         xList[["NeventsSurv"]] <- list(stats=list(NeventsSurv=sevstatList), test=testout, label="NeventsSurv",
-                                           name=gsub("Surv", "Events", names(modeldf)[eff]),
-                                           type="survival", output=sevstyles)
+                                           name=gsub("Surv", "Events", names(modeldf)[eff]), type="survival")
       }
       if(risksurv) {
          xList[["NriskSurv"]] <- list(stats=list(NriskSurv=srskstatList), test=testout, label="NriskSurv",
-                                           name=gsub("Surv","AtRisk",names(modeldf)[eff]),
-                                           type="survival", output=srskstyles)
+                                           name=gsub("Surv","AtRisk",names(modeldf)[eff]), type="survival")
       }
 
     } else if(is.numeric(currcol) || inherits(currcol, "difftime")) {
@@ -507,7 +485,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
       #stats
       nstatList <- list()
-      nstyles <- character()
 
       ## for difftime, convert to numeric
       if(inherits(currcol, "difftime")) {
@@ -525,9 +502,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         num.stats <- num.stats[num.stats != "Nmiss"]
       }
       for(statfun in num.stats) {
-        nstyles <- c(nstyles, ifelse(statfun == "range", "range",
-                                 ifelse(statfun == "q1q3","list",
-                                   ifelse(statfun %in% c("medianrange","medianq1q3"), "medlist",NA))))
         bystatlist <- list()
         for(bylev in by.levels) {
           idx <- by.col == bylev
@@ -553,8 +527,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       }
 
       xList[[nameEff]] <- list(stats=nstatList, test=testout, label=labelEff,
-                                           name=names(modeldf)[eff],
-                                           type="numeric", output=nstyles)
+                                           name=names(modeldf)[eff], type="numeric")
 
     }
   }
