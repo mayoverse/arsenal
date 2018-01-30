@@ -1,11 +1,3 @@
-
-defaultLabelTranslations <- function()
-{
-  list(Nmiss = "N-miss", Nmiss2 = "N-miss", meansd = "Mean (SD)", q1q3 = "Q1, Q3",
-							range = "Range", Nevents = "Events", medsurv = "Median Survival")
-}
-
-
 #' The summary method for a \code{tableby} object
 #'
 #' The summary method for a \code{\link{tableby}} object, which is a pretty rendering of a \code{\link{tableby}}
