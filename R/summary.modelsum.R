@@ -77,12 +77,8 @@ print.summary.modelsum <- function(x, ...)
   }
 
   #### don't show the same statistics more than once ####
-  pick_first <- function(vec, idx)
-  {
-    vec[idx] <- ""
-    vec
-  }
-  df[cn %in% c(use.digits0, use.digits1)] <- lapply(df[cn %in% c(use.digits0, use.digits1, use.digits.p)], pick_first, idx = duplicated(df$model))
+  df[cn %in% c(use.digits0, use.digits1)] <- lapply(df[cn %in% c(use.digits0, use.digits1, use.digits.p)],
+                                                    replace, list = duplicated(df$model), values = "")
 
   #### Format if necessary ####
   df$label <- trimws(df$label) # regardless of formatting
