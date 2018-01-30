@@ -2,30 +2,6 @@
 ## Testing and Summary stats methods for internal use in tableby
 ###########################################
 
-## summary stats
-## considerations: handling NAs, or other miss.val
-#medianDate <- function(x, na.rm=TRUE) {
-#  if(na.rm & sum(is.na(x))>0) {
-#    x <- x[!is.na(x)]
-#  }
-#  medint <- median(as.integer(x))
-#  browser()
-#  return(median(xint))
-#  return(as.Date(medint, origin="1970/01/01"))
-#}
-#range.Date <- function(x, na.rm=TRUE) {
-#  if(na.rm & sum(is.na(x))>0) {
-#    x <- x[!is.na(x)]
-#  }
-#  xint <- as.integer(x)
-#  return(range(xint))
-#}
-
-## paste mean and sd  mean(sd)
-#meansd <- function(x, na.rm=TRUE, weights=NULL, ...) {
-#  c(mean(x, na.rm=na.rm), stats::sd(x, na.rm=na.rm))
-#}
-
 #' tableby Summary Statistics Functions
 #'
 #' A collection of functions that will report summary statistics. To create a custom function,
