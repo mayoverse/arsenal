@@ -44,7 +44,7 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL)
   control <- c(list(...), x$control)
   control <- do.call("tableby.control", control[!duplicated(names(control))])
 
-  out <- do.call(rbind, c(lapply(x$x, get_tb_part, byLvls = names(x$y[[1]]$stats), statLabs = x$control$stats.labels), stringsAsFactors = FALSE))
+  out <- do.call(rbind, c(lapply(x$x, get_tb_part, byLvls = names(x$y[[1]]$stats), statLabs = control$stats.labels), stringsAsFactors = FALSE))
   if(control$cat.simplify)
   {
     cat_simplify <- function(x)
