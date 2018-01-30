@@ -12,9 +12,8 @@
 \item{...}{Arguments to pass to \code{\link{tableby}}.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
-     output to be replaced in the pretty rendering of tableby by the character string
-     value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.
-This applies to both the statistic labels and the variables from the formula.}
+output to be replaced in the pretty rendering of tableby by the character string
+value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.}
 }
 \value{
 A \code{data.frame}.

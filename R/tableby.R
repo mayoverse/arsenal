@@ -1,12 +1,3 @@
-## Purpose: create analysis results from a formula, summarizing the response
-## by the RHS variables, which univariate stats on the RHS vars within the
-## levels of the response
-## Author: Jason Sinnwell and Beth Atkinson
-## Updated: 9/29/2015
-##
-## to work with "specials" to specify the type of test or variable it is.
-## look at survival package:
-
 
 #' Summary Statistics of a Set of Independent Variables by a Categorical Variable
 #'
@@ -33,8 +24,8 @@
 #'   grouping variable, and x variable summaries within the grouping variable. Arguments for \code{tableby.control}
 #'   can be passed to \code{tableby} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,
 #'   the latter are used. See \code{\link{tableby.control}} for more details.
-#' @param ... additional arguments to be passed to internal \code{tableby} functions. See "Details" for information.
-#'   Currently not implemented in \code{print.tableby}.
+#' @param ... additional arguments to be passed to internal \code{tableby} functions or \code{\link{tableby.control}}.
+#'   See "Details" for information.
 #' @param x an object of class \code{tableby}.
 #'
 #' @details
@@ -78,7 +69,7 @@
 #'     across a categorical variable; the default for ordered factor variables
 #'   }
 #'   \item{
-#'     \code{logrank}: log-rank , the default for time-to-event variables
+#'     \code{logrank}: log-rank, the default for time-to-event variables
 #'   }
 #' }
 #'
@@ -92,17 +83,7 @@
 #'
 #' @return
 #'
-#' An object with class \code{'tableby'}, which is effectively a list with
-#' the variables from the right-side in x and the group variable in y (if any).
-#' Then, each item in x has these:
-#'
-#' \item{stats}{Summary statistics of the RHS variable within each level of the LHS variable}
-#' \item{test}{Formal test of the distribution of the RHS variable across the levels of the LHS variable}
-#' \item{label}{The label attribute of a variable. It is set to the label attribute of a data column, if it exists,
-#'   otherwise set to the variable name in \code{data}. Can be changed with \code{\link{labels.tableby}} function for the tableby object.}
-#'
-#' The object also contains the original function call and the \code{tableby.control} list that is used in \code{tableby}.
-#'
+#' An object with class \code{'tableby'}
 #' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}},
 #'   \code{\link{print.tableby}}, \code{\link{summary.tableby}}, \code{\link{formulize}}
 #'
@@ -120,7 +101,7 @@
 #'
 #' tab.test <- tableby(arm ~ kwt(age) + anova(bmi) + kwt(ast), data=mockstudy)
 #' tests(tab.test)
-#' @author Jason Sinnwell, Beth Atkinson, Gregory Dougherty, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
+#' @author Jason Sinnwell, Beth Atkinson, Gregory Dougherty, and Ethan Heinzen, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 #' @name tableby
 NULL
 #> NULL

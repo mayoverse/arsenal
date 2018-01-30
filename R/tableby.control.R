@@ -1,17 +1,3 @@
-## Purpose: control parameters for tableby function
-## Authors: Jason Sinnwell, Beth Atkinson
-## Created: 4/16/2015
-
-#The default summary statistics are:
-#* `continuous`: Continuous variables will show by default `Nmiss, meansd, q1q3, range`
-#* `cat`: Categorical and factor variables will show by default `Nmiss, countpct`
-#* `ordered`: Ordered factors will show by default `Nmiss, countpct`
-#* `surv`: Survival variables will show by default `Nmiss, Nevents, medsurv`
-   ## JPS: consider survKyr
-#* `group`: The grouping variable will show by default `countpct`
-
-## Many of the test statistics are standardly defined in R (e.g. mean),
-## These are extra functions defined specifically for this function.
 
 #' Control settings for \code{tableby} function
 #'
@@ -40,12 +26,12 @@
 #'   Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.
 #' @param surv.test name of test to perform for survival variables: logrank
 #' @param surv.stats summary statistics to include for time-to-event (survival) RHS variables of \code{tableby} within the levels of the group LHS variable.
-#'   Options are Nevents, medsurv.
-#' @param date.test name of test to perform for date variables.
-#' @param date.stats stats functions to perform for Date variables
+#'   Options are Nevents, medsurv, NeventsSurv, NriskSurv, medTime, rangeTime.
+#' @param date.test name of test to perform for date variables: kwt
+#' @param date.stats stats functions to perform for Date variables: Nmiss, median, range, or other R built-in or user-written functions.
 #' @param stats.labels A named list of labels for all the statistics function names, where the function name is the named element in the list
 #'   and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
-#'   e.g., list(countpct="Count(Pct)").
+#'   e.g., list(countpct="Count (Pct)").
 #' @param digits Number of decimal places for numeric values.
 #' @param digits.count Number of decimal places for count values.
 #' @param digits.pct Number of decimal places for percents.
@@ -61,12 +47,9 @@
 #'   \code{digits.p} will determine the number of digits after the decimal point to show. If the p-value
 #'   is less than the resulting number of places, it will be formatted to show so.
 #' @return A list with settings to be used within the \code{tableby} function.
-#' @export
 #'
 #' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby}}, \code{\link{summary.tableby}}
-#'
-#' @author Jason Sinnwell, Beth Atkinson, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
-#'
+#' @author Jason Sinnwell, Beth Atkinson, Ethan Heinzen, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 #' @examples
 #' set.seed(100)
 #' ## make 3+ categories for Response
@@ -83,7 +66,7 @@
 #'                   cat.stats=c("Nmiss","countpct"),digits=1))
 #' summary(outResp, text=TRUE)
 #' summary(outCtl, text=TRUE)
-
+#' @export
 tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=FALSE,
    numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt",
    numeric.stats=c("Nmiss","meansd","q1q3","range"),

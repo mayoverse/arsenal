@@ -40,7 +40,7 @@ If no LHS variable exists, then a mean is required for a univariate test.}
 
 \item{surv.test}{name of test to perform for survival variables: logrank}
 
-\item{date.test}{name of test to perform for date variables.}
+\item{date.test}{name of test to perform for date variables: kwt}
 
 \item{numeric.stats}{summary statistics to include for numeric RHS variables of \code{tableby} within the levels of the group LHS variable.
 Options are N, Nmiss, mean, meansd, median, q1q3, range, or other R built-in or user-written functions.}
@@ -52,13 +52,13 @@ Options are N, Nmiss, count, countpct, or other R built-in or user-written funct
 Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.}
 
 \item{surv.stats}{summary statistics to include for time-to-event (survival) RHS variables of \code{tableby} within the levels of the group LHS variable.
-Options are Nevents, medsurv.}
+Options are Nevents, medsurv, NeventsSurv, NriskSurv, medTime, rangeTime.}
 
-\item{date.stats}{stats functions to perform for Date variables}
+\item{date.stats}{stats functions to perform for Date variables: Nmiss, median, range, or other R built-in or user-written functions.}
 
 \item{stats.labels}{A named list of labels for all the statistics function names, where the function name is the named element in the list
 and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
-e.g., list(countpct="Count(Pct)").}
+e.g., list(countpct="Count (Pct)").}
 
 \item{digits}{Number of decimal places for numeric values.}
 
@@ -114,5 +114,5 @@ summary(outCtl, text=TRUE)
 \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby}}, \code{\link{summary.tableby}}
 }
 \author{
-Jason Sinnwell, Beth Atkinson, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
+Jason Sinnwell, Beth Atkinson, Ethan Heinzen, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 }

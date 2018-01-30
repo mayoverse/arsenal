@@ -36,22 +36,13 @@ grouping variable, and x variable summaries within the grouping variable. Argume
 can be passed to \code{tableby} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,
 the latter are used. See \code{\link{tableby.control}} for more details.}
 
-\item{...}{additional arguments to be passed to internal \code{tableby} functions. See "Details" for information.
-Currently not implemented in \code{print.tableby}.}
+\item{...}{additional arguments to be passed to internal \code{tableby} functions or \code{\link{tableby.control}}.
+See "Details" for information.}
 
 \item{x}{an object of class \code{tableby}.}
 }
 \value{
-An object with class \code{'tableby'}, which is effectively a list with
-the variables from the right-side in x and the group variable in y (if any).
-Then, each item in x has these:
-
-\item{stats}{Summary statistics of the RHS variable within each level of the LHS variable}
-\item{test}{Formal test of the distribution of the RHS variable across the levels of the LHS variable}
-\item{label}{The label attribute of a variable. It is set to the label attribute of a data column, if it exists,
-  otherwise set to the variable name in \code{data}. Can be changed with \code{\link{labels.tableby}} function for the tableby object.}
-
-The object also contains the original function call and the \code{tableby.control} list that is used in \code{tableby}.
+An object with class \code{'tableby'}
 }
 \description{
 Summarize one or more variables (x) by a categorical variable (y). Variables
@@ -100,7 +91,7 @@ These tests are accepted:
     across a categorical variable; the default for ordered factor variables
   }
   \item{
-    \code{logrank}: log-rank , the default for time-to-event variables
+    \code{logrank}: log-rank, the default for time-to-event variables
   }
 }
 
@@ -132,5 +123,5 @@ tests(tab.test)
   \code{\link{print.tableby}}, \code{\link{summary.tableby}}, \code{\link{formulize}}
 }
 \author{
-Jason Sinnwell, Beth Atkinson, Gregory Dougherty, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
+Jason Sinnwell, Beth Atkinson, Gregory Dougherty, and Ethan Heinzen, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 }

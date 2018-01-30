@@ -1,7 +1,8 @@
+
 #' The summary method for a \code{tableby} object
 #'
 #' The summary method for a \code{\link{tableby}} object, which is a pretty rendering of a \code{\link{tableby}}
-#' object into a publication-quality results table in R-studio, and can render well in text-only.
+#' object into a publication-quality results table in R Markdown, and can render well in text-only.
 #'
 #' @param object An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.
 #' @param ... Other arguments passed to \code{\link{as.data.frame.tableby}}.
@@ -10,20 +11,13 @@
 #' @param labelTranslations  A named list (or vector) where the name is the label in the
 #'        output to be replaced in the pretty rendering of tableby by the character string
 #'        value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.
-#'	  This applies to both the statistic labels and the variables from the formula.
 #' @param text Logical, tell R to print the raw text version of the summary to the screen.
 #'		Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development.
-#' @details
-#' For text-only, simply paste the summary stats together per variable, along with p-value and totals,
-#' with group variable in the header.  For other formats, the paste is done into a pandoc-style markup
-#' such that it can be translated into 3 formats: latex, html, rtf.  The decision of which of those it
-#' is translated to is left for run-time for whatever format into which the report is being generated.
 #'
-#' For all interative development within R sessions, \code{text=TRUE} is recommended.
-#'
-#' @return Results are cat'ed to stdout, and returned invisibly as a data.frame of the \code{tableby}
+#' @return An object of class \code{summary.tableby}
 #' @seealso \code{\link{tableby.control}}, \code{\link{tableby}}
-#' @author Gregory Dougherty, Jason Sinnwell, Beth Atkinson, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
+#' @author Ethan Heinzen, based on code by Gregory Dougherty, Jason Sinnwell, Beth Atkinson,
+#'   adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 #' @examples
 #'
 #' set.seed(100)
@@ -39,7 +33,7 @@
 #' summary(out, text=TRUE)
 #' labels(out)
 #' labels(out) <- c(Age="Age (years)", HtIn="Height (inches)")
-#' summary(out, labelTranslations=c(meansd="Mean-SD"), text=TRUE)
+#' summary(out, stats.labels=c(meansd="Mean-SD", q1q3 = "Q1-Q3"), text=TRUE)
 #'
 #' @export
 summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL)
