@@ -3,7 +3,7 @@ get_tb_part <- function(tbList, byLvls, statLabs)
 {
   f <- function(x, nm, lab = FALSE)
   {
-    if(inherits(x[[1]], "tbstat_multirow")) names(x[[1]]) else if(lab && !is.null(statLabs[[nm]])) statLabs[[nm]] else nm
+    if(inherits(x[[1]], "tbstat_multirow")) names(x[[1]]) else if(lab && nm %in% names(statLabs)) statLabs[[nm]] else nm
   }
 
   out <- data.frame(
