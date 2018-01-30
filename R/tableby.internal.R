@@ -5,6 +5,7 @@ get_attr <- function(x, which, default)
   if(is.null(x)) default else x
 }
 
+#' @export
 format.tbstat <- function(x, digits = NULL, ...)
 {
   class(x) <- class(x)[class(x) != "tbstat"]
@@ -21,6 +22,7 @@ format.tbstat <- function(x, digits = NULL, ...)
   } else paste0(x[1], sep, parens[1], x[2], sep2, x[3], parens[2])
 }
 
+#' @export
 format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ...)
 {
   att <- attributes(x)
@@ -34,12 +36,14 @@ format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ..
 
 allNA <- function(x) all(is.na(x))
 
+#' @export
 as.tbstat <- function(x, oldClass = NULL, sep = NULL, parens = NULL, sep2 = NULL, pct = NULL)
 {
   structure(x, class = c("tbstat", oldClass),
             sep = sep, parens = parens, sep2 = sep2, pct = pct)
 }
 
+#' @export
 as.countpct <- function(x, ...)
 {
   tmp <- as.tbstat(x, ...)
@@ -47,6 +51,7 @@ as.countpct <- function(x, ...)
   tmp
 }
 
+#' @export
 as.tbstat_multirow <- function(x)
 {
   class(x) <- c("tbstat_multirow", class(x))
@@ -67,11 +72,17 @@ extract2_tbstat <- function(x, ...)
   x
 }
 
+#' @export
 `[.tbstat` <- extract_tbstat
+#' @export
 `[.tbstat_countpct` <- extract_tbstat
+#' @export
 `[.tbstat_multirow` <- extract_tbstat
+#' @export
 `[[.tbstat` <- extract2_tbstat
+#' @export
 `[[.tbstat_countpct` <- extract2_tbstat
+#' @export
 `[[.tbsta_multirowt` <- extract2_tbstat
 
 

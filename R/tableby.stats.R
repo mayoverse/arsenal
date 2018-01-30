@@ -76,7 +76,8 @@ medSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
   as.numeric(mat["median"])
 }
 
-##
+#' @rdname tableby.stats
+#' @export
 NeventsSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
   xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
   out <- t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
@@ -84,37 +85,26 @@ NeventsSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, .
   as.tbstat_multirow(lapply(out, as.countpct, parens = c("(", ")")))
 }
 
+#' @rdname tableby.stats
+#' @export
 NriskSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
   xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
   out <- setNames(as.list(xsumm$n.risk), paste0("time = ", times))
   as.tbstat_multirow(lapply(out, as.countpct))
 }
 
+#' @rdname tableby.stats
+#' @export
 medTime <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
 {
   wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm, ...)
 }
 
+#' @rdname tableby.stats
+#' @export
 rangeTime <- function(x, na.rm = TRUE, ...)
 {
   as.tbstat(base::range(as.matrix(x)[,1], na.rm=na.rm), sep = " - ")
-}
-
-## Can write similar functions for NcensorTime, NriskTime, etc.
-
-## ' survNinterval
-## '
-## ' survival summary stat per N units of time. Default is years.
-## '
-## ' @param x              a Surv() variable within tableby formula
-## ' @param x.by           the by-variable in tableby
-## ' @param time.interval  the interval of units of time over which to summarize in categories
-## ' @return     vector of number of events per time interval
-survNinterval <- function(x, x.by, time.interval=1) {
-  #kmsumm <- survfit(x~x.by,type="kaplan-meier")
-  nsurv <- as.matrix(x)[,1]
-  breaks <- seq(0,max(nsurv)+time.interval, by=time.interval)
-  tapply(cut(nsurv, breaks, levels=breaks[1:(length(breaks)-1)]), x.by, table, exclude=NA)
 }
 
 ## quantiles
@@ -161,7 +151,6 @@ N <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 
 ## count within group variable
 #' @rdname tableby.stats
-#' @export
 count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, length(x)), ...)  {
   as.tbstat_multirow(lapply(as.list(wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)], ...)), as.countpct))
 }

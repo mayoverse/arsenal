@@ -54,6 +54,7 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
   ), class = "summary.tableby")
 }
 
+#' @export
 print.summary.tableby <- function(x, ...)
 {
 
