@@ -12,8 +12,9 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   "countpct"), surv.stats = c("Nevents", "medSurv"), date.stats = c("Nmiss",
   "median", "range"), stats.labels = list(Nmiss = "N-Miss", Nmiss2 = "N-Miss",
   meansd = "Mean (SD)", medianq1q3 = "Median (Q1, Q3)", q1q3 = "Q1, Q3", range =
-  "Range", countpct = "Count (Pct)", Nevents = "Events", medsurv =
-  "Median Survival"), digits = 3L, digits.count = 0L, digits.pct = 1L,
+  "Range", countpct = "Count (Pct)", Nevents = "Events", medSurv =
+  "Median Survival", medTime = "Median Follow-Up", rangeTime =
+  "Range of Follow-Up"), digits = 3L, digits.count = 0L, digits.pct = 1L,
   digits.p = 3L, format.p = TRUE, chisq.correct = TRUE,
   simulate.p.value = FALSE, B = 2000, ...)
 }
