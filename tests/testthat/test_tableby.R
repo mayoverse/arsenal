@@ -682,3 +682,30 @@ test_that("01/24/2018: count and countpct at the same time (#51)", {
   )
 })
 
+test_that("01/30/2018: additional follow-up statistics (#32)", {
+  expect_identical(
+    capture.output(summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5,
+                                   surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime", "rangeTime")), text = TRUE)),
+    c(""                                                                                        ,
+      ""                                                                                        ,
+      "|                              |Male (N=916)  |Female (N=583) |Total (N=1499) | p value|",
+      "|:-----------------------------|:-------------|:--------------|:--------------|-------:|",
+      "|Surv(fu.time/365.25, fu.stat) |              |               |               |   0.975|",
+      "|-  Median Survival            |1.51          |1.49           |1.49           |        |",
+      "|-  Events                     |829           |527            |1356           |        |",
+      "|-  time = 1                   |286 (68.7)    |202 (65.3)     |488 (67.4)     |        |",
+      "|-  time = 2                   |597 (34.4)    |391 (32.8)     |988 (33.7)     |        |",
+      "|-  time = 3                   |748 (17.5)    |481 (17.0)     |1229 (17.3)    |        |",
+      "|-  time = 4                   |809 (9.4)     |513 (10.9)     |1322 (10.1)    |        |",
+      "|-  time = 5                   |825 (6.3)     |525 (7.4)      |1350 (6.8)     |        |",
+      "|-  time = 1                   |626           |380            |1006           |        |",
+      "|-  time = 2                   |309           |190            |499            |        |",
+      "|-  time = 3                   |152           |95             |247            |        |",
+      "|-  time = 4                   |57            |51             |108            |        |",
+      "|-  time = 5                   |24            |18             |42             |        |",
+      "|-  Median Follow-Up           |1.48          |1.49           |1.48           |        |",
+      "|-  Range of Follow-Up         |0.000 - 6.768 |0.025 - 6.683  |0.000 - 6.768  |        |"
+    )
+  )
+})
+
