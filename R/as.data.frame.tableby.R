@@ -13,13 +13,13 @@ get_tb_part <- function(tbList, byLvls, statLabs)
     variable.type = tbList$type
   )
 
-  f <- function(x, lv)
+  f2 <- function(x, lv)
   {
     if(inherits(x[[1]], "tbstat_multirow")) x[[lv]] else x[lv]
   }
   for(lvl in byLvls)
   {
-    out[[lvl]] <- c("", unlist(lapply(tbList$stats, f, lv = lvl), recursive = FALSE, use.names = FALSE))
+    out[[lvl]] <- c("", unlist(lapply(tbList$stats, f2, lv = lvl), recursive = FALSE, use.names = FALSE))
   }
   out$test <- tbList$test$method
   out$p.value <- tbList$test$p.value
