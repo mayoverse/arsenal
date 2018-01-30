@@ -58,95 +58,46 @@ range <- function(x, na.rm=TRUE, ...) {
 
 
 ## survival stats
-## implemented with using pre-calculated
-##    kmsumm <- summary(survfit(Surv() ~ group))
-
-## ' Nevents
-## '
-## ' Number of events in a survival object, within a group
-## ' @param x a thing
-## ' @param ... other arguments
-## ' @return  the events stat from km$table
 #' @rdname tableby.stats
 #' @export
-Nevents <- function(x, ...) {
-  mat <- summary(x, ...)$table
-  if("events" %nin% colnames(mat) && "events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
-  if(!is.null(nrow(mat))) {
-    row.names(mat) <- stringr::str_extract(row.names(mat), "[^=]*$")
-    return(mat[, "events"])
-  }
-  return(as.numeric(mat["events"]))
+Nevents <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
+  mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
+  if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
+  as.numeric(mat["events"])
 }
 
 ## Median survival
-## ' medSurv
-## '
-## ' Calculate median survival
-## '
-## ' @param x kaplan-meier summary object, used within tableby
-## ' @param ... other arguments
-## ' @return vector of median subjects who have survived by time point
 #' @rdname tableby.stats
 #' @export
-medSurv <- function(x, ...) {
-  mat <- summary(x, ...)$table
-  if("events" %nin% colnames(mat) && "events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
-  if(!is.null(nrow(mat))) {
-    row.names(mat) <- stringr::str_extract(row.names(mat), "[^=]*$")
-    return(mat[, "median"])
-  }
-  return(as.numeric(mat["median"]))
+medSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
+  mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
+  if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
+  as.numeric(mat["median"])
 }
+
 ##
-NeventsSurv <- function(x, times=1:5) {
-  ## x is result of survfit()
-  xsumm <- summary(x, times=times)
-  if(is.null(x$strata)) {
-    byList <- data.frame(n.event=cumsum(xsumm$n.event), surv=100*xsumm$surv, row.names=xsumm$time)
-  } else {
-
-    mat <- with(xsumm, data.frame(time,n.risk, n.event, n.censor, surv, strata))
-    byList <- list()
-    for(strat in unique(mat$strata)) {
-      stratTrim <- substr(strat, regexpr("=", strat)+1, nchar(strat))
-      ## could add any other column of mat to data.frame
-      byList[[stratTrim]] <- with(mat[mat$strata==strat,],
-                                  data.frame(n.event=cumsum(n.event),surv=100*surv, row.names=time))
-      if(nrow(byList[[stratTrim]]) < length(times)) {
-        byList[[stratTrim]] <- rbind.data.frame(byList[[stratTrim]],
-                                                byList[[stratTrim]][nrow(byList[[stratTrim]]),])
-        row.names(byList[[stratTrim]])[nrow(byList[[stratTrim]])] <- times[length(times)]
-      }
-    }
-  }
-  return(byList)
-}
-NriskSurv <- function(x, times=1:5) {
-  ## x is result of survfit()
-  xsumm <- summary(x, times=times)
-  if(is.null(x$strata)) {
-    byList <- data.frame(n.risk=xsumm$n.risk, row.names=xsumm$time)
-  } else {
-    xsumm <- summary(x, times=times)
-    mat <- with(xsumm, data.frame(time,n.risk, n.event, n.censor, surv, strata))
-    byList <- list()
-    for(strat in unique(mat$strata)) {
-      ## could add any other column of mat to data.frame
-      stratTrim <- substr(strat, regexpr("=", strat)+1, nchar(strat))
-      byList[[stratTrim]] <- with(mat[mat$strata==strat,], data.frame(n.risk, row.names=time))
-      if(nrow(byList[[stratTrim]]) < length(times)) {
-        byList[[stratTrim]] <- rbind.data.frame(byList[[stratTrim]],
-                                                byList[[stratTrim]][nrow(byList[[stratTrim]]),])
-        row.names(byList[[stratTrim]])[nrow(byList[[stratTrim]])] <- times[length(times)]
-
-      }
-    }
-  }
-  return(byList)
+NeventsSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
+  xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
+  out <- t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
+  out <- setNames(as.list(as.data.frame(out)), paste0("time = ", times))
+  as.tbstat_multirow(lapply(out, as.countpct, parens = c("(", ")")))
 }
 
+NriskSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
+  xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
+  out <- setNames(as.list(xsumm$n.risk), paste0("time = ", times))
+  as.tbstat_multirow(lapply(out, as.countpct))
+}
 
+medTime <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
+{
+  wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm, ...)
+}
+
+rangeTime <- function(x, na.rm = TRUE, ...)
+{
+  as.tbstat(base::range(as.matrix(x)[,1], na.rm=na.rm), sep = " - ")
+}
 
 ## Can write similar functions for NcensorTime, NriskTime, etc.
 

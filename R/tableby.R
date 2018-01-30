@@ -134,7 +134,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
   Call <- match.call()
   ## Tell user if they passed an argument that was not expected, either here or in control
-  expectArgs <- c("formula","data","na.action","subset","weights", "control", names(control))
+  expectArgs <- c("formula","data","na.action","subset","weights", "control", names(control), "times")
   match.idx <- match(names(Call)[-1], expectArgs)
   if(anyNA(match.idx)) warning("unused arguments: ", paste(names(Call)[1+which(is.na(match.idx))],collapse=", "), "\n")
 
@@ -393,10 +393,21 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       }
       stratfit <- survival::survfit(currcol ~ by.col, weights=weights)
       totfit <- survival::survfit(currcol ~ 1, weights=weights)
-      for(statfun in control$surv.stats) {
-        statList[[statfun]] <- as.list(eval(call(statfun, stratfit, times=times)))
+
+      surv.stats <-  if(length(attributes(currcol)$stats)>0) {
+        attributes(currcol)$stats
+      } else {
+        control$surv.stats
+      }
+
+      for(statfun in surv.stats) {
+        for(bylev in by.levels) {
+          idx <- modeldf[[1]] == bylev
+          bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], na.rm=TRUE, weights=weights[idx]))
+        }
         ## add Total
-        statList[[statfun]]$Total <- eval(call(statfun,totfit, times=times))
+        bystatlist$Total <- eval(call(statfun, currcol, na.rm=TRUE, weights=weights))
+        statList[[statfun]] <- bystatlist
       }
 
       ## test
@@ -410,33 +421,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         testout <- NULL
       }
 
-      ## if statfuns contain NeventsSurv or NriskSurv, make new surv x variable
-      ## and rm from ssstatList and sstyles
-      evsurv <- risksurv <- FALSE
-      if("NeventsSurv" %in% names(statList)) {
-        idx <- which(names(statList) == "NeventsSurv")
-        sevstatList <- statList[[idx]]
-        statList[[idx]] <- NULL
-        evsurv <- TRUE
-      }
-       if("NriskSurv" %in% names(statList) ) {
-        idx <- which(names(statList) == "NriskSurv")
-        srskstatList <- statList[[idx]]
-        statList[[idx]] <- NULL
-        risksurv <- TRUE
-      }
-
       xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff,
                                            name=names(modeldf)[eff], type="survival")
-      if(evsurv) {
-        xList[["NeventsSurv"]] <- list(stats=list(NeventsSurv=sevstatList), test=testout, label="NeventsSurv",
-                                           name=gsub("Surv", "Events", names(modeldf)[eff]), type="survival")
-      }
-      if(risksurv) {
-         xList[["NriskSurv"]] <- list(stats=list(NriskSurv=srskstatList), test=testout, label="NriskSurv",
-                                           name=gsub("Surv","AtRisk",names(modeldf)[eff]), type="survival")
-      }
-
     } else if(is.numeric(currcol) || inherits(currcol, "difftime")) {
 
       ######## Continuous variable (numeric) ###############
