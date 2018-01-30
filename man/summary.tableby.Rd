@@ -5,7 +5,7 @@
 \title{The summary method for a \code{tableby} object}
 \usage{
 \method{summary}{tableby}(object, ..., labelTranslations = NULL,
-  text = FALSE, title = NULL)
+  text = FALSE, title = NULL, pfootnote = FALSE)
 }
 \arguments{
 \item{object}{An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.}
@@ -21,6 +21,8 @@ Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R ses
 
 \item{title}{Title that will appear on the top of the header in the pretty-table rendering
 of the tableby object}
+
+\item{pfootnote}{Logical, denoting whether to put footnotes describing the tests used to generate the p-values.}
 }
 \value{
 An object of class \code{summary.tableby}

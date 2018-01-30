@@ -13,7 +13,7 @@
 #'        value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.
 #' @param text Logical, tell R to print the raw text version of the summary to the screen.
 #'		Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development.
-#'
+#' @param pfootnote Logical, denoting whether to put footnotes describing the tests used to generate the p-values.
 #' @return An object of class \code{summary.tableby}
 #' @seealso \code{\link{tableby.control}}, \code{\link{tableby}}
 #' @author Ethan Heinzen, based on code by Gregory Dougherty, Jason Sinnwell, Beth Atkinson,
@@ -36,7 +36,7 @@
 #' summary(out, stats.labels=c(meansd="Mean-SD", q1q3 = "Q1-Q3"), text=TRUE)
 #'
 #' @export
-summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL)
+summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, pfootnote = FALSE)
 {
   dat <- as.data.frame(object, ..., labelTranslations = labelTranslations)
   structure(list(
@@ -44,7 +44,8 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
     control = attr(dat, "control"),
     totals = object$y[[1]]$stats,
     text = text,
-    title = title
+    title = title,
+    pfootnote = pfootnote
   ), class = "summary.tableby")
 }
 
@@ -66,6 +67,14 @@ print.summary.tableby <- function(x, ...)
     fmt <- paste0("< ", format(cutoff, digits = x$control$digits.p, format = "f"))
 
     df[["p.value"]][x$object[["p.value"]] < cutoff] <- fmt
+  }
+
+  tests.used <- ""
+  if(x$control$test && x$pfootnote)
+  {
+    tests.used <- unique(df$test)
+    df[["p.value"]] <- paste0(df[["p.value"]], "^", as.integer(factor(df[["test"]], levels = tests.used)), "^")
+    tests.used <- paste0(seq_along(tests.used), ". ", tests.used, collapse = "\n")
   }
 
   #### don't show the same statistics more than once ####
@@ -97,6 +106,7 @@ print.summary.tableby <- function(x, ...)
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
   print(knitr::kable(df, col.names = cn, caption = NULL, align = align))
+  cat(tests.used)
 
   invisible(x)
 }

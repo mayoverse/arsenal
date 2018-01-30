@@ -214,25 +214,28 @@ test_that("A basic two-sided tableby call--p-value, no total", {
 
 test_that("A basic two-sided tableby markdown output", {
   expect_identical(
-    capture.output(summary(tableby(Group ~ Age + Sex + ethan + dt, data = mdat, total = FALSE))),
-    c(""                                                                                                                  ,
-      ""                                                                                                                  ,
-      "|                            |High (N=30)             |Low (N=30)              |Med (N=30)              | p value|",
-      "|:---------------------------|:-----------------------|:-----------------------|:-----------------------|-------:|",
-      "|**Age in Years**            |                        |                        |                        |   0.906|",
-      "|&nbsp;&nbsp;&nbsp;Mean (SD) |40.033 (6.217)          |39.633 (3.873)          |39.433 (5.569)          |        |",
-      "|&nbsp;&nbsp;&nbsp;Q1, Q3    |36.000, 44.500          |37.250, 41.750          |35.250, 44.000          |        |",
-      "|&nbsp;&nbsp;&nbsp;Range     |29.000 - 53.000         |32.000 - 48.000         |30.000 - 52.000         |        |",
-      "|**Sex**                     |                        |                        |                        |   0.733|",
-      "|&nbsp;&nbsp;&nbsp;Female    |15 (50.0%)              |17 (56.7%)              |14 (46.7%)              |        |",
-      "|&nbsp;&nbsp;&nbsp;Male      |15 (50.0%)              |13 (43.3%)              |16 (53.3%)              |        |",
-      "|**ethan**                   |                        |                        |                        |   0.178|",
-      "|&nbsp;&nbsp;&nbsp;N-Miss    |3                       |0                       |0                       |        |",
-      "|&nbsp;&nbsp;&nbsp;Ethan     |17 (63.0%)              |13 (43.3%)              |12 (40.0%)              |        |",
-      "|&nbsp;&nbsp;&nbsp;Heinzen   |10 (37.0%)              |17 (56.7%)              |18 (60.0%)              |        |",
-      "|**dt**                      |                        |                        |                        |   0.391|",
-      "|&nbsp;&nbsp;&nbsp;median    |1950-01-07              |1951-06-13              |1948-09-13              |        |",
-      "|&nbsp;&nbsp;&nbsp;Range     |1935-08-15 - 1968-05-14 |1937-02-08 - 1959-09-06 |1939-04-01 - 1958-07-30 |        |"
+    capture.output(summary(tableby(Group ~ Age + Sex + ethan + dt, data = mdat, total = FALSE), pfootnote = TRUE)),
+    c(""                                                                                                                   ,
+      ""                                                                                                                   ,
+      "|                            |High (N=30)             |Low (N=30)              |Med (N=30)              |  p value|",
+      "|:---------------------------|:-----------------------|:-----------------------|:-----------------------|--------:|",
+      "|**Age in Years**            |                        |                        |                        | 0.906^1^|",
+      "|&nbsp;&nbsp;&nbsp;Mean (SD) |40.033 (6.217)          |39.633 (3.873)          |39.433 (5.569)          |         |",
+      "|&nbsp;&nbsp;&nbsp;Q1, Q3    |36.000, 44.500          |37.250, 41.750          |35.250, 44.000          |         |",
+      "|&nbsp;&nbsp;&nbsp;Range     |29.000 - 53.000         |32.000 - 48.000         |30.000 - 52.000         |         |",
+      "|**Sex**                     |                        |                        |                        | 0.733^2^|",
+      "|&nbsp;&nbsp;&nbsp;Female    |15 (50.0%)              |17 (56.7%)              |14 (46.7%)              |         |",
+      "|&nbsp;&nbsp;&nbsp;Male      |15 (50.0%)              |13 (43.3%)              |16 (53.3%)              |         |",
+      "|**ethan**                   |                        |                        |                        | 0.178^2^|",
+      "|&nbsp;&nbsp;&nbsp;N-Miss    |3                       |0                       |0                       |         |",
+      "|&nbsp;&nbsp;&nbsp;Ethan     |17 (63.0%)              |13 (43.3%)              |12 (40.0%)              |         |",
+      "|&nbsp;&nbsp;&nbsp;Heinzen   |10 (37.0%)              |17 (56.7%)              |18 (60.0%)              |         |",
+      "|**dt**                      |                        |                        |                        | 0.391^3^|",
+      "|&nbsp;&nbsp;&nbsp;median    |1950-01-07              |1951-06-13              |1948-09-13              |         |",
+      "|&nbsp;&nbsp;&nbsp;Range     |1935-08-15 - 1968-05-14 |1937-02-08 - 1959-09-06 |1939-04-01 - 1958-07-30 |         |",
+      "1. Linear Model ANOVA"                                                                                              ,
+      "2. Pearson's Chi-squared test"                                                                                      ,
+      "3. Kruskal-Wallis rank sum test"
     )
   )
 })
