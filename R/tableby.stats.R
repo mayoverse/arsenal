@@ -12,6 +12,7 @@
 #' @param na.rm Should NAs be removed?
 #' @param weights A vector of weights.
 #' @param levels A vector of levels that character \code{x}s should have.
+#' @param times A vector of times to use for survival summaries.
 #' @param ... Other arguments.
 #' @return Usually a vector of the appropriate numbers.
 #' @details Not all these functions are exported, in order to avoid conflicting NAMESPACES.
