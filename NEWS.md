@@ -14,6 +14,30 @@ Major changes:
     
     - The `title=` argument was added to `summary.freqlist()`. Passing `caption=` through the dots to `knitr::kable()`
       will now throw an error. (#34)
+      
+* `tableby()`:
+
+    - `as.data.frame.tableby()` has been totally overhauled. It now uses list-columns to give exact values.
+    
+    - `summary.tableby()` has been totally overhauled.
+
+        * Most arguments are no longer named, but passed through the dots.
+    
+        * It now returns an object, abusing in the process `as.data.frame.tableby()`.
+          `print.summary.tableby()` prints the resulting object. (#8)
+        
+        * `print.summary.tableby()` now uses `knitr::kable()` to print results, instead of internal functions.
+          As such, non-exported helper functions have all been removed.
+
+    - The arguments to `tableby.control()` have changed. Warnings will be issued for using old arguments.
+    
+        * `nsmall=` has been removed. `digits=` takes its place.
+        
+        * `nsmall.pct=` and `digits.test=` have been renamed to `digits.pct=` and `digits.p=`, respectively.
+        
+        * There's now an option for count digits (`digits.count=`).
+        
+        * `format.p=` has been added, to turn on formatting of p-values.
 
 * `modelsum()`:
 
@@ -65,9 +89,21 @@ Smaller changes:
     
 * `tableby()`:
 
-    - `tableby()` has also been made slightly more concise and easier to read. The output shouldn't change.
+    - `tableby()` has also been made slightly more concise and easier to read.
 
     - A bug was fixed when trying to specify "stats" attributes for categorical variables. (#39)
+    
+    - A bug was fixed relating to unnamed passing of arguments for `medianrange()`. (#49)
+    
+    - `as.data.frame.tableby()` no longer breaks with date ranges. (#10)
+
+    - `as.data.frame.tableby()` no longer breaks with both `count()` and `countpct()`. (#51)
+
+    - Some additional survival summary functions are now available. (#32)
+    
+    - `labels<-.tableby()` no longer breaks for unmatched variables. (#53)
+    
+    - `labels<-.tableby()` now accepts `NULL` to set all labels to NULL. (#52)
 
     - The function `Nmiss2()` is now exported for `tableby()`. Note that it is exactly the same as `Nmiss()`, but
       is interpreted differently in `tableby()`.
