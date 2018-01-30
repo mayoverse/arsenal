@@ -1,6 +1,6 @@
 ---
 title: "The modelsum function"
-author: "Beth Atkinson, Pat Votruba, Jason Sinnwell, Shannon McDonnell and Greg Dougherty"
+author: "Beth Atkinson, Ethan Heinzen, Pat Votruba, Jason Sinnwell, Shannon McDonnell and Greg Dougherty"
 date: '`r format(Sys.time(),"%d %B, %Y")`'
 output:
   rmarkdown::html_vignette:
@@ -639,33 +639,16 @@ summary(modelsum(bmi ~ ast + age, data=mockstudy,
 
 ## 13. Modify the number of digits used
 
-Within modelsum.control function there are 4 options for controlling the number of significant digits shown.  
+Within modelsum.control function there are 3 options for controlling the number of significant digits shown.  
 
-* digits: controls the number of significant digits (counting both before and after the decimal point) for continuous variables
+* digits: controls the number of digits after the decimal point for continuous values
 
-* nsmall: controls the number of digits after the decimal point for the beta and standard error
+* digits.ratio: controls the number of digits after the decimal point for continuous values
 
-* nsmall.ratio: controls the number of digits for the ratio statistics (OR, HR, RR), default=2
-
-* digits.test: controls the number of digits after the decimal point for p-values (default=3)
+* digits.p: controls the number of digits after the decimal point for continuous values
 
 ```{r, results='asis'}
 summary(modelsum(bmi ~ sex + age + fu.time, data=mockstudy), digits=4, digits.test=2)
-```
-
-It is important to understand how R treats the `digits` argument.  Here are some summaries for
-the variable `pi`.  Note that with 4 digits, the number after the decimal point changes after
-multiplying pi by 10 or 100.  However, the `nsmall` option specifies the number of values after
-the decimal point.  The two can be used together (see the help file for `format` for more details on how that works).
-
-```{r}
-format(pi, digits=1)
-format(pi, digits=3)
-format(pi, digits=4)
-format(pi*10, digits=4)
-format(pi*100, digits=4)
-format(pi*100, nsmall=4)
-format(pi*100, nsmall=2, digits=4)
 ```
 
 ## 14. Use case-weights in the models
@@ -752,12 +735,12 @@ tmp
 
 ## 17. Write `modelsum` object to a separate Word or HTML file
 
-```{r}
+```{r eval = FALSE}
 ## write to an HTML document
-# write2html(tab2, "~/ibm/trash.html")
+write2html(tab2, "~/ibm/trash.html")
 
 ## write to a Word document
-# write2word(tab2, "~/ibm/trash.doc", title="My table in Word")
+write2word(tab2, "~/ibm/trash.doc", title="My table in Word")
 ```
 
 # Available Function Options
@@ -835,21 +818,6 @@ command. Settings involving the number of digits can be set in `modelsum.control
 args(modelsum.control)
 ```
 
-Settings:
-
-* digits=3 (number of significant digits for beta coefficient and standard error)
-* digits.test=3 (number of significant digits for p-values)
-* nsmall=NULL (number of digits after the decimal point for beta coefficient and standard error)
-* nsmall.ratio=2 (number of digits after the decimal point for ratios, e.g. OR, RR, HR)
-* show.adjust=TRUE
-* show.intercept = TRUE
-* conf.level = 0.95
-* binomial.stats, quasibinomial.stats
-* survival.stats
-* gaussian.stats
-* poisson.stats, quasipoisson.stats
-
-
 ## `summary.modelsum` settings
 
 The summary.modelsum function has options that modify how the table appears (such as adding a title or modifying labels).  
@@ -857,21 +825,4 @@ The summary.modelsum function has options that modify how the table appears (suc
 ```{r}
 args(arsenal:::summary.modelsum)
 ```
-
-Settings:
-
-* title
-* labelTranslations (allows user to modify variable labels)
-* digits
-* nsmall
-* nsmall.ratio
-* digits.test
-* show.intercept
-* show.adjust
-* text=FALSE
-* removeBlanks=FALSE (used on conjunction with text=TRUE to clean up output)
-* labelSize=1.2
-* pfootnote
-
-
 
