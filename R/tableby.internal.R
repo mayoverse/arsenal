@@ -36,6 +36,27 @@ format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ..
 
 allNA <- function(x) all(is.na(x))
 
+#' Internal \code{tableby} functions
+#'
+#' A collection of functions that may help users create custom functions that are formatted correctly.
+#' @param x Usually a vector.
+#' @param oldClass class(es) to add to the resulting object.
+#' @param sep The separator between \code{x[1]} and the rest of the vector.
+#' @param parens A length-2 vector denoting parentheses to use around \code{x[2]} and \code{x[3]}.
+#' @param sep2 The separator between \code{x[2]} and \code{x[3]}.
+#' @param pct The symbol to use after percents.
+#' @param ... arguments to pass to \code{as.tbstat}.
+#' @details
+#'   \code{as.tbstat} defines a tableby statistic with its appropriate formatting.
+#'
+#'   \code{as.countpct} adds another class to \code{as.tbstat} to use different "digits" arguments. See \code{\link{tableby.control}}.
+#'
+#'   \code{as.tbstat_multirow} marks an object (usually a list) for multiple-row printing.
+#' @name tableby.stats.internal
+NULL
+#> NULL
+
+#' @rdname tableby.stats.internal
 #' @export
 as.tbstat <- function(x, oldClass = NULL, sep = NULL, parens = NULL, sep2 = NULL, pct = NULL)
 {
@@ -43,6 +64,7 @@ as.tbstat <- function(x, oldClass = NULL, sep = NULL, parens = NULL, sep2 = NULL
             sep = sep, parens = parens, sep2 = sep2, pct = pct)
 }
 
+#' @rdname tableby.stats.internal
 #' @export
 as.countpct <- function(x, ...)
 {
@@ -51,6 +73,7 @@ as.countpct <- function(x, ...)
   tmp
 }
 
+#' @rdname tableby.stats.internal
 #' @export
 as.tbstat_multirow <- function(x)
 {
