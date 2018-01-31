@@ -33,7 +33,7 @@ Suggests:
     rmarkdown,
     xtable,
     pander,
-    survival,
+    survival (>= 2.41-3),
     coin,
     pROC,
     MASS,

@@ -196,7 +196,7 @@ test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem", {
 
 
 test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
-  if(require(survival))
+  if(require(survival) && packageVersion("survival") >= "2.41-3")
   {
     mdat.tmp <- keep.labels(mdat)
 
@@ -225,7 +225,7 @@ test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
     )
 
     rm(mdat.tmp)
-  } else skip("survival package not available.")
+  } else skip("survival package not available or not the right version.")
 })
 
 #################################################################################################################################
