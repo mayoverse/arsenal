@@ -8,4 +8,7 @@ r:
   - release
   - devel
   - oldrel
-  - 3.2.3
+  - 3.2
+
+before_install:
+  Rscript -e 'update.packages(ask = FALSE)'
