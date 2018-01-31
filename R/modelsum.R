@@ -107,7 +107,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   }
   maindf <- eval(main.call, parent.frame())
   if(nrow(maindf) == 0) stop("No (non-missing) observations")
-  Terms <- terms(maindf)
+  Terms <- stats::terms(maindf)
 
   #### Set up "adjustment" dataset ####
   if(missing(adjust))
@@ -129,8 +129,8 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   for(eff in effCols) {
 
     currCol <- maindf[[eff]]
-    adj.formula <- join_formula(drop.terms(Terms, if(length(effCols) > 1) setdiff(effCols, eff) - 1L else NULL, keep.response = TRUE), adjust)
-    adj.Terms <- terms(adj.formula)
+    adj.formula <- join_formula(stats::drop.terms(Terms, if(length(effCols) > 1) setdiff(effCols, eff) - 1L else NULL, keep.response = TRUE), adjust)
+    adj.Terms <- stats::terms(adj.formula)
     adjVars <- attr(adj.Terms, "term.labels")[-1]
 
     xname <- colnames(maindf)[eff]

@@ -81,7 +81,7 @@ medSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
 NeventsSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
   xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
   out <- t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
-  out <- setNames(as.list(as.data.frame(out)), paste0("time = ", times))
+  out <- stats::setNames(as.list(as.data.frame(out)), paste0("time = ", times))
   as.tbstat_multirow(lapply(out, as.countpct, parens = c("(", ")")))
 }
 
@@ -89,7 +89,7 @@ NeventsSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, .
 #' @export
 NriskSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
   xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
-  out <- setNames(as.list(xsumm$n.risk), paste0("time = ", times))
+  out <- stats::setNames(as.list(xsumm$n.risk), paste0("time = ", times))
   as.tbstat_multirow(lapply(out, as.countpct))
 }
 

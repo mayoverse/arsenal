@@ -25,9 +25,9 @@ starts_with <- function(x, prefix)
 
 join_formula <- function(x, y)
 {
-  x <- formula(x)
+  x <- stats::formula(x)
   if(is.null(y)) return(x)
-  y <- formula(y)
+  y <- stats::formula(y)
   stopifnot(length(x) == 3 && length(y) == 2)
   x[[3]] <- call("+", x[[3]], y[[2]])
   x
