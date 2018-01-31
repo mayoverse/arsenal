@@ -159,7 +159,34 @@ count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, l
 #' @rdname tableby.stats
 #' @export
 countpct <- function(x, levels=sort(unique(x)), na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  print(levels)
   wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)])
   as.tbstat_multirow(lapply(Map(c, wtbl, 100*wtbl/sum(wtbl)), as.countpct, parens = c("(", ")"), pct = "%"))
 }
+
+#' @rdname tableby.stats
+#' @export
+countrowpct <- function(x, levels=sort(unique(x)), by, by.levels=sort(unique(by)), na.rm=TRUE, weights=rep(1, length(x)), ...) {
+  if(na.rm)
+  {
+    idx <- !is.na(x) & !is.na(by) & !is.na(weights)
+    x <- x[idx]
+    by <- by[idx]
+    weights <- weights[idx]
+  }
+
+  wtbls <- lapply(levels, function(L) {
+    tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
+    c(tmp, Total = sum(tmp))
+  })
+  pcts <- lapply(wtbls, function(tab) c(100*tab/tail(tab, 1)))
+
+  nms <- c(by.levels, "Total")
+  transpose <- function(what) stats::setNames(lapply(nms, function(i) stats::setNames(lapply(what, "[", i), levels)), nms)
+  wtbls <- transpose(wtbls)
+  pcts <- transpose(pcts)
+
+  combine <- function(elt1, elt2) as.countpct(unname(c(elt1, elt2)), parens = c("(", ")"), pct = "%")
+  Map(function(L1, L2) as.tbstat_multirow(Map(combine, L1, L2)), wtbls, pcts)
+
+}
+
