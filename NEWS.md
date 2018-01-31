@@ -38,6 +38,12 @@ Major changes:
         * There's now an option for count digits (`digits.count=`).
         
         * `format.p=` has been added, to turn on formatting of p-values.
+        
+    - NAs can be included in percents using `includeNA()`.
+    
+    - Some additional survival summary functions are now available. (#32)
+    
+    - It is now possible to report row-percents using `countrowpct()`. (#9)
 
 * `modelsum()`:
 
@@ -99,8 +105,6 @@ Smaller changes:
 
     - `as.data.frame.tableby()` no longer breaks with both `count()` and `countpct()`. (#51)
 
-    - Some additional survival summary functions are now available. (#32)
-    
     - `labels<-.tableby()` no longer breaks for unmatched variables. (#53)
     
     - `labels<-.tableby()` now accepts `NULL` to set all labels to NULL. (#52)
