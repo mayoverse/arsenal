@@ -23,14 +23,14 @@ NULL
 #' @rdname tableby.stats
 #' @export
 meansd <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  y <- c(wtd.mean(x, weights=weights, na.rm=na.rm, ...), sqrt(wtd.var(x, weights=weights, na.rm=na.rm, ...)))
+  y <- c(wtd.mean(x, weights=weights, na.rm=na.rm), sqrt(wtd.var(x, weights=weights, na.rm=na.rm)))
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"))
 }
 
 #' @rdname tableby.stats
 #' @export
 medianrange <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  y <- if(na.rm && allNA(x)) rep(NA_real_, times = 3) else wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights, ...)
+  y <- if(na.rm && allNA(x)) rep(NA_real_, times = 3) else wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights)
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
 
@@ -39,9 +39,9 @@ median <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   if(na.rm && allNA(x)) {
     NA_real_
   } else if(is.Date(x)) {
-    as.Date(wtd.quantile(as.integer(x), weights=weights, probs=0.5, na.rm=na.rm, ...), origin="1970/01/01")
+    as.Date(wtd.quantile(as.integer(x), weights=weights, probs=0.5, na.rm=na.rm), origin="1970/01/01")
   } else {
-    wtd.quantile(x, weights=weights, probs=0.5, na.rm=na.rm, ...)
+    wtd.quantile(x, weights=weights, probs=0.5, na.rm=na.rm)
   }
 }
 
@@ -97,7 +97,7 @@ NriskSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...
 #' @export
 medTime <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
 {
-  wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm, ...)
+  wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm)
 }
 
 #' @rdname tableby.stats
@@ -113,7 +113,7 @@ rangeTime <- function(x, na.rm = TRUE, ...)
 q1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- if(na.rm && allNA(x)) {
     c(NA_real_, NA_real_)
-  } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm, ...)
+  } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm)
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = ", ")
 }
 
@@ -122,7 +122,7 @@ q1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- if(na.rm && allNA(x)) {
     c(NA_real_, NA_real_, NA_real_)
-  } else wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm, ...)
+  } else wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm)
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
 
@@ -152,13 +152,14 @@ N <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 ## count within group variable
 #' @rdname tableby.stats
 count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, length(x)), ...)  {
-  as.tbstat_multirow(lapply(as.list(wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)], ...)), as.countpct))
+  as.tbstat_multirow(lapply(as.list(wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)])), as.countpct))
 }
 
 ## count (pct) where pct is within group variable total
 #' @rdname tableby.stats
 #' @export
 countpct <- function(x, levels=sort(unique(x)), na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)], ...)
+  print(levels)
+  wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)])
   as.tbstat_multirow(lapply(Map(c, wtbl, 100*wtbl/sum(wtbl)), as.countpct, parens = c("(", ")"), pct = "%"))
 }
