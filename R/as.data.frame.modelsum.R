@@ -41,15 +41,14 @@ as.data.frame.modelsum <- function(x, ..., labelTranslations = NULL)
   control <- c(list(...), x$control)
   control <- do.call("modelsum.control", control[!duplicated(names(control))])
 
-  out <- do.call(rbind, Map(cbind, model = seq_along(x$fits), lapply(x$fits, get_the_estimate, cntrl = control))) # this step is almost magic
+  out <- do.call(rbind, c(Map(cbind, model = seq_along(x$fits), lapply(x$fits, get_the_estimate, cntrl = control)),
+                          make.row.names = FALSE)) # this step is almost magic
   out <- out[out$term.type %in% c("Term", if(control$show.intercept) "Intercept", if(control$show.adjust) "Adjuster"), , drop = FALSE]
   idx <- vapply(out, is.factor, NA)
   if(any(idx)) out[idx] <- lapply(out[idx], as.character) ## this is for R 3.2.3, whose rbind() doesn't have 'stringsAsFactors='
 
   # Get rid of Nmiss if none missing
   if("Nmiss" %in% colnames(out) && all(out$Nmiss == 0)) out$Nmiss <- NULL
-
-  row.names(out) <- NULL
 
   set_attr(out, "control", control)
 }
