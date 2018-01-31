@@ -34,8 +34,6 @@ format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ..
   NextMethod("format")
 }
 
-allNA <- function(x) all(is.na(x))
-
 #' Internal \code{tableby} functions
 #'
 #' A collection of functions that may help users create custom functions that are formatted correctly.
