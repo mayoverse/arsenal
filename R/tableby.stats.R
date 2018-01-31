@@ -181,7 +181,7 @@ countrowpct <- function(x, levels=sort(unique(x)), by, by.levels=sort(unique(by)
     tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
     c(tmp, Total = sum(tmp))
   })
-  pcts <- lapply(wtbls, function(tab) c(100*tab/tail(tab, 1)))
+  pcts <- lapply(wtbls, function(tab) c(100*tab/utils::tail(tab, 1)))
 
   nms <- c(by.levels, "Total")
   transpose <- function(what) stats::setNames(lapply(nms, function(i) stats::setNames(lapply(what, "[", i), levels)), nms)
