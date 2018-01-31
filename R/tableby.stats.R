@@ -13,9 +13,12 @@
 #' @param weights A vector of weights.
 #' @param levels A vector of levels that character \code{x}s should have.
 #' @param times A vector of times to use for survival summaries.
+#' @param by a vector of the by-values.
+#' @param by.levels a vector of the levels of \code{by}.
 #' @param ... Other arguments.
 #' @return Usually a vector of the appropriate numbers.
 #' @details Not all these functions are exported, in order to avoid conflicting NAMESPACES.
+#' @seealso \code{\link{includeNA}}, \code{\link{tableby.control}}
 #' @name tableby.stats
 NULL
 #> NULL
@@ -23,14 +26,14 @@ NULL
 #' @rdname tableby.stats
 #' @export
 meansd <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  y <- c(wtd.mean(x, weights=weights, na.rm=na.rm, ...), sqrt(wtd.var(x, weights=weights, na.rm=na.rm, ...)))
+  y <- c(wtd.mean(x, weights=weights, na.rm=na.rm), sqrt(wtd.var(x, weights=weights, na.rm=na.rm)))
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"))
 }
 
 #' @rdname tableby.stats
 #' @export
 medianrange <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  y <- if(na.rm && allNA(x)) rep(NA_real_, times = 3) else wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights, ...)
+  y <- if(na.rm && allNA(x)) rep(NA_real_, times = 3) else wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights)
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
 
@@ -39,9 +42,9 @@ median <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   if(na.rm && allNA(x)) {
     NA_real_
   } else if(is.Date(x)) {
-    as.Date(wtd.quantile(as.integer(x), weights=weights, probs=0.5, na.rm=na.rm, ...), origin="1970/01/01")
+    as.Date(wtd.quantile(as.integer(x), weights=weights, probs=0.5, na.rm=na.rm), origin="1970/01/01")
   } else {
-    wtd.quantile(x, weights=weights, probs=0.5, na.rm=na.rm, ...)
+    wtd.quantile(x, weights=weights, probs=0.5, na.rm=na.rm)
   }
 }
 
@@ -97,7 +100,7 @@ NriskSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...
 #' @export
 medTime <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
 {
-  wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm, ...)
+  wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm)
 }
 
 #' @rdname tableby.stats
@@ -113,7 +116,7 @@ rangeTime <- function(x, na.rm = TRUE, ...)
 q1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- if(na.rm && allNA(x)) {
     c(NA_real_, NA_real_)
-  } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm, ...)
+  } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm)
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = ", ")
 }
 
@@ -122,7 +125,7 @@ q1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- if(na.rm && allNA(x)) {
     c(NA_real_, NA_real_, NA_real_)
-  } else wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm, ...)
+  } else wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm)
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
 
@@ -152,13 +155,90 @@ N <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 ## count within group variable
 #' @rdname tableby.stats
 count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, length(x)), ...)  {
-  as.tbstat_multirow(lapply(as.list(wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)], ...)), as.countpct))
+  as.tbstat_multirow(lapply(as.list(wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)])), as.countpct))
 }
 
 ## count (pct) where pct is within group variable total
 #' @rdname tableby.stats
 #' @export
 countpct <- function(x, levels=sort(unique(x)), na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)], ...)
+  wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)])
   as.tbstat_multirow(lapply(Map(c, wtbl, 100*wtbl/sum(wtbl)), as.countpct, parens = c("(", ")"), pct = "%"))
+}
+
+#' @rdname tableby.stats
+#' @export
+countrowpct <- function(x, levels=sort(unique(x)), by, by.levels=sort(unique(by)), na.rm=TRUE, weights=rep(1, length(x)), ...) {
+  if(na.rm)
+  {
+    idx <- !is.na(x) & !is.na(by) & !is.na(weights)
+    x <- x[idx]
+    by <- by[idx]
+    weights <- weights[idx]
+  }
+
+  wtbls <- lapply(levels, function(L) {
+    tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
+    c(tmp, Total = sum(tmp))
+  })
+  pcts <- lapply(wtbls, function(tab) c(100*tab/utils::tail(tab, 1)))
+
+  nms <- c(by.levels, "Total")
+  transpose <- function(what) stats::setNames(lapply(nms, function(i) stats::setNames(lapply(what, "[", i), levels)), nms)
+  wtbls <- transpose(wtbls)
+  pcts <- transpose(pcts)
+
+  combine <- function(elt1, elt2) as.countpct(unname(c(elt1, elt2)), parens = c("(", ")"), pct = "%")
+  Map(function(L1, L2) as.tbstat_multirow(Map(combine, L1, L2)), wtbls, pcts)
+
+}
+
+
+
+######## internal functions that we use above ########
+
+wtd.table <- function(x, weights = rep(1, length(x)), na.rm = TRUE)
+{
+  tmp <- tapply(weights, x, sum, na.rm = na.rm)
+  tmp[is.na(tmp)] <- 0 # (tapply(default = 0) would be enough in R >= 3.4, but we'll make this backwards-compatible)
+  tmp
+}
+
+wtd.mean <- function(x, weights = NULL, na.rm = TRUE) {
+  if(!length(weights)) return(mean(x, na.rm = na.rm))
+  if(na.rm) {
+    idx <- !is.na(x + weights)
+    x <- x[idx]
+    weights <- weights[idx]
+  }
+  sum(weights * x)/sum(weights)
+}
+
+wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1), na.rm=TRUE) {
+
+  if(!length(weights)) return(stats::quantile(x, probs = probs, na.rm = na.rm))
+  if(any(probs < 0) || any(probs > 1)) stop("Probabilities must be between 0 and 1 inclusive")
+
+  wts <- wtd.table(x, weights, na.rm = na.rm)
+  x <- as.numeric(names(wts))
+  n <- sum(wts)
+  order <- 1 + (n - 1) * probs
+  low <- pmax(floor(order), 1)
+  high <- pmin(low + 1, n)
+  order <- order%%1
+  allq <- stats::approx(cumsum(wts), x, xout = c(low, high), method = "constant", f = 1, rule = 2)$y
+  k <- length(probs)
+  stats::setNames((1 - order) * allq[1:k] + order * allq[-(1:k)], probs)
+}
+
+wtd.var <- function(x, weights = NULL, na.rm=TRUE, method = c("unbiased", "ML")) {
+  method <- match.arg(method)
+  if(!length(weights)) return(stats::var(x, na.rm = na.rm))
+
+  if(na.rm) {
+    idx <- !is.na(x + weights)
+    x <- x[idx]
+    weights <- weights[idx]
+  }
+  as.numeric(stats::cov.wt(matrix(x, ncol = 1), weights, method = method)$cov)
 }

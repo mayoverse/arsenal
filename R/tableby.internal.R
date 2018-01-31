@@ -34,8 +34,6 @@ format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ..
   NextMethod("format")
 }
 
-allNA <- function(x) all(is.na(x))
-
 #' Internal \code{tableby} functions
 #'
 #' A collection of functions that may help users create custom functions that are formatted correctly.
@@ -339,50 +337,5 @@ na.tableby <- function(object, ...) {
         attr(xx, "na.action") <- temp
     }
     xx
-}
-
-wtd.table <- function(x, weights = rep(1, length(x)), na.rm = TRUE)
-{
-  tmp <- tapply(weights, x, sum, na.rm = na.rm)
-  tmp[is.na(tmp)] <- 0 # (tapply(default = 0) would be enough in R >= 3.4, but we'll make this backwards-compatible)
-  tmp
-}
-
-wtd.mean <- function(x, weights = NULL, na.rm = TRUE) {
-    if(!length(weights)) return(mean(x, na.rm = na.rm))
-    if(na.rm) {
-        idx <- !is.na(x + weights)
-        x <- x[idx]
-        weights <- weights[idx]
-    }
-    sum(weights * x)/sum(weights)
-}
-wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1), na.rm=TRUE) {
-
-  if(!length(weights)) return(stats::quantile(x, probs = probs, na.rm = na.rm))
-  if(any(probs < 0) || any(probs > 1)) stop("Probabilities must be between 0 and 1 inclusive")
-
-  wts <- wtd.table(x, weights, na.rm = na.rm)
-  x <- as.numeric(names(wts))
-  n <- sum(wts)
-  order <- 1 + (n - 1) * probs
-  low <- pmax(floor(order), 1)
-  high <- pmin(low + 1, n)
-  order <- order%%1
-  allq <- stats::approx(cumsum(wts), x, xout = c(low, high), method = "constant", f = 1, rule = 2)$y
-  k <- length(probs)
-  stats::setNames((1 - order) * allq[1:k] + order * allq[-(1:k)], probs)
-}
-
-wtd.var <- function(x, weights = NULL, na.rm=TRUE, method = c("unbiased", "ML")) {
-    method <- match.arg(method)
-    if(!length(weights)) return(stats::var(x, na.rm = na.rm))
-
-    if(na.rm) {
-        idx <- !is.na(x + weights)
-        x <- x[idx]
-        weights <- weights[idx]
-    }
-    as.numeric(stats::cov.wt(matrix(x, ncol = 1), weights, method = method)$cov)
 }
 

@@ -66,3 +66,5 @@ Other S3 methods are implemented for objects of class `"compare.data.frame"`, in
 * `is.Date`: tests if an object is a date.
 
 * `%nin%` tests for "not in", the negation of `%in%`.
+
+* `allNA()` tests for all elements being NA, and `includeNA()` makes NAs explicit values.

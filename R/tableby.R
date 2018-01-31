@@ -218,8 +218,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   by.col <- modeldf[[1]]
   if(is.factor(by.col)) {
     by.col <- droplevels(by.col)
-  }
-  by.levels <- sort(unique(by.col))
+    by.levels <- levels(by.col)
+  } else by.levels <- sort(unique(by.col))
 
   for(eff in 2:ncol(modeldf)) {
 
@@ -252,6 +252,12 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       ## remove Nmiss stat fun
       if(!anyNA(currcol) && "Nmiss" %in% ordered.stats) ordered.stats <- ordered.stats[ordered.stats != "Nmiss"]
       for(statfun in ordered.stats) {
+        if(statfun == "countrowpct")
+        {
+          statList[[statfun]] <- eval(call(statfun, currcol, levels = xlevels,
+                                           by = by.col, by.levels = by.levels, weights = weights, na.rm = TRUE))
+          next
+        }
         for(bylev in by.levels) {
           idx <- by.col == bylev
           bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx]))
@@ -305,6 +311,12 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       }
       if(!anyNA(currcol) && "Nmiss" %in% cat.stats) cat.stats <- cat.stats[cat.stats != "Nmiss"]
       for(statfun in cat.stats) {
+        if(statfun == "countrowpct")
+        {
+          statList[[statfun]] <- eval(call(statfun, currcol, levels = xlevels,
+                                           by = by.col, by.levels = by.levels, weights = weights, na.rm = TRUE))
+          next
+        }
         for(bylev in by.levels) {
           idx <- by.col == bylev
           bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx]))
