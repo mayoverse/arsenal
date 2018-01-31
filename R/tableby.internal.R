@@ -1,8 +1,113 @@
-## Purpose: internal functions (and methods) for tableby function
-## Authors: Jason Sinnwell, Beth Atkinson, Gregory Dougherty
-## Created: 4/16/2015
 
-## Helper functions for tableby:  merge, subset, and labels (work like names)
+get_attr <- function(x, which, default)
+{
+  x <- attr(x, which, exact = TRUE)
+  if(is.null(x)) default else x
+}
+
+#' @export
+format.tbstat <- function(x, digits = NULL, ...)
+{
+  class(x) <- class(x)[class(x) != "tbstat"]
+  if(is.numeric(x)) x <- trimws(formatC(x, digits = digits, format = "f"))
+  if(length(x) == 1) return(paste0(x))
+
+  parens <- get_attr(x, "parens", c("", ""))
+  sep <- get_attr(x, "sep", " ")
+  sep2 <- get_attr(x, "sep2", " ")
+  pct <- get_attr(x, "pct", "")
+  if(length(x) == 2)
+  {
+    paste0(x[1], sep, parens[1], x[2], pct, parens[2])
+  } else paste0(x[1], sep, parens[1], x[2], sep2, x[3], parens[2])
+}
+
+#' @export
+format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ...)
+{
+  att <- attributes(x)
+  x <- if(length(x) == 2)
+  {
+    c(formatC(x[1], digits = digits.count, format = "f"), formatC(x[2], digits = digits.pct, format = "f"))
+  } else formatC(x, digits = digits.count, format = "f")
+  attributes(x) <- att
+  NextMethod("format")
+}
+
+allNA <- function(x) all(is.na(x))
+
+#' Internal \code{tableby} functions
+#'
+#' A collection of functions that may help users create custom functions that are formatted correctly.
+#' @param x Usually a vector.
+#' @param oldClass class(es) to add to the resulting object.
+#' @param sep The separator between \code{x[1]} and the rest of the vector.
+#' @param parens A length-2 vector denoting parentheses to use around \code{x[2]} and \code{x[3]}.
+#' @param sep2 The separator between \code{x[2]} and \code{x[3]}.
+#' @param pct The symbol to use after percents.
+#' @param ... arguments to pass to \code{as.tbstat}.
+#' @details
+#'   \code{as.tbstat} defines a tableby statistic with its appropriate formatting.
+#'
+#'   \code{as.countpct} adds another class to \code{as.tbstat} to use different "digits" arguments. See \code{\link{tableby.control}}.
+#'
+#'   \code{as.tbstat_multirow} marks an object (usually a list) for multiple-row printing.
+#' @name tableby.stats.internal
+NULL
+#> NULL
+
+#' @rdname tableby.stats.internal
+#' @export
+as.tbstat <- function(x, oldClass = NULL, sep = NULL, parens = NULL, sep2 = NULL, pct = NULL)
+{
+  structure(x, class = c("tbstat", oldClass),
+            sep = sep, parens = parens, sep2 = sep2, pct = pct)
+}
+
+#' @rdname tableby.stats.internal
+#' @export
+as.countpct <- function(x, ...)
+{
+  tmp <- as.tbstat(x, ...)
+  class(tmp) <- c("tbstat_countpct", class(tmp))
+  tmp
+}
+
+#' @rdname tableby.stats.internal
+#' @export
+as.tbstat_multirow <- function(x)
+{
+  class(x) <- c("tbstat_multirow", class(x))
+  x
+}
+
+extract_tbstat <- function(x, ...)
+{
+  x <- NextMethod("[")
+  class(x) <- class(x)[class(x) %nin% c("tbstat", "tbstat_countpct", "tbstat_multirow")]
+  x
+}
+
+extract2_tbstat <- function(x, ...)
+{
+  x <- NextMethod("[[")
+  class(x) <- class(x)[class(x) %nin% c("tbstat", "tbstat_countpct", "tbstat_multirow")]
+  x
+}
+
+#' @export
+`[.tbstat` <- extract_tbstat
+#' @export
+`[.tbstat_countpct` <- extract_tbstat
+#' @export
+`[.tbstat_multirow` <- extract_tbstat
+#' @export
+`[[.tbstat` <- extract2_tbstat
+#' @export
+`[[.tbstat_countpct` <- extract2_tbstat
+#' @export
+`[[.tbsta_multirowt` <- extract2_tbstat
+
 
 ## merge two tableby objects
 ## both must have same "by" variable and levels
@@ -140,26 +245,33 @@ tests.tableby <- function(x) {
 'labels<-.tableby' <- function(x, value) {
   ## if the value vector is named, then assign the labels to
   ## those names that match those in x and y
-  if(!is.null(names(value))) {
+  if(is.list(value)) value <- unlist(value)
+  if(is.null(value))
+  {
+    x$y[[1]]$label <- x$y[[1]]$name
+    for(k in seq_along(x$x)) x$x[[k]]$label <- x$x[[k]]$name
+  } else if(!is.null(names(value))) {
     vNames <- names(value)
     objNames <- c(names(x$y), names(x$x))
     v2objIndex <- match(vNames, objNames)
-    if(any(is.na(v2objIndex))) {
-      warning("Named value(s): ", paste(vNames[is.na(v2objIndex)],collapse=","),
-              " not matched in x\n")
+    if(anyNA(v2objIndex))
+    {
+      idx <- is.na(v2objIndex)
+      warning("Named value(s) not matched in x: ", paste(vNames[idx],collapse=","), "\n")
+      vNames <- vNames[!idx]
+      v2objIndex <- v2objIndex[!idx]
     }
+
     ## handle y label first, then remove it
-    if(any(v2objIndex==1)) {
-      x$y[[1]]$label <- value[which(v2objIndex==1)]
-      value <- value[-which(v2objIndex==1)]
-      v2objIndex <- v2objIndex[-which(v2objIndex==1)]
+    if(any(v2objIndex == 1)) {
+      x$y[[1]]$label <- value[v2objIndex == 1]
+      value <- value[v2objIndex != 1]
+      v2objIndex <- v2objIndex[v2objIndex != 1]
     }
-    if(length(v2objIndex)>0) {
+    if(length(v2objIndex) > 0) {
       ## prepare to iterate over the rest for x, if there are any
       v2objIndex <- v2objIndex - 1
-      for(k in seq_len(length(v2objIndex))) {
-        x$x[[ v2objIndex[k] ]]$label <- value[k]
-      }
+      for(k in seq_along(v2objIndex)) x$x[[v2objIndex[k]]]$label <- value[k]
     }
   } else  {
 
@@ -168,15 +280,14 @@ tests.tableby <- function(x) {
     ## for each of the RHS vars of x (1:length(x)-3),
     ##assign strings in value to the 'label' element of the list for each RHS variable
 
-    if(length(value) != length(x$y + length(x$x))) {
+    if(length(value) != length(x$y) + length(x$x)) {
       stop("Length of new labels is not the same length as there are variables in the formula.\n")
     }
     x$y[[1]]$label <- value[1]
-    for(k in 1:length(x$x)) {
-      x$x[[k]]$label <- value[k-1]
+    for(k in seq_along(x$x)) {
+      x$x[[k]]$label <- value[k+1]
     }
   }
-  ## return tableby x with updated labels
   return(x)
 }
 
@@ -230,915 +341,48 @@ na.tableby <- function(object, ...) {
     xx
 }
 
-## wtd.mean, wtd.var, wtd.quantile (and wtd.table, wtd.Ecdf) all from Hmisc
-wtd.table <- function(x, weights=NULL, type=c("list","table"), normwt=FALSE, na.rm = TRUE) {
-    type <- match.arg(type)
-    if(!length(weights))
-        weights <- rep(1, length(x))
-    isdate <- testDateTime(x)
-    ax <- attributes(x)
-    ax$names <- NULL
-    if(is.character(x)) {
-      x <- as.factor(x)
-    }
-    lev <- levels(x)
-    x <- unclass(x)
-    if(na.rm) {
-        s <- !is.na(x + weights)
-        x <- x[s, drop = FALSE]
-        weights <- weights[s]
-    }
-    n <- length(x)
-    if(normwt)
-        weights <- weights * length(x)/sum(weights)
-    i <- order(x)
-    x <- x[i]
-    weights <- weights[i]
-    if(anyDuplicated(x)) {
-        weights <- tapply(weights, x, sum)
-        if(length(lev)) {
-            levused <- lev[sort(unique(x))]
-            if((length(weights) > length(levused)) && any(is.na(weights)))
-                weights <- weights[!is.na(weights)]
-            if(length(weights) != length(levused))
-                stop("program logic error")
-            names(weights) <- levused
-        }
-        if(!length(names(weights)))
-            stop("program logic error")
-        if(type == "table")
-            return(weights)
-        x <- names(weights)
-        if(isdate)
-            attributes(x) <- c(attributes(x), ax)
-        return(list(x = x, sum.of.weights = unname(weights)))
-    }
-    xx <- x
-    if(isdate)
-        attributes(xx) <- c(attributes(xx), ax)
-    if(type == "list")
-        list(x = if(length(lev)) lev[x] else xx, sum.of.weights = weights)
-    else {
-        names(weights) <- if(length(lev))
-            lev[x]
-        else xx
-        weights
-    }
+wtd.table <- function(x, weights = rep(1, length(x)), na.rm = TRUE)
+{
+  tmp <- tapply(weights, x, sum, na.rm = na.rm)
+  tmp[is.na(tmp)] <- 0 # (tapply(default = 0) would be enough in R >= 3.4, but we'll make this backwards-compatible)
+  tmp
 }
-wtd.Ecdf <- function(x, weights=NULL, type=c("i/n","(i-1)/(n-1)","i/(n+1)"), normwt=FALSE, na.rm=TRUE) {
-    type <- match.arg(type)
-    switch(type, `(i-1)/(n-1)` = {
-        a <- b <- -1
-    }, `i/(n+1)` = {
-        a <- 0
-        b <- 1
-    }, `i/n` = {
-        a <- b <- 0
-    })
-    if(!length(weights)) {
-        oldopt <- options(digits = 7)
-        on.exit(options(oldopt))
-        cumu <- table(x)
-        isdate <- testDateTime(x)
-        ax <- attributes(x)
-        ax$names <- NULL
-        x <- as.numeric(names(cumu))
-        if(isdate)
-            attributes(x) <- c(attributes(x), ax)
-        cumu <- cumsum(cumu)
-        cdf <- (cumu + a)/(cumu[length(cumu)] + b)
-        if(cdf[1] > 0) {
-            x <- c(x[1], x)
-            cdf <- c(0, cdf)
-        }
-        return(list(x = x, ecdf = cdf))
-    }
-    w <- wtd.table(x, weights, normwt = normwt, na.rm = na.rm)
-    cumu <- cumsum(w$sum.of.weights)
-    cdf <- (cumu + a)/(cumu[length(cumu)] + b)
-    list(x = c(if(cdf[1] > 0) w$x[1], w$x), ecdf = c(if(cdf[1] > 0) 0, cdf))
-}
-wtd.mean <- function(x, weights = NULL, normwt = "ignored", na.rm = TRUE) {
-    if(!length(weights))
-        return(mean(x, na.rm = na.rm))
+
+wtd.mean <- function(x, weights = NULL, na.rm = TRUE) {
+    if(!length(weights)) return(mean(x, na.rm = na.rm))
     if(na.rm) {
-        s <- !is.na(x + weights)
-        x <- x[s]
-        weights <- weights[s]
+        idx <- !is.na(x + weights)
+        x <- x[idx]
+        weights <- weights[idx]
     }
     sum(weights * x)/sum(weights)
 }
-wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1),
-    type=c("quantile","(i-1)/(n-1)","i/(n+1)","i/n"), normwt=FALSE, na.rm=TRUE) {
+wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1), na.rm=TRUE) {
 
-  if(!length(weights))
-    return(stats::quantile(x, probs = probs, na.rm = na.rm))
-  type <- match.arg(type)
-  if(any(probs < 0 | probs > 1))
-    stop("Probabilities must be between 0 and 1 inclusive")
-  nams <- paste(format(round(probs * 100, if(length(probs) >
-                 1) 2 - log10(diff(range(probs))) else 2)), "%", sep = "")
-  if(type == "quantile") {
-    w <- wtd.table(x, weights, na.rm = na.rm, normwt = normwt,
-                   type = "list")
-    x <- w$x
-    wts <- w$sum.of.weights
-    n <- sum(wts)
-    order <- 1 + (n - 1) * probs
-    low <- pmax(floor(order), 1)
-    high <- pmin(low + 1, n)
-    order <- order%%1
-    allq <- stats::approx(cumsum(wts), x, xout = c(low, high), method = "constant", f = 1, rule = 2)$y
-    k <- length(probs)
-    quantiles <- (1 - order) * allq[1:k] + order * allq[-(1:k)]
-    names(quantiles) <- nams
-    return(quantiles)
-  }
-  w <- wtd.Ecdf(x, weights, na.rm = na.rm, type = type, normwt = normwt)
-  structure(stats::approx(w$ecdf, w$x, xout = probs, rule = 2)$y, names = nams)
+  if(!length(weights)) return(stats::quantile(x, probs = probs, na.rm = na.rm))
+  if(any(probs < 0) || any(probs > 1)) stop("Probabilities must be between 0 and 1 inclusive")
+
+  wts <- wtd.table(x, weights, na.rm = na.rm)
+  x <- as.numeric(names(wts))
+  n <- sum(wts)
+  order <- 1 + (n - 1) * probs
+  low <- pmax(floor(order), 1)
+  high <- pmin(low + 1, n)
+  order <- order%%1
+  allq <- stats::approx(cumsum(wts), x, xout = c(low, high), method = "constant", f = 1, rule = 2)$y
+  k <- length(probs)
+  stats::setNames((1 - order) * allq[1:k] + order * allq[-(1:k)], probs)
 }
 
-wtd.var <- function(x, weights = NULL, normwt=FALSE, na.rm=TRUE, method = c("unbiased","ML")) {
+wtd.var <- function(x, weights = NULL, na.rm=TRUE, method = c("unbiased", "ML")) {
     method <- match.arg(method)
-    if(!length(weights)) {
-        if(na.rm)
-            x <- x[!is.na(x)]
-        return(stats::var(x))
-    }
+    if(!length(weights)) return(stats::var(x, na.rm = na.rm))
+
     if(na.rm) {
-        s <- !is.na(x + weights)
-        x <- x[s]
-        weights <- weights[s]
+        idx <- !is.na(x + weights)
+        x <- x[idx]
+        weights <- weights[idx]
     }
-    if(normwt)
-        weights <- weights * length(x)/sum(weights)
-    if(method == "ML")
-        return(as.numeric(stats::cov.wt(cbind(x), weights, method = "ML")$cov))
-    sw <- sum(weights)
-    xbar <- sum(weights * x)/sw
-    sum(weights * ((x - xbar)^2))/(sw - (if(normwt) sum(weights^2)/sw else 1))
-}
-## internal function borrowed from Hmisc
-testDateTime <- function(x, what = c("either", "both", "timeVaries")) {
-    what <- match.arg(what)
-    cl <- class(x)
-    if(!length(cl))
-        return(FALSE)
-    dc <- c("Date", "POSIXt", "POSIXct", "dates", "times", "chron")
-    dtc <- c("POSIXt", "POSIXct", "chron")
-    switch(what, either = any(cl %in% dc), both = any(cl %in%
-        dtc), timeVaries = {
-        if("chron" %in% cl || "Date" %in% cl) {
-            y <- as.numeric(x)
-            length(unique(round(y - floor(y), 13))) > 1
-        } else length(unique(format(x, "%H%M%S"))) > 1
-    })
+    as.numeric(stats::cov.wt(matrix(x, ncol = 1), weights, method = method)$cov)
 }
 
-
-########## Note from Ethan: if we want these doc pages, just replace all instances of "## '" with "#'"
-
-## ' makeDataFrame
-## '
-## ' Make the tableby data frame and add the output to it
-## '
-## ' @param headers		Vector of most of the columns and their titles
-## ' @param frameLists	List of lists holding the data for the data frame
-## ' @return Data Frame with all the elements set up and filled in
-## '
-## ' @author m082166
-makeDataFrame <- function(headers, frameLists) {
-	df <- as.data.frame (frameLists, stringsAsFactors = FALSE)
-	colnames(df) <- c ("term", headers)
-	return (df)
-}
-
-
-## ' addListElement
-## '
-## ' Make lists for the data frame the output will be added to
-## '
-## ' @param theFrame		List of Lists holding the Lists to be added to, 1st time through just
-## '		contains "term" and "variable", both NULL)
-## ' @param headers		Vector of the columns and their titles
-## ' @param rows			Vector of text to be processed
-## ' @param varName		Name of the variable that created all these rows
-## ' @param firstColSize	Length the first (label) column was padded to
-## ' @param colSize		Length all other columns were padded to
-## ' @param boldMark		Text used to indicate something is bold text.  Ignored if empty
-## ' @param indentStr		Text used to indent text.  Ignored if " "
-## ' @return List of Lists updated with the data from the passed in rows
-## '
-## ' @author m082166
-addListElement <- function(theFrame, headers, rows, varName, firstColSize, colSize, boldMark, indentStr) {
-	numRows <- length(rows)
-	lineSize <- max(nchar(rows))
-	colSize <- colSize + 1	# Add 1 for the between column spacer
-	numCols <- max((lineSize - firstColSize) / colSize, length(headers))
-	curCols <- length(theFrame)
-	cols <- c()
-	which <- 1
-
-	while (which <= numRows) {
-		line <- rows[which]
-		if(line == "") {	# Empty line means start of new variable
-			break
-		}
-		whichCol <- 1
-		start <- 1
-		end <- firstColSize
-		while (whichCol <= numCols) {
-			col <- stringr::str_trim(substr(line, start, end))
-
-			if(length(cols) > whichCol) {
-				if(nchar(col) > 0) {
-					cols[whichCol] <- stringr::str_trim(paste(cols[whichCol], col))
-				}
-			}
-			else {	# Always add, even if adding an empty string
-				cols <- c(cols, col)
-			}
-
-			start <- end + 2
-			end <- end + colSize
-			whichCol <- whichCol + 1
-		}
-
-		which <- which + 1
-	}
-
-	name <- getName(cols[1], boldMark, indentStr)
-	theFrame <- addToListVector (theFrame, "term", name)
-	theFrame <- addToListVector (theFrame, headers[1], varName)
-	whichCol <- 2
-	while (whichCol <= numCols) {
-		theFrame <- addToListVector (theFrame, headers[whichCol], cols[whichCol])
-		whichCol <- whichCol + 1
-	}
-
-	if(which <= numRows) {	# If stopped with more variables to go, process them now
-		for (i in 1:which) {
-			rows = rows[-1]	# Remove rows we've done
-		}
-		return(addListElement(theFrame, headers, rows, varName, firstColSize, colSize - 1, boldMark, indentStr))
-	}
-
-	return(theFrame)
-}
-
-
-## ' addToListVector
-## '
-## ' If baseList[[title]] is NULL, make it a Vector holding value.  If it's not null, make a
-## '   vector holding its contents followed by value
-## '
-## ' @param baseList	List to update
-## ' @param title		Name of baseList element to update
-## ' @param value		Text to add to the Vector at baseList[[title]]
-## ' @return baseList after it has been updated
-## '
-## ' @author m082166
-addToListVector <- function(baseList, title, value) {
-	if(is.null (baseList[[title]]))
-		baseList[[title]] <- c (value)
-	else
-		baseList[[title]] <- c (baseList[[title]], value)
-
-	return (baseList)
-}
-
-
-## ' getName
-## '
-## ' Extract the row name from the text
-## '
-## ' @param nameText	Text to parse
-## ' @param boldMark	Text used to indicate something is bold text.  Ignored if empty
-## ' @param indentStr	Text used to indent text.  Ignored if " "
-## ' @return String holding the ceaned up text.  Will clean either boldMark or indentStr
-## '
-## ' @author m082166
-getName <- function(nameText, boldMark, indentStr) {
-	bSize <- nchar(boldMark)
-	tSize <- nchar(nameText)
-
-	if(bSize > 0) {
-		if(tSize > (bSize * 2)) {
-
-			if((boldMark == substr(nameText, 1, bSize)) &&
-				(boldMark == substr(nameText, tSize - bSize + 1, tSize))) {
-				return(substr(nameText, bSize + 1, tSize - bSize))
-			}
-		}
-	}
-
-	if(indentStr != " ") {	# Trim takes care of a space indentStr
-		iSize <- nchar(indentStr)
-		while ((tSize > iSize) && (indentStr == substr(nameText, 1, iSize))) {
-			nameText <- substr(nameText, iSize + 1, tSize)
-			tSize <- tSize - iSize
-		}
-	}
-
-	nameText <- stringr::str_trim(nameText)
-	return(nameText)
-}
-
-
-## ' process
-## '
-## ' Process text, extracting the numbers and returning them as a list of Strings
-## '
-## ' @param theText Text to parse
-## ' @return List of strings holding numbers, possibly including a %
-## '
-## ' @author m082166
-process <- function(theText) {
-	locations <- stringr::str_locate_all(theText, "-*[0-9.%]+")[[1]]
-	numResults <- nrow(locations)
-	results <- c()
-
-	for (i in seq_len(numResults)) {
-		results <- c(results, substr(theText, locations[i, 1], locations[i, 2]))
-	}
-
-	if(length(results) == 0) {
-		results = ""
-	}
-
-	return(c(results))
-}
-
-
-## ' addMethods
-## '
-## ' Add the methods to the table output
-## '
-## ' @param results	Vector of strings to add to, will add immediately to end of results
-## ' @param methods	List of Methods, where the names are method names, and the values are the
-## ' order the methods appear in the output
-## ' @return Vector of strings holding Pandoc code to create the table and its methods, if any
-## '
-## ' @author m082166
-addMethods <- function(results, methods) {
-	theNames <- names(methods)
-	if(is.null(theNames)) {
-		return(results)
-	}
-
-	outOrder <- c()
-	for (aName in theNames) {
-		which <- methods[[aName]]
-		outOrder[as.integer(which)] <- aName
-	}
-
-	which <- 1
-	for (aMethod in outOrder) {
-		results <- c(results, paste0(which, ". ", aMethod))
-		which <- which + 1
-	}
-
-	results <- c(results, "")
-	return(results)
-}
-
-
-## ' formatElement
-## '
-## ' Return a List with two elements:
-## ' The vector holding the lines of a row in the table, defined by element, in Pandoc format
-## ' Updated list of methods used by this tableby object
-## '
-## ' @param element		List to get information from, whose first item must be the statistics
-## ' @param lineSize		Length each non-blank line should be padded to
-## ' @param firstColSize	Length the first (label) column should be padded to
-## ' @param colSize		Length all other columns should be padded to
-## ' @param includeTotal	TRUE if should include last pre-pValue column, FALSE if shouldn't
-## ' @param hasPValue		TRUE if has column for p-values, FALSE if shouldn't
-## ' @param translations	The List to use for conversion of labels
-## ' @param digits		Maximum number of digits to display for floating point numbers
-## ' @param pValueDigits	Number of digits to display for a p-value. Example: 5 ==> in 0.12345
-## ' @param nsmall		Minimum number of digits to the right of the decimal point to display
-## ' for floating point numbers.  If NULL, use 'digits' to determine everything
-## ' @param pctNSmall		Minimum number of digits to the right of the decimal point to display for
-## ' percent numbers.  If NULL, use 'nsmall', if that is NULL use 'digits' to determine everything
-## ' @param boldMark		String to use to mark text as bold
-## ' @param indentStr		String to use to indent something one space
-## ' @param collapse		If true, data might have been collapsed, and needs to be tested
-## ' @param methods		List of methods and when they were first seen, or NULL if not tracking that
-## ' @return List of two elements:
-## ' strings: Vector of strings holding Pandoc code to create a row in a table representing element
-## ' methods: Updated list of methods, or NULL if methods was NULL
-## '
-## ' @author m082166
-formatElement <- function(element, lineSize, firstColSize, colSize, includeTotal, hasPValue,
-							translations, digits, pValueDigits, nsmall, pctNSmall, boldMark,
-							indentStr, collapse, methods) {
-	statistics <- element$stats	# GTD 10/14/15 was statistics <- element[[1]]
-	collapse <- collapse && (numStats(statistics) == 1) && (element$type == "categorical")
-	rows <- makeTitleCell(element, firstColSize, translations, boldMark, indentStr, collapse)
-	outputTypes <- element$output
-	isDate <- !is.na(element$type) && !is.null(element$type) && (element$type == "Date")
-
-	if(collapse) {
-		rows <- addStatistic(rows, statistics[[1]], 0, 1, colSize, outputTypes, isDate, digits,
-							 nsmall, pctNSmall, includeTotal)
-	}
-	else {
-		startRow <- 0
-		whichStat <- 0
-
-		for (stat in statistics) {
-			startRow <- startRow + 1
-			whichStat <- whichStat + 1
-			rows <- addStatistic(rows, stat, startRow, whichStat, colSize, outputTypes, isDate,
-								 digits, nsmall, pctNSmall, includeTotal)
-		}
-	}
-
-	if(hasPValue) {
-		ref <- makeReference(methods, as.character(element$test$method))
-		endText <- ref$ref
-		methods <- ref$methods
-		rows[1] <- addNumberToEnd(rows[1], element$test$p.value, lineSize, digits = pValueDigits,
-								  endText = endText)
-	}
-
-	result <- list(strings = rows, methods = methods)
-	return(result)
-}
-
-
-## ' numStats
-## '
-## ' Count the number of Elements represented by statistics.  If only one element in statistics,
-## ' count number of elements in that element
-## '
-## ' @param statistics	List holding the data of interest
-## ' @return Count of elements in statistics.  If that is 1, count of names in that element
-## '
-## ' @author m082166
-numStats <- function(statistics) {
-	size <- length(statistics)
-	if(size != 1)
-		return(size)
-
-	numRows <- length(row.names(statistics[[1]][[1]]))
-
-	if(numRows > 0)
-		return(numRows)
-
-	return(size)
-}
-
-
-## ' makeReference
-## '
-## ' Return a list with two elements:
-## ' The text specifying the superscript referencing the method used this time
-## ' Updated list of methods used by this tableby object
-## '
-## ' @param methods	List of methods and when they were first seen, or NULL if not tracking that
-## ' @param method	Method used this time
-## ' @return List of two elements:
-## ' ref: Text specifying the superscript for the passed in method
-## ' methods: Updated list of methods, or NULL if methods was NULL
-## '
-## ' @author m082166
-makeReference <- function(methods, method) {
-	endText <- ""
-	if(!is.null(methods)) {
-		if(!is.na(method)) {
-			if(length(methods) == 0) {
-				ref <- NULL
-			}
-			else {
-				ref <- methods[[method]]
-			}
-			if(is.null(ref)) {
-				ref <- length(methods) + 1
-				methods[[method]] <- ref
-			}
-			endText <- paste0('^', ref, '^')
-		}
-	}
-
-	result <- list(ref = endText, methods = methods)
-	return(result)
-}
-
-
-## ' addStatistic
-## '
-## ' Takes the Vector of the currently filled in rows, as well as rows that have been started but
-## ' not yet completed, and fills in the stats info for one more row
-## '
-## ' @param rows			Vector of strings to edit, and possibly add to
-## ' @param stat			The Stats element to process, holding the info to add
-## ' @param startRow		Current row to operate on, 0 based
-## ' @param whichStat		Which of the items in outputTypes to use
-## ' @param colSize		Width to pad each cell to
-## ' @param outputTypes	Vector from which to pull output type
-## ' @param isDate		If true, show data as dates, if false treat normally
-## ' @param digits		Number of digits to round to when displaying percent or Other data
-## ' @param nsmall		Minimum number of digits to the right of the decimal point to display
-## ' for floating point numbers.  If NULL, use 'digits' to determine everything
-## ' @param pctNSmall		Minimum number of digits to the right of the decimal point to display for
-## ' percent numbers
-## ' @param includeTotal	TRUE if should include last pre-pValue column, FALSE if shouldn't
-## ' @return The updated rows
-## '
-## ' @author m082166
-addStatistic <- function(rows, stat, startRow, whichStat, colSize, outputTypes, isDate, digits,
-						  nsmall, pctNSmall, includeTotal)
-{
-	numStats <- length (stat)
-	if(!includeTotal && (numStats > 1))
-		numStats <- numStats - 1
-	for (theStat in seq_len (numStats)) {
-		info <- stat[[theStat]]
-		curRow <- startRow
-		len <- NROW(info)
-		if(is.data.frame(info) || is.matrix(info)) {	# Have a multi item, like Male / Female
-			for (i in 1:len) {
-				data <- info[i, ]
-				isNum <- is.null(ncol(data))
-				if(!isNum && (ncol(data) == 2)) {	# Have a two item result
-					cell <- format.two(info[i, 1], info[i, 2], colSize, outputTypes, whichStat,
-										isDate, digits, nsmall, pctNSmall)
-				}
-				else if(!isNum && (ncol(data) == 3)) {	# Have a three item result
-					cell <- format.three(info[i, 1], info[i, 2], info[i, 3], colSize,
-										 outputTypes, whichStat, isDate, digits, nsmall)
-				}
-				else {
-					cell <- format.other(data, colSize, outputTypes, whichStat, isDate, digits,
-										 nsmall, pctNSmall)
-				}
-
-				rows <- addToRow(rows, curRow, cell)
-				curRow <- curRow + 1
-			}
-		}
-		else {
-			if(len == 2) {
-				cell <- format.two(info[1], info[2], colSize, outputTypes, whichStat, isDate,
-									digits, nsmall, pctNSmall)
-			}
-			else if(len == 3) {
-				cell <- format.three(info[1], info[2], info[3], colSize, outputTypes,
-									 whichStat, isDate, digits, nsmall)
-			}
-			else {
-				cell <- format.other(info, colSize, outputTypes, whichStat, isDate, digits, nsmall,
-									 pctNSmall)
-			}
-			rows <- addToRow(rows, curRow, cell)
-			curRow <- curRow + 1
-		}
-	}
-
-	return(rows)
-}
-
-
-## ' getStartingLine
-## '
-## ' A row is defined as a series of non-empty strings, ended by an empty string or by the end of the
-## ' vector.  This method finds the 0 based curRow'th row, and returns its location within rows
-## '
-## ' @param rows		Vector of strings to look through
-## ' @param curRow	Current row to operate on, 0 based
-## ' @return The location in rows (1 based) holding the beginning of "row" curRow,
-## ' or the length of rows if rows doesn't hold that many "rows"
-## '
-## ' @author m082166
-getStartingLine <- function(rows, curRow) {
-	arrayLen <- length(rows)
-	start <- 1
-	while (curRow > 0) {
-		while ((start <= arrayLen) && (nchar(rows[start]) > 0)) {
-			start <- start + 1
-		}
-
-		start <- start + 1	# Skip over the blank string
-		curRow <- curRow - 1
-	}
-
-	return(start)
-}
-
-
-## ' format.two
-## '
-## ' Format two number output, according to the output type specified, padded to fill to colSize
-## '
-## ' @param first			First number to display
-## ' @param second		Second number to display
-## ' @param colSize		Width of the output string
-## ' @param outputTypes	Vector from which to pull output type
-## ' @param whichStat		Which of the items in outputTypes to use
-## ' @param isDate		If true, show data as dates, if false treat normally
-## ' @param digits		Number of digits to round to when displaying percent or Other data
-## ' @param nsmall		Minimum number of digits to the right of the decimal point to display
-## ' for floating point numbers.  If NULL, use 'digits' to determine everything
-## ' @param pctNSmall		Minimum number of digits to the right of the decimal point to display for
-## ' percent numbers
-## ' @return String of length colSize
-## '
-## ' @author m082166
-format.two <- function(first, second, colSize, outputTypes, whichStat, isDate, digits, nsmall,
-						pctNSmall) {
-	doList <- isListOut(outputTypes, whichStat)
-	doRange <- isRange(outputTypes, whichStat)
-	first <- myFormat(first, digits, nsmall, isDate)
-
-	if(doRange || doList) {
-		if(doRange) {
-			sep <- " - "
-		}
-		else {	# Do list
-			sep <- ", "
-		}
-		second <- myFormat(second, digits, nsmall, isDate)
-	}
-	else {
-		doTrim <- TRUE
-		doPct <- isPct(outputTypes, whichStat)
-		if(doPct && !is.null(pctNSmall)) {
-			nsmall = pctNSmall
-			doTrim <- FALSE
-		}
-		pct <- getPct(doPct)
-		second <- myFormat(second, digits, nsmall, isDate, doTrim = doTrim)
-		second <- paste0("(", second, pct, ")")
-		sep <- " "
-	}
-
-	return(pastePaddedStr(c(first, second), colSize, sep = sep, appendSep = TRUE))
-}
-
-
-## ' format.three
-## '
-## ' Format three number output, according to the output type specified, padded to fill to colSize
-## '
-## ' @param first			First number to display
-## ' @param second		Second number to display
-## ' @param third     Third number to display
-## ' @param colSize		Width of the output string
-## ' @param outputTypes	Vector from which to pull output type
-## ' @param whichStat		Which of the items in outputTypes to use
-## ' @param isDate		If true, show data as dates, if false treat normally
-## ' @param digits		Number of digits to round to when displaying percent or Other data
-## ' @param nsmall		Minimum number of digits to the right of the decimal point to display
-## ' for floating point numbers.  If NULL, use 'digits' to determine everything
-## ' @return String of length colSize
-## '
-## ' @author m082166
-format.three <- function(first, second, third, colSize, outputTypes, whichStat, isDate, digits, nsmall) {
-	doMedList <- isMedListOut(outputTypes, whichStat)
-	doMedRange <- isMedRange(outputTypes, whichStat)
-#	first <- format(first, digits = digits)
-
-#	if(is.null(nsmall)) {
-#		nsmall <- max(0, digits - integerDigits(second))
-#		second <- format(round(as.numeric(second), nsmall), nsmall = nsmall)
-#		nsmall <- max(0, digits - integerDigits(third))
-#		third <- format(round(as.numeric(third), nsmall), nsmall = nsmall)
-#	}
-#	else {
-#		second <- format(round(as.numeric(second), nsmall), nsmall = nsmall)
-#		third <- format(round(as.numeric(third), nsmall), nsmall = nsmall)
-#	}
-
-	first <- myFormat(first, digits, nsmall, isDate)
-	second <- myFormat(second, digits, nsmall, isDate)
-	third <- myFormat(third, digits, nsmall, isDate)
-	if(doMedRange || doMedList) {
-		second <- paste0(first, " (", second)
-		third <- paste0(third, ")")
-		if(doMedRange)
-			sep <- " - "
-		else	# Do list
-			sep <- ", "
-	}
-	else {
-		second <- paste0(first, ", ", second)	# Do nothing with third, it's fine
-		sep <- ", "
-	}
-
-	return(pastePaddedStr(c(second, third), colSize, sep = sep, appendSep = TRUE))
-}
-
-
-## ' format.other
-## '
-## ' Format data output, according to the output type specified, padded to fill to colSize
-## '
-## ' @param data			Data to display, be it number or date
-## ' @param colSize		Width of the output string
-## ' @param outputTypes	Vector from which to pull output type
-## ' @param whichStat		Which of the items in outputTypes to use
-## ' @param isDate		If true, show data as dates, if false treat normally
-## ' @param digits		Number of digits to round to when displaying percent or Other data
-## ' @param nsmall		Minimum number of digits to the right of the decimal point to display
-## ' for floating point numbers.  If NULL, use 'digits' to determine everything
-## ' @param pctNSmall		Minimum number of digits to the right of the decimal point to display for
-## ' percent numbers
-## ' @return String of length colSize
-## '
-## ' @author m082166
-format.other <- function(data, colSize, outputTypes, whichStat, isDate, digits, nsmall, pctNSmall) {
-	doDate <- isDateOut(outputTypes, whichStat)
-	doFloat <- isFloatOut(outputTypes, whichStat)
-
-	if(doDate) {
-          sep <- " "
-	}
-	else if(doFloat) {
-          if(is.null(nsmall)) {
-            ## Don't allow nsmall < 0   -JPS 9/11/15
-            nsmall <- max(0, digits - integerDigits(data))
-          }
-          ## data <- format(round(as.numeric(data), nsmall), nsmall = nsmall)
-          data <- myFormat(data, digits, nsmall, isDate)
-          sep <- " "
-	}
-	else {
-          if(isPct(outputTypes, whichStat) && !is.null(pctNSmall)) {
-            nsmall = pctNSmall
-          }
-          ##	if(is.null(nsmall)) {
-          ##		data <- format(data, digits = digits)
-          ##	}
-          ##	else {
-          ##		data <- format(data, digits = digits, nsmall = nsmall)
-          ##	}
-          data <- myFormat(data, digits, nsmall, isDate)
-          sep <- ", "
-	}
-
-	return(pastePaddedStr(c(data), colSize, sep = sep, appendSep = TRUE))
-}
-
-
-## ' getPct
-## '
-## ' Return the proper "pct" string for the specified stat. "\%" if it's percent data, "" if not
-## '
-## ' @param doPct Logical. If \code{TRUE}, returns "\%" else "".
-## ' @return The appropriate string: "\%" or ""
-## '
-## ' @author m082166
-getPct <- function(doPct) {
-	if(doPct)
-		return("%")
-
-	return(pct <- "")
-}
-
-
-## ' typeTest
-## '
-## ' Returns TRUE if this stat's output type matches value
-## '
-## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-## ' @param whichStat		Which of the items in outputTypes to look at
-## ' @param value (see below)
-## ' @return TRUE if outputTypes[whichStat] == value output, else FALSE
-## '
-## ' @author m082166
-typeTest <- function(outputTypes, whichStat, value) {
-	if(is.null(outputTypes) || (length(outputTypes) < whichStat))
-		return(FALSE)
-
-	return(!is.na(outputTypes[whichStat]) && (outputTypes[whichStat] == value))
-}
-
-
-## ' isPct
-## '
-## ' Returns TRUE if this stat's two valued data should be displayed as a count / percent A (B%)
-## '
-## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-## ' @param whichStat		Which of the items in outputTypes to look at
-## ' @return TRUE if percent output, else FALSE
-## '
-## ' @author m082166
-isPct <- function(outputTypes, whichStat) {
-	return(typeTest(outputTypes, whichStat, 'percent'))
-}
-
-
-## ' isRange
-## '
-## ' Returns TRUE if this stat's two valued data should be displayed as a range (A - B)
-## '
-## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-## ' @param whichStat		Which of the items in outputTypes to look at
-## ' @return TRUE if range output, else FALSE
-## '
-## ' @author m082166
-isRange <- function(outputTypes, whichStat) {
-	return(typeTest(outputTypes, whichStat, 'range'))
-}
-
-
-## ' isMedRange
-## '
-## ' Returns TRUE if this stat's two valued data should be displayed as a median range A (B - C)
-## '
-## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-## ' @param whichStat		Which of the items in outputTypes to look at
-## ' @return TRUE if median range output, else FALSE
-## '
-## ' @author m082166
-isMedRange <- function(outputTypes, whichStat) {
-	return(typeTest(outputTypes, whichStat, 'medrange'))
-}
-
-
-## ' isListOut
-## '
-## ' Returns TRUE if this stat's data should be displayed as a list A[, B]*
-## '
-## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-## ' @param whichStat		Which of the items in outputTypes to look at
-## ' @return TRUE if list output, else FALSE
-## '
-## ' @author m082166
-isListOut <- function(outputTypes, whichStat) {
-	return(typeTest(outputTypes, whichStat, 'list'))
-}
-
-
-## ' isMedListOut
-## '
-## ' Returns TRUE if this stat's data should be displayed as a median list A (B, C)
-## '
-## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-## ' @param whichStat		Which of the items in outputTypes to look at
-## ' @return TRUE if median list output, else FALSE
-## '
-## ' @author m082166
-isMedListOut <- function(outputTypes, whichStat) {
-	return(typeTest(outputTypes, whichStat, 'medlist'))
-}
-
-
-## ' isFloatOut
-## '
-## ' Returns TRUE if this stat's data should be displayed as floating point number(s)
-## '
-## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-## ' @param whichStat		Which of the items in outputTypes to look at
-## ' @return TRUE if floating point output, else FALSE
-## '
-## ' @author m082166
-isFloatOut <- function(outputTypes, whichStat) {
-	return(typeTest(outputTypes, whichStat, 'float'))
-}
-
-
-## ' isDateOut
-## '
-## ' Returns TRUE if this stat's data should be displayed as a date
-## '
-## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return FALSE
-## ' @param whichStat		Which of the items in outputTypes to look at
-## ' @return TRUE if date output, else FALSE
-## '
-## ' @author m082166
-isDateOut <- function(outputTypes, whichStat) {
-	return(typeTest(outputTypes, whichStat, 'date'))
-}
-
-
-## ' isOther
-## '
-## ' Returns TRUE if this stat's two valued data should be displayed as an "other" type A (B)
-## '
-## ' @param outputTypes	Vector from which to pull this information. If NULL / NA, will return TRUE
-## ' @param whichStat		Which of the items in outputTypes to look at
-## ' @return TRUE if other, else FALSE
-## '
-## ' @author m082166
-isOther <- function(outputTypes, whichStat) {
-	if(is.null(outputTypes) || (length(outputTypes) < whichStat))
-		return(TRUE)
-
-	return(is.na(outputTypes[whichStat]))
-}
-
-
-## ' Make a string of the form "name (N=count)"
-## '
-## ' @param name	The label that's getting a count (i.e. "High")
-## ' @param count	The count that goes with this label
-## ' @return String of the form "name (N=count)"
-## '
-## ' @author m082166
-makeCountHeader <- function(name, count) {
-  return(paste0(name, " (N=", count, ")"))
-}

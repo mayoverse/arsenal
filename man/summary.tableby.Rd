@@ -4,70 +4,32 @@
 \alias{summary.tableby}
 \title{The summary method for a \code{tableby} object}
 \usage{
-\method{summary}{tableby}(object, title = NULL, labelTranslations = NULL,
-  digits = NA, nsmall = NA, nsmall.pct = NA, digits.test = NA,
-  text = FALSE, removeBlanks = text, labelSize = 1.2, test = NA,
-  test.pname = NA, pfootnote = NA, total = NA, ...)
+\method{summary}{tableby}(object, ..., labelTranslations = NULL,
+  text = FALSE, title = NULL, pfootnote = FALSE)
 }
 \arguments{
 \item{object}{An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.}
 
-\item{title}{Title that will appear on the top of the header in the pretty-table rendering
-of the tableby object}
+\item{...}{Other arguments passed to \code{\link{as.data.frame.tableby}}.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
-     output to be replaced in the pretty rendering of tableby by the character string
-     value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.
-This applies to both the statistic labels and the variables from the formula.}
-
-\item{digits}{Digits to round for significant digits of numeric, non-integer values.
-If \code{digits.test} is not set, \code{digits} is used for that setting.}
-
-\item{nsmall}{Minimum number of digits to the right of the decimal point to display
-for floating point numbers.  If \code{NA} (default), it uses the value from
-\code{object$control$nsmall}. Allowed non-\code{NA} values are \code{0 <= nsmall <= 20}.}
-
-\item{nsmall.pct}{Minimum number of digits to the right of the decimal point to display
-for percent numbers.  If \code{NA} (default), it uses the value from \code{object$control$nsmall.pct}.}
-
-\item{digits.test}{Significant digits by which to round for numeric test statistic p-values,
-if the test was performed.}
+output to be replaced in the pretty rendering of tableby by the character string
+value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.}
 
 \item{text}{Logical, tell R to print the raw text version of the summary to the screen.
 Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development.}
 
-\item{removeBlanks}{Logical, remove extra blanks in the pretty rendering of the table}
+\item{title}{Title that will appear on the top of the header in the pretty-table rendering
+of the tableby object}
 
-\item{labelSize}{Relative size difference between label column and other columns.
-Default is 1.2: label column ~20\% bigger than other columns.}
-
-\item{test}{Logical, denoting whether the "p value" value should be printed.
-If \code{NA} (default), it uses the value from \code{object$control$test}.}
-
-\item{test.pname}{Title for p-value (only matters if test is \code{TRUE}; default is "p value").}
-
-\item{pfootnote}{Logical, denoting whether to add a footnote describing the test used to
-generate the p value. Default is \code{FALSE}.}
-
-\item{total}{Logical, denoting whether to include the "total" value.
-If \code{NA} (default), it uses the value from \code{object$control$total}.}
-
-\item{...}{Other arguments (not in use at this time).}
+\item{pfootnote}{Logical, denoting whether to put footnotes describing the tests used to generate the p-values.}
 }
 \value{
-Results are cat'ed to stdout, and returned invisibly as a data.frame of the \code{tableby}
+An object of class \code{summary.tableby}
 }
 \description{
 The summary method for a \code{\link{tableby}} object, which is a pretty rendering of a \code{\link{tableby}}
-object into a publication-quality results table in R-studio, and can render well in text-only.
-}
-\details{
-For text-only, simply paste the summary stats together per variable, along with p-value and totals,
-with group variable in the header.  For other formats, the paste is done into a pandoc-style markup
-such that it can be translated into 3 formats: latex, html, rtf.  The decision of which of those it
-is translated to is left for run-time for whatever format into which the report is being generated.
-
-For all interative development within R sessions, \code{text=TRUE} is recommended.
+object into a publication-quality results table in R Markdown, and can render well in text-only.
 }
 \examples{
 
@@ -84,12 +46,13 @@ out <- tableby(Response ~ Sex + Age + HtIn, data=mdat)
 summary(out, text=TRUE)
 labels(out)
 labels(out) <- c(Age="Age (years)", HtIn="Height (inches)")
-summary(out, labelTranslations=c(meansd="Mean-SD"), text=TRUE)
+summary(out, stats.labels=c(meansd="Mean-SD", q1q3 = "Q1-Q3"), text=TRUE)
 
 }
 \seealso{
 \code{\link{tableby.control}}, \code{\link{tableby}}
 }
 \author{
-Gregory Dougherty, Jason Sinnwell, Beth Atkinson, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
+Ethan Heinzen, based on code by Gregory Dougherty, Jason Sinnwell, Beth Atkinson,
+  adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 }

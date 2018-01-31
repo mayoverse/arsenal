@@ -2,30 +2,6 @@
 ## Testing and Summary stats methods for internal use in tableby
 ###########################################
 
-## summary stats
-## considerations: handling NAs, or other miss.val
-#medianDate <- function(x, na.rm=TRUE) {
-#  if(na.rm & sum(is.na(x))>0) {
-#    x <- x[!is.na(x)]
-#  }
-#  medint <- median(as.integer(x))
-#  browser()
-#  return(median(xint))
-#  return(as.Date(medint, origin="1970/01/01"))
-#}
-#range.Date <- function(x, na.rm=TRUE) {
-#  if(na.rm & sum(is.na(x))>0) {
-#    x <- x[!is.na(x)]
-#  }
-#  xint <- as.integer(x)
-#  return(range(xint))
-#}
-
-## paste mean and sd  mean(sd)
-#meansd <- function(x, na.rm=TRUE, weights=NULL, ...) {
-#  c(mean(x, na.rm=na.rm), stats::sd(x, na.rm=na.rm))
-#}
-
 #' tableby Summary Statistics Functions
 #'
 #' A collection of functions that will report summary statistics. To create a custom function,
@@ -36,6 +12,7 @@
 #' @param na.rm Should NAs be removed?
 #' @param weights A vector of weights.
 #' @param levels A vector of levels that character \code{x}s should have.
+#' @param times A vector of times to use for survival summaries.
 #' @param ... Other arguments.
 #' @return Usually a vector of the appropriate numbers.
 #' @details Not all these functions are exported, in order to avoid conflicting NAMESPACES.
@@ -46,24 +23,22 @@ NULL
 #' @rdname tableby.stats
 #' @export
 meansd <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  c(wtd.mean(x, weights=weights, na.rm=na.rm, ...), sqrt(wtd.var(x, weights=weights,na.rm=na.rm, ...)))
+  y <- c(wtd.mean(x, weights=weights, na.rm=na.rm, ...), sqrt(wtd.var(x, weights=weights, na.rm=na.rm, ...)))
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"))
 }
 
 #' @rdname tableby.stats
 #' @export
 medianrange <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  if(na.rm & length(x)==sum(is.na(x))) {
-    return(c(NA,NA,NA))
-  }
-  wtd.quantile(x, probs=c(.5,0,1), na.rm, weights=weights, ...)
+  y <- if(na.rm && allNA(x)) rep(NA_real_, times = 3) else wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights, ...)
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
 
 #' @rdname tableby.stats
 median <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  if(na.rm & length(x)==sum(is.na(x))) {
-    return(NA)
-  }
-  if(is.Date(x)) {
+  if(na.rm && allNA(x)) {
+    NA_real_
+  } else if(is.Date(x)) {
     as.Date(wtd.quantile(as.integer(x), weights=weights, probs=0.5, na.rm=na.rm, ...), origin="1970/01/01")
   } else {
     wtd.quantile(x, weights=weights, probs=0.5, na.rm=na.rm, ...)
@@ -72,147 +47,83 @@ median <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 
 #' @rdname tableby.stats
 range <- function(x, na.rm=TRUE, ...) {
-  if(na.rm & length(x)==sum(is.na(x))) {
-    return(c(NA,NA))
-  }
-  if(is.Date(x)) {
+  y <- if(na.rm && allNA(x)) {
+    c(NA_real_, NA_real_)
+  } else if(is.Date(x)) {
     as.Date(base::range(as.integer(x), na.rm=na.rm), origin="1970/01/01")
   } else {
     base::range(x, na.rm=na.rm)
   }
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = " - ")
 }
 
 
 ## survival stats
-## implemented with using pre-calculated
-##    kmsumm <- summary(survfit(Surv() ~ group))
-
-## ' Nevents
-## '
-## ' Number of events in a survival object, within a group
-## ' @param x a thing
-## ' @param ... other arguments
-## ' @return  the events stat from km$table
 #' @rdname tableby.stats
 #' @export
-Nevents <- function(x, ...) {
-  mat <- summary(x, ...)$table
-  if(!any(c(grepl("^events", colnames(mat)),grepl("^events",names(mat))))) {
-    stop("Survival endpoint may not be coded 0/1.\n")
-  }
-  if (!is.null(nrow(mat))) {
-    row.names(mat) <- substr(row.names(mat), regexpr("=", row.names(mat)) +
-                              1, nchar(row.names(mat)))
-    return(mat[, "events"])
-  }
-  return(as.numeric(mat["events"]))
+Nevents <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
+  mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
+  if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
+  as.numeric(mat["events"])
 }
 
 ## Median survival
-## ' medSurv
-## '
-## ' Calculate median survival
-## '
-## ' @param x kaplan-meier summary object, used within tableby
-## ' @param ... other arguments
-## ' @return vector of median subjects who have survived by time point
 #' @rdname tableby.stats
 #' @export
-medSurv <- function(x, ...) {
-  mat <- summary(x, ...)$table
-  if(!any(c(grepl("^events", colnames(mat)),grepl("^events",names(mat))))) {
-    stop("Survival endpoint may not be coded 0/1.\n")
-  }
-  if(!is.null(nrow(mat))) {
-    row.names(mat) <- substr(row.names(mat), regexpr("=",row.names(mat))+1, nchar(row.names(mat)))
-    return(mat[,'median'])
-  }
-  return(as.numeric(mat['median']))
-}
-##
-NeventsSurv <- function(x, times=1:5) {
-  ## x is result of survfit()
-  xsumm <- summary(x, times=times)
-  if(is.null(x$strata)) {
-    byList <- data.frame(n.event=cumsum(xsumm$n.event), surv=100*xsumm$surv, row.names=xsumm$time)
-  } else {
-
-    mat <- with(xsumm, data.frame(time,n.risk, n.event, n.censor, surv, strata))
-    byList <- list()
-    for(strat in unique(mat$strata)) {
-      stratTrim <- substr(strat, regexpr("=", strat)+1, nchar(strat))
-      ## could add any other column of mat to data.frame
-      byList[[stratTrim]] <- with(mat[mat$strata==strat,],
-                                  data.frame(n.event=cumsum(n.event),surv=100*surv, row.names=time))
-      if(nrow(byList[[stratTrim]]) < length(times)) {
-        byList[[stratTrim]] <- rbind.data.frame(byList[[stratTrim]],
-                                                byList[[stratTrim]][nrow(byList[[stratTrim]]),])
-        row.names(byList[[stratTrim]])[nrow(byList[[stratTrim]])] <- times[length(times)]
-      }
-    }
-  }
-  return(byList)
-}
-NriskSurv <- function(x, times=1:5) {
-  ## x is result of survfit()
-  xsumm <- summary(x, times=times)
-  if(is.null(x$strata)) {
-    byList <- data.frame(n.risk=xsumm$n.risk, row.names=xsumm$time)
-  } else {
-    xsumm <- summary(x, times=times)
-    mat <- with(xsumm, data.frame(time,n.risk, n.event, n.censor, surv, strata))
-    byList <- list()
-    for(strat in unique(mat$strata)) {
-      ## could add any other column of mat to data.frame
-      stratTrim <- substr(strat, regexpr("=", strat)+1, nchar(strat))
-      byList[[stratTrim]] <- with(mat[mat$strata==strat,], data.frame(n.risk, row.names=time))
-      if(nrow(byList[[stratTrim]]) < length(times)) {
-        byList[[stratTrim]] <- rbind.data.frame(byList[[stratTrim]],
-                                                byList[[stratTrim]][nrow(byList[[stratTrim]]),])
-        row.names(byList[[stratTrim]])[nrow(byList[[stratTrim]])] <- times[length(times)]
-
-      }
-    }
-  }
-  return(byList)
+medSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
+  mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
+  if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
+  as.numeric(mat["median"])
 }
 
+#' @rdname tableby.stats
+#' @export
+NeventsSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
+  xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
+  out <- t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
+  out <- setNames(as.list(as.data.frame(out)), paste0("time = ", times))
+  as.tbstat_multirow(lapply(out, as.countpct, parens = c("(", ")")))
+}
 
+#' @rdname tableby.stats
+#' @export
+NriskSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
+  xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
+  out <- setNames(as.list(xsumm$n.risk), paste0("time = ", times))
+  as.tbstat_multirow(lapply(out, as.countpct))
+}
 
-## Can write similar functions for NcensorTime, NriskTime, etc.
+#' @rdname tableby.stats
+#' @export
+medTime <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
+{
+  wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm, ...)
+}
 
-## ' survNinterval
-## '
-## ' survival summary stat per N units of time. Default is years.
-## '
-## ' @param x              a Surv() variable within tableby formula
-## ' @param x.by           the by-variable in tableby
-## ' @param time.interval  the interval of units of time over which to summarize in categories
-## ' @return     vector of number of events per time interval
-survNinterval <- function(x, x.by, time.interval=1) {
-  #kmsumm <- survfit(x~x.by,type="kaplan-meier")
-  nsurv <- as.matrix(x)[,1]
-  breaks <- seq(0,max(nsurv)+time.interval, by=time.interval)
-  tapply(cut(nsurv, breaks, levels=breaks[1:(length(breaks)-1)]), x.by, table, exclude=NA)
+#' @rdname tableby.stats
+#' @export
+rangeTime <- function(x, na.rm = TRUE, ...)
+{
+  as.tbstat(base::range(as.matrix(x)[,1], na.rm=na.rm), sep = " - ")
 }
 
 ## quantiles
 #' @rdname tableby.stats
 #' @export
 q1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  if(na.rm & length(x)==sum(is.na(x))) {
-    return(c(NA,NA))
-  }
-  wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm, ...)
+  y <- if(na.rm && allNA(x)) {
+    c(NA_real_, NA_real_)
+  } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm, ...)
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = ", ")
 }
 
 #' @rdname tableby.stats
 #' @export
 medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  if(na.rm & length(x)==sum(is.na(x))) {
-    return(c(NA,NA,NA))
-  }
-  wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm, ...)
+  y <- if(na.rm && allNA(x)) {
+    c(NA_real_, NA_real_, NA_real_)
+  } else wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm, ...)
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
 
 ## Inner-quartile range has a function IQR in R, but a wrapper
@@ -240,52 +151,14 @@ N <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 
 ## count within group variable
 #' @rdname tableby.stats
-#' @export
 count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, length(x)), ...)  {
-    wtbl <- wtd.table(factor(x[!is.na(x)], levels = levels),
-        weights = weights[!is.na(x)], ...)
-    df <- data.frame(count = as.vector(wtbl$sum.of.weights),
-        row.names = if(length(wtbl$x)==length(levels)) levels else if (is.null(names(wtbl$sum.of.weights))) wtbl$x else names(wtbl$sum.of.weights))
-    if (nrow(df) < length(levels)) {
-        misslevs <- levels[!(levels %in% row.names(df))]
-        df <- rbind.data.frame(df, data.frame(count = rep(0,
-            length(misslevs)),  row.names = misslevs))
-    }
-    return(df[as.character(levels), ,drop=FALSE])
+  as.tbstat_multirow(lapply(as.list(wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)], ...)), as.countpct))
 }
-
 
 ## count (pct) where pct is within group variable total
 #' @rdname tableby.stats
 #' @export
 countpct <- function(x, levels=sort(unique(x)), na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  ##  tbl <- table(x[!is.na(x)])
-  ## data.frame(count=as.vector(tbl), pct=100*as.vector(tbl)/sum(tbl), row.names=levels)
   wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)], ...)
-
-  df <- data.frame(count=as.vector(wtbl$sum.of.weights),
-             pct=100*as.vector(wtbl$sum.of.weights)/sum(wtbl$sum.of.weights),
-             row.names=if(length(wtbl$x)==length(levels)) levels else wtbl$x)
-
-  ## make sure all levels are in df. If not, add them and re-order.
-  if(nrow(df) < length(levels) ) {
-    misslevs <- levels[!(levels %in% row.names(df))]
-    df <- rbind.data.frame(df, data.frame(count=rep(0, length(misslevs)), pct=rep(0, length(misslevs)), row.names=misslevs))
-  }
-  return(df[as.character(levels),])
-}
-## format the countpct result for better printing (should work for meansd as well)
-## Greg to edit this one
-format.countpct <- function(x,digits=5, pct='') {
-  if(!is.null(ncol(x))) {
-    ## multiple rows
-    xformat <- cbind.data.frame(format(x[,1], digits=digits), format(x[,2], digits=digits))
-    row.names(xformat) <- row.names(x)
-    digits <- digits - 2
-    return (apply (xformat, 1, function(xrow) paste (xrow[1], " (", format (round (as.numeric (xrow[2]), digits), nsmall = digits),
-                                                     pct, ")", sep = "")))
-  } else {
-    ## just one row
-    return(paste(signif(x[1],digits=digits), "(",signif(x[2],digits=digits), ")",sep=""))
-  }
+  as.tbstat_multirow(lapply(Map(c, wtbl, 100*wtbl/sum(wtbl)), as.countpct, parens = c("(", ")"), pct = "%"))
 }

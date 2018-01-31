@@ -1,6 +1,6 @@
 ---
 title: "The tableby function"
-author: "Beth Atkinson, Jason Sinnwell, Shannon McDonnell and Greg Dougherty"
+author: "Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty"
 date: '`r format(Sys.time(),"%d %B, %Y")`'
 output: 
   rmarkdown::html_vignette:
@@ -23,15 +23,15 @@ often stratified by some group (e.g. treatment arm).  Locally at Mayo, the SAS m
 written to create summary tables with a single call. With the increasing interest in R, we have developed
 the function `tableby` to create similar tables within the R environment.  
 
-In developing the `tableby` function, the goal was to bring the best features of these macros into an R function.
+In developing the `tableby()` function, the goal was to bring the best features of these macros into an R function.
 However, the task was not simply to duplicate all the functionality, but rather to make use of R's strengths
 (modeling, method dispersion, flexibility in function definition and output format) and make a tool that fits
 the needs of R users.  Additionally, the results needed to fit within the general reproducible research framework
 so the tables could be displayed within an R markdown report.
 
-This report provides step-by-step directions for using the functions associated with `tableby`.
+This report provides step-by-step directions for using the functions associated with `tableby()`.
 All functions presented here are available within the `arsenal` package.  An assumption is made that users
-are somewhat familiar with R markdown documents.  For those who are new to the topic, a good initial resource
+are somewhat familiar with R Markdown documents.  For those who are new to the topic, a good initial resource
 is available at [rmarkdown.rstudio.com](http://rmarkdown.rstudio.com). 
 
 # Simple Example
@@ -57,8 +57,8 @@ The example below uses age (a continuous variable) and sex (a factor).
 tab1 <- tableby(arm ~ sex + age, data=mockstudy)
 ```
 
-If you want to take a quick look at the table, you can use `summary` on your tableby object and the table
-will print out as text in your R console window.  If you use `summary` without any options you will see a
+If you want to take a quick look at the table, you can use `summary()` on your tableby object and the table
+will print out as text in your R console window.  If you use `summary()` without any options you will see a
 number of $\&nbsp;$ statements which translates to "space" in HTML.
 
 ## Pretty text version of table
@@ -94,12 +94,7 @@ tmp <- table(Gender=mockstudy$sex, "Study Arm"=mockstudy$arm)
 tmp
 
 # Note: The continuity correction is applied by default in R (not used in %table)
-chisq.test(tmp) 
-
-## gmodels frequency example
-#require(gmodels)
-#CrossTable(mockstudy$sex, mockstudy$arm, prop.r=F, prop.t=F, 
-#           prop.chisq=F, chisq=T, dnn=c('Gender','Study Arm'))
+chisq.test(tmp)
 
 ## base R numeric summary example
 tapply(mockstudy$age, mockstudy$arm, summary)
@@ -112,7 +107,8 @@ summary(aov(age ~ arm, data=mockstudy))
 ## Add labels
 
 In the above example, age is shown with a label (Age in Years), but sex is listed "as is" with lower case letters.
-This is because the data was created in SAS and in the SAS dataset, age had a label but sex did not.  The label is stored as an attribute within R.
+This is because the data was created in SAS and in the SAS dataset, age had a label but sex did not.
+The label is stored as an attribute within R.
 
 ```{r, check-labels}
 ## Look at one variable's label
@@ -120,6 +116,7 @@ attr(mockstudy$age,'label')
 
 ## See all the variables with a label
 unlist(lapply(mockstudy,'attr','label'))
+# Can also use labels(mockstudy)
 ```
 
 If you want to add labels to other variables, there are a couple of options.  First, you could add labels to the variables in your dataset.
@@ -143,7 +140,7 @@ summary(tab1)
 Another option is to add labels after you have created the table
 
 ```{r, results='asis'}
-mylabels <- list( sex = "SEX", age ="Age, yrs")
+mylabels <- list(sex = "SEX", age = "Age, yrs")
 summary(tab1, labelTranslations = mylabels)
 ```
 
@@ -294,7 +291,7 @@ summary(tableby(sex ~ kwt(age.ord), data = mockstudy)) #) #, pfootnote = TRUE)
 
 ## 4. Summarize a survival variable
 
-First look at the information that is presented by the `survfit` function, then see how the same results can be seen with tableby.
+First look at the information that is presented by the `survfit()` function, then see how the same results can be seen with tableby.
 The default is to show the median survival (time at which the probability of survival = 50%). 
 
 ```{r}
@@ -306,7 +303,7 @@ survdiff(Surv(fu.time, fu.stat)~sex, data=mockstudy)
 summary(tableby(sex ~ Surv(fu.time, fu.stat), data=mockstudy))
 ```
 
-It is also possible to obtain summaries of the %survival at certain time points (say the probability of surviving 1-year).
+It is also possible to obtain summaries of the % survival at certain time points (say the probability of surviving 1-year).
 
 ```{r}
 summary(survfit(Surv(fu.time/365.25, fu.stat)~sex, data=mockstudy), times=1:5)
@@ -454,8 +451,8 @@ summary(tableby(arm ~ chisq(mdquality.s, "Nmiss","countpct"), data=mockstudy))
 mytab <- tableby(arm ~ sex + alk.phos + age, data=mockstudy)
 mytab2 <- mytab[c('age','sex','alk.phos')]
 summary(mytab2)
-summary(mytab[c('age','sex')], nsmall = 2)
-summary(mytab[c(3,1)], nsmall = 3)
+summary(mytab[c('age','sex')], digits = 2)
+summary(mytab[c(3,1)], digits = 3)
 
 ```
 
@@ -527,31 +524,16 @@ summary(tableby(sex ~ ast + age, data=mockstudy,
 
 Within tableby.control function there are 4 options for controlling the number of significant digits shown.  
 
-* digits: controls the number of significant digits (counting both before and after the decimal point) for continuous variables
+* digits: controls the number of digits after the decimal place for continuous values
 
-* nsmall: controls the number of digits after the decimal point for continous variables
+* digits.count: controls the number of digits after the decimal point for counts
 
-* nsmall.pct: controls the number of digits after the decimal point for percentages
+* digits.pct: controls the number of digits after the decimal point for percents
 
-* digits.test: controls the number of digits after the decimal point for p-values (default=3)
+* digits.p: controls the number of digits after the decimal point for p-values
 
 ```{r, results='asis'}
-summary(tableby(arm ~ sex + age + fu.time, data=mockstudy), digits=4, digits.test=2, nsmall.pct=1)
-```
-
-It is important to understand how R treats the `digits` argument.  Here are some summaries for the variable `pi`.
-Note that with 4 digits, the number after the decimal point changes after multiplying pi by 10 or 100.
-However, the `nsmall` option specifies the number of values after the decimal point.
-The two can be used together (see the help file for `format` for more details on how that works).
-
-```{r}
-format(pi, digits=1)
-format(pi, digits=3)
-format(pi, digits=4)
-format(pi*10, digits=4)
-format(pi*100, digits=4)
-format(pi*100, nsmall=4)
-format(pi*100, nsmall=2, digits=4)
+summary(tableby(arm ~ sex + age + fu.time, data=mockstudy), digits=4, digits.p=2, digits.pct=1)
 ```
 
 ## 15. Create a user-defined summary statistic
@@ -681,10 +663,7 @@ When looking at multiple variables it is sometimes useful to export the results 
 
 ```{r}
 tab1 <- tableby(arm~sex+age, data=mockstudy)
-summary(tab1, text=T)
-
-tmp <- as.data.frame(tab1)
-tmp
+as.data.frame(tab1)
 
 # write.csv(tmp, '/my/path/here/mymodel.csv')
 ```
@@ -707,12 +686,11 @@ write2word(tab1, "~/trash.doc", title="My table in Word")
 
 The **default** summary statistics, by varible type, are:
 
-* `cont`: Continuous variables will show by default `Nmiss, meansd, q1q3, range`
-* `cat`: Categorical and factor variables will show by default `Nmiss, countpct`
-* `ordered`: Ordered factors will show by default `Nmiss, countpct`
-* `surv`: Survival variables will show by default `Nmiss, Nevents, medsurv`
-* `date`: Date variables will show by default `Nmiss, median, range`
-* `group`: The grouping variable will show by default `countpct`
+* `numeric.stats`: Continuous variables will show by default `Nmiss, meansd, q1q3, range`
+* `cat.stats`: Categorical and factor variables will show by default `Nmiss, countpct`
+* `ordered.stats`: Ordered factors will show by default `Nmiss, countpct`
+* `surv.stats`: Survival variables will show by default `Nmiss, Nevents, medsurv`
+* `date.stats`: Date variables will show by default `Nmiss, median, range`
 
 Any summary statistics standardly defined in R (e.g. mean, median, sd, med, range) can be specified,
 however there are a number of extra functions defined specifically for the tableby function.
@@ -727,6 +705,10 @@ however there are a number of extra functions defined specifically for the table
 * `medianrange`: print the median, minimum and maximum values `median (minimum, maximum)`
 * `Nevents`: print number of events for a survival object within each grouping level
 * `medsurv`: print the median survival
+* `NeventsSurv`: print number of events and survival at given times
+* `NriskSurv`: print the number still at risk at given times
+* `medTime`: print the median follow-up time
+* `rangeTime`: print the range of follow-up times
 
 ## Testing options
 
@@ -761,22 +743,6 @@ A quick way to see what arguments are possible to utilize in a function is to us
 args(tableby.control)
 ```
 
-Settings:
-
-* test=TRUE (show p-values in table)
-* total=TRUE (show summaries for entire dataset in addition to doing it by the group)
-* test.pname=NULL (column name used when supplying own "p-value" or other summary value to the report)
-* cat.simplify (for dichotomous variables, only show statistics for 2nd level)
-* digits=3 (number of significant digits for continuous variables)
-* digits.test=3 (number of significant digits for p-values)
-* nsmall=NULL (number of digits after the decimal point for continous variables)
-* nsmall.pct=2 (number of digits after the decimal for percentages)
-* test.pname=NULL (use column name other than "P-Value" )
-* numeric.test, numeric.stats
-* cat.test, cat.stats
-* ordered.test, ordered.stats
-* surv.test, surv.stats
-
 ## `summary.tableby` settings
 
 The `summary.tableby` function has options that modify how the table appears (such as adding a title or modifying labels).  
@@ -784,18 +750,3 @@ The `summary.tableby` function has options that modify how the table appears (su
 ```{r}
 args(arsenal:::summary.tableby)
 ```
-
-Settings:
-
-* digits
-* digits.test
-* nsmall
-* nsmall.pct
-* test.pname
-* title=NULL
-* labelTranslations (allows user to modify variable labels)
-* text=FALSE
-* removeBlanks=FALSE (used on conjunction with text=TRUE to clean up output)
-* labelSize=1.2
-* pfootnote
-

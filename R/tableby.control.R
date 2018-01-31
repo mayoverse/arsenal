@@ -1,17 +1,3 @@
-## Purpose: control parameters for tableby function
-## Authors: Jason Sinnwell, Beth Atkinson
-## Created: 4/16/2015
-
-#The default summary statistics are:
-#* `continuous`: Continuous variables will show by default `Nmiss, meansd, q1q3, range`
-#* `cat`: Categorical and factor variables will show by default `Nmiss, countpct`
-#* `ordered`: Ordered factors will show by default `Nmiss, countpct`
-#* `surv`: Survival variables will show by default `Nmiss, Nevents, medsurv`
-   ## JPS: consider survKyr
-#* `group`: The grouping variable will show by default `countpct`
-
-## Many of the test statistics are standardly defined in R (e.g. mean),
-## These are extra functions defined specifically for this function.
 
 #' Control settings for \code{tableby} function
 #'
@@ -40,28 +26,30 @@
 #'   Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.
 #' @param surv.test name of test to perform for survival variables: logrank
 #' @param surv.stats summary statistics to include for time-to-event (survival) RHS variables of \code{tableby} within the levels of the group LHS variable.
-#'   Options are Nevents, medsurv.
-#' @param date.test name of test to perform for date variables.
-#' @param date.stats stats functions to perform for Date variables
+#'   Options are Nevents, medsurv, NeventsSurv, NriskSurv, medTime, rangeTime.
+#' @param date.test name of test to perform for date variables: kwt
+#' @param date.stats stats functions to perform for Date variables: Nmiss, median, range, or other R built-in or user-written functions.
 #' @param stats.labels A named list of labels for all the statistics function names, where the function name is the named element in the list
 #'   and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
-#'   e.g., list(countpct="Count(Pct)").
-#' @param digits digits to print for non-integer statistics
-#' @param digits.test digits to print for test statistic p-values
-#' @param nsmall digits to print after decimal point for numerics
-#' @param nsmall.pct digits to print after decimal point for percentages
-#' @param ... additional arguments to be passed to internal \code{tableby} functions and kept for summary method options, such as digits.
+#'   e.g., list(countpct="Count (Pct)").
+#' @param digits Number of decimal places for numeric values.
+#' @param digits.count Number of decimal places for count values.
+#' @param digits.pct Number of decimal places for percents.
+#' @param digits.p Number of decimal places for p-values.
+#' @param format.p Logical, denoting whether to format p-values. See "Details", below.
+#' @param ... additional arguments.
 #' @details
 #' All tests can be turned off by setting \code{test} to FALSE.
 #'   Otherwise, test are set to default settings in this list, or set explicitly in the formula of \code{tableby}.
 #'
+#' If \code{format.p} is \code{FALSE}, \code{digits.p} denotes the number of significant digits shown. The
+#'   p-values will be in exponential notation if necessary. If \code{format.p} is \code{TRUE},
+#'   \code{digits.p} will determine the number of digits after the decimal point to show. If the p-value
+#'   is less than the resulting number of places, it will be formatted to show so.
 #' @return A list with settings to be used within the \code{tableby} function.
-#' @export
 #'
 #' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby}}, \code{\link{summary.tableby}}
-#'
-#' @author Jason Sinnwell, Beth Atkinson, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
-#'
+#' @author Jason Sinnwell, Beth Atkinson, Ethan Heinzen, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 #' @examples
 #' set.seed(100)
 #' ## make 3+ categories for Response
@@ -78,7 +66,7 @@
 #'                   cat.stats=c("Nmiss","countpct"),digits=1))
 #' summary(outResp, text=TRUE)
 #' summary(outCtl, text=TRUE)
-
+#' @export
 tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=FALSE,
    numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt",
    numeric.stats=c("Nmiss","meansd","q1q3","range"),
@@ -87,29 +75,39 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
    surv.stats=c("Nevents","medSurv"),
    date.stats=c("Nmiss", "median","range"),
    stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3",
-                     range="Range", countpct="Count (Pct)", Nevents="Events", medsurv="Median Survival"),
-   digits=3, digits.test=NULL, nsmall=NULL, nsmall.pct=NULL, chisq.correct=TRUE, simulate.p.value=FALSE, B=2000, ...) {
+                     range="Range", countpct="Count (Pct)", Nevents="Events", medSurv="Median Survival",
+                     medTime = "Median Follow-Up", rangeTime = "Range of Follow-Up"),
+   digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE,
+   chisq.correct=TRUE, simulate.p.value=FALSE, B=2000, ...) {
+
+  nm <- names(list(...))
+  if("digits.test" %in% nm) .Deprecated(msg = "Using 'digits.test = ' is deprecated. Use 'digits.p = ' instead.")
+  if("nsmall" %in% names(list(...))) .Deprecated(msg = "Using 'nsmall = ' is deprecated. Use 'digits = ' instead.")
+  if("nsmall.pct" %in% names(list(...))) .Deprecated(msg = "Using 'nsmall.pct = ' is deprecated. Use 'digits.pct = ' instead.")
 
   ## validate digits
-  if(is.null(digits)) {
-    digits <- 3
+  # digits and digits.test are OK to be NULL. See ?format
+  if(!is.null(digits) && digits < 0L)
+  {
+    warning("digits must be >= 0. Set to default.")
+    digits <- 3L
   }
-  if(is.null(digits.test)){
-    digits.test <- digits
+  if(!is.null(digits.count) && digits.count < 0L)
+  {
+    warning("digits.count must be >= 0. Set to default.")
+    digits.count <- 0L
   }
-  if(digits < 0 || digits.test < 0) {
-    warning("digits must be >= 0. Set to default. \n")
-    digits <- 3
-    digits.test <- digits
+  if(!is.null(digits.pct) && digits.pct < 0L)
+  {
+    warning("digits.pct must be >= 0. Set to default.")
+    digits.pct <- 1L
   }
-  if(!is.null(nsmall) && nsmall < 0) {
-	  warning("nsmall must be >= 0, or NULL. Set to NULL. \n")
-	  nsmall <- NULL
+  if(!is.null(digits.p) && digits.p < 0L)
+  {
+    warning("digits.p must be >= 0. Set to default.")
+    digits.p <- 3L
   }
-  if(!is.null(nsmall.pct) && nsmall.pct < 0) {
-	  warning("nsmall.pct must be positive integer, or NULL. Set to NULL. \n")
-	  nsmall.pct <- NULL
-  }
+
   ## validate all test names
   if(!exists(numeric.test)) {
     stop("numeric test does not exist: ", numeric.test, "\n")
@@ -143,14 +141,14 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
   if(any(!exists(date.stats))) {
     stop("One or more date summary statistic functions do not exist.\n")
   }
-  return(list(test=test, total=total, test.pname=test.pname, cat.simplify=cat.simplify,
-              numeric.test=numeric.test, cat.test=cat.test,
-              ordered.test=ordered.test, surv.test=surv.test,
-              numeric.stats=numeric.stats, cat.stats=cat.stats,
-              ordered.stats=ordered.stats,  surv.stats=surv.stats,
-              date.test=date.test, date.stats=date.stats,
-              chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B,
-              stats.labels=stats.labels,
-              digits=digits, digits.test=digits.test, nsmall=nsmall, nsmall.pct=nsmall.pct))
 
+  list(test=test, total=total, test.pname=test.pname, cat.simplify=cat.simplify,
+       numeric.test=numeric.test, cat.test=cat.test,
+       ordered.test=ordered.test, surv.test=surv.test,
+       numeric.stats=numeric.stats, cat.stats=cat.stats,
+       ordered.stats=ordered.stats,  surv.stats=surv.stats,
+       date.test=date.test, date.stats=date.stats,
+       chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B,
+       stats.labels=stats.labels,
+       digits=digits, digits.p=digits.p, digits.count = digits.count, digits.pct = digits.pct, format.p = format.p)
 }
