@@ -19,6 +19,7 @@
 \alias{N}
 \alias{count}
 \alias{countpct}
+\alias{countrowpct}
 \title{tableby Summary Statistics Functions}
 \usage{
 meansd(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
@@ -56,6 +57,9 @@ count(x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1,
 
 countpct(x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1,
   length(x)), ...)
+
+countrowpct(x, levels = sort(unique(x)), by, by.levels = sort(unique(by)),
+  na.rm = TRUE, weights = rep(1, length(x)), ...)
 }
 \arguments{
 \item{x}{Usually a vector.}
@@ -69,6 +73,10 @@ countpct(x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1,
 \item{times}{A vector of times to use for survival summaries.}
 
 \item{levels}{A vector of levels that character \code{x}s should have.}
+
+\item{by}{a vector of the by-values.}
+
+\item{by.levels}{a vector of the levels of \code{by}.}
 }
 \value{
 Usually a vector of the appropriate numbers.
@@ -80,4 +88,7 @@ A collection of functions that will report summary statistics. To create a custo
 }
 \details{
 Not all these functions are exported, in order to avoid conflicting NAMESPACES.
+}
+\seealso{
+\code{\link{includeNA}}, \code{\link{tableby.control}}
 }

@@ -520,6 +520,14 @@ summary(tableby(sex ~ ast + age, data=mockstudy,
                 control=tableby.control(numeric.stats=c("mean"),total=FALSE)))
 ```
 
+One might also consider the use of `includeNA()` to include NAs in the counts and percents for categorical variables.
+
+```{r, results = 'asis'}
+mockstudy$ps.cat <- factor(mockstudy$ps)
+attr(mockstudy$ps.cat, "label") <- "ps"
+summary(tableby(sex ~ includeNA(ps.cat), data = mockstudy, cat.stats = "countpct"))
+```
+
 ## 14. Modify the number of digits used
 
 Within tableby.control function there are 4 options for controlling the number of significant digits shown.  
@@ -699,7 +707,8 @@ however there are a number of extra functions defined specifically for the table
 * `Nmiss`: only show the count of the number of missing values if there are some missing values
 * `Nmiss2`: always show a count of the number of missing values for a variable within each group
 * `meansd`: print the mean and standard deviation in the format `mean(sd)`
-* `countpct`: print the number of values in a category plus the percentage in the format `N (%)`
+* `countpct`: print the number of values in a category plus the column-percentage in the format `N (%)`
+* `countrowpct`: print the number of values in a category plus the row-percentage in the format `N (%)`
 * `medianq1q3`: print the median, 25th, and 75th quantiles `median (Q1, Q3)`
 * `q1q3`: print the 25th and 75th quantiles `Q1, Q3`
 * `medianrange`: print the median, minimum and maximum values `median (minimum, maximum)`

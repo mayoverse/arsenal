@@ -13,9 +13,12 @@
 #' @param weights A vector of weights.
 #' @param levels A vector of levels that character \code{x}s should have.
 #' @param times A vector of times to use for survival summaries.
+#' @param by a vector of the by-values.
+#' @param by.levels a vector of the levels of \code{by}.
 #' @param ... Other arguments.
 #' @return Usually a vector of the appropriate numbers.
 #' @details Not all these functions are exported, in order to avoid conflicting NAMESPACES.
+#' @seealso \code{\link{includeNA}}, \code{\link{tableby.control}}
 #' @name tableby.stats
 NULL
 #> NULL
