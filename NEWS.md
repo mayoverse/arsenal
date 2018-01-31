@@ -1,4 +1,4 @@
-# arsenal 0.6.1.9000 (soon to be arsenal 1.0.0)
+# arsenal 1.0.0
 
 **This is a non-backwards-compatible update.**
 
