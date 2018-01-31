@@ -44,7 +44,10 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL)
   control <- c(list(...), x$control)
   control <- do.call("tableby.control", control[!duplicated(names(control))])
 
-  out <- do.call(rbind, c(lapply(x$x, get_tb_part, byLvls = names(x$y[[1]]$stats), statLabs = control$stats.labels), stringsAsFactors = FALSE))
+  out <- do.call(rbind, c(lapply(x$x, get_tb_part, byLvls = names(x$y[[1]]$stats), statLabs = control$stats.labels), make.row.names = FALSE))
+  idx <- vapply(out, is.factor, NA)
+  if(any(idx)) out[idx] <- lapply(out[idx], as.character) ## this is for R 3.2.3, whose rbind() doesn't have 'stringsAsFactors='
+
   if(control$cat.simplify)
   {
     cat_simplify <- function(x)
