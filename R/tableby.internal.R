@@ -8,7 +8,7 @@ get_attr <- function(x, which, default)
 #' @export
 format.tbstat <- function(x, digits = NULL, ...)
 {
-  class(x) <- class(x)[class(x) != "tbstat"]
+  x <- x[] # to remove classes
   if(is.numeric(x)) x <- trimws(formatC(x, digits = digits, format = "f"))
   if(length(x) == 1) return(paste0(x))
 
@@ -29,7 +29,7 @@ format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ..
   x <- if(length(x) == 2)
   {
     c(formatC(x[1], digits = digits.count, format = "f"), formatC(x[2], digits = digits.pct, format = "f"))
-  } else formatC(x, digits = digits.count, format = "f")
+  } else formatC(x[1], digits = digits.count, format = "f")
   attributes(x) <- att
   NextMethod("format")
 }
