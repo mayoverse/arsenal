@@ -39,6 +39,8 @@ Major changes:
         
         * `format.p=` has been added, to turn on formatting of p-values.
         
+        * `q1q3` is no longer a default continuous statistic.
+        
     - NAs can be included in percents using `includeNA()`.
     
     - Some additional survival summary functions are now available. (#32)

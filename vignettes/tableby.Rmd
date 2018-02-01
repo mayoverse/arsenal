@@ -694,7 +694,7 @@ write2word(tab1, "~/trash.doc", title="My table in Word")
 
 The **default** summary statistics, by varible type, are:
 
-* `numeric.stats`: Continuous variables will show by default `Nmiss, meansd, q1q3, range`
+* `numeric.stats`: Continuous variables will show by default `Nmiss, meansd, range`
 * `cat.stats`: Categorical and factor variables will show by default `Nmiss, countpct`
 * `ordered.stats`: Ordered factors will show by default `Nmiss, countpct`
 * `surv.stats`: Survival variables will show by default `Nmiss, Nevents, medsurv`

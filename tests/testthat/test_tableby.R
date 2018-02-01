@@ -35,7 +35,7 @@ class(mdat$Sex) <- c("dummyClassToTriggerErrors", class(mdat$Sex))
 
 test_that("A basic two-sided tableby call--no labels, no missings", {
   expect_identical(
-    capture.output(summary(tableby(Group ~ Sex + time + dt, data = mdat), text = TRUE)),
+    capture.output(summary(tableby(Group ~ Sex + time + dt, data = mdat, numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
     c(""                                                                                                                            ,
       ""                                                                                                                            ,
       "|             |High (N=30)             |Low (N=30)              |Med (N=30)              |Total (N=90)            | p value|",
@@ -56,7 +56,7 @@ test_that("A basic two-sided tableby call--no labels, no missings", {
 
 test_that("A basic two-sided tableby call--labels, no missings", {
   expect_identical(
-    capture.output(summary(tableby(Group ~ Age + trt + Phase, data = mdat), text = TRUE)),
+    capture.output(summary(tableby(Group ~ Age + trt + Phase, data = mdat, numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
     c(""                                                                                             ,
       ""                                                                                             ,
       "|              |High (N=30)     |Low (N=30)      |Med (N=30)      |Total (N=90)    | p value|",
@@ -107,7 +107,6 @@ test_that("A basic one-sided tableby call--no labels, no missings", {
       "|-  Male      |44 (48.9%)              |",
       "|time         |                        |",
       "|-  Mean (SD) |3.856 (2.014)           |",
-      "|-  Q1, Q3    |2.000, 6.000            |",
       "|-  Range     |0.000 - 7.000           |",
       "|dt           |                        |",
       "|-  median    |1949-10-07              |",
@@ -118,7 +117,7 @@ test_that("A basic one-sided tableby call--no labels, no missings", {
 
 test_that("A basic one-sided tableby call--labels, no missings", {
   expect_identical(
-    capture.output(summary(tableby(~ Age + trt, data = mdat), text = TRUE)),
+    capture.output(summary(tableby(~ Age + trt, data = mdat, numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
     c(""                                 ,
       ""                                 ,
       "|              |Overall (N=90)  |",
@@ -162,7 +161,6 @@ test_that("A basic two-sided tableby call--no p-value, no total", {
       "|:------------|:---------------|:---------------|:---------------|",
       "|Age in Years |                |                |                |",
       "|-  Mean (SD) |40.033 (6.217)  |39.633 (3.873)  |39.433 (5.569)  |",
-      "|-  Q1, Q3    |36.000, 44.500  |37.250, 41.750  |35.250, 44.000  |",
       "|-  Range     |29.000 - 53.000 |32.000 - 48.000 |30.000 - 52.000 |",
       "|Sex          |                |                |                |",
       "|-  Female    |15 (50.0%)      |17 (56.7%)      |14 (46.7%)      |",
@@ -184,7 +182,6 @@ test_that("A basic two-sided tableby call--p-value, no total", {
       "|:------------|:---------------|:---------------|:---------------|-------:|",
       "|Age in Years |                |                |                |   0.906|",
       "|-  Mean (SD) |40.033 (6.217)  |39.633 (3.873)  |39.433 (5.569)  |        |",
-      "|-  Q1, Q3    |36.000, 44.500  |37.250, 41.750  |35.250, 44.000  |        |",
       "|-  Range     |29.000 - 53.000 |32.000 - 48.000 |30.000 - 52.000 |        |",
       "|Sex          |                |                |                |   0.733|",
       "|-  Female    |15 (50.0%)      |17 (56.7%)      |14 (46.7%)      |        |",
@@ -199,7 +196,6 @@ test_that("A basic two-sided tableby call--p-value, no total", {
       "|:------------|:---------------|:---------------|:---------------|-------:|",
       "|Age in Years |                |                |                |   0.906|",
       "|-  Mean (SD) |40.033 (6.217)  |39.633 (3.873)  |39.433 (5.569)  |        |",
-      "|-  Q1, Q3    |36.000, 44.500  |37.250, 41.750  |35.250, 44.000  |        |",
       "|-  Range     |29.000 - 53.000 |32.000 - 48.000 |30.000 - 52.000 |        |",
       "|Sex          |                |                |                |   0.733|",
       "|-  Female    |15 (50.0%)      |17 (56.7%)      |14 (46.7%)      |        |",
@@ -214,7 +210,8 @@ test_that("A basic two-sided tableby call--p-value, no total", {
 
 test_that("A basic two-sided tableby markdown output", {
   expect_identical(
-    capture.output(summary(tableby(Group ~ Age + Sex + ethan + dt, data = mdat, total = FALSE), pfootnote = TRUE)),
+    capture.output(summary(tableby(Group ~ Age + Sex + ethan + dt, data = mdat,
+                                   numeric.stats = c("meansd", "q1q3", "range"), total = FALSE), pfootnote = TRUE)),
     c(""                                                                                                                   ,
       ""                                                                                                                   ,
       "|                            |High (N=30)             |Low (N=30)              |Med (N=30)              |  p value|",
@@ -261,7 +258,6 @@ test_that("The by-variable droplevels is working correctly", {
       "|-  Male      |15 (50.0%)              |13 (43.3%)              |28 (46.7%)              |        |",
       "|time         |                        |                        |                        |   0.007|",
       "|-  Mean (SD) |4.567 (1.813)           |3.167 (2.036)           |3.867 (2.038)           |        |",
-      "|-  Q1, Q3    |3.250, 6.000            |1.250, 5.000            |2.000, 6.000            |        |",
       "|-  Range     |0.000 - 7.000           |0.000 - 6.000           |0.000 - 7.000           |        |",
       "|dt           |                        |                        |                        |   0.574|",
       "|-  median    |1950-01-07              |1951-06-13              |1950-07-02              |        |",
@@ -293,7 +289,6 @@ test_that("Reordering variables", {
       "|:------------|:-----------------------|:-----------------------|:-----------------------|:-----------------------|-------:|",
       "|Age in Years |                        |                        |                        |                        |   0.906|",
       "|-  Mean (SD) |40.033 (6.217)          |39.633 (3.873)          |39.433 (5.569)          |39.700 (5.258)          |        |",
-      "|-  Q1, Q3    |36.000, 44.500          |37.250, 41.750          |35.250, 44.000          |36.000, 43.000          |        |",
       "|-  Range     |29.000 - 53.000         |32.000 - 48.000         |30.000 - 52.000         |29.000 - 53.000         |        |",
       "|Sex          |                        |                        |                        |                        |   0.733|",
       "|-  Female    |15 (50.0%)              |17 (56.7%)              |14 (46.7%)              |46 (51.1%)              |        |",
@@ -338,7 +333,6 @@ test_that("Merging tableby objects", {
       "|-  Male      |15 (50.0%)      |13 (43.3%)      |16 (53.3%)      |44 (48.9%)      |        |",
       "|Age in Years |                |                |                |                |   0.906|",
       "|-  Mean (SD) |40.033 (6.217)  |39.633 (3.873)  |39.433 (5.569)  |39.700 (5.258)  |        |",
-      "|-  Q1, Q3    |36.000, 44.500  |37.250, 41.750  |35.250, 44.000  |36.000, 43.000  |        |",
       "|-  Range     |29.000 - 53.000 |32.000 - 48.000 |30.000 - 52.000 |29.000 - 53.000 |        |"
     )
   )
@@ -347,7 +341,7 @@ test_that("Merging tableby objects", {
 
 test_that("Changing tests", {
   expect_identical(
-    capture.output(summary(tableby(Group ~ fe(Sex) + kwt(Age), data = mdat), text = TRUE)),
+    capture.output(summary(tableby(Group ~ fe(Sex) + kwt(Age), data = mdat, numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
     c(""                                                                                            ,
       ""                                                                                            ,
       "|             |High (N=30)     |Low (N=30)      |Med (N=30)      |Total (N=90)    | p value|",
@@ -385,7 +379,6 @@ test_that("Changing labels", {
       "|-  Male      |15 (50.0%)      |13 (43.3%)      |16 (53.3%)      |44 (48.9%)      |        |",
       "|Age          |                |                |                |                |   0.906|",
       "|-  Mean (SD) |40.033 (6.217)  |39.633 (3.873)  |39.433 (5.569)  |39.700 (5.258)  |        |",
-      "|-  Q1, Q3    |36.000, 44.500  |37.250, 41.750  |35.250, 44.000  |36.000, 43.000  |        |",
       "|-  Range     |29.000 - 53.000 |32.000 - 48.000 |30.000 - 52.000 |29.000 - 53.000 |        |"
     )
   )
@@ -401,7 +394,6 @@ test_that("Changing labels", {
       "|-  Male      |15 (50.0%)      |13 (43.3%)      |16 (53.3%)      |44 (48.9%)      |        |",
       "|Age (yrs)    |                |                |                |                |   0.906|",
       "|-  Mean (SD) |40.033 (6.217)  |39.633 (3.873)  |39.433 (5.569)  |39.700 (5.258)  |        |",
-      "|-  Q1, Q3    |36.000, 44.500  |37.250, 41.750  |35.250, 44.000  |36.000, 43.000  |        |",
       "|-  Range     |29.000 - 53.000 |32.000 - 48.000 |30.000 - 52.000 |29.000 - 53.000 |        |"
     )
   )
@@ -548,7 +540,6 @@ test_that("05/24/2017: Katherine King's count vs countpct", {
       "|-  Female    |2               |1               |1               |4               |",
       "|age          |                |                |                |                |",
       "|-  Mean (SD) |62.000 (16.971) |68.000 (1.414)  |71.000 (NaN)    |66.200 (9.418)  |",
-      "|-  Q1, Q3    |56.000, 68.000  |67.500, 68.500  |71.000, 71.000  |67.000, 71.000  |",
       "|-  Range     |50.000 - 74.000 |67.000 - 69.000 |71.000 - 71.000 |50.000 - 74.000 |"
     )
   )
@@ -597,7 +588,8 @@ test_that("08/30/2017: Brendan Broderick and zero-length levels (#22)", {
 
 test_that("09/13/2017: Peter Martin and rounding to integers (#23)", {
   expect_identical(
-    capture.output(summary(tableby(Group ~ Sex + time + dt, data = mdat, digits = 0, digits.p = 3), text = TRUE)),
+    capture.output(summary(tableby(Group ~ Sex + time + dt, data = mdat,
+                                   numeric.stats = c("meansd", "q1q3", "range"), digits = 0, digits.p = 3), text = TRUE)),
     c(""                                                                                                                            ,
       ""                                                                                                                            ,
       "|             |High (N=30)             |Low (N=30)              |Med (N=30)              |Total (N=90)            | p value|",

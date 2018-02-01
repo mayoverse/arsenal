@@ -51,7 +51,8 @@ data(mockstudy)
 
 test_that("Keep labels in tableby", {
   expect_identical(
-    capture.output(summary(tableby(sex ~ fe(arm) + age, data = mockstudy, subset = age < 80), text = TRUE)),
+    capture.output(summary(tableby(sex ~ fe(arm) + age, data = mockstudy, subset = age < 80,
+                                   numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
     c(""                                                                            ,
       ""                                                                            ,
       "|              |Male (N=891)    |Female (N=571)  |Total (N=1462)  | p value|",
