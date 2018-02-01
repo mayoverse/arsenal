@@ -39,13 +39,14 @@ medianrange <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 
 #' @rdname tableby.stats
 median <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  if(na.rm && allNA(x)) {
+  y <- if(na.rm && allNA(x)) {
     NA_real_
   } else if(is.Date(x)) {
     as.Date(wtd.quantile(as.integer(x), weights=weights, probs=0.5, na.rm=na.rm), origin="1970/01/01")
   } else {
     wtd.quantile(x, weights=weights, probs=0.5, na.rm=na.rm)
   }
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL)
 }
 
 #' @rdname tableby.stats
@@ -67,7 +68,7 @@ range <- function(x, na.rm=TRUE, ...) {
 Nevents <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
   mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
   if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
-  as.numeric(mat["events"])
+  as.countpct(as.numeric(mat["events"]))
 }
 
 ## Median survival
@@ -76,7 +77,7 @@ Nevents <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
 medSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
   mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
   if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
-  as.numeric(mat["median"])
+  as.tbstat(as.numeric(mat["median"]))
 }
 
 #' @rdname tableby.stats
@@ -100,7 +101,7 @@ NriskSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...
 #' @export
 medTime <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
 {
-  wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm)
+  as.tbstat(wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm))
 }
 
 #' @rdname tableby.stats
@@ -136,7 +137,7 @@ medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 #' @rdname tableby.stats
 #' @export
 Nmiss <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  sum(weights[is.na(x)])
+  as.countpct(sum(weights[is.na(x)]))
 }
 
 ## Nmiss2 make similar, but in tableby, always keep nmiss,
@@ -149,7 +150,7 @@ Nmiss2 <- Nmiss
 #' @rdname tableby.stats
 #' @export
 N <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  sum(weights[!is.na(x)])
+  as.countpct(sum(weights[!is.na(x)]))
 }
 
 ## count within group variable

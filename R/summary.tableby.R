@@ -57,7 +57,7 @@ print.summary.tableby <- function(x, ...)
 
   idx <- colnames(df) %nin% c("variable", "term", "label", "variable.type", "test", "p.value")
   format_all <- function(x, ...) vapply(x, format, NA_character_, ...)
-  df[idx] <- lapply(df[idx], format_all, digits = x$control$digits,
+  df[idx] <- lapply(df[idx], format_all, digits = x$control$digits, format = "f", # the format="f" is not used for tbstat objects
                     digits.count = x$control$digits.count, digits.pct = x$control$digits.pct)
   df[["p.value"]] <- formatC(df[["p.value"]], digits = x$control$digits.p, format = if(x$control$format.p) "f" else "g")
 
