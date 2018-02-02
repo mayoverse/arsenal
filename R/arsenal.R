@@ -39,6 +39,8 @@
 #'
 #' \code{\link{\%nin\%}}: Test for "not in".
 #'
+#' \code{\link{allNA}} and \code{\link{includeNA}}: some useful functions for dealing with NAs.
+#'
 #' @section Data:
 #'
 #' \code{\link{mockstudy}}: Mock study data for examples.

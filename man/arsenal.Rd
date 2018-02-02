@@ -43,6 +43,8 @@ Below are listed some of the most widely used functions available in \code{arsen
 \code{\link{is.Date}}: Test if an object is a date.
 
 \code{\link{\%nin\%}}: Test for "not in".
+
+\code{\link{allNA}} and \code{\link{includeNA}}: some useful functions for dealing with NAs.
 }
 
 \section{Data}{
