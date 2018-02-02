@@ -6,6 +6,10 @@ This is a new version. In this version:
 
 * We resolved almost 20 bugs/feature requests.
 
+* We updated documentation where appropriate.
+
+* We added more versions of R to our test suite.
+
 ## Test environments
 
 * local Linux install: R 3.4.1
