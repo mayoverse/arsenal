@@ -79,7 +79,7 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
   {
     tests.used <- unique(df$test)
     df[["p.value"]] <- paste0(df[["p.value"]], "^", as.integer(factor(df[["test"]], levels = tests.used)), "^")
-    tests.used <- paste0(seq_along(tests.used), ". ", tests.used, collapse = "\n")
+    tests.used <- paste0(seq_along(tests.used), ". ", tests.used)
   }
 
   #### don't show the same statistics more than once ####
@@ -123,7 +123,7 @@ print.summary.tableby <- function(x, ...)
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
   print(knitr::kable(df, caption = NULL, align = attr(df, "align")))
-  cat(attr(df, "tests"))
+  cat(paste0(attr(df, "tests"), collapse = "\n"))
 
   invisible(x)
 }
