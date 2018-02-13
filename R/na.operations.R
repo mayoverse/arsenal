@@ -6,6 +6,8 @@
 #'
 #' @param x An object
 #' @param label A character string denoting the label to set \code{NA}s to.
+#' @param first Logical; should the new label be the first level?
+#' @param ... Other arguments (not in use at this time).
 #'
 #' @seealso \code{\link{is.na}}, \code{\link{anyNA}}
 #' @author Ethan Heinzen

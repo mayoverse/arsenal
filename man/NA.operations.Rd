@@ -10,16 +10,20 @@
 \usage{
 allNA(x)
 
-includeNA(x, label)
+includeNA(x, label, ...)
 
-\method{includeNA}{factor}(x, label = "(Missing)")
+\method{includeNA}{factor}(x, label = "(Missing)", first = FALSE, ...)
 
-\method{includeNA}{character}(x, label = "(Missing)")
+\method{includeNA}{character}(x, label = "(Missing)", ...)
 }
 \arguments{
 \item{x}{An object}
 
 \item{label}{A character string denoting the label to set \code{NA}s to.}
+
+\item{...}{Other arguments (not in use at this time).}
+
+\item{first}{Logical; should the new label be the first level?}
 }
 \description{
 \code{allNA} tests if all elements are NA, and \code{includeNA} sets the
