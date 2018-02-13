@@ -26,12 +26,17 @@ includeNA <- function(x, label, ...)
 
 #' @rdname NA.operations
 #' @export
-includeNA.factor <- function(x, label = "(Missing)", ...)
+includeNA.factor <- function(x, label = "(Missing)", first = FALSE, ...)
 {
   lvl <- levels(x)
   if(label %in% lvl)
   {
     warning('"', label, '" already appears in levels(x).')
+  } else if(first)
+  {
+    levels(x) <- c(label, lvl)
+    x[] <- levels(x)[as.integer(x) + 1L]
+
   } else levels(x) <- c(lvl, label) # don't use factor() here, in case you lose attributes
   x[is.na(x)] <- label
   x
