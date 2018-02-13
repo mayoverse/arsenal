@@ -19,14 +19,14 @@ allNA <- function(x) all(is.na(x))
 
 #' @rdname NA.operations
 #' @export
-includeNA <- function(x, label)
+includeNA <- function(x, label, ...)
 {
   UseMethod("includeNA")
 }
 
 #' @rdname NA.operations
 #' @export
-includeNA.factor <- function(x, label = "(Missing)")
+includeNA.factor <- function(x, label = "(Missing)", ...)
 {
   lvl <- levels(x)
   if(label %in% lvl)
@@ -39,7 +39,7 @@ includeNA.factor <- function(x, label = "(Missing)")
 
 #' @rdname NA.operations
 #' @export
-includeNA.character <- function(x, label = "(Missing)")
+includeNA.character <- function(x, label = "(Missing)", ...)
 {
   if(label %in% x) warning('"', label, '" already appears in x.')
   x[is.na(x)] <- label
