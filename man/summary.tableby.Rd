@@ -2,27 +2,35 @@
 % Please edit documentation in R/summary.tableby.R
 \name{summary.tableby}
 \alias{summary.tableby}
+\alias{summary.tableby}
+\alias{as.data.frame.summary.tableby}
 \title{The summary method for a \code{tableby} object}
 \usage{
 \method{summary}{tableby}(object, ..., labelTranslations = NULL,
   text = FALSE, title = NULL, pfootnote = FALSE)
+
+\method{as.data.frame}{summary.tableby}(x, ..., text = x$text,
+  pfootnote = x$pfootnote)
 }
 \arguments{
 \item{object}{An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.}
 
-\item{...}{Other arguments passed to \code{\link{as.data.frame.tableby}}.}
+\item{...}{Other arguments passed to \code{\link{as.data.frame.tableby}} or \code{as.data.frame.summary.tableby}.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
 output to be replaced in the pretty rendering of tableby by the character string
 value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.}
 
 \item{text}{Logical, tell R to print the raw text version of the summary to the screen.
-Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development.}
+Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development. For
+\code{as.data.frame}, this can be set to \code{NULL} to avoid changing the labels at all.}
 
 \item{title}{Title that will appear on the top of the header in the pretty-table rendering
 of the tableby object}
 
 \item{pfootnote}{Logical, denoting whether to put footnotes describing the tests used to generate the p-values.}
+
+\item{x}{An object of class \code{"summary.tableby"}.}
 }
 \value{
 An object of class \code{summary.tableby}

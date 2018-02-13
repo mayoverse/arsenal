@@ -5,14 +5,16 @@
 #' object into a publication-quality results table in R Markdown, and can render well in text-only.
 #'
 #' @param object An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.
-#' @param ... Other arguments passed to \code{\link{as.data.frame.tableby}}.
+#' @param x An object of class \code{"summary.tableby"}.
+#' @param ... Other arguments passed to \code{\link{as.data.frame.tableby}} or \code{as.data.frame.summary.tableby}.
 #' @param title Title that will appear on the top of the header in the pretty-table rendering
 #'		of the tableby object
 #' @param labelTranslations  A named list (or vector) where the name is the label in the
 #'        output to be replaced in the pretty rendering of tableby by the character string
 #'        value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.
 #' @param text Logical, tell R to print the raw text version of the summary to the screen.
-#'		Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development.
+#'		Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development. For
+#'		\code{as.data.frame}, this can be set to \code{NULL} to avoid changing the labels at all.
 #' @param pfootnote Logical, denoting whether to put footnotes describing the tests used to generate the p-values.
 #' @return An object of class \code{summary.tableby}
 #' @seealso \code{\link{tableby.control}}, \code{\link{tableby}}
@@ -35,6 +37,11 @@
 #' labels(out) <- c(Age="Age (years)", HtIn="Height (inches)")
 #' summary(out, stats.labels=c(meansd="Mean-SD", q1q3 = "Q1-Q3"), text=TRUE)
 #'
+#' @name summary.tableby
+NULL
+#> NULL
+
+#' @rdname summary.tableby
 #' @export
 summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, pfootnote = FALSE)
 {
@@ -49,10 +56,10 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
   ), class = "summary.tableby")
 }
 
+#' @rdname summary.tableby
 #' @export
-print.summary.tableby <- function(x, ...)
+as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote)
 {
-
   df <- x$object
 
   idx <- colnames(df) %nin% c("variable", "term", "label", "variable.type", "test", "p.value")
@@ -70,11 +77,11 @@ print.summary.tableby <- function(x, ...)
   }
 
   tests.used <- ""
-  if(x$control$test && x$pfootnote)
+  if(x$control$test && pfootnote)
   {
     tests.used <- unique(df$test)
     df[["p.value"]] <- paste0(df[["p.value"]], "^", as.integer(factor(df[["test"]], levels = tests.used)), "^")
-    tests.used <- paste0(seq_along(tests.used), ". ", tests.used, collapse = "\n")
+    tests.used <- paste0(seq_along(tests.used), ". ", tests.used)
   }
 
   #### don't show the same statistics more than once ####
@@ -82,10 +89,13 @@ print.summary.tableby <- function(x, ...)
 
   #### Format if necessary ####
   df$label <- trimws(df$label) # regardless of formatting
-  if(x$text)
+  if(!is.null(text))
   {
-    df$label <- ifelse(duplicated(df$variable), paste0("-  ", df$label), df$label)
-  } else df$label <- ifelse(duplicated(df$variable), paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("**", df$label, "**"))
+    if(text)
+    {
+      df$label <- ifelse(duplicated(df$variable), paste0("-  ", df$label), df$label)
+    } else df$label <- ifelse(duplicated(df$variable), paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("**", df$label, "**"))
+  }
 
   #### get rid of unnecessary columns ####
   df$variable <- NULL
@@ -102,11 +112,20 @@ print.summary.tableby <- function(x, ...)
   if(length(nm)) cn[nm] <- paste0(cn[nm], " (N=", x$totals[nm], ")")
   cn["label"] <- ""
   if("p.value" %in% cn && is.null(x$control$test.pname)) cn["p.value"] <- "p value" else if("p.value" %in% cn) cn["p.value"] <- x$control$test.pname
+  colnames(df) <- cn
+
+  set_attr(set_attr(df, "tests", tests.used), "align", align)
+}
+
+#' @export
+print.summary.tableby <- function(x, ...)
+{
+  df <- as.data.frame(x, ...)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  print(knitr::kable(df, col.names = cn, caption = NULL, align = align))
-  cat(tests.used)
+  print(knitr::kable(df, caption = NULL, align = attr(df, "align")))
+  cat(paste0(attr(df, "tests"), collapse = "\n"))
 
   invisible(x)
 }
