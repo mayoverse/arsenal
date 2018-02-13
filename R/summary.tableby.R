@@ -5,14 +5,16 @@
 #' object into a publication-quality results table in R Markdown, and can render well in text-only.
 #'
 #' @param object An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.
-#' @param ... Other arguments passed to \code{\link{as.data.frame.tableby}}.
+#' @param x An object of class \code{"summary.tableby"}.
+#' @param ... Other arguments passed to \code{\link{as.data.frame.tableby}} or \code{as.data.frame.summary.tableby}.
 #' @param title Title that will appear on the top of the header in the pretty-table rendering
 #'		of the tableby object
 #' @param labelTranslations  A named list (or vector) where the name is the label in the
 #'        output to be replaced in the pretty rendering of tableby by the character string
 #'        value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.
 #' @param text Logical, tell R to print the raw text version of the summary to the screen.
-#'		Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development.
+#'		Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development. For
+#'		\code{as.data.frame}, this can be set to \code{NULL} to avoid changing the labels at all.
 #' @param pfootnote Logical, denoting whether to put footnotes describing the tests used to generate the p-values.
 #' @return An object of class \code{summary.tableby}
 #' @seealso \code{\link{tableby.control}}, \code{\link{tableby}}
