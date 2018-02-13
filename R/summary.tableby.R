@@ -35,6 +35,11 @@
 #' labels(out) <- c(Age="Age (years)", HtIn="Height (inches)")
 #' summary(out, stats.labels=c(meansd="Mean-SD", q1q3 = "Q1-Q3"), text=TRUE)
 #'
+#' @name summary.tableby
+NULL
+#> NULL
+
+#' @rdname summary.tableby
 #' @export
 summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, pfootnote = FALSE)
 {
@@ -49,10 +54,10 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
   ), class = "summary.tableby")
 }
 
+#' @rdname summary.tableby
 #' @export
-print.summary.tableby <- function(x, ...)
+as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote)
 {
-
   df <- x$object
 
   idx <- colnames(df) %nin% c("variable", "term", "label", "variable.type", "test", "p.value")
@@ -70,7 +75,7 @@ print.summary.tableby <- function(x, ...)
   }
 
   tests.used <- ""
-  if(x$control$test && x$pfootnote)
+  if(x$control$test && pfootnote)
   {
     tests.used <- unique(df$test)
     df[["p.value"]] <- paste0(df[["p.value"]], "^", as.integer(factor(df[["test"]], levels = tests.used)), "^")
@@ -82,10 +87,13 @@ print.summary.tableby <- function(x, ...)
 
   #### Format if necessary ####
   df$label <- trimws(df$label) # regardless of formatting
-  if(x$text)
+  if(!is.null(text))
   {
-    df$label <- ifelse(duplicated(df$variable), paste0("-  ", df$label), df$label)
-  } else df$label <- ifelse(duplicated(df$variable), paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("**", df$label, "**"))
+    if(text)
+    {
+      df$label <- ifelse(duplicated(df$variable), paste0("-  ", df$label), df$label)
+    } else df$label <- ifelse(duplicated(df$variable), paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("**", df$label, "**"))
+  }
 
   #### get rid of unnecessary columns ####
   df$variable <- NULL
@@ -102,11 +110,20 @@ print.summary.tableby <- function(x, ...)
   if(length(nm)) cn[nm] <- paste0(cn[nm], " (N=", x$totals[nm], ")")
   cn["label"] <- ""
   if("p.value" %in% cn && is.null(x$control$test.pname)) cn["p.value"] <- "p value" else if("p.value" %in% cn) cn["p.value"] <- x$control$test.pname
+  colnames(df) <- cn
+
+  set_attr(set_attr(df, "tests", tests.used), "align", align)
+}
+
+#' @export
+print.summary.tableby <- function(x, ...)
+{
+  df <- as.data.frame(x, ...)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  print(knitr::kable(df, col.names = cn, caption = NULL, align = align))
-  cat(tests.used)
+  print(knitr::kable(df, caption = NULL, align = attr(df, "align")))
+  cat(attr(df, "tests"))
 
   invisible(x)
 }
