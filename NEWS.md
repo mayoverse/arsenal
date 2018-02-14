@@ -4,6 +4,8 @@ Smaller changes:
 
 * `as.data.frame.summary.tableby()` has been implemented, and `print.summary.tableby()` updated accordingly. (#60)
 
+* `includeNA()` now has dots, and the factor method gained a `first=` argument.
+
 # arsenal 1.0.0
 
 **This is a non-backwards-compatible update.**
