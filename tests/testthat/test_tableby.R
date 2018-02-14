@@ -366,7 +366,21 @@ test_that("Changing tests", {
 test_that("Changing labels", {
   tb <- tableby(Group ~ Sex + Age, data = mdat)
   expect_error(labels(tb) <- c("Sex", "Age"))
-  expect_warning(labels(tb) <- c(Sex = "Sex", Age = "Age", hi = "hi"))
+  expect_warning(labels(tb) <- c(hi = "hi", Sex = "Sex", Age = "Age"))
+  expect_identical(
+    capture.output(summary(tb, text = TRUE)),
+    c(""                                                                                            ,
+      ""                                                                                            ,
+      "|             |High (N=30)     |Low (N=30)      |Med (N=30)      |Total (N=90)    | p value|",
+      "|:------------|:---------------|:---------------|:---------------|:---------------|-------:|",
+      "|Sex          |                |                |                |                |   0.733|",
+      "|-  Female    |15 (50.0%)      |17 (56.7%)      |14 (46.7%)      |46 (51.1%)      |        |",
+      "|-  Male      |15 (50.0%)      |13 (43.3%)      |16 (53.3%)      |44 (48.9%)      |        |",
+      "|Age          |                |                |                |                |   0.906|",
+      "|-  Mean (SD) |40.033 (6.217)  |39.633 (3.873)  |39.433 (5.569)  |39.700 (5.258)  |        |",
+      "|-  Range     |29.000 - 53.000 |32.000 - 48.000 |30.000 - 52.000 |29.000 - 53.000 |        |"
+    )
+  )
   labels(tb) <- NULL
   expect_identical(
     capture.output(summary(tb, text = TRUE)),
@@ -382,7 +396,7 @@ test_that("Changing labels", {
       "|-  Range     |29.000 - 53.000 |32.000 - 48.000 |30.000 - 52.000 |29.000 - 53.000 |        |"
     )
   )
-  labels(tb) <- list(Sex = "Gender", Age = "Age (yrs)")
+  labels(tb) <- list(Age = "Age (yrs)", Sex = "Gender")
   expect_identical(
     capture.output(summary(tb, text = TRUE)),
     c(""                                                                                            ,

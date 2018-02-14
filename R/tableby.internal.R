@@ -256,7 +256,7 @@ tests.tableby <- function(x) {
     {
       idx <- is.na(v2objIndex)
       warning("Named value(s) not matched in x: ", paste(vNames[idx],collapse=","), "\n")
-      vNames <- vNames[!idx]
+      value <- value[!idx]
       v2objIndex <- v2objIndex[!idx]
     }
 

@@ -4,7 +4,9 @@ Smaller changes:
 
 * `as.data.frame.summary.tableby()` has been implemented, and `print.summary.tableby()` updated accordingly. (#60)
 
-* `includeNA()` now has dots, and the factor method gained a `first=` argument.
+* `includeNA()` now has dots, and the factor method gained a `first=` argument. (#62)
+
+* Fixed a bug with assigning labels when some value names are unmatched. (#64)
 
 # arsenal 1.0.0
 
