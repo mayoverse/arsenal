@@ -74,9 +74,9 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, d
     }
     printlist <- by(freqdf, freqdf[, rev(byVar)], FUN = data.frame)
     names(printlist) <- gsub("[.]",", ", levels(interaction(rev(freqdf[, byVar, drop = FALSE]))))
-    for(i in 1:length(printlist))
+    if(!is.null(title)) cat("\nTable: ", title, sep = "")
+    for(i in seq_along(printlist))
     {
-      if(i == 1L && !is.null(title)) cat("\nTable: ", title, sep = "")
       if(!is.null(printlist[[i]]))
       {
         if(nrow(printlist[[i]]) > 1)
@@ -91,5 +91,6 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, d
       }
     }
   }
+  cat("\n")
   invisible(object)
 }

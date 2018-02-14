@@ -51,11 +51,9 @@ data(mockstudy)
 
 test_that("Keep labels in tableby", {
   expect_identical(
-    capture.output(summary(tableby(sex ~ fe(arm) + age, data = mockstudy, subset = age < 80,
-                                   numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
-    c(""                                                                            ,
-      ""                                                                            ,
-      "|              |Male (N=891)    |Female (N=571)  |Total (N=1462)  | p value|",
+    capture.kable(summary(tableby(sex ~ fe(arm) + age, data = mockstudy, subset = age < 80,
+                                  numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
+    c("|              |Male (N=891)    |Female (N=571)  |Total (N=1462)  | p value|",
       "|:-------------|:---------------|:---------------|:---------------|-------:|",
       "|Treatment Arm |                |                |                |   0.187|",
       "|-  A: IFL     |272 (30.5%)     |149 (26.1%)     |421 (28.8%)     |        |",
@@ -71,10 +69,8 @@ test_that("Keep labels in tableby", {
 
 test_that("Keep labels in modelsum", {
   expect_identical(
-    capture.output(summary(modelsum(age ~ sex + arm, data = mockstudy, subset = age < 80), text = TRUE)),
-    c(""                                                                       ,
-      ""                                                                       ,
-      "|                        |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(age ~ sex + arm, data = mockstudy, subset = age < 80), text = TRUE)),
+    c("|                        |estimate |std.error |p.value |adj.r.squared |",
       "|:-----------------------|:--------|:---------|:-------|:-------------|",
       "|(Intercept)             |59.850   |0.372     |< 0.001 |0.002         |",
       "|sex Female              |-1.076   |0.595     |0.071   |              |",

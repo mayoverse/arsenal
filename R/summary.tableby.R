@@ -76,7 +76,7 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
     df[["p.value"]][x$object[["p.value"]] < cutoff] <- fmt
   }
 
-  tests.used <- ""
+  tests.used <- NULL
   if(x$control$test && pfootnote)
   {
     tests.used <- unique(df$test)
@@ -125,7 +125,8 @@ print.summary.tableby <- function(x, ...)
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
   print(knitr::kable(df, caption = NULL, align = attr(df, "align")))
-  cat(paste0(attr(df, "tests"), collapse = "\n"))
+  if(!is.null(attr(df, "tests"))) cat(paste0(attr(df, "tests"), "\n", collapse = ""))
+  cat("\n")
 
   invisible(x)
 }

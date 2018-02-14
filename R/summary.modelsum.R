@@ -103,6 +103,7 @@ print.summary.modelsum <- function(x, ...)
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
   print(knitr::kable(df, col.names = cn, caption = NULL))
+  cat("\n")
 
   invisible(x)
 }
