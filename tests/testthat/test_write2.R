@@ -144,28 +144,28 @@ test_that("write2.yaml -> PDF", {
 #### Code used to generate the files
 ###########################################################################################################
 #
-#  write2html(tableby(arm ~ sex + age, data=mockstudy), "tests/testthat/write2.tableby.html", numeric.stats = c("meansd", "q1q3", "range"),
-#             title = "My test table", labelTranslations = list(sex = "SEX", age ="Age, yrs"), total = FALSE, render. = FALSE)
+# write2html(tableby(arm ~ sex + age, data=mockstudy, numeric.stats = c("meansd", "q1q3", "range")), "tests/testthat/write2.tableby.html",
+#            title = "My test table", labelTranslations = list(sex = "SEX", age ="Age, yrs"), total = FALSE, render. = FALSE)
 #
-#  write2html(modelsum(alk.phos ~ arm + ps + hgb, adjust= ~ age + sex, family = "gaussian", data = mockstudy),
-#             "tests/testthat/write2.modelsum.html",
-#             title = "My test table", show.intercept = FALSE, digits = 5, render. = FALSE)
+# write2html(modelsum(alk.phos ~ arm + ps + hgb, adjust= ~ age + sex, family = "gaussian", data = mockstudy),
+#            "tests/testthat/write2.modelsum.html",
+#            title = "My test table", show.intercept = FALSE, digits = 5, render. = FALSE)
 #
-#  write2html(freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
-#             "tests/testthat/write2.freqlist.html", single = TRUE, render. = FALSE)
+# write2html(freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
+#            "tests/testthat/write2.freqlist.html", single = TRUE, render. = FALSE)
 #
 # write2word(freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
 #            "tests/testthat/write2.freqlist.doc", single = TRUE, title = "My cool title", render. = FALSE)
 #
-#  write2html(knitr::kable(head(mockstudy)),
-#             "tests/testthat/write2.kable.html", render. = FALSE)
-#
-#  write2html(xtable::xtable(head(mockstudy), caption = "My xtable"),
-#             "tests/testthat/write2.xtable.html",
-#             type = "html", comment = FALSE, include.rownames = FALSE, caption.placement = "top", render. = FALSE)
-#
-#  write2html(pander::pander_return(head(mockstudy)),
-#             "tests/testthat/write2.pander.html", render. = FALSE)
+## write2html(knitr::kable(head(mockstudy)),
+##            "tests/testthat/write2.kable.html", render. = FALSE)
+##
+## write2html(xtable::xtable(head(mockstudy), caption = "My xtable"),
+##            "tests/testthat/write2.xtable.html",
+##            type = "html", comment = FALSE, include.rownames = FALSE, caption.placement = "top", render. = FALSE)
+##
+## write2html(pander::pander_return(head(mockstudy)),
+##            "tests/testthat/write2.pander.html", render. = FALSE)
 #
 #
 # write2pdf(mylist, "tests/testthat/write2.mylist.pdf", render. = FALSE)
