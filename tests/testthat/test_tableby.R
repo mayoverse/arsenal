@@ -743,12 +743,12 @@ test_that("01/31/2018: row percents (#9)", {
   )
 })
 
-test_that("01/31/2018: include NAs in percents (#57)", {
+test_that("01/31/2018: include NAs in percents (#57, #62)", {
   mdat2 <- mdat
   attr(mdat2$ethan, "label") <- "Ethan"
   expect_identical(
-    capture.output(summary(tableby(Sex ~ includeNA(ethan, label = "N-Miss") + includeNA(ethan, first = TRUE),
-                                   data = mdat2, cat.stats = "countrowpct", label = "N-Miss"), text = TRUE)),
+    capture.output(summary(tableby(Sex ~ includeNA(ethan, label = "N-Miss") + includeNA(ethan, first = TRUE, label = "N-Miss"),
+                                   data = mdat2, cat.stats = "countrowpct"), text = TRUE)),
     c(""                                                                ,
       ""                                                                ,
       "|           |Female (N=46) |Male (N=44) |Total (N=90) | p value|",
