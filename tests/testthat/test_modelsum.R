@@ -29,10 +29,8 @@ attr(mdat$Age, "label") <- "Age in Years"
 
 test_that("A basic modelsum call--no labels, no missings", {
   expect_identical(
-    capture.output(summary(modelsum(Age ~ Sex + time, data = mdat), text = TRUE)),
-    c(""                                                           ,
-      ""                                                           ,
-      "|            |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(Age ~ Sex + time, data = mdat), text = TRUE)),
+    c("|            |estimate |std.error |p.value |adj.r.squared |",
       "|:-----------|:--------|:---------|:-------|:-------------|",
       "|(Intercept) |39.826   |0.779     |< 0.001 |-0.011        |",
       "|Sex Male    |-0.258   |1.115     |0.818   |              |",
@@ -44,10 +42,8 @@ test_that("A basic modelsum call--no labels, no missings", {
 
 test_that("A basic modelsum tableby call--labels, no missings", {
   expect_identical(
-    capture.output(summary(modelsum(Age ~ Sex + trt, data = mdat), text = TRUE)),
-    c(""                                                               ,
-      ""                                                               ,
-      "|                |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(Age ~ Sex + trt, data = mdat), text = TRUE)),
+    c("|                |estimate |std.error |p.value |adj.r.squared |",
       "|:---------------|:--------|:---------|:-------|:-------------|",
       "|(Intercept)     |39.826   |0.779     |< 0.001 |-0.011        |",
       "|Sex Male        |-0.258   |1.115     |0.818   |              |",
@@ -59,10 +55,8 @@ test_that("A basic modelsum tableby call--labels, no missings", {
 
 test_that("A basic modelsum call--adding adjustment", {
   expect_identical(
-    capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE)),
-    c(""                                                               ,
-      ""                                                               ,
-      "|                |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE)),
+    c("|                |estimate |std.error |p.value |adj.r.squared |",
       "|:---------------|:--------|:---------|:-------|:-------------|",
       "|(Intercept)     |40.632   |1.024     |< 0.001 |-0.005        |",
       "|Sex Male        |-0.221   |1.112     |0.843   |              |",
@@ -76,10 +70,8 @@ test_that("A basic modelsum call--adding adjustment", {
 
 test_that("A basic modelsum call--suppressing intercept and/or adjustment vars", {
   expect_identical(
-    capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.intercept = FALSE)),
-    c(""                                                               ,
-      ""                                                               ,
-      "|                |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.intercept = FALSE)),
+    c("|                |estimate |std.error |p.value |adj.r.squared |",
       "|:---------------|:--------|:---------|:-------|:-------------|",
       "|Sex Male        |-0.221   |1.112     |0.843   |-0.005        |",
       "|Treatment Arm B |-1.373   |1.135     |0.229   |              |",
@@ -88,10 +80,8 @@ test_that("A basic modelsum call--suppressing intercept and/or adjustment vars",
     )
   )
   expect_identical(
-    capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.adjust = FALSE)),
-    c(""                                                           ,
-      ""                                                           ,
-      "|            |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.adjust = FALSE)),
+    c("|            |estimate |std.error |p.value |adj.r.squared |",
       "|:-----------|:--------|:---------|:-------|:-------------|",
       "|(Intercept) |40.632   |1.024     |< 0.001 |-0.005        |",
       "|Sex Male    |-0.221   |1.112     |0.843   |              |",
@@ -100,28 +90,24 @@ test_that("A basic modelsum call--suppressing intercept and/or adjustment vars",
     )
   )
   expect_identical(
-    capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.intercept = FALSE, show.adjust = FALSE)),
-    c(""                                                        ,
-      ""                                                        ,
-      "|         |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.intercept = FALSE, show.adjust = FALSE)),
+    c("|         |estimate |std.error |p.value |adj.r.squared |",
       "|:--------|:--------|:---------|:-------|:-------------|",
       "|Sex Male |-0.221   |1.112     |0.843   |-0.005        |",
       "|time     |-0.368   |0.275     |0.184   |0.014         |"
     )
   )
   expect_identical(
-    capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.intercept = FALSE, show.adjust = FALSE)),
-    capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat, show.intercept = FALSE, show.adjust = FALSE), text = TRUE))
+    capture.kable(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, show.intercept = FALSE, show.adjust = FALSE)),
+    capture.kable(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat, show.intercept = FALSE, show.adjust = FALSE), text = TRUE))
   )
 })
 
 
 test_that("Reordering variables", {
   expect_identical(
-    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[c(3,1,2)], text = TRUE)),
-    c(""                                                           ,
-      ""                                                           ,
-      "|            |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[c(3,1,2)], text = TRUE)),
+    c("|            |estimate |std.error |p.value |adj.r.squared |",
       "|:-----------|:--------|:---------|:-------|:-------------|",
       "|(Intercept) |41.130   |1.197     |< 0.001 |0.009         |",
       "|time        |-0.371   |0.275     |0.182   |              |",
@@ -134,18 +120,18 @@ test_that("Reordering variables", {
   )
 
   expect_identical(
-    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[c(3,1,2)], text = TRUE)),
-    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[c("time", "Sex", "Group")], text = TRUE))
+    capture.kable(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[c(3,1,2)], text = TRUE)),
+    capture.kable(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[c("time", "Sex", "Group")], text = TRUE))
   )
 
   expect_identical(
-    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[1:2], text = TRUE)),
-    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[c(TRUE, TRUE, FALSE)], text = TRUE))
+    capture.kable(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[1:2], text = TRUE)),
+    capture.kable(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[c(TRUE, TRUE, FALSE)], text = TRUE))
   )
 
   expect_identical(
-    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat), text = TRUE)),
-    capture.output(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[], text = TRUE))
+    capture.kable(summary(modelsum(Age ~ Sex + Group + time, data = mdat), text = TRUE)),
+    capture.kable(summary(modelsum(Age ~ Sex + Group + time, data = mdat)[], text = TRUE))
   )
 
   expect_warning(modelsum(Age ~ Sex + Group + time, data = mdat)[1:4], "Some indices not found")
@@ -170,10 +156,8 @@ dat <- data.frame(short.name = rnorm(100), really.long.name = rnorm(100),
 
 test_that("01/26/2017: Brendan Broderick's Bold Text Wrapping Problem", {
   expect_identical(
-    capture.output(summary(modelsum(short.name ~ really.long.name + as.long.as.this, adjust = ~ why.would.you.name.something, data = dat))),
-    c(""                                                                                ,
-      ""                                                                                ,
-      "|                                 |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(short.name ~ really.long.name + as.long.as.this, adjust = ~ why.would.you.name.something, data = dat))),
+    c("|                                 |estimate |std.error |p.value |adj.r.squared |",
       "|:--------------------------------|:--------|:---------|:-------|:-------------|",
       "|(Intercept)                      |0.035    |0.099     |0.721   |-0.001        |",
       "|**really.long.name**             |0.099    |0.099     |0.319   |              |",
@@ -188,8 +172,8 @@ rm(dat)
 
 #################################################################################################################################
 
-test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem", {
-  expect_identical(capture.output(summary(modelsum(Age ~ Sex + time, data = mdat), text = TRUE))[1], "")
+test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem. Also 02/14/2018 (#66)", {
+  expect_error(capture.kable(summary(modelsum(Age ~ Sex + time, data = mdat), text = TRUE)), NA)
 })
 
 #################################################################################################################################
@@ -201,21 +185,19 @@ test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
     mdat.tmp <- keep.labels(mdat)
 
     form <- Surv(time, status) ~ Sex + ethan
-    expect_identical(capture.output(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
-                     capture.output(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
+    expect_identical(capture.kable(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+                     capture.kable(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
 
     mdat.tmp[3:4,"time"] <- c(NA,NA)
-    expect_identical(capture.output(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
-                     capture.output(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
+    expect_identical(capture.kable(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+                     capture.kable(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
 
-    expect_identical(capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
-                     capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
+    expect_identical(capture.kable(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+                     capture.kable(summary(modelsum(form, adjust = ~Age, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
 
     expect_identical(
-      capture.output(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
-      c(""                                                                              ,
-        ""                                                                              ,
-        "|              |HR    |CI.lower.HR |CI.upper.HR |p.value |concordance |Nmiss |",
+      capture.kable(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+      c("|              |HR    |CI.lower.HR |CI.upper.HR |p.value |concordance |Nmiss |",
         "|:-------------|:-----|:-----------|:-----------|:-------|:-----------|:-----|",
         "|Sex Male      |0.612 |0.210       |1.786       |0.369   |0.592       |0     |",
         "|Age in Years  |1.061 |0.968       |1.164       |0.205   |            |      |",
@@ -232,10 +214,8 @@ test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
 
 test_that("04/12/2017: ... vs modelsum.control", {
   expect_identical(
-    capture.output(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat, show.adjust = FALSE, control = modelsum.control()), text = TRUE)),
-    c(""                                                           ,
-      ""                                                           ,
-      "|            |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat, show.adjust = FALSE, control = modelsum.control()), text = TRUE)),
+    c("|            |estimate |std.error |p.value |adj.r.squared |",
       "|:-----------|:--------|:---------|:-------|:-------------|",
       "|(Intercept) |40.632   |1.024     |< 0.001 |-0.005        |",
       "|Sex Male    |-0.221   |1.112     |0.843   |              |",
@@ -251,8 +231,8 @@ data(mockstudy)
 test_that("08/01/2017: Beth Atkinson's subset problem", {
   idx <- mockstudy$sex == "Male"
   form <- fu.stat - 1 ~ age + hgb
-  expect_identical(capture.output(summary(modelsum(form, data = mockstudy, subset = idx, adjust = ~arm, family="binomial"), text = TRUE)),
-                   capture.output(summary(modelsum(form, data = mockstudy, subset = sex == "Male", adjust = ~arm, family="binomial"), text = TRUE)))
+  expect_identical(capture.kable(summary(modelsum(form, data = mockstudy, subset = idx, adjust = ~arm, family="binomial"), text = TRUE)),
+                   capture.kable(summary(modelsum(form, data = mockstudy, subset = sex == "Male", adjust = ~arm, family="binomial"), text = TRUE)))
 })
 
 
@@ -278,10 +258,8 @@ test_that("07/27/2017: Too many adjustment vars in as.data.frame.modelsum (#12)"
 
 test_that("07/27/2017: modelsum labels (#13)", {
   expect_identical(
-    capture.output(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = list(sexFemale = "Female", age = "Age, yrs"), text = TRUE)),
-    c(""                                                           ,
-      ""                                                           ,
-      "|            |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = list(sexFemale = "Female", age = "Age, yrs"), text = TRUE)),
+    c("|            |estimate |std.error |p.value |adj.r.squared |",
       "|:-----------|:--------|:---------|:-------|:-------------|",
       "|(Intercept) |26.793   |0.766     |< 0.001 |0.004         |",
       "|Age, yrs    |0.012    |0.012     |0.348   |              |",
@@ -289,8 +267,8 @@ test_that("07/27/2017: modelsum labels (#13)", {
     )
   )
   expect_identical(
-    capture.output(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = list(sexFemale = "Female", age = "Age, yrs"), text = TRUE)),
-    capture.output(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = c(sexFemale = "Female", age = "Age, yrs"), text = TRUE))
+    capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = list(sexFemale = "Female", age = "Age, yrs"), text = TRUE)),
+    capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = c(sexFemale = "Female", age = "Age, yrs"), text = TRUE))
   )
   expect_warning(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = c(badvar = "Eek")), "badvar")
 })
@@ -303,20 +281,16 @@ test_that("12/23/2017: non-syntactic names (#44, #45)", {
                     `1x` = rep(c("C", "D"), each = 5),
                     stringsAsFactors = FALSE, check.names = FALSE)
   expect_identical(
-    capture.output(summary(modelsum(y ~ x1x, data = dat))),
-    c(""                                                           ,
-      ""                                                           ,
-      "|            |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(y ~ x1x, data = dat))),
+    c("|            |estimate |std.error |p.value |adj.r.squared |",
       "|:-----------|:--------|:---------|:-------|:-------------|",
       "|(Intercept) |3.000    |0.707     |0.003   |0.727         |",
       "|**x1x B**   |5.000    |1.000     |0.001   |              |"
     )
   )
   expect_identical(
-    capture.output(summary(modelsum(y ~ `1x`, data = dat))),
-    c(""                                                           ,
-      ""                                                           ,
-      "|            |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(y ~ `1x`, data = dat))),
+    c("|            |estimate |std.error |p.value |adj.r.squared |",
       "|:-----------|:--------|:---------|:-------|:-------------|",
       "|(Intercept) |3.000    |0.707     |0.003   |0.727         |",
       "|**1x D**    |5.000    |1.000     |0.001   |              |"
@@ -328,10 +302,8 @@ test_that("12/23/2017: non-syntactic names (#44, #45)", {
 
 test_that("01/05/2018: leading/trailing whitespace (#48)", {
   expect_identical(
-    capture.output(summary(modelsum(age ~ arm, data = set_labels(mockstudy, list(arm = " Arm "))))),
-    c(""                                                                  ,
-      ""                                                                  ,
-      "|                   |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(age ~ arm, data = set_labels(mockstudy, list(arm = " Arm "))))),
+    c("|                   |estimate |std.error |p.value |adj.r.squared |",
       "|:------------------|:--------|:---------|:-------|:-------------|",
       "|(Intercept)        |59.673   |0.557     |< 0.001 |-0.001        |",
       "|**Arm  F: FOLFOX** |0.628    |0.709     |0.376   |              |",
@@ -339,10 +311,8 @@ test_that("01/05/2018: leading/trailing whitespace (#48)", {
     )
   )
   expect_identical(
-    capture.output(summary(modelsum(age ~ arm, data = set_labels(mockstudy, list(arm = " Arm "))), text = TRUE)),
-    c(""                                                              ,
-      ""                                                              ,
-      "|               |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(modelsum(age ~ arm, data = set_labels(mockstudy, list(arm = " Arm "))), text = TRUE)),
+    c("|               |estimate |std.error |p.value |adj.r.squared |",
       "|:--------------|:--------|:---------|:-------|:-------------|",
       "|(Intercept)    |59.673   |0.557     |< 0.001 |-0.001        |",
       "|Arm  F: FOLFOX |0.628    |0.709     |0.376   |              |",
