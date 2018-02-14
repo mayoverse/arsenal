@@ -8,6 +8,9 @@ Smaller changes:
 
 * Fixed a bug with assigning labels when some value names are unmatched. (#64)
 
+* Fixed a bug in `print.summary.tableby()`, `print.summary.modelsum()`, and `summary.freqlist()` with regards to knitting in
+  R Markdown with plots immediately following. (#65, #66, #67)
+
 # arsenal 1.0.0
 
 **This is a non-backwards-compatible update.**
