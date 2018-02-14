@@ -16,6 +16,7 @@
 #' @details
 #'   The \code{\link{data.frame}} methods put labels on and extract labels from
 #'   the \emph{columns} of \code{object}.
+#' @seealso \code{\link{keep.labels}}
 #' @author Ethan Heinzen
 #' @name labels
 NULL
@@ -32,7 +33,7 @@ labels.data.frame <- function(object, ...)
 #' @export
 labels.keep_labels <- function(object, ...)
 {
-  attr(object, "label")
+  attr(object, "label", exact = TRUE)
 }
 
 #' @rdname labels

@@ -7,6 +7,7 @@
 #' @param ... Other arguments (not in use at this time).
 #' @return A copy of \code{x} with a "keep labels" class appended on.
 #' @author Ethan Heinzen
+#' @seealso \code{\link{labels}}
 #' @name keep.labels
 NULL
 #> NULL
@@ -22,11 +23,7 @@ keep.labels <- function(x, ...)
 #' @export
 keep.labels.data.frame <- function(x, ...)
 {
-  for(i in seq_along(x))
-  {
-    x[[i]] <- keep.labels(x[[i]])
-  }
-
+  x[] <- lapply(x, keep.labels)
   class(x) <- c("keep_labels_df", class(x)[class(x) != "keep_labels_df"])
   x
 }

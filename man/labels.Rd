@@ -49,6 +49,9 @@ Assign and extract the \code{'label'} attribute on an R object. \code{set_labels
 The \code{\link{data.frame}} methods put labels on and extract labels from
   the \emph{columns} of \code{object}.
 }
+\seealso{
+\code{\link{keep.labels}}
+}
 \author{
 Ethan Heinzen
 }

@@ -27,6 +27,9 @@ A copy of \code{x} with a "keep labels" class appended on.
 \description{
 Keep the \code{'label'} attribute on an R object when subsetting.
 }
+\seealso{
+\code{\link{labels}}
+}
 \author{
 Ethan Heinzen
 }
