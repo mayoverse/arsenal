@@ -33,10 +33,8 @@ TAB.na <- table(mdat[, c("trt", "ethan")], useNA = 'a')
 
 test_that("A basic freqlist call", {
   expect_identical(
-    capture.output(summary(freqlist(TAB))),
-    c(""                                                               ,
-      ""                                                               ,
-      "|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
+    capture.kable(summary(freqlist(TAB))),
+    c("|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
       "|:-----|:------|:-----|----:|-------:|-----------:|----------:|",
       "|High  |Female |I     |    4|       4|        4.44|       4.44|",
       "|      |       |II    |    8|      12|        8.89|      13.33|",
@@ -60,10 +58,8 @@ test_that("A basic freqlist call", {
 
 test_that("groupBy option in freqlist call", {
   expect_identical(
-    capture.output(summary(freqlist(TAB, groupBy = "Group"), single = FALSE)),
-    c(""                                                               ,
-      ""                                                               ,
-      "|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
+    capture.kable(summary(freqlist(TAB, groupBy = "Group"), single = FALSE)),
+    c("|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
       "|:-----|:------|:-----|----:|-------:|-----------:|----------:|",
       "|High  |Female |I     |    4|       4|       13.33|      13.33|",
       "|      |       |II    |    8|      12|       26.67|      40.00|",
@@ -97,10 +93,8 @@ test_that("groupBy option in freqlist call", {
 
 test_that("sparse option in freqlist call", {
   expect_identical(
-    capture.output(summary(freqlist(TAB, sparse = TRUE))),
-    c(""                                                               ,
-      ""                                                               ,
-      "|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
+    capture.kable(summary(freqlist(TAB, sparse = TRUE))),
+    c("|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
       "|:-----|:------|:-----|----:|-------:|-----------:|----------:|",
       "|High  |Female |I     |    4|       4|        4.44|       4.44|",
       "|      |       |II    |    8|      12|        8.89|      13.33|",
@@ -126,10 +120,8 @@ test_that("sparse option in freqlist call", {
 
 test_that("NA options in freqlist call", {
   expect_identical(
-    capture.output(summary(freqlist(TAB.na, na.options = "include"))),
-    c(""                                                       ,
-      ""                                                       ,
-      "|trt |ethan   | Freq| cumFreq| freqPercent| cumPercent|",
+    capture.kable(summary(freqlist(TAB.na, na.options = "include"))),
+    c("|trt |ethan   | Freq| cumFreq| freqPercent| cumPercent|",
       "|:---|:-------|----:|-------:|-----------:|----------:|",
       "|A   |Ethan   |   17|      17|       18.89|      18.89|",
       "|    |Heinzen |   16|      33|       17.78|      36.67|",
@@ -139,10 +131,8 @@ test_that("NA options in freqlist call", {
     )
   )
   expect_identical(
-    capture.output(summary(freqlist(TAB.na, na.options = "showexclude"))),
-    c(""                                                       ,
-      ""                                                       ,
-      "|trt |ethan   | Freq| cumFreq| freqPercent| cumPercent|",
+    capture.kable(summary(freqlist(TAB.na, na.options = "showexclude"))),
+    c("|trt |ethan   | Freq| cumFreq| freqPercent| cumPercent|",
       "|:---|:-------|----:|-------:|-----------:|----------:|",
       "|A   |Ethan   |   17|      17|       19.54|      19.54|",
       "|    |Heinzen |   16|      33|       18.39|      37.93|",
@@ -152,10 +142,8 @@ test_that("NA options in freqlist call", {
     )
   )
   expect_identical(
-    capture.output(summary(freqlist(TAB.na, na.options = "remove"))),
-    c(""                                                       ,
-      ""                                                       ,
-      "|trt |ethan   | Freq| cumFreq| freqPercent| cumPercent|",
+    capture.kable(summary(freqlist(TAB.na, na.options = "remove"))),
+    c("|trt |ethan   | Freq| cumFreq| freqPercent| cumPercent|",
       "|:---|:-------|----:|-------:|-----------:|----------:|",
       "|A   |Ethan   |   17|      17|       19.54|      19.54|",
       "|    |Heinzen |   16|      33|       18.39|      37.93|",
@@ -168,8 +156,6 @@ test_that("NA options in freqlist call", {
 test_that("Changing the labels on non-grouped freqlists", {
 
   ref <- c(
-    ""                                                                 ,
-    ""                                                                 ,
     "|Treatment |Ethan Rocks | Freq| cumFreq| freqPercent| cumPercent|",
     "|:---------|:-----------|----:|-------:|-----------:|----------:|",
     "|A         |Ethan       |   17|      17|       18.89|      18.89|",
@@ -180,17 +166,17 @@ test_that("Changing the labels on non-grouped freqlists", {
   )
 
   expect_identical(
-    capture.output(summary(freqlist(TAB.na, na.options = "include"), labelTranslations = c("Treatment", "Ethan Rocks"))),
+    capture.kable(summary(freqlist(TAB.na, na.options = "include"), labelTranslations = c("Treatment", "Ethan Rocks"))),
     ref
   )
 
   expect_identical(
-    capture.output(summary(freqlist(TAB.na, na.options = "include", labelTranslations = list("Treatment", "Ethan Rocks")))),
+    capture.kable(summary(freqlist(TAB.na, na.options = "include", labelTranslations = list("Treatment", "Ethan Rocks")))),
     ref
   )
 
   expect_identical(
-    capture.output(summary(freqlist(TAB.na, na.options = "include", labelTranslations = c("Treatment", "Ethan Rocks")))),
+    capture.kable(summary(freqlist(TAB.na, na.options = "include", labelTranslations = c("Treatment", "Ethan Rocks")))),
     ref
   )
 
@@ -200,15 +186,13 @@ test_that("Changing the labels on non-grouped freqlists", {
   tmp <- freqlist(TAB.na, na.options = "include")
   labels(tmp) <- c("Treatment", "Ethan Rocks")
   expect_identical(
-    capture.output(summary(tmp)),
+    capture.kable(summary(tmp)),
     ref
   )
   labels(tmp) <- NULL
   expect_identical(
-    capture.output(summary(tmp)),
-    c(""                                                       ,
-      ""                                                       ,
-      "|trt |ethan   | Freq| cumFreq| freqPercent| cumPercent|",
+    capture.kable(summary(tmp)),
+    c("|trt |ethan   | Freq| cumFreq| freqPercent| cumPercent|",
       "|:---|:-------|----:|-------:|-----------:|----------:|",
       "|A   |Ethan   |   17|      17|       18.89|      18.89|",
       "|    |Heinzen |   16|      33|       17.78|      36.67|",
@@ -220,7 +204,7 @@ test_that("Changing the labels on non-grouped freqlists", {
 
   labels(tmp) <- c(ethan = "Ethan Rocks", trt = "Treatment", dummy = "Dummy")
   expect_identical(
-    capture.output(summary(tmp)),
+    capture.kable(summary(tmp)),
     ref
   )
 })
@@ -228,10 +212,8 @@ test_that("Changing the labels on non-grouped freqlists", {
 
 test_that("Changing the labels on grouped freqlists", {
   expect_identical(
-    capture.output(summary(freqlist(TAB.na, options = "include", groupBy = "ethan", labelTranslations = c("Treatment", "Ethan")))),
-    c(""                                                             ,
-      ""                                                             ,
-      "|Ethan |Treatment | Freq| cumFreq| freqPercent| cumPercent|"  ,
+    capture.kable(summary(freqlist(TAB.na, options = "include", groupBy = "ethan", labelTranslations = c("Treatment", "Ethan")))),
+    c("|Ethan |Treatment | Freq| cumFreq| freqPercent| cumPercent|"  ,
       "|:-----|:---------|----:|-------:|-----------:|----------:|"  ,
       "|Ethan |A         |   17|      17|       40.48|      40.48|"  ,
       "|      |B         |   25|      42|       59.52|     100.00|"  ,
@@ -253,10 +235,8 @@ test_that("Changing the labels on grouped freqlists", {
 
 test_that("dupLabels works", {
   expect_identical(
-    capture.output(summary(freqlist(TAB), dupLabels = TRUE)),
-    c(""                                                               ,
-      ""                                                               ,
-      "|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
+    capture.kable(summary(freqlist(TAB), dupLabels = TRUE)),
+    c("|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
       "|:-----|:------|:-----|----:|-------:|-----------:|----------:|",
       "|High  |Female |I     |    4|       4|        4.44|       4.44|",
       "|High  |Female |II    |    8|      12|        8.89|      13.33|",
@@ -277,10 +257,8 @@ test_that("dupLabels works", {
     )
   )
   expect_identical(
-    capture.output(summary(freqlist(TAB, groupBy = "Group"), single = FALSE, dupLabels = TRUE)),
-    c(""                                                               ,
-      ""                                                               ,
-      "|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
+    capture.kable(summary(freqlist(TAB, groupBy = "Group"), single = FALSE, dupLabels = TRUE)),
+    c("|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
       "|:-----|:------|:-----|----:|-------:|-----------:|----------:|",
       "|High  |Female |I     |    4|       4|       13.33|      13.33|",
       "|High  |Female |II    |    8|      12|       26.67|      40.00|",
@@ -313,9 +291,8 @@ test_that("dupLabels works", {
 
 test_that("Adding a title", {
   expect_identical(
-    capture.output(summary(freqlist(TAB.na, options = "include", labelTranslations = c("Treatment", "Ethan")), dupLabels = TRUE, title = "Ethan Rocks")),
-    c(""                                                             ,
-      "Table: Ethan Rocks"                                           ,
+    capture.kable(summary(freqlist(TAB.na, options = "include", labelTranslations = c("Treatment", "Ethan")), dupLabels = TRUE, title = "Ethan Rocks")),
+    c("Table: Ethan Rocks"                                           ,
       ""                                                             ,
       "|Treatment |Ethan   | Freq| cumFreq| freqPercent| cumPercent|",
       "|:---------|:-------|----:|-------:|-----------:|----------:|",
@@ -328,10 +305,9 @@ test_that("Adding a title", {
   )
 
   expect_identical(
-    capture.output(summary(freqlist(TAB.na, options = "include", groupBy = "ethan",
+    capture.kable(summary(freqlist(TAB.na, options = "include", groupBy = "ethan",
                                     labelTranslations = c("Treatment", "Ethan")), dupLabels = TRUE, title = "Ethan Rocks")),
-    c(""                                                             ,
-      "Table: Ethan Rocks"                                           ,
+    c("Table: Ethan Rocks"                                           ,
       ""                                                             ,
       "|Ethan |Treatment | Freq| cumFreq| freqPercent| cumPercent|"  ,
       "|:-----|:---------|----:|-------:|-----------:|----------:|"  ,
@@ -355,8 +331,8 @@ test_that("Adding a title", {
 
 test_that("Formula method works", {
   expect_identical(
-    capture.output(summary(freqlist(TAB.na, options = "include"), labelTranslations = c("Trt", "Ethan"))),
-    capture.output(summary(freqlist(~ trt + addNA(ethan), data = mdat), labelTranslations = c("Trt", "Ethan")))
+    capture.kable(summary(freqlist(TAB.na, options = "include"), labelTranslations = c("Trt", "Ethan"))),
+    capture.kable(summary(freqlist(~ trt + addNA(ethan), data = mdat), labelTranslations = c("Trt", "Ethan")))
   )
 })
 
@@ -367,10 +343,8 @@ test_that("Formula method works", {
 
 test_that("11/18/16: Emily Lundt's subsetted table and duplicate label problem", {
   expect_identical(
-    capture.output(summary(freqlist(TAB.subset))),
-    c(""                                                               ,
-      ""                                                               ,
-      "|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
+    capture.kable(summary(freqlist(TAB.subset))),
+    c("|Group |Sex    |Phase | Freq| cumFreq| freqPercent| cumPercent|",
       "|:-----|:------|:-----|----:|-------:|-----------:|----------:|",
       "|High  |Female |I     |    4|       4|        5.19|       5.19|",
       "|      |       |II    |    8|      12|       10.39|      15.58|",
