@@ -747,7 +747,8 @@ test_that("01/31/2018: include NAs in percents (#57)", {
   mdat2 <- mdat
   attr(mdat2$ethan, "label") <- "Ethan"
   expect_identical(
-    capture.output(summary(tableby(Sex ~ includeNA(ethan, label = "N-Miss"), data = mdat2, cat.stats = "countrowpct"), text = TRUE)),
+    capture.output(summary(tableby(Sex ~ includeNA(ethan, label = "N-Miss") + includeNA(ethan, first = TRUE),
+                                   data = mdat2, cat.stats = "countrowpct", label = "N-Miss"), text = TRUE)),
     c(""                                                                ,
       ""                                                                ,
       "|           |Female (N=46) |Male (N=44) |Total (N=90) | p value|",
@@ -755,7 +756,11 @@ test_that("01/31/2018: include NAs in percents (#57)", {
       "|Ethan      |              |            |             |   0.229|",
       "|-  Ethan   |18 (42.9%)    |24 (57.1%)  |42 (100.0%)  |        |",
       "|-  Heinzen |27 (60.0%)    |18 (40.0%)  |45 (100.0%)  |        |",
-      "|-  N-Miss  |1 (33.3%)     |2 (66.7%)   |3 (100.0%)   |        |"
+      "|-  N-Miss  |1 (33.3%)     |2 (66.7%)   |3 (100.0%)   |        |",
+      "|Ethan      |              |            |             |   0.229|",
+      "|-  N-Miss  |1 (33.3%)     |2 (66.7%)   |3 (100.0%)   |        |",
+      "|-  Ethan   |18 (42.9%)    |24 (57.1%)  |42 (100.0%)  |        |",
+      "|-  Heinzen |27 (60.0%)    |18 (40.0%)  |45 (100.0%)  |        |"
     )
   )
 
