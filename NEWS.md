@@ -10,6 +10,9 @@ Smaller changes:
 
 * Fixed a bug in `print.summary.tableby()`, `print.summary.modelsum()`, and `summary.freqlist()` with regards to knitting in
   R Markdown with plots immediately following. (#65, #66, #67)
+  
+* Fixed a bug in `print.summary.tableby()`, `print.summary.modelsum()`, `summary.freqlist()`, and `print.summary.compare.data.frame()`
+  with regards to PDF output in bookdown. (#69, #70, #71, #72)
 
 # arsenal 1.0.0
 
