@@ -9,7 +9,7 @@
 #'
 #' @param object A \code{\link{modelsum}} object.
 #' @param ... Other arguments; in \code{summary.modelsum}, these are passed to \code{\link{as.data.frame.modelsum}},
-#'   and in \code{print.summary.modelsum}, these are not used.
+#'   and in \code{print.summary.modelsum}, these are passed to \code{\link[knitr]{kable}}.
 #' @param labelTranslations A named list (or vector) where the name is the label in the
 #'   output to be replaced in the pretty rendering of modelsum by the character
 #'   string value for the named element of the list, e.g.,
@@ -17,6 +17,8 @@
 #' @param text Logical, denoting whether to print out the text version.
 #' @param title	Title for the table, defaults to \code{NULL} (no title)
 #' @param x An object of class \code{"summary.modelsum"}.
+#' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
+#'   To use the default in \code{kable}, pass \code{NULL}.
 #' @seealso \code{\link{modelsum}}, \code{\link{print.modelsum}}, \code{\link{as.data.frame.modelsum}}
 #' @return An object of class \code{"summary.modelsum"}
 #' @author Ethan Heinzen, based on code originally by Greg Dougherty
@@ -39,7 +41,7 @@ summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE
 
 #' @rdname summary.modelsum
 #' @export
-print.summary.modelsum <- function(x, ...)
+print.summary.modelsum <- function(x, ..., format = "markdown")
 {
 
   #### format the digits and nsmall things ####
@@ -102,7 +104,7 @@ print.summary.modelsum <- function(x, ...)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  print(knitr::kable(df, col.names = cn, caption = NULL))
+  print(knitr::kable(df, col.names = cn, caption = NULL, format = format, ...))
   cat("\n")
 
   invisible(x)

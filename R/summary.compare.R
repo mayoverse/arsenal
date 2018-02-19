@@ -4,11 +4,19 @@
 #' Print a more detailed output of the \code{\link{compare.data.frame}} object.
 #'
 #' @param object An object of class \code{"compare.data.frame"}, as made by the \code{\link{compare.data.frame}} S3 method.
-#' @param ... Other arguments (not in use at this time).
+#' @param ... Other arguments. In \code{print}, these are passed to  (not in use at this time).
 #' @param max.print.vars,max.print.obs,max.print.diff,max.print.attrs Integers denoting the maximum number of differences to report
 #'   for each of the three tables. Passing \code{NA} will print all differences.
+#' @param x An object returned by the \code{summary.compare.data.frame} function.
+#' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "pandoc".
+#'   To use the default in \code{kable}, pass \code{NULL}.
 #' @return An object of class \code{"summary.compare.data.frame"} is returned.
 #' @seealso compare.data.frame
+#' @name summary.compare
+NULL
+#> NULL
+
+#' @rdname summary.compare
 #' @export
 summary.compare.data.frame <- function(object, ..., max.print.vars = NA, max.print.obs = NA, max.print.diff = 10, max.print.attrs = NA)
 {
@@ -61,8 +69,9 @@ summary.compare.data.frame <- function(object, ..., max.print.vars = NA, max.pri
             class = "summary.compare.data.frame")
 }
 
+#' @rdname summary.compare
 #' @export
-print.summary.compare.data.frame <- function(x, ...)
+print.summary.compare.data.frame <- function(x, ..., format = "pandoc")
 {
   sumdiffs <- sum(x$diffs.byvar.table$n)
 
@@ -100,12 +109,12 @@ print.summary.compare.data.frame <- function(x, ...)
       {
         caption <- paste0(caption, " (", sumdiffs - nprint, " differences not shown)")
       }
-      print(knitr::kable(utils::head(obj, nprint), "pandoc", caption = caption, row.names = FALSE))
+      print(knitr::kable(utils::head(obj, nprint), format = format, caption = caption, row.names = FALSE, ...))
     } else
     {
       if(v == "diffs") caption <- "differences detected"
       nocaption <- paste0("No ", tolower(caption))
-      print(knitr::kable(data.frame(x = nocaption), "pandoc", caption = caption, row.names = FALSE, col.names = ""))
+      print(knitr::kable(data.frame(x = nocaption), format = format, caption = caption, row.names = FALSE, col.names = "", ...))
     }
     cat("\n")
   }

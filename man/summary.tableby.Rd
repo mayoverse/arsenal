@@ -4,6 +4,7 @@
 \alias{summary.tableby}
 \alias{summary.tableby}
 \alias{as.data.frame.summary.tableby}
+\alias{print.summary.tableby}
 \title{The summary method for a \code{tableby} object}
 \usage{
 \method{summary}{tableby}(object, ..., labelTranslations = NULL,
@@ -11,11 +12,16 @@
 
 \method{as.data.frame}{summary.tableby}(x, ..., text = x$text,
   pfootnote = x$pfootnote)
+
+\method{print}{summary.tableby}(x, ..., format = "markdown")
 }
 \arguments{
 \item{object}{An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.}
 
-\item{...}{Other arguments passed to \code{\link{as.data.frame.tableby}} or \code{as.data.frame.summary.tableby}.}
+\item{...}{For \code{summary.tableby}, other arguments passed to \code{\link{as.data.frame.tableby}}.
+For \code{as.data.frame.summary.tableby}, these aren't used.
+For \code{print}ing the summary object, these are passed to both \code{as.data.frame.summary.tableby} and
+\code{\link[knitr]{kable}}.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
 output to be replaced in the pretty rendering of tableby by the character string
@@ -31,6 +37,9 @@ of the tableby object}
 \item{pfootnote}{Logical, denoting whether to put footnotes describing the tests used to generate the p-values.}
 
 \item{x}{An object of class \code{"summary.tableby"}.}
+
+\item{format}{Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
+To use the default in \code{kable}, pass \code{NULL}.}
 }
 \value{
 An object of class \code{summary.tableby}

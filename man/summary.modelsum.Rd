@@ -9,13 +9,13 @@
 \method{summary}{modelsum}(object, ..., labelTranslations = NULL,
   text = FALSE, title = NULL)
 
-\method{print}{summary.modelsum}(x, ...)
+\method{print}{summary.modelsum}(x, ..., format = "markdown")
 }
 \arguments{
 \item{object}{A \code{\link{modelsum}} object.}
 
 \item{...}{Other arguments; in \code{summary.modelsum}, these are passed to \code{\link{as.data.frame.modelsum}},
-and in \code{print.summary.modelsum}, these are not used.}
+and in \code{print.summary.modelsum}, these are passed to \code{\link[knitr]{kable}}.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
 output to be replaced in the pretty rendering of modelsum by the character
@@ -27,6 +27,9 @@ string value for the named element of the list, e.g.,
 \item{title}{Title for the table, defaults to \code{NULL} (no title)}
 
 \item{x}{An object of class \code{"summary.modelsum"}.}
+
+\item{format}{Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
+To use the default in \code{kable}, pass \code{NULL}.}
 }
 \value{
 An object of class \code{"summary.modelsum"}
