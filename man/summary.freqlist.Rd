@@ -5,7 +5,7 @@
 \title{summary.freqlist}
 \usage{
 \method{summary}{freqlist}(object, single = FALSE, labelTranslations = NULL,
-  dupLabels = FALSE, title = NULL, ...)
+  dupLabels = FALSE, title = NULL, ..., format = "markdown")
 }
 \arguments{
 \item{object}{an object of class \code{\link{freqlist}}}
@@ -21,7 +21,10 @@ closely approximates \code{PROC FREQ} output from SAS, where a label carried dow
 
 \item{title}{Title for the table, defaults to \code{NULL} (no title)}
 
-\item{...}{additional arguments passed to the \code{\link[knitr]{kable}} function (e.g., \code{format = "pandoc"})}
+\item{...}{additional arguments passed to the \code{\link[knitr]{kable}} function.}
+
+\item{format}{Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
+To use the default in \code{kable}, pass \code{NULL}.}
 }
 \value{
 Invisibly returns \code{object}, and uses \code{\link[knitr]{kable}} to print the object.
