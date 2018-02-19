@@ -6,7 +6,10 @@
 #'
 #' @param object An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.
 #' @param x An object of class \code{"summary.tableby"}.
-#' @param ... Other arguments passed to \code{\link{as.data.frame.tableby}} or \code{as.data.frame.summary.tableby}.
+#' @param ... For \code{summary.tableby}, other arguments passed to \code{\link{as.data.frame.tableby}}.
+#'   For \code{as.data.frame.summary.tableby}, these aren't used.
+#'   For \code{print}ing the summary object, these are passed to both \code{as.data.frame.summary.tableby} and
+#'   \code{\link[knitr]{kable}}.
 #' @param title Title that will appear on the top of the header in the pretty-table rendering
 #'		of the tableby object
 #' @param labelTranslations  A named list (or vector) where the name is the label in the
@@ -16,6 +19,8 @@
 #'		Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development. For
 #'		\code{as.data.frame}, this can be set to \code{NULL} to avoid changing the labels at all.
 #' @param pfootnote Logical, denoting whether to put footnotes describing the tests used to generate the p-values.
+#' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
+#'   To use the default in \code{kable}, pass \code{NULL}.
 #' @return An object of class \code{summary.tableby}
 #' @seealso \code{\link{tableby.control}}, \code{\link{tableby}}
 #' @author Ethan Heinzen, based on code by Gregory Dougherty, Jason Sinnwell, Beth Atkinson,
@@ -117,14 +122,15 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
   set_attr(set_attr(df, "tests", tests.used), "align", align)
 }
 
+#' @rdname summary.tableby
 #' @export
-print.summary.tableby <- function(x, ...)
+print.summary.tableby <- function(x, ..., format = "markdown")
 {
   df <- as.data.frame(x, ...)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  print(knitr::kable(df, caption = NULL, align = attr(df, "align")))
+  print(knitr::kable(df, caption = NULL, align = attr(df, "align"), format = format, ...))
   if(!is.null(attr(df, "tests"))) cat(paste0(attr(df, "tests"), "\n", collapse = ""))
   cat("\n")
 
