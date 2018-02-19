@@ -3,26 +3,32 @@
 \name{summary.modelsum}
 \alias{summary.modelsum}
 \alias{summary.modelsum}
+\alias{as.data.frame.summary.modelsum}
 \alias{print.summary.modelsum}
 \title{Summarize a \code{modelsum} object.}
 \usage{
 \method{summary}{modelsum}(object, ..., labelTranslations = NULL,
   text = FALSE, title = NULL)
 
+\method{as.data.frame}{summary.modelsum}(x, ..., text = x$text)
+
 \method{print}{summary.modelsum}(x, ..., format = "markdown")
 }
 \arguments{
 \item{object}{A \code{\link{modelsum}} object.}
 
-\item{...}{Other arguments; in \code{summary.modelsum}, these are passed to \code{\link{as.data.frame.modelsum}},
-and in \code{print.summary.modelsum}, these are passed to \code{\link[knitr]{kable}}.}
+\item{...}{For \code{summary.modelsum}, other arguments passed to \code{\link{as.data.frame.modelsum}}.
+For \code{as.data.frame.summary.modelsum}, these aren't used.
+For \code{print}ing the summary object, these are passed to both \code{as.data.frame.summary.modelsum} and
+\code{\link[knitr]{kable}}.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
 output to be replaced in the pretty rendering of modelsum by the character
 string value for the named element of the list, e.g.,
 \code{list(age = "Age(years)")}.}
 
-\item{text}{Logical, denoting whether to print out the text version.}
+\item{text}{Logical, denoting whether to print out the text version. Passing \code{NULL} is the same as \code{TRUE},
+to print out the text version.}
 
 \item{title}{Title for the table, defaults to \code{NULL} (no title)}
 

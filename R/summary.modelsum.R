@@ -8,13 +8,16 @@
 #' Format the information in \code{object} as a table using Pandoc coding or plain text, and cat it to stdout.
 #'
 #' @param object A \code{\link{modelsum}} object.
-#' @param ... Other arguments; in \code{summary.modelsum}, these are passed to \code{\link{as.data.frame.modelsum}},
-#'   and in \code{print.summary.modelsum}, these are passed to \code{\link[knitr]{kable}}.
+#' @param ... For \code{summary.modelsum}, other arguments passed to \code{\link{as.data.frame.modelsum}}.
+#'   For \code{as.data.frame.summary.modelsum}, these aren't used.
+#'   For \code{print}ing the summary object, these are passed to both \code{as.data.frame.summary.modelsum} and
+#'   \code{\link[knitr]{kable}}.
 #' @param labelTranslations A named list (or vector) where the name is the label in the
 #'   output to be replaced in the pretty rendering of modelsum by the character
 #'   string value for the named element of the list, e.g.,
 #'   \code{list(age = "Age(years)")}.
-#' @param text Logical, denoting whether to print out the text version.
+#' @param text Logical, denoting whether to print out the text version. Passing \code{NULL} is the same as \code{TRUE},
+#'   to print out the text version.
 #' @param title	Title for the table, defaults to \code{NULL} (no title)
 #' @param x An object of class \code{"summary.modelsum"}.
 #' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
@@ -41,7 +44,7 @@ summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE
 
 #' @rdname summary.modelsum
 #' @export
-print.summary.modelsum <- function(x, ..., format = "markdown")
+as.data.frame.summary.modelsum <- function(x, ..., text = x$text)
 {
 
   #### format the digits and nsmall things ####
@@ -84,7 +87,7 @@ print.summary.modelsum <- function(x, ..., format = "markdown")
 
   #### Format if necessary ####
   df$label <- trimws(df$label) # regardless of formatting
-  if(!x$text) df$label <- ifelse(df$term.type == "Intercept", df$label, paste0("**", df$label, "**"))
+  if(!is.null(text) && !text) df$label <- ifelse(df$term.type == "Intercept", df$label, paste0("**", df$label, "**"))
 
   #### get rid of unnecessary columns ####
   df$model <- NULL
@@ -100,13 +103,23 @@ print.summary.modelsum <- function(x, ..., format = "markdown")
     if(length(nm)) cn[nm] <- unlist(x$control$stat.labels[nm])
   }
   cn["label"] <- ""
+  colnames(df) <- cn
 
+  df
+}
+
+#' @rdname summary.modelsum
+#' @export
+print.summary.modelsum <- function(x, ..., format = "markdown")
+{
+  df <- as.data.frame(x, ...)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  print(knitr::kable(df, col.names = cn, caption = NULL, format = format, ...))
+  print(knitr::kable(df, caption = NULL, format = format, ...))
   cat("\n")
 
   invisible(x)
 }
+
 
