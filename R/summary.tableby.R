@@ -90,17 +90,8 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
   }
 
   #### don't show the same statistics more than once ####
-  df[["p.value"]] <- replace(df[["p.value"]], duplicated(df$variable), "")
-
-  #### Format if necessary ####
-  df$label <- trimws(df$label) # regardless of formatting
-  if(!is.null(text))
-  {
-    if(text)
-    {
-      df$label <- ifelse(duplicated(df$variable), paste0("-  ", df$label), df$label)
-    } else df$label <- ifelse(duplicated(df$variable), paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("**", df$label, "**"))
-  }
+  dups <- duplicated(df$variable)
+  df[["p.value"]] <- replace(df[["p.value"]], dups, "")
 
   #### get rid of unnecessary columns ####
   df$variable <- NULL
@@ -109,6 +100,27 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
   df$variable.type <- NULL
   if(!x$control$test) df$p.value <- NULL
   if(!x$control$total) df[["Total"]] <- NULL
+
+  #### Format if necessary ####
+  opts <- list(...)
+  if(!is.null(width <- opts$width))
+  {
+    firstcol <- smart.split(df[[1L]], width = width, min.split = opts$min.split)
+    lens <- vapply(firstcol, length, NA_integer_)
+
+    df <- do.call(cbind.data.frame, c(list(label = unlist(firstcol, use.names = FALSE)), lapply(df[-1L], insert_elt, times = lens)))
+    row.names(df) <- NULL
+    dups <- insert_elt(dups, times = lens, elt = NULL)
+  }
+  df$label <- trimws(df$label)
+
+  if(!is.null(text))
+  {
+    if(text)
+    {
+      df$label <- ifelse(dups, paste0("-  ", df$label), df$label)
+    } else df$label <- ifelse(dups, paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("**", ifelse(df$label == "", "&nbsp;", df$label), "**"))
+  }
 
   #### tweak column names according to specifications ####
   cn <- stats::setNames(colnames(df), colnames(df))

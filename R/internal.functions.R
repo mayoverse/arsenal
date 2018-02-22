@@ -33,3 +33,11 @@ smart.split <- function(string, width = Inf, min.split = -Inf)
   if(is.null(min.split)) min.split <- -Inf
   lapply(string, smartsplit, width = width, min.split = min.split)
 }
+
+
+insert_elt <- function(col, times, elt = "")
+{
+  f <- if(is.null(elt)) rep else function(x, i) c(x, rep(elt, times = i - 1L))
+  unlist(Map(f, col, times), use.names = FALSE)
+}
+
