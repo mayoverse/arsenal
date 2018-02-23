@@ -15,6 +15,8 @@ Smaller changes:
   
 * Fixed a bug in `print.summary.tableby()`, `print.summary.modelsum()`, `summary.freqlist()`, and `print.summary.compare.data.frame()`
   with regards to PDF output in bookdown. (#69, #70, #71, #72)
+  
+* Fixed a bug in `print.summary.tableby()` and `print.summary.modelsum()` involving the lack of wrapping for long labels. (#59)
 
 # arsenal 1.0.0
 
