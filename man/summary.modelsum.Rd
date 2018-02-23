@@ -18,7 +18,7 @@
 \item{object}{A \code{\link{modelsum}} object.}
 
 \item{...}{For \code{summary.modelsum}, other arguments passed to \code{\link{as.data.frame.modelsum}}.
-For \code{as.data.frame.summary.modelsum}, these aren't used.
+For \code{as.data.frame.summary.modelsum}, "width" and "min.split" are passed to \code{\link{smart.split}}.
 For \code{print}ing the summary object, these are passed to both \code{as.data.frame.summary.modelsum} and
 \code{\link[knitr]{kable}}.}
 

@@ -1,33 +1,9 @@
 ## Tests for tableby
 
 
-## Jason's code for sourcing .R files
-## fl <- list.files(path="../../R", pattern="*.R", full.names=TRUE, include.dirs=TRUE)
-## for(file in fl) source(file)
-
 context("Testing the tableby output")
 
-options(stringsAsFactors=FALSE)
-set.seed(100)
-nsubj <- 90 # need multiple of 3
-mdat <- data.frame(Group = c(rep("High", nsubj/3), rep("Med", nsubj/3), rep("Low", nsubj/3)),
-                   Sex = sample(c("Male", "Female"), nsubj, replace=TRUE),
-                   Age = round(rnorm(nsubj, mean=40, sd=5)),
-                   Phase = ordered(sample(c("I", "II", "III"), nsubj, replace=TRUE), levels=c("I", "II", "III")),
-                   ht_in = round(rnorm(nsubj, mean=65, sd=5)),
-                   time = round(runif(nsubj,0,7)),
-                   status = rbinom(nsubj, 1, prob=0.4),
-                   dt = as.Date(round(rnorm(90, mean=100, sd=2000)), origin="1950/01/01"),
-                   missing = as.character(NA),
-                   trt = factor(sample(c("A", "B"), nsubj, replace=TRUE)),
-                   ethan = factor(c(NA, NA, NA, sample(c("Ethan", "Heinzen"), nsubj - 3, replace=TRUE))),
-                   weights = c(20, 1.5, rep(1, nsubj - 2)))
-mdat$Group.fac <- factor(mdat$Group)
-attr(mdat$ht_in, "label") <- "Height in Inches"
-attr(mdat$trt, "label") <- "Treatment Arm"
-attr(mdat$Age, "label") <- "Age in Years"
-
-class(mdat$Sex) <- c("dummyClassToTriggerErrors", class(mdat$Sex))
+# "mdat" now defined in helper-data.R
 
 ###########################################################################################################
 #### Basic two-sided tableby
@@ -722,3 +698,30 @@ test_that("01/31/2018: include NAs in percents (#57, #62)", {
   )
 })
 
+test_that("02/23/2018: wrapping long labels (#59)", {
+  labs <- list(
+    Group = "This is a really long label for the Group variable",
+    time = "Another really long label. Can you believe how long this is",
+    dt = "ThisLabelHasNoSpacesSoLetsSeeHowItBehaves"
+  )
+  expect_identical(
+    capture.kable(print(summary(tableby(Sex ~ Group + time + dt, data = set_labels(mdat, labs)), text = TRUE), width = 30)),
+    c("|                               |Female (N=46)           |Male (N=44)             |Total (N=90)            | p value|",
+      "|:------------------------------|:-----------------------|:-----------------------|:-----------------------|-------:|",
+      "|This is a really long label    |                        |                        |                        |   0.733|",
+      "|for the Group variable         |                        |                        |                        |        |",
+      "|-  High                        |15 (32.6%)              |15 (34.1%)              |30 (33.3%)              |        |",
+      "|-  Low                         |17 (37.0%)              |13 (29.5%)              |30 (33.3%)              |        |",
+      "|-  Med                         |14 (30.4%)              |16 (36.4%)              |30 (33.3%)              |        |",
+      "|Another really long label.     |                        |                        |                        |   0.237|",
+      "|Can you believe how long this  |                        |                        |                        |        |",
+      "|is                             |                        |                        |                        |        |",
+      "|-  Mean (SD)                   |3.609 (1.926)           |4.114 (2.093)           |3.856 (2.014)           |        |",
+      "|-  Range                       |0.000 - 7.000           |0.000 - 7.000           |0.000 - 7.000           |        |",
+      "|ThisLabelHasNoSpacesSoLetsSeeH |                        |                        |                        |   0.339|",
+      "|owItBehaves                    |                        |                        |                        |        |",
+      "|-  median                      |1948-12-07              |1951-03-26              |1949-10-07              |        |",
+      "|-  Range                       |1935-08-15 - 1959-09-06 |1937-02-08 - 1968-05-14 |1935-08-15 - 1968-05-14 |        |"
+    )
+  )
+})

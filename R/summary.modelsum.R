@@ -9,7 +9,7 @@
 #'
 #' @param object A \code{\link{modelsum}} object.
 #' @param ... For \code{summary.modelsum}, other arguments passed to \code{\link{as.data.frame.modelsum}}.
-#'   For \code{as.data.frame.summary.modelsum}, these aren't used.
+#'   For \code{as.data.frame.summary.modelsum}, "width" and "min.split" are passed to \code{\link{smart.split}}.
 #'   For \code{print}ing the summary object, these are passed to both \code{as.data.frame.summary.modelsum} and
 #'   \code{\link[knitr]{kable}}.
 #' @param labelTranslations A named list (or vector) where the name is the label in the
@@ -85,15 +85,27 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text)
   df[cn %in% c(use.digits0, use.digits1)] <- lapply(df[cn %in% c(use.digits0, use.digits1, use.digits.p)],
                                                     replace, list = duplicated(df$model), values = "")
 
-  #### Format if necessary ####
-  df$label <- trimws(df$label) # regardless of formatting
-  if(!is.null(text) && !text) df$label <- ifelse(df$term.type == "Intercept", df$label, paste0("**", df$label, "**"))
-
   #### get rid of unnecessary columns ####
   df$model <- NULL
   df$term <- NULL
+  term.type <- df$term.type
   df$term.type <- NULL
 
+  #### Format if necessary ####
+  opts <- list(...)
+  if(!is.null(width <- opts$width))
+  {
+    firstcol <- smart.split(df[[1L]], width = width, min.split = opts$min.split)
+    lens <- vapply(firstcol, length, NA_integer_)
+
+    df <- do.call(cbind.data.frame, c(list(label = unlist(firstcol, use.names = FALSE)), lapply(df[-1L], insert_elt, times = lens)))
+    row.names(df) <- NULL
+    term.type <- insert_elt(term.type, times = lens, elt = NULL)
+  }
+  df$label <- trimws(df$label)
+
+  if(!is.null(text) && !text)
+    df$label <- ifelse(term.type == "Intercept", df$label, paste0("**", ifelse(df$label == "", "&nbsp;", df$label), "**"))
 
   #### tweak column names according to specifications ####
   cn <- stats::setNames(colnames(df), colnames(df))

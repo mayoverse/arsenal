@@ -19,7 +19,7 @@
 \item{object}{An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.}
 
 \item{...}{For \code{summary.tableby}, other arguments passed to \code{\link{as.data.frame.tableby}}.
-For \code{as.data.frame.summary.tableby}, these aren't used.
+For \code{as.data.frame.summary.tableby}, "width" and "min.split" are passed to \code{\link{smart.split}}.
 For \code{print}ing the summary object, these are passed to both \code{as.data.frame.summary.tableby} and
 \code{\link[knitr]{kable}}.}
 

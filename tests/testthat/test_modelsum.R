@@ -3,25 +3,7 @@
 
 context("Testing the modelsum output")
 
-set.seed(100)
-nsubj <- 90 # need multiple of 3
-mdat <- data.frame(Group = c(rep("High", nsubj/3), rep("Med", nsubj/3), rep("Low", nsubj/3)),
-                   Sex = sample(c("Male", "Female"), nsubj, replace=TRUE),
-                   Age = round(rnorm(nsubj, mean=40, sd=5)),
-                   Phase = ordered(sample(c("I", "II", "III"), nsubj, replace=TRUE), levels=c("I", "II", "III")),
-                   ht_in = round(rnorm(nsubj, mean=65, sd=5)),
-                   time = round(runif(nsubj,0,7)),
-                   status = rbinom(nsubj, 1, prob=0.4),
-                   dt = as.Date(round(rnorm(90, mean=100, sd=2000)), origin="1950/01/01"),
-                   missing = as.character(NA),
-                   trt = factor(sample(c("A", "B"), nsubj, replace=TRUE)),
-                   ethan = factor(c(NA, NA, NA, sample(c("Ethan", "Heinzen"), nsubj - 3, replace=TRUE))),
-                   weights = c(20, 1.5, rep(1, nsubj - 2)),
-                   stringsAsFactors = FALSE)
-mdat$Group.fac <- factor(mdat$Group)
-attr(mdat$ht_in, "label") <- "Height in Inches"
-attr(mdat$trt, "label") <- "Treatment Arm"
-attr(mdat$Age, "label") <- "Age in Years"
+# "mdat" now defined in helper-data.R
 
 ###########################################################################################################
 #### Basic modelsum call
@@ -317,6 +299,32 @@ test_that("01/05/2018: leading/trailing whitespace (#48)", {
       "|(Intercept)    |59.673   |0.557     |< 0.001 |-0.001        |",
       "|Arm  F: FOLFOX |0.628    |0.709     |0.376   |              |",
       "|Arm  G: IROX   |0.090    |0.812     |0.912   |              |"
+    )
+  )
+})
+
+test_that("02/23/2018: wrapping long labels (#59)", {
+  labs <- list(
+    Group = "This is a really long label for the Group variable",
+    time = "Another really long label. Can you believe how long this is",
+    dt = "ThisLabelHasNoSpacesSoLetsSeeHowItBehaves"
+  )
+  expect_identical(
+    capture.kable(print(summary(modelsum(Age ~ Group + time + dt, data = set_labels(mdat, labs)), text = TRUE), width = 30)),
+    c("|                               |estimate |std.error |p.value |adj.r.squared |",
+      "|:------------------------------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept)                    |40.033   |0.970     |< 0.001 |-0.021        |",
+      "|This is a really long label    |-0.400   |1.372     |0.771   |              |",
+      "|for the Group variable Low     |         |          |        |              |",
+      "|This is a really long label    |-0.600   |1.372     |0.663   |              |",
+      "|for the Group variable Med     |         |          |        |              |",
+      "|(Intercept)                    |41.130   |1.197     |< 0.001 |0.009         |",
+      "|Another really long label.     |-0.371   |0.275     |0.182   |              |",
+      "|Can you believe how long this  |         |          |        |              |",
+      "|is                             |         |          |        |              |",
+      "|(Intercept)                    |41.531   |2.017     |< 0.001 |-0.001        |",
+      "|ThisLabelHasNoSpacesSoLetsSeeH |0.000    |0.000     |0.348   |              |",
+      "|owItBehaves                    |         |          |        |              |"
     )
   )
 })
