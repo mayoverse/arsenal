@@ -698,3 +698,30 @@ test_that("01/31/2018: include NAs in percents (#57, #62)", {
   )
 })
 
+test_that("02/23/2018: wrapping long labels (#59)", {
+  labs <- list(
+    Group = "This is a really long label for the Group variable",
+    time = "Another really long label. Can you believe how long this is",
+    dt = "ThisLabelHasNoSpacesSoLetsSeeHowItBehaves"
+  )
+  expect_identical(
+    capture.kable(print(summary(tableby(Sex ~ Group + time + dt, data = set_labels(mdat, labs)), text = TRUE), width = 30)),
+    c("|                               |Female (N=46)           |Male (N=44)             |Total (N=90)            | p value|",
+      "|:------------------------------|:-----------------------|:-----------------------|:-----------------------|-------:|",
+      "|This is a really long label    |                        |                        |                        |   0.733|",
+      "|for the Group variable         |                        |                        |                        |        |",
+      "|-  High                        |15 (32.6%)              |15 (34.1%)              |30 (33.3%)              |        |",
+      "|-  Low                         |17 (37.0%)              |13 (29.5%)              |30 (33.3%)              |        |",
+      "|-  Med                         |14 (30.4%)              |16 (36.4%)              |30 (33.3%)              |        |",
+      "|Another really long label.     |                        |                        |                        |   0.237|",
+      "|Can you believe how long this  |                        |                        |                        |        |",
+      "|is                             |                        |                        |                        |        |",
+      "|-  Mean (SD)                   |3.609 (1.926)           |4.114 (2.093)           |3.856 (2.014)           |        |",
+      "|-  Range                       |0.000 - 7.000           |0.000 - 7.000           |0.000 - 7.000           |        |",
+      "|ThisLabelHasNoSpacesSoLetsSeeH |                        |                        |                        |   0.339|",
+      "|owItBehaves                    |                        |                        |                        |        |",
+      "|-  median                      |1948-12-07              |1951-03-26              |1949-10-07              |        |",
+      "|-  Range                       |1935-08-15 - 1959-09-06 |1937-02-08 - 1968-05-14 |1935-08-15 - 1968-05-14 |        |"
+    )
+  )
+})

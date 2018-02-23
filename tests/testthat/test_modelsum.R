@@ -302,3 +302,29 @@ test_that("01/05/2018: leading/trailing whitespace (#48)", {
     )
   )
 })
+
+test_that("02/23/2018: wrapping long labels (#59)", {
+  labs <- list(
+    Group = "This is a really long label for the Group variable",
+    time = "Another really long label. Can you believe how long this is",
+    dt = "ThisLabelHasNoSpacesSoLetsSeeHowItBehaves"
+  )
+  expect_identical(
+    capture.kable(print(summary(modelsum(Age ~ Group + time + dt, data = set_labels(mdat, labs)), text = TRUE), width = 30)),
+    c("|                               |estimate |std.error |p.value |adj.r.squared |",
+      "|:------------------------------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept)                    |40.033   |0.970     |< 0.001 |-0.021        |",
+      "|This is a really long label    |-0.400   |1.372     |0.771   |              |",
+      "|for the Group variable Low     |         |          |        |              |",
+      "|This is a really long label    |-0.600   |1.372     |0.663   |              |",
+      "|for the Group variable Med     |         |          |        |              |",
+      "|(Intercept)                    |41.130   |1.197     |< 0.001 |0.009         |",
+      "|Another really long label.     |-0.371   |0.275     |0.182   |              |",
+      "|Can you believe how long this  |         |          |        |              |",
+      "|is                             |         |          |        |              |",
+      "|(Intercept)                    |41.531   |2.017     |< 0.001 |-0.001        |",
+      "|ThisLabelHasNoSpacesSoLetsSeeH |0.000    |0.000     |0.348   |              |",
+      "|owItBehaves                    |         |          |        |              |"
+    )
+  )
+})
