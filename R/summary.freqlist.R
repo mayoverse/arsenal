@@ -25,7 +25,7 @@
 #' withby <- freqlist(tab.ex, groupBy = c("arm","sex"), na.options = "showexclude")
 #' summary(withby)
 #' summary(withby, dupLabels = TRUE)
-#' @author Tina Gunderson
+#' @author Tina Gunderson, with major revisions by Ethan Heinzen
 #' @export
 #'
 summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, dupLabels = FALSE, title = NULL, ..., format = "markdown")
@@ -50,49 +50,40 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, d
     output
   }
 
-  if(is.null(object$labels))
-  {
-    cnames <- names(object$freqlist)
-  } else
-  {
-    cnames <- c(object$labels, "Freq", "cumFreq", "freqPercent","cumPercent")
-  }
+  cnames <- if(is.null(object$labels)) names(object$freqlist) else c(object$labels, "Freq", "cumFreq", "freqPercent", "cumPercent")
+  freqdf <- object$freqlist
+
   if(is.null(object$byVar) || single)
   {
-    freqdf <- object$freqlist
     if(ncol(freqdf) > 5 && !dupLabels)
     {
       freqdf[, 1:(ncol(freqdf)-4)] <- fmtdups(freqdf[, 1:(ncol(freqdf)-4), drop = FALSE])
     }
-    if(!is.null(title)) cat("\nTable: ", title, sep = "")
-    print(knitr::kable(freqdf, row.names = FALSE, col.names = cnames, caption = NULL, format = format, ...))
+    freqdf <- list(freqdf)
   } else
   {
     byVar <- object$byVar
-    freqdf <- object$freqlist
-    for(i in match(byVar, names(freqdf)))
+    freqdf[byVar] <- lapply(freqdf[byVar], function(x) if(anyNA(x)) addNA(x) else x)
+    freqdf <- by(freqdf, freqdf[, rev(byVar)], FUN = data.frame)
+
+    f <- function(x)
     {
-      if(sum(is.na(freqdf[[i]])) > 0) {freqdf[[i]] <- addNA(freqdf[[i]])}
+      if(!is.null(x) && nrow(x) > 1 && !dupLabels) x[, 1:(ncol(x)-4)] <- fmtdups(x[, 1:(ncol(x)-4), drop = FALSE])
+      x
     }
-    printlist <- by(freqdf, freqdf[, rev(byVar)], FUN = data.frame)
-    names(printlist) <- gsub("[.]",", ", levels(interaction(rev(freqdf[, byVar, drop = FALSE]))))
-    if(!is.null(title)) cat("\nTable: ", title, sep = "")
-    for(i in seq_along(printlist))
-    {
-      if(!is.null(printlist[[i]]))
-      {
-        if(nrow(printlist[[i]]) > 1)
-        {
-          sublist <- printlist[[i]]
-          if(!dupLabels) sublist[, 1:(ncol(sublist)-4)] <- fmtdups(sublist[, 1:(ncol(sublist)-4), drop = FALSE])
-          print(knitr::kable(sublist, row.names = FALSE, col.names = cnames, caption = NULL, format = format, ...))
-        } else
-        {
-          print(knitr::kable(printlist[[i]], row.names = FALSE, col.names = cnames, caption = NULL, format = format, ...))
-        }
-      }
-    }
+    freqdf <- lapply(freqdf, f)
   }
+  freqdf <- lapply(freqdf, stats::setNames, cnames)
+  structure(list(object = freqdf, title = title), class = "summary.freqlist")
+}
+
+#' @rdname summary.freqlist
+#' @export
+print.summary.freqlist <- function(x, ..., format = "markdown")
+{
+  if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
+  f <- function(x, ...) print(knitr::kable(x, ...))
+  lapply(x$object, f, row.names = FALSE, caption = NULL, format = format, ...)
   cat("\n")
-  invisible(object)
+  invisible(x)
 }

@@ -3,6 +3,8 @@
 
 context("Testing the freqlist output")
 
+# "mdat" now defined in helper-data.R
+
 TAB <- table(mdat[, c("Group", "Sex", "Phase")])
 TAB.subset <- table(mdat[!(mdat$Group == "Low" & mdat$Sex == "Male"), c("Group", "Sex", "Phase")])
 TAB.na <- table(mdat[, c("trt", "ethan")], useNA = 'a')
