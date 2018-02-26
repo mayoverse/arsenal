@@ -1,6 +1,6 @@
 #' summary.freqlist
 #'
-#' Summarize the \code{freqlist} object
+#' Summarize the \code{freqlist} object.
 #'
 #' @param object an object of class \code{\link{freqlist}}
 #' @param single a logical value indicating whether to collapse results created using a groupBy variable into a single table for printing
@@ -10,11 +10,13 @@
 #' @param dupLabels Should labels which are the same as the row above be printed? The default (\code{FALSE}) more
 #'   closely approximates \code{PROC FREQ} output from SAS, where a label carried down from the row above is left blank.
 #' @param title	Title for the table, defaults to \code{NULL} (no title)
-#' @param ... additional arguments passed to the \code{\link[knitr]{kable}} function.
+#' @param ... For \code{summary.freqlist}, these are not used. For the print method, these are
+#'   additional arguments passed to the \code{\link[knitr]{kable}} function.
+#' @param x An object of class \code{summary.freqlist}.
 #' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
 #'   To use the default in \code{kable}, pass \code{NULL}.
-#' @return Invisibly returns \code{object}, and uses \code{\link[knitr]{kable}} to print the object.
-#' @seealso \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+#' @return An object of class \code{"summary.freqlist"} (invisibly for the print method).
+#' @seealso \code{\link{freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
 #'
 #' @examples
 #' # load mockstudy data
@@ -25,9 +27,13 @@
 #' withby <- freqlist(tab.ex, groupBy = c("arm","sex"), na.options = "showexclude")
 #' summary(withby)
 #' summary(withby, dupLabels = TRUE)
-#' @author Tina Gunderson
+#' @author Tina Gunderson, with major revisions by Ethan Heinzen
+#' @name summary.freqlist
+NULL
+#> NULL
+
+#' @rdname summary.freqlist
 #' @export
-#'
 summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, dupLabels = FALSE, title = NULL, ..., format = "markdown")
 {
   if(!is.logical(single) || length(single) != 1) stop("'single' must be TRUE or FALSE")
@@ -50,49 +56,40 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, d
     output
   }
 
-  if(is.null(object$labels))
-  {
-    cnames <- names(object$freqlist)
-  } else
-  {
-    cnames <- c(object$labels, "Freq", "cumFreq", "freqPercent","cumPercent")
-  }
+  cnames <- if(is.null(object$labels)) names(object$freqlist) else c(object$labels, "Freq", "cumFreq", "freqPercent", "cumPercent")
+  freqdf <- object$freqlist
+
   if(is.null(object$byVar) || single)
   {
-    freqdf <- object$freqlist
     if(ncol(freqdf) > 5 && !dupLabels)
     {
       freqdf[, 1:(ncol(freqdf)-4)] <- fmtdups(freqdf[, 1:(ncol(freqdf)-4), drop = FALSE])
     }
-    if(!is.null(title)) cat("\nTable: ", title, sep = "")
-    print(knitr::kable(freqdf, row.names = FALSE, col.names = cnames, caption = NULL, format = format, ...))
+    freqdf <- list(freqdf)
   } else
   {
     byVar <- object$byVar
-    freqdf <- object$freqlist
-    for(i in match(byVar, names(freqdf)))
+    freqdf[byVar] <- lapply(freqdf[byVar], function(x) if(anyNA(x)) addNA(x) else x)
+    freqdf <- by(freqdf, freqdf[, rev(byVar)], FUN = data.frame)
+
+    f <- function(x)
     {
-      if(sum(is.na(freqdf[[i]])) > 0) {freqdf[[i]] <- addNA(freqdf[[i]])}
+      if(!is.null(x) && nrow(x) > 1 && !dupLabels) x[, 1:(ncol(x)-4)] <- fmtdups(x[, 1:(ncol(x)-4), drop = FALSE])
+      x
     }
-    printlist <- by(freqdf, freqdf[, rev(byVar)], FUN = data.frame)
-    names(printlist) <- gsub("[.]",", ", levels(interaction(rev(freqdf[, byVar, drop = FALSE]))))
-    if(!is.null(title)) cat("\nTable: ", title, sep = "")
-    for(i in seq_along(printlist))
-    {
-      if(!is.null(printlist[[i]]))
-      {
-        if(nrow(printlist[[i]]) > 1)
-        {
-          sublist <- printlist[[i]]
-          if(!dupLabels) sublist[, 1:(ncol(sublist)-4)] <- fmtdups(sublist[, 1:(ncol(sublist)-4), drop = FALSE])
-          print(knitr::kable(sublist, row.names = FALSE, col.names = cnames, caption = NULL, format = format, ...))
-        } else
-        {
-          print(knitr::kable(printlist[[i]], row.names = FALSE, col.names = cnames, caption = NULL, format = format, ...))
-        }
-      }
-    }
+    freqdf <- lapply(freqdf, f)
   }
+  freqdf <- lapply(freqdf, stats::setNames, cnames)
+  structure(list(object = freqdf, title = title), class = "summary.freqlist")
+}
+
+#' @rdname summary.freqlist
+#' @export
+print.summary.freqlist <- function(x, ..., format = "markdown")
+{
+  if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
+  f <- function(x, ...) print(knitr::kable(x, ...))
+  lapply(x$object, f, row.names = FALSE, caption = NULL, format = format, ...)
   cat("\n")
-  invisible(object)
+  invisible(x)
 }

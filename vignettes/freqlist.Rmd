@@ -100,7 +100,15 @@ NAs have to be added to relevant columns using `addNA()`.
 ```{r}
 ### this works in R >= 3.4.0
 # summary(freqlist(~ arm + sex + mdquality.s, data = mockstudy, addNA = TRUE))
+
+### This one is backwards-compatible
 summary(freqlist(~ arm + sex + addNA(mdquality.s), data = mockstudy))
+```
+
+One can also set NAs to an explicit value using `includeNA()`.
+
+```{r}
+summary(freqlist(~ arm + sex + includeNA(mdquality.s, "Missing"), data = mockstudy))
 ```
 
 # Rounding percentage digits or changing variable names for printing
@@ -222,6 +230,7 @@ tab.d3
 ```
 
 Since the formula method of `freqlist()` uses `xtabs()`, NAs should be treated in the same way.
+`includeNA()` can also be helpful here for setting explicit NA values.
 
 ## Table dimname names (dnn)
 

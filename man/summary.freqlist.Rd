@@ -2,10 +2,14 @@
 % Please edit documentation in R/summary.freqlist.R
 \name{summary.freqlist}
 \alias{summary.freqlist}
+\alias{summary.freqlist}
+\alias{print.summary.freqlist}
 \title{summary.freqlist}
 \usage{
 \method{summary}{freqlist}(object, single = FALSE, labelTranslations = NULL,
   dupLabels = FALSE, title = NULL, ..., format = "markdown")
+
+\method{print}{summary.freqlist}(x, ..., format = "markdown")
 }
 \arguments{
 \item{object}{an object of class \code{\link{freqlist}}}
@@ -21,16 +25,19 @@ closely approximates \code{PROC FREQ} output from SAS, where a label carried dow
 
 \item{title}{Title for the table, defaults to \code{NULL} (no title)}
 
-\item{...}{additional arguments passed to the \code{\link[knitr]{kable}} function.}
+\item{...}{For \code{summary.freqlist}, these are not used. For the print method, these are
+additional arguments passed to the \code{\link[knitr]{kable}} function.}
 
 \item{format}{Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
 To use the default in \code{kable}, pass \code{NULL}.}
+
+\item{x}{An object of class \code{summary.freqlist}.}
 }
 \value{
-Invisibly returns \code{object}, and uses \code{\link[knitr]{kable}} to print the object.
+An object of class \code{"summary.freqlist"} (invisibly for the print method).
 }
 \description{
-Summarize the \code{freqlist} object
+Summarize the \code{freqlist} object.
 }
 \examples{
 # load mockstudy data
@@ -43,8 +50,8 @@ summary(withby)
 summary(withby, dupLabels = TRUE)
 }
 \seealso{
-\code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+\code{\link{freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
 }
 \author{
-Tina Gunderson
+Tina Gunderson, with major revisions by Ethan Heinzen
 }
