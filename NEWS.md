@@ -22,7 +22,9 @@
 
 * Changed `tests.tableby()` to return a data.frame without factors.
 
-* Fixed a bug in `meansd()` when all inputs are NA.
+* Fixed a bug in `meansd()` when all inputs are NA. (#80)
+
+* Fixed a bug with `kwt()`, `anova()`, and `summary.tableby()` formatting when all inputs are NA. (#81)
 
 # arsenal 1.0.0
 

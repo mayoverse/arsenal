@@ -725,3 +725,18 @@ test_that("02/23/2018: wrapping long labels (#59)", {
     )
   )
 })
+
+
+test_that("02/26/2018: all NA vars (#80, #81)", {
+  dat <- data.frame(y = factor(c("A", "A", "A", "B", "B")), x = c(1, 2, 3, NA, NA))
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = dat), text = TRUE)),
+    c("|             |A (N=3)       |B (N=2) |Total (N=5)   | p value|",
+      "|:------------|:-------------|:-------|:-------------|-------:|",
+      "|x            |              |        |              |      NA|",
+      "|-  N-Miss    |0             |2       |2             |        |",
+      "|-  Mean (SD) |2.000 (1.000) |NA (NA) |2.000 (1.000) |        |",
+      "|-  Range     |1.000 - 3.000 |NA - NA |1.000 - 3.000 |        |"
+    )
+  )
+})

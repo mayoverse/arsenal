@@ -9,7 +9,7 @@
 ## also, nice to keep same format to call, eval(call(function, x, x,by)), as other tests
 anova <- function(x, x.by) {
   if(any(colSums(table(x, x.by, exclude=NA))==0)) {
-    return(list(p.value=NA, statistic.F=NA, method="Linear Model ANOVA"))
+    return(list(p.value=NA_real_, statistic.F=NA_real_, method="Linear Model ANOVA"))
   }
   aov.out <- stats::lm(x~x.by)
   test <- stats::anova(aov.out)
@@ -22,7 +22,7 @@ kwt <- function(x, x.by) {
   #  na.ind <- is.na(x)
   # stats::kruskal.test(x[!na.ind], as.factor(x.by[!na.ind]))
   if(any(colSums(table(x, x.by, exclude=NA))==0)) {
-    return(list(p.value=NA, statistic.F=NA, method="Kruskal-Wallis rank sum test"))
+    return(list(p.value=NA_real_, statistic.F=NA_real_, method="Kruskal-Wallis rank sum test"))
   }
   stats::kruskal.test(x, as.factor(x.by))
 }
