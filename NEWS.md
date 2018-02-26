@@ -1,6 +1,6 @@
-# arsenal 1.0.1
+# arsenal 1.0.0.9000
 
-Smaller changes:
+* `summary.freqlist()` now returns an object. `print.summary.freqlist()` prints the resulting object. (#76)
 
 * `as.data.frame.summary.tableby()` has been implemented, and `print.summary.tableby()` updated accordingly. (#60)
 
@@ -8,7 +8,9 @@ Smaller changes:
 
 * `includeNA()` now has dots, and the factor method gained a `first=` argument. (#62)
 
-* Fixed a bug with assigning labels when some value names are unmatched. (#64)
+* `includeNA()` also gained a numeric method, especially for use in `freqlist.formula()`. (#78)
+
+* Fixed a bug with assigning labels for tableby objects when some value names are unmatched. (#64)
 
 * Fixed a bug in `print.summary.tableby()`, `print.summary.modelsum()`, and `summary.freqlist()` with regards to knitting in
   R Markdown with plots immediately following. (#65, #66, #67)
