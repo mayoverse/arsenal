@@ -26,7 +26,10 @@ NULL
 #' @rdname tableby.stats
 #' @export
 meansd <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  y <- c(wtd.mean(x, weights=weights, na.rm=na.rm), sqrt(wtd.var(x, weights=weights, na.rm=na.rm)))
+  y <- if(na.rm && allNA(x))
+  {
+    rep(NA_real_, times = 2)
+  } else c(wtd.mean(x, weights=weights, na.rm=na.rm), sqrt(wtd.var(x, weights=weights, na.rm=na.rm)))
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"))
 }
 

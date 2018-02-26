@@ -22,6 +22,8 @@
 
 * Changed `tests.tableby()` to return a data.frame without factors.
 
+* Fixed a bug in `meansd()` when all inputs are NA.
+
 # arsenal 1.0.0
 
 **This is a non-backwards-compatible update.**
