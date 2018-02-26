@@ -60,6 +60,9 @@ trend <- function(x, x.by) {
 ## ' @param x.by  by, categorical variable
 ## ' @return   test output with $method and $p.value
 logrank <- function(x, x.by) {
+  if(any(table(is.na(x), x.by)[1, ] == 0)) {
+    return(list(p.value=NA_real_, method="survdiff logrank"))
+  }
   out <- survival::survdiff(x ~ x.by)
   out$p.value <- 1-stats::pchisq(out$chisq, df=length(unique(x.by))-1)
   out$method="survdiff logrank"
