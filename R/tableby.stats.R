@@ -69,34 +69,55 @@ range <- function(x, na.rm=TRUE, ...) {
 #' @rdname tableby.stats
 #' @export
 Nevents <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
-  mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
-  if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
-  as.countpct(as.numeric(mat["events"]))
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else {
+    mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
+    if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
+    as.numeric(mat["events"])
+  }
+  as.countpct(y)
 }
 
 ## Median survival
 #' @rdname tableby.stats
 #' @export
 medSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
-  mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
-  if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
-  as.tbstat(as.numeric(mat["median"]))
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else {
+    mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
+    if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
+    as.numeric(mat["median"])
+  }
+  as.tbstat(y)
 }
 
 #' @rdname tableby.stats
 #' @export
 NeventsSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
-  xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
-  out <- t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
-  out <- stats::setNames(as.list(as.data.frame(out)), paste0("time = ", times))
+  y <- if(na.rm && allNA(x))
+  {
+    matrix(NA_real_, nrow = 2, ncol = length(times))
+  } else
+  {
+    xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
+    t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
+  }
+  out <- stats::setNames(as.list(as.data.frame(y)), paste0("time = ", times))
   as.tbstat_multirow(lapply(out, as.countpct, parens = c("(", ")")))
 }
 
 #' @rdname tableby.stats
 #' @export
 NriskSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
-  xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
-  out <- stats::setNames(as.list(xsumm$n.risk), paste0("time = ", times))
+  y <- if(na.rm && allNA(x))
+  {
+    rep(NA_real_, times = length(times))
+  } else summary(survival::survfit(x ~ 1, weights = weights), times=times)$n.risk
+  out <- stats::setNames(as.list(y), paste0("time = ", times))
   as.tbstat_multirow(lapply(out, as.countpct))
 }
 
@@ -104,14 +125,22 @@ NriskSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...
 #' @export
 medTime <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
 {
-  as.tbstat(wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm))
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm)
+  as.tbstat(y)
 }
 
 #' @rdname tableby.stats
 #' @export
 rangeTime <- function(x, na.rm = TRUE, ...)
 {
-  as.tbstat(base::range(as.matrix(x)[,1], na.rm=na.rm), sep = " - ")
+  y <- if(na.rm && allNA(x))
+  {
+    c(NA_real_, NA_real_)
+  } else base::range(as.matrix(x)[,1], na.rm=na.rm)
+  as.tbstat(y, sep = " - ")
 }
 
 ## quantiles

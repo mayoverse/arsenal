@@ -8,7 +8,7 @@
 ## For now, just write our own to avoid over-writing anova R-base function
 ## also, nice to keep same format to call, eval(call(function, x, x,by)), as other tests
 anova <- function(x, x.by) {
-  if(any(colSums(table(x, x.by, exclude=NA))==0)) {
+  if(any(table(is.na(x), x.by)[1, ] == 0)) {
     return(list(p.value=NA_real_, statistic.F=NA_real_, method="Linear Model ANOVA"))
   }
   aov.out <- stats::lm(x~x.by)
@@ -19,9 +19,7 @@ anova <- function(x, x.by) {
 }
 ## 2. kruskal-wallis (non-parametric)
 kwt <- function(x, x.by) {
-  #  na.ind <- is.na(x)
-  # stats::kruskal.test(x[!na.ind], as.factor(x.by[!na.ind]))
-  if(any(colSums(table(x, x.by, exclude=NA))==0)) {
+  if(any(table(is.na(x), x.by)[1, ] == 0)) {
     return(list(p.value=NA_real_, statistic.F=NA_real_, method="Kruskal-Wallis rank sum test"))
   }
   stats::kruskal.test(x, as.factor(x.by))
@@ -60,6 +58,9 @@ trend <- function(x, x.by) {
 ## ' @param x.by  by, categorical variable
 ## ' @return   test output with $method and $p.value
 logrank <- function(x, x.by) {
+  if(any(table(is.na(x), x.by)[1, ] == 0)) {
+    return(list(p.value=NA_real_, method="survdiff logrank"))
+  }
   out <- survival::survdiff(x ~ x.by)
   out$p.value <- 1-stats::pchisq(out$chisq, df=length(unique(x.by))-1)
   out$method="survdiff logrank"

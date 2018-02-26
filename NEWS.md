@@ -26,6 +26,12 @@
 
 * Fixed a bug with `kwt()`, `anova()`, and `summary.tableby()` formatting when all inputs are NA. (#81)
 
+* Fixed a bug with survival statistics when all inputs are NA. (#82)
+
+* Fixed a bug with `logrank()` when all inputs are NA. (#83)
+
+* Fixed how arguments get passed to stats functions in `tableby()`. In particular, this affected the `times=` option. (#84)
+
 # arsenal 1.0.0
 
 **This is a non-backwards-compatible update.**

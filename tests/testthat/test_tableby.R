@@ -727,10 +727,10 @@ test_that("02/23/2018: wrapping long labels (#59)", {
 })
 
 
-test_that("02/26/2018: all NA vars (#80, #81)", {
+test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
   dat <- data.frame(y = factor(c("A", "A", "A", "B", "B")), x = c(1, 2, 3, NA, NA))
   expect_identical(
-    capture.kable(summary(tableby(y ~ x, data = dat), text = TRUE)),
+    capture.kable(summary(tableby(y ~ x, data = dat, numeric.test = "anova"), text = TRUE)),
     c("|             |A (N=3)       |B (N=2) |Total (N=5)   | p value|",
       "|:------------|:-------------|:-------|:-------------|-------:|",
       "|x            |              |        |              |      NA|",
@@ -739,4 +739,33 @@ test_that("02/26/2018: all NA vars (#80, #81)", {
       "|-  Range     |1.000 - 3.000 |NA - NA |1.000 - 3.000 |        |"
     )
   )
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = dat, numeric.test = "kwt"), text = TRUE)),
+    c("|             |A (N=3)       |B (N=2) |Total (N=5)   | p value|",
+      "|:------------|:-------------|:-------|:-------------|-------:|",
+      "|x            |              |        |              |      NA|",
+      "|-  N-Miss    |0             |2       |2             |        |",
+      "|-  Mean (SD) |2.000 (1.000) |NA (NA) |2.000 (1.000) |        |",
+      "|-  Range     |1.000 - 3.000 |NA - NA |1.000 - 3.000 |        |"
+    )
+  )
+  if(require(survival) && packageVersion("survival") >= "2.41-3")
+  {
+    expect_identical(
+      capture.kable(summary(tableby(y ~ Surv(x), data=dat, times = 1:2,
+                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime", "rangeTime")), text = TRUE)),
+      c("|                      |A (N=3)       |B (N=2) |Total (N=5)   | p value|",
+        "|:---------------------|:-------------|:-------|:-------------|-------:|",
+        "|Surv(x)               |              |        |              |      NA|",
+        "|-  Median Survival    |2.000         |NA      |2.000         |        |",
+        "|-  Events             |3             |NA      |3             |        |",
+        "|-  time = 1           |1 (66.7)      |NA (NA) |1 (66.7)      |        |",
+        "|-  time = 2           |2 (33.3)      |NA (NA) |2 (33.3)      |        |",
+        "|-  time = 1           |3             |NA      |3             |        |",
+        "|-  time = 2           |2             |NA      |2             |        |",
+        "|-  Median Follow-Up   |2.000         |NA      |2.000         |        |",
+        "|-  Range of Follow-Up |1.000 - 3.000 |NA - NA |1.000 - 3.000 |        |"
+      )
+    )
+  } else skip("survival package not available or not the right version.")
 })
