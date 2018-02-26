@@ -254,16 +254,16 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       for(statfun in ordered.stats) {
         if(statfun == "countrowpct")
         {
-          statList[[statfun]] <- eval(call(statfun, currcol, levels = xlevels,
+          statList[[statfun]] <- do.call(statfun, list(currcol, levels = xlevels,
                                            by = by.col, by.levels = by.levels, weights = weights, na.rm = TRUE))
           next
         }
         for(bylev in by.levels) {
           idx <- by.col == bylev
-          bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx]))
+          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx], ...))
         }
         ## add Total
-        bystatlist$Total <- eval(call(statfun,currcol, levels=xlevels, weights=weights))
+        bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, weights=weights, ...))
         statList[[statfun]] <- bystatlist
       }
 
@@ -313,16 +313,16 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       for(statfun in cat.stats) {
         if(statfun == "countrowpct")
         {
-          statList[[statfun]] <- eval(call(statfun, currcol, levels = xlevels,
+          statList[[statfun]] <- do.call(statfun, list(currcol, levels = xlevels,
                                            by = by.col, by.levels = by.levels, weights = weights, na.rm = TRUE))
           next
         }
         for(bylev in by.levels) {
           idx <- by.col == bylev
-          bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx]))
+          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx], ...))
         }
         ## add Total
-        bystatlist$Total <- eval(call(statfun,currcol, levels=xlevels, weights=weights))
+        bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, weights=weights, ...))
         statList[[statfun]] <- bystatlist
       }
 
@@ -354,10 +354,10 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       for(statfun in date.stats) {
         for(bylev in by.levels) {
           idx <- modeldf[[1]] == bylev
-          bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], na.rm=TRUE, weights=weights[idx]))
+          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], na.rm=TRUE, weights=weights[idx], ...))
         }
         ## add Total
-        bystatlist$Total <- eval(call(statfun, currcol, na.rm=TRUE, weights=weights))
+        bystatlist$Total <- do.call(statfun, list(currcol, na.rm=TRUE, weights=weights, ...))
         statList[[statfun]] <- bystatlist
       }
 
@@ -396,10 +396,10 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       for(statfun in surv.stats) {
         for(bylev in by.levels) {
           idx <- modeldf[[1]] == bylev
-          bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], na.rm=TRUE, weights=weights[idx]))
+          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], na.rm=TRUE, weights=weights[idx], ...))
         }
         ## add Total
-        bystatlist$Total <- eval(call(statfun, currcol, na.rm=TRUE, weights=weights))
+        bystatlist$Total <- do.call(statfun, list(currcol, na.rm=TRUE, weights=weights, ...))
         statList[[statfun]] <- bystatlist
       }
 
@@ -437,10 +437,10 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       for(statfun in num.stats) {
         for(bylev in by.levels) {
           idx <- by.col == bylev
-          bystatlist[[as.character(bylev)]] <- eval(call(statfun, currcol[idx], na.rm=TRUE, weights=weights[idx]))
+          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], na.rm=TRUE, weights=weights[idx], ...))
         }
         ## add Total
-        bystatlist$Total <-  eval(call(statfun, currcol, na.rm=TRUE, weights=weights))
+        bystatlist$Total <-  do.call(statfun, list(currcol, na.rm=TRUE, weights=weights, ...))
         statList[[statfun]] <- bystatlist
       }
       ## tests: anova and kruskal.test
