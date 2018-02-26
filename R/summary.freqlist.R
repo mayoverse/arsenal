@@ -1,6 +1,6 @@
 #' summary.freqlist
 #'
-#' Summarize the \code{freqlist} object
+#' Summarize the \code{freqlist} object.
 #'
 #' @param object an object of class \code{\link{freqlist}}
 #' @param single a logical value indicating whether to collapse results created using a groupBy variable into a single table for printing
@@ -10,11 +10,13 @@
 #' @param dupLabels Should labels which are the same as the row above be printed? The default (\code{FALSE}) more
 #'   closely approximates \code{PROC FREQ} output from SAS, where a label carried down from the row above is left blank.
 #' @param title	Title for the table, defaults to \code{NULL} (no title)
-#' @param ... additional arguments passed to the \code{\link[knitr]{kable}} function.
+#' @param ... For \code{summary.freqlist}, these are not used. For the print method, these are
+#'   additional arguments passed to the \code{\link[knitr]{kable}} function.
+#' @param x An object of class \code{summary.freqlist}.
 #' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
 #'   To use the default in \code{kable}, pass \code{NULL}.
-#' @return Invisibly returns \code{object}, and uses \code{\link[knitr]{kable}} to print the object.
-#' @seealso \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+#' @return An object of class \code{"summary.freqlist"} (invisibly for the print method).
+#' @seealso \code{\link{freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
 #'
 #' @examples
 #' # load mockstudy data
@@ -26,8 +28,12 @@
 #' summary(withby)
 #' summary(withby, dupLabels = TRUE)
 #' @author Tina Gunderson, with major revisions by Ethan Heinzen
+#' @name summary.freqlist
+NULL
+#> NULL
+
+#' @rdname summary.freqlist
 #' @export
-#'
 summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, dupLabels = FALSE, title = NULL, ..., format = "markdown")
 {
   if(!is.logical(single) || length(single) != 1) stop("'single' must be TRUE or FALSE")
