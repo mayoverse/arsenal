@@ -53,3 +53,11 @@ includeNA.character <- function(x, label = "(Missing)", ...)
   x
 }
 
+#' @rdname NA.operations
+#' @export
+includeNA.numeric <- function(x, label, ...)
+{
+  if(label %in% x) warning('"', label, '" already appears in x.')
+  x[is.na(x)] <- label
+  x
+}
