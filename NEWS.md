@@ -18,6 +18,8 @@ Smaller changes:
   
 * Fixed a bug in `print.summary.tableby()` and `print.summary.modelsum()` involving the lack of wrapping for long labels. (#59)
 
+* Changed `tests.tableby()` to return a data.frame without factors.
+
 # arsenal 1.0.0
 
 **This is a non-backwards-compatible update.**

@@ -223,9 +223,12 @@ tests <- function(x) {
 #' @export
 tests.tableby <- function(x) {
   if(x$control$test) {
-    testdf <- data.frame(Variable=labels(x)[-1],
-                     p.value=sapply(x$x, function(z) z$test$p.value),
-                     Method=sapply(x$x, function(z) z$test$method))
+    testdf <- data.frame(
+      Variable = labels(x)[-1],
+      p.value = vapply(x$x, function(z) z$test$p.value, NA_real_),
+      Method = vapply(x$x, function(z) z$test$method, NA_character_),
+      stringsAsFactors = FALSE
+    )
     if(!is.null(x$control$test.pname)) {
       names(testdf)[2] <- x$control$test.pname
     }
