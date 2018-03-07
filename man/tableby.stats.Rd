@@ -14,6 +14,7 @@
 \alias{rangeTime}
 \alias{q1q3}
 \alias{medianq1q3}
+\alias{iqr}
 \alias{Nmiss}
 \alias{Nmiss2}
 \alias{N}
@@ -45,6 +46,8 @@ rangeTime(x, na.rm = TRUE, ...)
 q1q3(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
 medianq1q3(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
+
+iqr(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
 Nmiss(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
 

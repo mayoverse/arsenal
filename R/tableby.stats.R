@@ -163,6 +163,7 @@ medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 }
 
 #' @rdname tableby.stats
+#' @export
 iqr <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- if(na.rm && allNA(x)) {
     c(NA_real_, NA_real_)

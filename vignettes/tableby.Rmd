@@ -711,6 +711,7 @@ however there are a number of extra functions defined specifically for the table
 * `countrowpct`: print the number of values in a category plus the row-percentage in the format `N (%)`
 * `medianq1q3`: print the median, 25th, and 75th quantiles `median (Q1, Q3)`
 * `q1q3`: print the 25th and 75th quantiles `Q1, Q3`
+* `iqr`: print the inter-quartile range.
 * `medianrange`: print the median, minimum and maximum values `median (minimum, maximum)`
 * `Nevents`: print number of events for a survival object within each grouping level
 * `medsurv`: print the median survival
