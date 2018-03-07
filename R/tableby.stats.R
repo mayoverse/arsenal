@@ -162,8 +162,13 @@ medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
 
-## Inner-quartile range has a function IQR in R, but a wrapper
-## would need to be written with weights in mind
+#' @rdname tableby.stats
+iqr <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
+  y <- if(na.rm && allNA(x)) {
+    c(NA_real_, NA_real_)
+  } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm)
+  as.tbstat(diff(y))
+}
 
 ## Count of missings: always show missings
 #' @rdname tableby.stats
@@ -253,7 +258,7 @@ wtd.quantile <- function(x, weights=NULL, probs=c(0,0.25,0.5,0.75,1), na.rm=TRUE
   if(any(probs < 0) || any(probs > 1)) stop("Probabilities must be between 0 and 1 inclusive")
 
   wts <- wtd.table(x, weights, na.rm = na.rm)
-  x <- as.numeric(names(wts))
+  x <- if(is.Date(x)) as.numeric(as.Date(names(wts))) else as.numeric(names(wts))
   n <- sum(wts)
   order <- 1 + (n - 1) * probs
   low <- pmax(floor(order), 1)

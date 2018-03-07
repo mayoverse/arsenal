@@ -32,6 +32,10 @@
 
 * Fixed how arguments get passed to stats functions in `tableby()`. In particular, this affected the `times=` option. (#84)
 
+* Added `iqr()` as a tableby stat option. (#86)
+
+* Fixed quantile functions `q1q3()` and `medianq1q3()` for dates. (#87)
+
 # arsenal 1.0.0
 
 **This is a non-backwards-compatible update.**
