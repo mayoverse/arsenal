@@ -769,3 +769,23 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
     )
   } else skip("survival package not available or not the right version.")
 })
+
+
+test_that("03/07/2018: quantiles for dates and IQR (#86)", {
+  expect_identical(
+    capture.kable(summary(tableby(Sex ~ dt + ht_in + Age, data = mdat,
+                                  numeric.stats = c("q1q3", "iqr"), date.stats = c("q1q3", "iqr")), text = TRUE)),
+    c("|                 |Female (N=46)          |Male (N=44)            |Total (N=90)           | p value|",
+      "|:----------------|:----------------------|:----------------------|:----------------------|-------:|",
+      "|dt               |                       |                       |                       |   0.339|",
+      "|-  Q1, Q3        |1946-04-26, 1953-11-07 |1946-11-27, 1954-06-13 |1946-06-13, 1954-04-26 |        |",
+      "|-  iqr           |2751.250               |2755.500               |2873.250               |        |",
+      "|Height in Inches |                       |                       |                       |   0.786|",
+      "|-  Q1, Q3        |61.250, 68.000         |62.000, 68.000         |62.000, 68.000         |        |",
+      "|-  iqr           |6.750                  |6.000                  |6.000                  |        |",
+      "|Age in Years     |                       |                       |                       |   0.818|",
+      "|-  Q1, Q3        |36.000, 44.000         |37.000, 41.250         |36.000, 43.000         |        |",
+      "|-  iqr           |8.000                  |4.250                  |7.000                  |        |"
+    )
+  )
+})
