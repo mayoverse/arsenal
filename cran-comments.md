@@ -2,18 +2,16 @@
 
 This is a new version. In this version:
 
-* We made major updates to three of the main functions: `tableby()`, `modelsum()`, and `freqlist()`.
+* We made major updates to the `freqlist()` function.
 
-* We resolved almost 20 bugs/feature requests.
+* We resolved about 20 bugs/feature requests.
 
 * We updated documentation where appropriate.
 
-* We added more versions of R to our test suite.
-
 ## Test environments
 
-* local Linux install: R 3.4.1
-* ubuntu 14.04 (on travis-ci): R devel, R 3.4.2 (release), R 3.3.3, R 3.2.3
+* local Linux install: R 3.4.2
+* ubuntu 14.04 (on travis-ci): R devel, R 3.4.3 (release), R 3.3.3, R 3.2.3
 * win-builder (devel and release)
 
 ## R CMD check results

@@ -10,7 +10,7 @@ The goal of `library(arsenal)` is to make statistical reporting easy. It include
 in his/her "arsenal" of functions. There are, at this time, 5 main functions, documented below. Each of these functions is
 motivated by a local SAS macro or procedure of similar functionality.
 
-Note that `arsenal` v1.0.0 is not backwards compatible with previous versions. See the `NEWS` file for more details.
+Note that `arsenal` v1.0.0 (and to a smaller degree, v1.1.0) is not backwards compatible with previous versions. See the `NEWS` file for more details.
 
 ## The `tableby()` Function
 
