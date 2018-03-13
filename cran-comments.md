@@ -1,4 +1,4 @@
-## Submission for arsenal 1.0.0
+## Submission for arsenal 1.1.0
 
 This is a new version. In this version:
 
