@@ -64,11 +64,12 @@ Don't use the option `text = TRUE` with the `write2` functions.
 mylabels <- list(sex = "SEX", age ="Age, yrs")
 tab1 <- tableby(arm ~ sex + age, data=mockstudy)
 
-write2html(tab1, paste0(tmpdir, "/test.tableby.html"), quiet = TRUE,
-           title = "My test table",      # passed to summary.tableby
-           labelTranslations = mylabels, # passed to summary.tableby
-           total = FALSE                 # passed to summary.tableby
-           )
+write2html(
+  tab1, paste0(tmpdir, "/test.tableby.html"), quiet = TRUE,
+  title = "My test table",      # passed to summary.tableby
+  labelTranslations = mylabels, # passed to summary.tableby
+  total = FALSE                 # passed to summary.tableby
+)
 ```
 
 ## `modelsum`
@@ -79,11 +80,12 @@ Don't use the option `text = TRUE` with the `write2` functions.
 ```{r}
 tab2 <- modelsum(alk.phos ~ arm + ps + hgb, adjust= ~ age + sex, family = "gaussian", data = mockstudy)
 
-write2pdf(tab2, paste0(tmpdir, "/test.modelsum.pdf"), quiet = TRUE,
-          title = "My test table", # passed to summary.modelsum
-          show.intercept = FALSE,  # passed to summary.modelsum
-          digits = 5               # passed to summary.modelsum
-          )
+write2pdf(
+  tab2, paste0(tmpdir, "/test.modelsum.pdf"), quiet = TRUE,
+  title = "My test table", # passed to summary.modelsum
+  show.intercept = FALSE,  # passed to summary.modelsum
+  digits = 5               # passed to summary.modelsum
+)
 ```
 
 ## `freqlist`
@@ -94,10 +96,11 @@ For `freqlist` objects, the output function in `write2()` is `summary()`. For av
 mockstudy[, c("arm", "sex", "mdquality.s")] %>% 
   table(useNA = "ifany") %>% 
   freqlist(groupBy = c("arm", "sex")) %>% 
-  write2word(paste0(tmpdir, "/test.freqlist.doc"), quiet = TRUE,
-             single = FALSE,         # passed to summary.freqlist
-             title = "My cool title" # passed to summary.freqlist
-             )
+  write2word(
+    paste0(tmpdir, "/test.freqlist.doc"), quiet = TRUE,
+    single = FALSE,         # passed to summary.freqlist
+    title = "My cool title" # passed to summary.freqlist
+  )
 ```
 
 ## `compare`
@@ -126,11 +129,12 @@ For `xtable` objects, the output function in `write2()` is `print()`. For availa
 mockstudy %>% 
   head() %>% 
   xtable::xtable(caption = "My xtable") %>% 
-  write2pdf(paste0(tmpdir, "/test.xtable.pdf"), quiet = TRUE,
-            comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
-            include.rownames = FALSE, # passed to print.xtable
-            caption.placement = "top" # passed to print.xtable
-            )
+  write2pdf(
+    paste0(tmpdir, "/test.xtable.pdf"), quiet = TRUE,
+    comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
+    include.rownames = FALSE, # passed to print.xtable
+    caption.placement = "top" # passed to print.xtable
+  )
 ```
 
 To make an HTML document, use the `print.xtable()` option `type = "html"`.
@@ -139,12 +143,13 @@ To make an HTML document, use the `print.xtable()` option `type = "html"`.
 mockstudy %>% 
   head() %>% 
   xtable::xtable(caption = "My xtable") %>% 
-  write2html(paste0(tmpdir, "/test.xtable.html"), quiet = TRUE,
-             type = "html",            # passed to print.xtable
-             comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
-             include.rownames = FALSE, # passed to print.xtable
-             caption.placement = "top" # passed to print.xtable
-             )
+  write2html(
+    paste0(tmpdir, "/test.xtable.html"), quiet = TRUE,
+    type = "html",            # passed to print.xtable
+    comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
+    include.rownames = FALSE, # passed to print.xtable
+    caption.placement = "top" # passed to print.xtable
+  )
 ```
 
 User beware! `xtable()` is not compatible with `write2word()`.
@@ -163,9 +168,11 @@ write2word(pander::pander_return(head(mockstudy)), file = paste0(tmpdir, "/test.
 To output multiple tables into a document, simply make a list of them and call the same function as before.
 
 ```{r}
-mylist <- list(tableby(sex ~ age, data = mockstudy),
-               freqlist(table(mockstudy[, c("sex", "arm")])),
-               knitr::kable(head(mockstudy)))
+mylist <- list(
+  tableby(sex ~ age, data = mockstudy),
+  freqlist(table(mockstudy[, c("sex", "arm")])),
+  knitr::kable(head(mockstudy))
+)
 
 write2pdf(mylist, paste0(tmpdir, "/test.mylist.pdf"), quiet = TRUE)
 
@@ -174,12 +181,14 @@ write2pdf(mylist, paste0(tmpdir, "/test.mylist.pdf"), quiet = TRUE)
 One neat side-effect of this function is that you can output text and headers, etc. The possibilities are endless!
 
 ```{r}
-mylist2 <- list("# Header 1",
-                "This is a small paragraph introducing tableby.",
-                tableby(sex ~ age, data = mockstudy),
-                "<hr>",
-                "# Header 2",
-                "<font color='red'>I can change color of my text!</font>")
+mylist2 <- list(
+  "# Header 1",
+  "This is a small paragraph introducing tableby.",
+  tableby(sex ~ age, data = mockstudy),
+  "<hr>",
+  "# Header 2",
+  "<font color='red'>I can change color of my text!</font>"
+)
 write2html(mylist2, paste0(tmpdir, "/test.mylist2.html"), quiet = TRUE)
 ```
 
@@ -252,9 +261,10 @@ write2html(mylist3, paste0(tmpdir, "/test.yaml2.html"), quiet = TRUE)
 This is easily accomplished by using the argument `quiet = TRUE` (passed to the `rmarkdown::render()` function).
 
 ```{r}
-write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.quiet.html"),
-           quiet = TRUE # passed to rmarkdown::render
-           )
+write2html(
+  knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.quiet.html"),
+  quiet = TRUE # passed to rmarkdown::render
+)
 ```
 
 ## How do I look at the temporary `.md` file?
@@ -262,10 +272,11 @@ write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.quiet.html
 This is easily accomplished by using the option `keep.md = TRUE`.
 
 ```{r}
-write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.keep.md.html"),
-           quiet = TRUE, # passed to rmarkdown::render
-           keep.md = TRUE
-           )
+write2html(
+  knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.keep.md.html"),
+  quiet = TRUE, # passed to rmarkdown::render
+  keep.md = TRUE
+)
 ```
 
 
@@ -274,9 +285,10 @@ write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.keep.md.ht
 This is easily accomplished by using the option `render. = FALSE`. Note that this will then default to `keep.md = TRUE`.
 
 ```{r}
-write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.dont.render.html"),
-           render. = FALSE
-           )
+write2html(
+  knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.dont.render.html"),
+  render. = FALSE
+)
 ```
 
 ## How do I output headers, raw HTML/LaTeX, paragraphs, etc.?
@@ -284,12 +296,14 @@ write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.dont.rende
 One can simply abuse the list S3 method for `write2()`!
 
 ```{r}
-mylist2 <- list("# Header 1",
-                "This is a small paragraph introducing tableby.",
-                tableby(sex ~ age, data = mockstudy),
-                "<hr>",
-                "# Header 2",
-                "<font color='red'>I can change color of my text!</font>")
+mylist2 <- list(
+  "# Header 1",
+  "This is a small paragraph introducing tableby.",
+  tableby(sex ~ age, data = mockstudy),
+  "<hr>",
+  "# Header 2",
+  "<font color='red'>I can change color of my text!</font>"
+)
 write2html(mylist2, paste0(tmpdir, "/test.mylist2.html"), quiet = TRUE)
 ```
 
@@ -298,10 +312,11 @@ write2html(mylist2, paste0(tmpdir, "/test.mylist2.html"), quiet = TRUE)
 You can pass arguments to the format functions used behind the scenes.
 
 ```{r}
-write2html(knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.theme.html"),
-           quiet = TRUE,  # passed to rmarkdown::render
-           theme = "yeti" # passed to rmarkdown::html_document
-           )
+write2html(
+  knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.theme.html"),
+  quiet = TRUE,  # passed to rmarkdown::render
+  theme = "yeti" # passed to rmarkdown::html_document
+)
 ```
 
 See the help pages for `rmarkdown::word_document()`, `rmarkdown::html_document()`, and `rmarkdown::pdf_document()`.
@@ -312,10 +327,11 @@ This can be done using the generic `write2()` function. The last argument in the
 For details on the acceptable inputs, see the help page for `write2()`.
 
 ```{r}
-write2(knitr::kable(head(mockstudy[, 1:4])), paste0(tmpdir, "/test.kable.rtf"),
-       quiet = TRUE,  # passed to rmarkdown::render
-       output_format = rmarkdown::rtf_document
-       )
+write2(
+  knitr::kable(head(mockstudy[, 1:4])), paste0(tmpdir, "/test.kable.rtf"),
+  quiet = TRUE,  # passed to rmarkdown::render
+  output_format = rmarkdown::rtf_document
+)
 ```
 
 ## How do I avoid prefixes on my table captions in PDF?
@@ -332,3 +348,16 @@ mylist5 <- list(
 write2pdf(mylist5, paste0(tmpdir, "/test.noprefixes.pdf"), title = "My tableby")
 ```
 
+## How do I output multiple tables with different titles?
+
+There are now `write2()` methods for the summary objects of `arsenal` functions. This allows you to
+specify a title for each table:
+
+```{r}
+mylist6 <- list(
+  summary(tableby(sex ~ age, data = mockstudy), title = "A Title for tableby"),
+  summary(modelsum(age ~ sex, data = mockstudy), title = "A Title for modelsum"),
+  summary(freqlist(~ sex, data = mockstudy), title = "A Title for freqlist")
+)
+write2pdf(mylist6, paste0(tmpdir, "/test.multiple.titles.pdf"))
+```

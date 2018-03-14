@@ -77,11 +77,23 @@ write2.tableby <- write2_using_summary
 
 #' @rdname write2
 #' @export
+write2.summary.tableby <- write2_using_print
+
+#' @rdname write2
+#' @export
 write2.modelsum <- write2_using_summary
 
 #' @rdname write2
 #' @export
+write2.summary.modelsum <- write2_using_print
+
+#' @rdname write2
+#' @export
 write2.freqlist <- write2_using_summary
+
+#' @rdname write2
+#' @export
+write2.summary.freqlist <- write2_using_print
 
 #' @rdname write2
 #' @export

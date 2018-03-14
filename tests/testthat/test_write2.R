@@ -44,6 +44,17 @@ test_that("write2.freqlist -> doc", {
                        reference = "write2.freqlist.doc.md", single = TRUE, title = "My cool title")
 })
 
+## From the vignette
+
+test_that("write2.list (summary objects) -> PDF", {
+  mylist6 <- list(
+    summary(tableby(sex ~ age, data = mockstudy), title = "A Title for tableby"),
+    summary(modelsum(age ~ sex, data = mockstudy), title = "A Title for modelsum"),
+    summary(freqlist(~ sex, data = mockstudy), title = "A Title for freqlist")
+  )
+  expect_write2_worked(write2pdf, mylist6, reference = "write2.multititles.pdf.md")
+})
+
 ###########################################################################################################
 #### External output, commented out on 11/9/17 because of external package changes
 ###########################################################################################################
@@ -156,6 +167,8 @@ test_that("write2.yaml -> PDF", {
 #
 # write2word(freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
 #            "tests/testthat/write2.freqlist.doc", single = TRUE, title = "My cool title", render. = FALSE)
+#
+# write2pdf(mylist6, "tests/testthat/write2.multititles.pdf", render. = FALSE)
 #
 ## write2html(knitr::kable(head(mockstudy)),
 ##            "tests/testthat/write2.kable.html", render. = FALSE)
