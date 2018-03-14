@@ -332,3 +332,16 @@ mylist5 <- list(
 write2pdf(mylist5, paste0(tmpdir, "/test.noprefixes.pdf"), title = "My tableby")
 ```
 
+## How do I output multiple tables with different titles?
+
+There are now `write2()` methods for the summary objects of `arsenal` functions. This allows you to
+specify a title for each table:
+
+```{r}
+mylist6 <- list(
+  summary(tableby(sex ~ age, data = mockstudy), title = "A Title for tableby"),
+  summary(modelsum(age ~ sex, data = mockstudy), title = "A Title for modelsum"),
+  summary(freqlist(~ sex, data = mockstudy), title = "A Title for freqlist")
+)
+write2pdf(mylist6, paste0(tmpdir, "/test.multiple.titles.pdf"))
+```
