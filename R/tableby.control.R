@@ -14,10 +14,10 @@
 #' @param numeric.test set test for numeric RHS variables in \code{tableby} to anova or kwt (Kruskal-Wallis) rank-based tests.
 #'   If no LHS variable exists, then a mean is required for a univariate test.
 #' @param numeric.stats summary statistics to include for numeric RHS variables of \code{tableby} within the levels of the group LHS variable.
-#'   Options are N, Nmiss, mean, meansd, median, q1q3, range, or other R built-in or user-written functions.
+#'   Options are N, Nmiss, Nmiss2, mean, meansd, median, q1q3, medianq1q3, iqr, range, medianrange, or other R built-in or user-written functions.
 #' @param cat.test  name of test for categorical variables: chisq, fe (Fisher's Exact)
 #' @param cat.stats summary statistics to include for categorical RHS variables of \code{tableby} within the levels of the group LHS variable.
-#'   Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.
+#'   Options are N, Nmiss, Nmiss2, count, countpct, countrowpct, or other R built-in or user-written functions.
 #' @param chisq.correct  logical, correction factor for chisq.test
 #' @param simulate.p.value  logical, simulate p-value for categorical tests (fe and chisq)
 #' @param B  number of simulations to perform for simulation-based p-value
@@ -28,10 +28,11 @@
 #' @param surv.stats summary statistics to include for time-to-event (survival) RHS variables of \code{tableby} within the levels of the group LHS variable.
 #'   Options are Nevents, medsurv, NeventsSurv, NriskSurv, medTime, rangeTime.
 #' @param date.test name of test to perform for date variables: kwt
-#' @param date.stats stats functions to perform for Date variables: Nmiss, median, range, or other R built-in or user-written functions.
+#' @param date.stats stats functions to perform for Date variables: Nmiss, median, range, medianrange, q1q3, medianq1q3,
+#'   or other R built-in or user-written functions.
 #' @param stats.labels A named list of labels for all the statistics function names, where the function name is the named element in the list
 #'   and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
-#'   e.g., list(countpct="Count (Pct)").
+#'   e.g., \code{list(countpct="Count (Pct)")}.
 #' @param digits Number of decimal places for numeric values.
 #' @param digits.count Number of decimal places for count values.
 #' @param digits.pct Number of decimal places for percents.
@@ -48,7 +49,8 @@
 #'   is less than the resulting number of places, it will be formatted to show so.
 #' @return A list with settings to be used within the \code{tableby} function.
 #'
-#' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby}}, \code{\link{summary.tableby}}
+#' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby}}, \code{\link{summary.tableby}},
+#'   \code{\link{tableby.stats}}.
 #' @author Jason Sinnwell, Beth Atkinson, Ethan Heinzen, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 #' @examples
 #' set.seed(100)

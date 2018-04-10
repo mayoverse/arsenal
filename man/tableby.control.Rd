@@ -43,10 +43,10 @@ If no LHS variable exists, then a mean is required for a univariate test.}
 \item{date.test}{name of test to perform for date variables: kwt}
 
 \item{numeric.stats}{summary statistics to include for numeric RHS variables of \code{tableby} within the levels of the group LHS variable.
-Options are N, Nmiss, mean, meansd, median, q1q3, range, or other R built-in or user-written functions.}
+Options are N, Nmiss, Nmiss2, mean, meansd, median, q1q3, medianq1q3, iqr, range, medianrange, or other R built-in or user-written functions.}
 
 \item{cat.stats}{summary statistics to include for categorical RHS variables of \code{tableby} within the levels of the group LHS variable.
-Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.}
+Options are N, Nmiss, Nmiss2, count, countpct, countrowpct, or other R built-in or user-written functions.}
 
 \item{ordered.stats}{summary statistics to include for categorical RHS variables of \code{tableby} within the levels of the group LHS variable.
 Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.}
@@ -54,11 +54,12 @@ Options are N, Nmiss, count, countpct, or other R built-in or user-written funct
 \item{surv.stats}{summary statistics to include for time-to-event (survival) RHS variables of \code{tableby} within the levels of the group LHS variable.
 Options are Nevents, medsurv, NeventsSurv, NriskSurv, medTime, rangeTime.}
 
-\item{date.stats}{stats functions to perform for Date variables: Nmiss, median, range, or other R built-in or user-written functions.}
+\item{date.stats}{stats functions to perform for Date variables: Nmiss, median, range, medianrange, q1q3, medianq1q3,
+or other R built-in or user-written functions.}
 
 \item{stats.labels}{A named list of labels for all the statistics function names, where the function name is the named element in the list
 and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
-e.g., list(countpct="Count (Pct)").}
+e.g., \code{list(countpct="Count (Pct)")}.}
 
 \item{digits}{Number of decimal places for numeric values.}
 
@@ -111,7 +112,8 @@ summary(outResp, text=TRUE)
 summary(outCtl, text=TRUE)
 }
 \seealso{
-\code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby}}, \code{\link{summary.tableby}}
+\code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby}}, \code{\link{summary.tableby}},
+  \code{\link{tableby.stats}}.
 }
 \author{
 Jason Sinnwell, Beth Atkinson, Ethan Heinzen, Terry Therneau, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
