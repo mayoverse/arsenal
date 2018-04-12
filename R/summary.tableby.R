@@ -124,7 +124,7 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
 
   #### tweak column names according to specifications ####
   cn <- stats::setNames(colnames(df), colnames(df))
-  align <- paste0(c(rep("l", times = sum(cn != "p.value")), if("p.value" %in% cn) "r"), collapse = "")
+  align <- paste0(c("l", rep("c", times = sum(cn != "p.value")-1), if("p.value" %in% cn) "r"), collapse = "")
   nm <- intersect(cn, names(x$totals))
   if(length(nm)) cn[nm] <- paste0(cn[nm], " (N=", x$totals[nm], ")")
   cn["label"] <- ""
