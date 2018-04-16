@@ -1,10 +1,10 @@
-## Submission for arsenal 1.1.0
+## Submission for arsenal 1.2.0
 
 This is a new version. In this version:
 
-* We made major updates to the `freqlist()` function.
+* We made output formatting updates to the `print.summary.tableby()` function.
 
-* We resolved about 20 bugs/feature requests.
+* We added three new methods for `write2()`.
 
 * We updated documentation where appropriate.
 

@@ -1,4 +1,4 @@
-# arsenal 1.1.0.9000
+# arsenal 1.2.0
 
 * Implemented `write2()` methods for `"summary.tableby"`, `"summary.modelsum"`, and `"summary.freqlist"` objects. (#89, #90, #91)
 
