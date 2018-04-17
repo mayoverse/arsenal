@@ -1,3 +1,7 @@
+# arsenal v1.2.0.9000
+
+* Fixed a problem with a column named "method" in `freqlist()`. (#95)
+
 # arsenal 1.2.0
 
 * Implemented `write2()` methods for `"summary.tableby"`, `"summary.modelsum"`, and `"summary.freqlist"` objects. (#89, #90, #91)

@@ -345,4 +345,19 @@ test_that("11/18/16: Emily Lundt's subsetted table and duplicate label problem",
   )
 })
 
+test_that("04/17/18: using 'method' in freqlist (#95)", {
+  dat <- data.frame(method = c(1, 1, 2, 2, 3, 3, 4, 4))
+
+  expect_identical(
+    capture.kable(summary(freqlist(~method, data = dat))),
+    c("|method | Freq| cumFreq| freqPercent| cumPercent|",
+      "|:------|----:|-------:|-----------:|----------:|",
+      "|1      |    2|       2|          25|         25|",
+      "|2      |    2|       4|          25|         50|",
+      "|3      |    2|       6|          25|         75|",
+      "|4      |    2|       8|          25|        100|"
+    )
+  )
+})
+
 

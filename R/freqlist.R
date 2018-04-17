@@ -75,7 +75,7 @@ freqlist.table <- function(object, sparse = FALSE, na.options = c("include", "sh
   internalTable <- function(data, na.options = na.options, digits = digits) {
     # orders and performs calculations for the table
     # split into a function to be able to use with by statement
-    data <- data[do.call(order, data), ]
+    data <- data[do.call(order, unname(data)), ]
     na.index <- rowSums(is.na(data))
     if (na.options == 'remove') {
       data  <- data[na.index == 0, ]
