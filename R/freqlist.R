@@ -20,7 +20,7 @@
 #'   that \code{addNA=} only works in R >= 3.4.0.
 #' @param x an object of class \code{"freqlist"}
 #' @return An object of class \code{"freqlist"} (invisibly for \code{print.freqlist})
-#' @seealso \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+#' @seealso \code{\link{summary.freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
 #'
 #' @examples
 #' # load mockstudy data

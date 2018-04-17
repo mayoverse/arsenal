@@ -62,7 +62,7 @@ withby <- freqlist(tab.ex, groupBy = c("arm","sex"), na.options = "showexclude")
 summary(withby)
 }
 \seealso{
-\code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+\code{\link{summary.freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
 }
 \author{
 Tina Gunderson, with revisions by Ethan Heinzen
