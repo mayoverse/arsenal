@@ -18,7 +18,7 @@ statistics, a one-sided formula can be used.}
 
 \item{data}{an optional data frame, list or environment (or object coercible by \code{\link{as.data.frame}} to a data frame)
 containing the variables in the model. If not found in data, the variables are taken from \code{environment(formula)},
-typically the environment from which \code{tableby} is called.}
+typically the environment from which the function is called.}
 
 \item{na.action}{a function which indicates what should happen when the data contain \code{NA}s.
 The default is \code{na.tableby} if there is a by variable, and \code{\link[stats]{na.pass}} if there is not.
@@ -36,8 +36,7 @@ grouping variable, and x variable summaries within the grouping variable. Argume
 can be passed to \code{tableby} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,
 the latter are used. See \code{\link{tableby.control}} for more details.}
 
-\item{...}{additional arguments to be passed to internal \code{tableby} functions or \code{\link{tableby.control}}.
-See "Details" for information.}
+\item{...}{additional arguments to be passed to internal \code{tableby} functions or \code{\link{tableby.control}}.}
 
 \item{x}{an object of class \code{tableby}.}
 }
@@ -120,7 +119,7 @@ tests(tab.test)
 }
 \seealso{
 \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}},
-  \code{\link{print.tableby}}, \code{\link{summary.tableby}}, \code{\link{formulize}}
+  \code{\link{summary.tableby}}, \code{\link{formulize}}
 }
 \author{
 Jason Sinnwell, Beth Atkinson, Gregory Dougherty, and Ethan Heinzen, adapted from SAS Macros written by Paul Novotny and Ryan Lennon

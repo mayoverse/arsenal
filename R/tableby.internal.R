@@ -332,9 +332,9 @@ tests.tableby <- function(x) {
 #' @rdname tableby.internal
 #' @export
 na.tableby <- function(object, ...) {
-    omit <- is.na(object[,1])
+    omit <- is.na(object[[1]])
     xx <- object[!omit, , drop = FALSE]
-    if(any(omit > 0L)) {
+    if(any(omit)) {
         temp <- stats::setNames(seq(omit)[omit], attr(object, "row.names")[omit])
         attr(temp, "class") <- "omit"
         attr(xx, "na.action") <- temp
