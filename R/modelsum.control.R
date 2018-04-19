@@ -153,9 +153,8 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
   if(any(survival.stats == "CI.estimate")) {
     survival.stats <- unique(c(survival.stats[survival.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
-  return(list(digits=digits, digits.ratio=digits.ratio, digits.p = digits.p, format.p = format.p,
-              show.adjust=show.adjust, show.intercept=show.intercept, conf.level=conf.level,
-              binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
-              poisson.stats=poisson.stats, survival.stats=survival.stats, stat.labels = stat.labels))
-
+  list(digits=digits, digits.ratio=digits.ratio, digits.p = digits.p, format.p = format.p,
+       show.adjust=show.adjust, show.intercept=show.intercept, conf.level=conf.level,
+       binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
+       poisson.stats=poisson.stats, survival.stats=survival.stats, stat.labels = stat.labels)
 }

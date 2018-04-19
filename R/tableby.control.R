@@ -71,11 +71,8 @@
 #' @export
 tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=FALSE,
    numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt",
-   numeric.stats=c("Nmiss","meansd","range"),
-   cat.stats=c("Nmiss","countpct"),
-   ordered.stats=c("Nmiss", "countpct"),
-   surv.stats=c("Nevents","medSurv"),
-   date.stats=c("Nmiss", "median","range"),
+   numeric.stats=c("Nmiss","meansd","range"), cat.stats=c("Nmiss","countpct"),
+   ordered.stats=c("Nmiss", "countpct"), surv.stats=c("Nevents","medSurv"), date.stats=c("Nmiss", "median","range"),
    stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3",
                      range="Range", countpct="Count (Pct)", Nevents="Events", medSurv="Median Survival",
                      medTime = "Median Follow-Up", rangeTime = "Range of Follow-Up"),
@@ -84,8 +81,8 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
 
   nm <- names(list(...))
   if("digits.test" %in% nm) .Deprecated(msg = "Using 'digits.test = ' is deprecated. Use 'digits.p = ' instead.")
-  if("nsmall" %in% names(list(...))) .Deprecated(msg = "Using 'nsmall = ' is deprecated. Use 'digits = ' instead.")
-  if("nsmall.pct" %in% names(list(...))) .Deprecated(msg = "Using 'nsmall.pct = ' is deprecated. Use 'digits.pct = ' instead.")
+  if("nsmall" %in% nm) .Deprecated(msg = "Using 'nsmall = ' is deprecated. Use 'digits = ' instead.")
+  if("nsmall.pct" %in% nm) .Deprecated(msg = "Using 'nsmall.pct = ' is deprecated. Use 'digits.pct = ' instead.")
 
   ## validate digits
   # digits and digits.test are OK to be NULL. See ?format
