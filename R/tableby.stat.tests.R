@@ -13,9 +13,9 @@ anova <- function(x, x.by, ...) {
   }
   aov.out <- stats::lm(x~x.by)
   test <- stats::anova(aov.out)
-  test.out <- list(p.value = test[1,ncol(test)],
-                   statistic.F = test[1,ncol(test)-1],
-                   method = "Linear Model ANOVA")
+  list(p.value = test[1,ncol(test)],
+       statistic.F = test[1,ncol(test)-1],
+       method = "Linear Model ANOVA")
 }
 ## 2. kruskal-wallis (non-parametric)
 kwt <- function(x, x.by, ...) {
@@ -46,7 +46,7 @@ trend <- function(x, x.by, ...) {
   ## should be taken care of with coin::
   ## require(coin, quietly=TRUE, warn.conflicts=FALSE)
   indtest <- coin::independence_test(x~as.factor(x.by), teststat="quad")
-  test <- list(p.value=coin::pvalue(indtest), method="Trend test for ordinal variables", statistic=indtest@statistic@teststatistic)
+  list(p.value=coin::pvalue(indtest), method="Trend test for ordinal variables", statistic=indtest@statistic@teststatistic)
 }
 
 ## ' logrank
