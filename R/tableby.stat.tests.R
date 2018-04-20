@@ -37,7 +37,6 @@ chisq <- function(x, x.by, ..., chisq.correct=TRUE, simulate.p.value=FALSE, B=20
 }
 ## 2. Fisher's exact test for prob of as or more extreme table
 fe <- function(x, x.by, ..., simulate.p.value=FALSE, B=2000) {
-  print(simulate.p.value)
   tab <- table(x,x.by, exclude=NA)
   stats::fisher.test(tab, simulate.p.value=simulate.p.value, B=B)
 }
