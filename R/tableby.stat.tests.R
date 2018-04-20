@@ -27,16 +27,17 @@ kwt <- function(x, x.by, ...) {
 
 ## two tests for categorical,
 ## 1. chisq goodness of fit, equal proportions across table cells
-chisq <- function(x, x.by, ..., correct, simulate.p.value, B) {
+chisq <- function(x, x.by, ..., chisq.correct=TRUE, simulate.p.value=FALSE, B=2000) {
   tab <- table(x, x.by, exclude=NA)
   if(sum(rowSums(tab)>0)>1) {
-    suppressWarnings(stats::chisq.test(tab[rowSums(tab)>0,], correct=correct, simulate.p.value=simulate.p.value, B=B))
+    suppressWarnings(stats::chisq.test(tab[rowSums(tab)>0,], correct=chisq.correct, simulate.p.value=simulate.p.value, B=B))
   } else {
     list(statistic=0, p.value=1, method="Pearson's Chi-squared test")
   }
 }
 ## 2. Fisher's exact test for prob of as or more extreme table
-fe <- function(x, x.by, ..., simulate.p.value, B) {
+fe <- function(x, x.by, ..., simulate.p.value=FALSE, B=2000) {
+  print(simulate.p.value)
   tab <- table(x,x.by, exclude=NA)
   stats::fisher.test(tab, simulate.p.value=simulate.p.value, B=B)
 }

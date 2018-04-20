@@ -260,18 +260,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         statList[[statfun]] <- bystatlist
       }
 
-      ## test
-      if(control$test) {
-        if(nchar(specialTests[eff]) > 0) {
-          testout <- eval(call(specialTests[eff], currcol, by.col))
-        } else {
-          testout <- eval(call(control$ordered.test, currcol, by.col))
-        }
-      } else {
-        testout <- NULL
-      }
-
-      xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type="ordinal")
+      test. <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else control$ordered.test
+      vartype <- "ordinal"
 
     } else if(is.logical(currcol) || is.factor(currcol) || is.character(currcol)) {
     ##############################################
@@ -319,20 +309,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         statList[[statfun]] <- bystatlist
       }
 
-      ## test
-      if(control$test) {
-        if(nchar(specialTests[eff]) > 0) {
-          testout <- eval(call(specialTests[eff], currcol, by.col,
-                               correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B))
-        } else {
-          testout <- eval(call(control$cat.test, currcol, by.col,
-                               correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B))
-        }
-      } else {
-        testout <- NULL
-      }
-
-      xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type="categorical")
+      test. <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else control$cat.test
+      vartype <- "categorical"
 
     } else if(is.Date(currcol)) {
 
@@ -356,18 +334,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         statList[[statfun]] <- bystatlist
       }
 
-      ## tests: kruskal.test
-      if(control$test) {
-        if(nchar(specialTests[eff]) > 0) {
-          testout <- eval(call(specialTests[eff], currcol, by.col))
-        } else {
-          testout <- eval(call(control$date.test, currcol, by.col))
-        }
-      } else {
-        testout <- NULL
-      }
-
-      xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type="Date")
+      test. <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else control$date.test
+      vartype <- "Date"
 
     } else if(survival::is.Surv(currcol)) {
 
@@ -398,19 +366,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         statList[[statfun]] <- bystatlist
       }
 
-      ## test
-      if(control$test) {
-        if(nchar(specialTests[eff]) > 0) {
-          testout <- eval(call(specialTests[eff], currcol, by.col))
-        } else {
-          testout <- eval(call(control$surv.test, currcol, by.col))
-        }
-      } else {
-        testout <- NULL
-      }
+      test. <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else control$surv.test
+      vartype <- "survival"
 
-      xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff,
-                                           name=names(modeldf)[eff], type="survival")
     } else if(is.numeric(currcol) || inherits(currcol, "difftime")) {
 
       ######## Continuous variable (numeric) ###############
@@ -438,19 +396,14 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
         bystatlist$Total <-  do.call(statfun, list(currcol, na.rm=TRUE, weights=weights, ...))
         statList[[statfun]] <- bystatlist
       }
-      ## tests: anova and kruskal.test
-      if(control$test) {
-        if(nchar(specialTests[eff]) > 0) {
-          testout <- eval(call(specialTests[eff], currcol, by.col))
-        } else {
-          testout <- eval(call(control$numeric.test, currcol, by.col))
-        }
-      } else {
-        testout <- NULL
-      }
 
-      xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type="numeric")
+      test. <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else control$numeric.test
+      vartype <- "numeric"
     }
+    testout <- if(control$test) {
+      eval(call(test., currcol, by.col, chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B))
+    } else NULL
+    xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type=vartype)
   }
 
   if(length(xList) == 0) stop("No x-variables successfully computed.")

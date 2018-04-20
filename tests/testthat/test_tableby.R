@@ -385,7 +385,7 @@ set.seed(1000)
 test_that("05/25/2017: simulate.p.value=TRUE option for fisher.test", {
   expect_true(identical(
     round.p(tests(tableby(Group ~ fe(Sex) + time + dt, data = mdat, simulate.p.value=TRUE, B = 1999))),
-    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.80010, 0.02480, 0.39127),
+    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.80000, 0.02480, 0.39127),
                Method = c("Fisher's Exact Test for Count Data with simulated p-value\n\t (based on 1999 replicates)",
                           "Linear Model ANOVA", "Kruskal-Wallis rank sum test"), stringsAsFactors = FALSE)
   ))
