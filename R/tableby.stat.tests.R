@@ -7,7 +7,7 @@
 ## aov does not return p-value. Could add it after.
 ## For now, just write our own to avoid over-writing anova R-base function
 ## also, nice to keep same format to call, eval(call(function, x, x,by)), as other tests
-anova <- function(x, x.by) {
+anova <- function(x, x.by, ...) {
   if(any(table(is.na(x), x.by)[1, ] == 0)) {
     return(list(p.value=NA_real_, statistic.F=NA_real_, method="Linear Model ANOVA"))
   }
@@ -18,7 +18,7 @@ anova <- function(x, x.by) {
                    method = "Linear Model ANOVA")
 }
 ## 2. kruskal-wallis (non-parametric)
-kwt <- function(x, x.by) {
+kwt <- function(x, x.by, ...) {
   if(any(table(is.na(x), x.by)[1, ] == 0)) {
     return(list(p.value=NA_real_, statistic.F=NA_real_, method="Kruskal-Wallis rank sum test"))
   }
@@ -27,24 +27,22 @@ kwt <- function(x, x.by) {
 
 ## two tests for categorical,
 ## 1. chisq goodness of fit, equal proportions across table cells
-chisq <- function(x, x.by) {
+chisq <- function(x, x.by, ..., correct, simulate.p.value, B) {
   tab <- table(x, x.by, exclude=NA)
-  ctl <- dynGet("control") # envir=parent.frame)
   if(sum(rowSums(tab)>0)>1) {
-    suppressWarnings(stats::chisq.test(tab[rowSums(tab)>0,], correct=ctl$chisq.correct, simulate.p.value=ctl$simulate.p.value, B=ctl$B))
+    suppressWarnings(stats::chisq.test(tab[rowSums(tab)>0,], correct=correct, simulate.p.value=simulate.p.value, B=B))
   } else {
     list(statistic=0, p.value=1, method="Pearson's Chi-squared test")
   }
 }
 ## 2. Fisher's exact test for prob of as or more extreme table
-fe <- function(x, x.by) {
+fe <- function(x, x.by, ..., simulate.p.value, B) {
   tab <- table(x,x.by, exclude=NA)
-  ctl <- dynGet("control")
-  stats::fisher.test(tab, simulate.p.value=ctl$simulate.p.value, B=ctl$B)
+  stats::fisher.test(tab, simulate.p.value=simulate.p.value, B=B)
 }
 
 ## trend test for ordinal data
-trend <- function(x, x.by) {
+trend <- function(x, x.by, ...) {
   ## should be taken care of with coin::
   ## require(coin, quietly=TRUE, warn.conflicts=FALSE)
   indtest <- coin::independence_test(x~as.factor(x.by), teststat="quad")
@@ -57,7 +55,7 @@ trend <- function(x, x.by) {
 ## ' @param x  surv variable
 ## ' @param x.by  by, categorical variable
 ## ' @return   test output with $method and $p.value
-logrank <- function(x, x.by) {
+logrank <- function(x, x.by, ...) {
   if(any(table(is.na(x), x.by)[1, ] == 0)) {
     return(list(p.value=NA_real_, method="survdiff logrank"))
   }

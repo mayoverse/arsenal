@@ -322,9 +322,11 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       ## test
       if(control$test) {
         if(nchar(specialTests[eff]) > 0) {
-          testout <- eval(call(specialTests[eff], currcol, by.col))
+          testout <- eval(call(specialTests[eff], currcol, by.col,
+                               correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B))
         } else {
-          testout <- eval(call(control$cat.test, currcol, by.col))
+          testout <- eval(call(control$cat.test, currcol, by.col,
+                               correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B))
         }
       } else {
         testout <- NULL
