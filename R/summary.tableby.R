@@ -142,7 +142,7 @@ print.summary.tableby <- function(x, ..., format = "markdown")
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  print(knitr::kable(df, caption = NULL, align = attr(df, "align"), format = format, ...))
+  print(knitr::kable(df, caption = NULL, align = attr(df, "align"), format = format, row.names = FALSE, ...))
   if(!is.null(attr(df, "tests"))) cat(paste0(attr(df, "tests"), "\n", collapse = ""))
   cat("\n")
 
