@@ -89,7 +89,7 @@ print.summary.freqlist <- function(x, ..., format = "markdown")
 {
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
   f <- function(x, ...) print(knitr::kable(x, ...))
-  lapply(x$object, f, row.names = FALSE, caption = NULL, format = format, row.names = FALSE, ...)
+  lapply(x$object, f, row.names = FALSE, caption = NULL, format = format, ...)
   cat("\n")
   invisible(x)
 }
