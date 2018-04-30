@@ -141,7 +141,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   }
   ##  set up new environment for
   ## if specials, assign dummy versions of those functions
-     ## if(any(!is.null(attr(temp.call$formula, "specials"))))
+  ## if(any(!is.null(attr(temp.call$formula, "specials"))))
   tabenv <- new.env(parent = environment(formula))
 
   ## allow stat functions to be passed as single arguments that are strings of function names
@@ -149,12 +149,10 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   ## rather than anova(age) showing up in the result (though anova(age) will be the column name in modeldf
   ## but we pull these attributes off later.
   tmp.fun <- function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...))
-  if(!is.null(attr(temp.call$formula, "specials")$anova)) assign("anova", tmp.fun, envir = tabenv)
-  if(!is.null(attr(temp.call$formula, "specials")$chisq)) assign("chisq", tmp.fun, envir = tabenv)
-  if(!is.null(attr(temp.call$formula, "specials")$trend)) assign("trend", tmp.fun, envir = tabenv)
-  if(!is.null(attr(temp.call$formula, "specials")$kwt)) assign("kwt", tmp.fun, envir = tabenv)
-  if(!is.null(attr(temp.call$formula, "specials")$fe)) assign("fe", tmp.fun, envir = tabenv)
-  if(!is.null(attr(temp.call$formula, "specials")$logrank)) assign("logrank", tmp.fun, envir = tabenv)
+  for(sp in special)
+  {
+    if(!is.null(attr(temp.call$formula, "specials")[[sp]])) assign(sp, tmp.fun, envir = tabenv)
+  }
 
   ## set tabenv as environment in which to evalulate formula
   environment(temp.call$formula) <- tabenv
