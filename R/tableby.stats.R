@@ -193,21 +193,24 @@ N <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 
 ## count within group variable
 #' @rdname tableby.stats
-count <- function (x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1, length(x)), ...)  {
+count <- function (x, levels=NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)  {
+  if(is.null(levels)) levels <- sort(unique(x))
   as.tbstat_multirow(lapply(as.list(wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)])), as.countpct))
 }
 
 ## count (pct) where pct is within group variable total
 #' @rdname tableby.stats
 #' @export
-countpct <- function(x, levels=sort(unique(x)), na.rm=TRUE, weights=rep(1, length(x)), ...) {
+countpct <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
+  if(is.null(levels)) levels <- sort(unique(x))
   wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)])
   as.tbstat_multirow(lapply(Map(c, wtbl, 100*wtbl/sum(wtbl)), as.countpct, parens = c("(", ")"), pct = "%"))
 }
 
 #' @rdname tableby.stats
 #' @export
-countrowpct <- function(x, levels=sort(unique(x)), by, by.levels=sort(unique(by)), na.rm=TRUE, weights=rep(1, length(x)), ...) {
+countrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights=rep(1, length(x)), ...) {
+  if(is.null(levels)) levels <- sort(unique(x))
   if(na.rm)
   {
     idx <- !is.na(x) & !is.na(by) & !is.na(weights)

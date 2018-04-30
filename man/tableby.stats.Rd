@@ -55,13 +55,11 @@ Nmiss2(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
 N(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
-count(x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1,
-  length(x)), ...)
+count(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
-countpct(x, levels = sort(unique(x)), na.rm = TRUE, weights = rep(1,
-  length(x)), ...)
+countpct(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
-countrowpct(x, levels = sort(unique(x)), by, by.levels = sort(unique(by)),
+countrowpct(x, levels = NULL, by, by.levels = sort(unique(by)),
   na.rm = TRUE, weights = rep(1, length(x)), ...)
 }
 \arguments{

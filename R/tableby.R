@@ -144,37 +144,25 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
      ## if(any(!is.null(attr(temp.call$formula, "specials"))))
   tabenv <- new.env(parent = environment(formula))
 
-  if (!is.null(attr(temp.call$formula, "specials")$anova)) {
-    ## allow stat functions to be passed as single arguments that are strings of function names
-    ## Store this as attribute in the modeldf column, along with the actual name of the variable,
-    ## rather than anova(age) showing up in the result (though anova(age) will be the column name in modeldf
-    ## but we pull these attributes off later.
-    assign("anova", function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...)), envir = tabenv)
-  }
-  if (!is.null(attr(temp.call$formula, "specials")$chisq)) {
-    assign("chisq", function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...)), envir = tabenv)
-  }
-  if (!is.null(attr(temp.call$formula, "specials")$trend)) {
-    assign("trend", function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...)), envir = tabenv)
-  }
-  if (!is.null(attr(temp.call$formula, "specials")$kwt)) {
-    assign("kwt", function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...)), envir = tabenv)
-  }
-  if (!is.null(attr(temp.call$formula, "specials")$fe)) {
-    assign("fe", function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...)), envir = tabenv)
-  }
-  if (!is.null(attr(temp.call$formula, "specials")$logrank)) {
-    assign("logrank", function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...)), envir = tabenv)
-  }
+  ## allow stat functions to be passed as single arguments that are strings of function names
+  ## Store this as attribute in the modeldf column, along with the actual name of the variable,
+  ## rather than anova(age) showing up in the result (though anova(age) will be the column name in modeldf
+  ## but we pull these attributes off later.
+  tmp.fun <- function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...))
+  if(!is.null(attr(temp.call$formula, "specials")$anova)) assign("anova", tmp.fun, envir = tabenv)
+  if(!is.null(attr(temp.call$formula, "specials")$chisq)) assign("chisq", tmp.fun, envir = tabenv)
+  if(!is.null(attr(temp.call$formula, "specials")$trend)) assign("trend", tmp.fun, envir = tabenv)
+  if(!is.null(attr(temp.call$formula, "specials")$kwt)) assign("kwt", tmp.fun, envir = tabenv)
+  if(!is.null(attr(temp.call$formula, "specials")$fe)) assign("fe", tmp.fun, envir = tabenv)
+  if(!is.null(attr(temp.call$formula, "specials")$logrank)) assign("logrank", tmp.fun, envir = tabenv)
+
   ## set tabenv as environment in which to evalulate formula
-  #if(any(!is.null(attr(temp.call$formula, "specials"))))
   environment(temp.call$formula) <- tabenv
 
   ## evaluate the formula with env set for it
   modeldf <- eval.parent(temp.call)
-  if (nrow(modeldf) == 0) {
-    stop("No (non-missing) observations")
-  }
+  if (nrow(modeldf) == 0) stop("No (non-missing) observations")
+
   Terms <- stats::terms(modeldf)
 
   if(attributes(Terms)$response == 0) {
@@ -186,11 +174,11 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   weights <- as.vector(stats::model.weights(modeldf))
   if(is.null(weights)) {
     weights <- rep(1, nrow(modeldf))
-    userWeights=FALSE
+    userWeights <- FALSE
   }
   if("(weights)" %in% colnames(modeldf)) {
     modeldf <- modeldf[colnames(modeldf) != "(weights)"]
-    userWeights=TRUE
+    userWeights <-TRUE
   }
   if (!is.null(weights) && (!is.numeric(weights) || any(weights<0))) {
     stop("'weights' must be a numeric vector and must be non-negative")
@@ -200,8 +188,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   specialIndices <- unlist(attr(Terms, "specials"))
   specialTests <- rep("", ncol(modeldf))
   ## If a special shows up multiple times, the unlist assigned a number at the end. Strip it off.
-  ## This disallows functions with a number at the end, and trims off up to 999 instances of
-  ## the same test name
+  ## This disallows functions with a number at the end
   specialTests[specialIndices] <- gsub("\\d+$", "", names(specialIndices))
 
   ## list of x variables
@@ -226,9 +213,11 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     statList <- list()
     bystatlist <- list()
 
-    ## ordered factor
+    ############################################################
     if(is.ordered(currcol)) {
+      ######## ordered variable ###############
       xlevels <- levels(currcol)
+
       if(length(xlevels) == 0)
       {
         warning(paste0("Zero-length levels found for ", nameEff))
@@ -236,193 +225,100 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       }
 
       ## get stats funs from either formula  or control
-      ordered.stats <- if(length(attributes(currcol)$stats)>0) {
-        attributes(currcol)$stats
-      } else {
-        control$ordered.stats
-      }
-      ## if no missings, and control says not to show missings,
-      ## remove Nmiss stat fun
-      if(!anyNA(currcol) && "Nmiss" %in% ordered.stats) ordered.stats <- ordered.stats[ordered.stats != "Nmiss"]
-      for(statfun in ordered.stats) {
-        if(statfun == "countrowpct")
-        {
-          statList[[statfun]] <- do.call(statfun, list(currcol, levels = xlevels,
-                                           by = by.col, by.levels = by.levels, weights = weights, na.rm = TRUE))
-          next
-        }
-        for(bylev in by.levels) {
-          idx <- by.col == bylev
-          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx], ...))
-        }
-        ## add Total
-        bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, weights=weights, ...))
-        statList[[statfun]] <- bystatlist
-      }
-
-      test. <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else control$ordered.test
+      currstats <-  control$ordered.stats
+      currtest <- control$ordered.test
       vartype <- "ordinal"
 
     } else if(is.logical(currcol) || is.factor(currcol) || is.character(currcol)) {
-    ##############################################
-    ## categorical variable (character or factor)
-    ##############################################
+      ######## categorical variable (character or factor) ###############
 
       ## convert logicals to factor
-      if(is.logical(currcol)) {
-        currcol<- factor(currcol, levels=c(FALSE, TRUE))
-      }
+      if(is.logical(currcol)) currcol <- factor(currcol, levels=c(FALSE, TRUE))
 
       ## to make sure all levels of cat variable are counted, need to pass values along
-      xlevels <- if(is.factor(currcol)) {
-        levels(currcol)
-      } else {
-        sort(unique(currcol[!is.na(currcol)]))
-      }
+      xlevels <- if(is.factor(currcol)) levels(currcol) else sort(unique(currcol[!is.na(currcol)]))
+
       if(length(xlevels) == 0)
       {
         warning(paste0("Zero-length levels found for ", nameEff))
         next
       }
 
-      ## if no missings, and control says not to show missings,
-      ## remove Nmiss stat fun
-      cat.stats <- if(length(attributes(currcol)$stats)>0) {
-        attributes(currcol)$stats
-      } else {
-        control$cat.stats
-      }
-      if(!anyNA(currcol) && "Nmiss" %in% cat.stats) cat.stats <- cat.stats[cat.stats != "Nmiss"]
-      for(statfun in cat.stats) {
-        if(statfun == "countrowpct")
-        {
-          statList[[statfun]] <- do.call(statfun, list(currcol, levels = xlevels,
-                                           by = by.col, by.levels = by.levels, weights = weights, na.rm = TRUE))
-          next
-        }
-        for(bylev in by.levels) {
-          idx <- by.col == bylev
-          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx], ...))
-        }
-        ## add Total
-        bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, weights=weights, ...))
-        statList[[statfun]] <- bystatlist
-      }
-
-      test. <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else control$cat.test
+      ## get stats funs from either formula  or control
+      currstats <- control$cat.stats
+      currtest <- control$cat.test
       vartype <- "categorical"
 
     } else if(is.Date(currcol)) {
-
       ######## Date variable ###############
+      xlevels <- NULL
 
-      ## if no missings, and control says not to show missings,
-      ## remove Nmiss stat fun
-      date.stats <-  if(length(attributes(currcol)$stats)>0) {
-        attributes(currcol)$stats
-      } else {
-        control$date.stats
-      }
-      if(!anyNA(currcol) && "Nmiss" %in% date.stats) date.stats <- date.stats[date.stats != "Nmiss"]
-      for(statfun in date.stats) {
-        for(bylev in by.levels) {
-          idx <- modeldf[[1]] == bylev
-          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], na.rm=TRUE, weights=weights[idx], ...))
-        }
-        ## add Total
-        bystatlist$Total <- do.call(statfun, list(currcol, na.rm=TRUE, weights=weights, ...))
-        statList[[statfun]] <- bystatlist
-      }
-
-      test. <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else control$date.test
+      ## get stats funs from either formula  or control
+      currstats <- control$date.stats
+      currtest <- control$date.test
       vartype <- "Date"
 
     } else if(survival::is.Surv(currcol)) {
-
       ##### Survival (time to event) #######
+      xlevels <- NULL
 
-      ## stats
-      stimestatList <- list()
-      times <- list(...)$times
-      if(is.null(times)) {
-        times <- 1:5
-      }
-      stratfit <- survival::survfit(currcol ~ by.col, weights=weights)
-      totfit <- survival::survfit(currcol ~ 1, weights=weights)
-
-      surv.stats <-  if(length(attributes(currcol)$stats)>0) {
-        attributes(currcol)$stats
-      } else {
-        control$surv.stats
-      }
-
-      for(statfun in surv.stats) {
-        for(bylev in by.levels) {
-          idx <- modeldf[[1]] == bylev
-          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], na.rm=TRUE, weights=weights[idx], ...))
-        }
-        ## add Total
-        bystatlist$Total <- do.call(statfun, list(currcol, na.rm=TRUE, weights=weights, ...))
-        statList[[statfun]] <- bystatlist
-      }
-
-      test. <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else control$surv.test
+      currstats <- control$surv.stats
+      currtest <- control$surv.test
       vartype <- "survival"
 
     } else if(is.numeric(currcol) || inherits(currcol, "difftime")) {
-
       ######## Continuous variable (numeric) ###############
-
-      #stats
-      statList <- list()
+      xlevels <- NULL
 
       ## for difftime, convert to numeric
       if(inherits(currcol, "difftime")) currcol <- as.numeric(currcol)
 
       ## if no missings, and control says not to show missings,
       ## remove Nmiss stat fun
-      num.stats <-  if(length(attributes(currcol)$stats)>0) {
-        attributes(currcol)$stats
-      } else {
-        control$numeric.stats
-      }
-      if(!anyNA(currcol) && "Nmiss" %in% num.stats) num.stats <- num.stats[num.stats != "Nmiss"]
-      for(statfun in num.stats) {
-        for(bylev in by.levels) {
-          idx <- by.col == bylev
-          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], na.rm=TRUE, weights=weights[idx], ...))
-        }
-        ## add Total
-        bystatlist$Total <-  do.call(statfun, list(currcol, na.rm=TRUE, weights=weights, ...))
-        statList[[statfun]] <- bystatlist
-      }
-
-      test. <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else control$numeric.test
+      currstats <- control$numeric.stats
+      currtest <- control$numeric.test
       vartype <- "numeric"
     }
+    ############################################################
+
+    ## if no missings, and control says not to show missings,
+    ## remove Nmiss stat fun
+    currstats <- if(length(attributes(currcol)$stats)>0) attributes(currcol)$stats else currstats
+    if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
+    for(statfun in currstats) {
+      if(statfun == "countrowpct")
+      {
+        statList[[statfun]] <- do.call(statfun, list(currcol, levels = xlevels,
+                                                     by = by.col, by.levels = by.levels, weights = weights, na.rm = TRUE))
+        next
+      }
+      for(bylev in by.levels) {
+        idx <- by.col == bylev
+        bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx], ...))
+      }
+      ## add Total
+      bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, weights=weights, ...))
+      statList[[statfun]] <- bystatlist
+    }
+
+    currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest
     testout <- if(control$test) {
-      eval(call(test., currcol, by.col, chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B))
+      eval(call(currtest, currcol, by.col, chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B))
     } else NULL
+
     xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type=vartype)
   }
 
   if(length(xList) == 0) stop("No x-variables successfully computed.")
 
-  ## attributes: label/long-names
-  ## number of RHS variables
-
   labelBy <- attributes(by.col)$label
-  if(is.null(labelBy)) {
-    labelBy <- names(modeldf)[1]
-  }
-  yList <- list()
+  if(is.null(labelBy)) labelBy <- names(modeldf)[1]
 
+  yList <- list()
   yList[[names(modeldf)[1]]] <- list(stats=c(unlist(table(factor(by.col, levels=by.levels), exclude=NA)), Total=sum(!is.na(by.col))),
                                      label=labelBy, name=names(modeldf)[1])
 
-  tblList <- list(y = yList, x = xList, control = control, Call = match.call(), weights=userWeights)
-  class(tblList) <- "tableby"
-  return(tblList)
+  structure(list(y = yList, x = xList, control = control, Call = match.call(), weights=userWeights), class = "tableby")
 }
 
 
