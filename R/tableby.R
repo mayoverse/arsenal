@@ -212,8 +212,17 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     bystatlist <- list()
 
     ############################################################
-    if(is.ordered(currcol)) {
-      ######## ordered variable ###############
+
+    if(is.ordered(currcol) || is.logical(currcol) || is.factor(currcol) || is.character(currcol)) {
+      ######## ordinal or categorical variable (character or factor) ###############
+
+      ## convert logicals and characters to factor
+      if(is.character(currcol))
+      {
+        currcol <- factor(currcol, levels = sort(unique(currcol[!is.na(currcol)])))
+      } else if(is.logical(currcol)) currcol <- factor(currcol, levels=c(FALSE, TRUE))
+
+      ## to make sure all levels of cat variable are counted, need to pass values along
       xlevels <- levels(currcol)
 
       if(length(xlevels) == 0)
@@ -223,29 +232,17 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       }
 
       ## get stats funs from either formula  or control
-      currstats <-  control$ordered.stats
-      currtest <- control$ordered.test
-      vartype <- "ordinal"
-
-    } else if(is.logical(currcol) || is.factor(currcol) || is.character(currcol)) {
-      ######## categorical variable (character or factor) ###############
-
-      ## convert logicals to factor
-      if(is.logical(currcol)) currcol <- factor(currcol, levels=c(FALSE, TRUE))
-
-      ## to make sure all levels of cat variable are counted, need to pass values along
-      xlevels <- if(is.factor(currcol)) levels(currcol) else sort(unique(currcol[!is.na(currcol)]))
-
-      if(length(xlevels) == 0)
+      if(is.ordered(currcol))
       {
-        warning(paste0("Zero-length levels found for ", nameEff))
-        next
+        currstats <-  control$ordered.stats
+        currtest <- control$ordered.test
+        vartype <- "ordinal"
+      } else
+      {
+        currstats <- control$cat.stats
+        currtest <- control$cat.test
+        vartype <- "categorical"
       }
-
-      ## get stats funs from either formula  or control
-      currstats <- control$cat.stats
-      currtest <- control$cat.test
-      vartype <- "categorical"
 
     } else if(is.Date(currcol)) {
       ######## Date variable ###############
@@ -286,16 +283,17 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     for(statfun in currstats) {
       if(statfun == "countrowpct")
       {
-        statList[[statfun]] <- do.call(statfun, list(currcol, levels = xlevels,
-                                                     by = by.col, by.levels = by.levels, weights = weights, na.rm = TRUE))
-        next
+        bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
+                                            by = by.col, by.levels = by.levels, weights = weights, na.rm = TRUE))
+      } else
+      {
+        for(bylev in by.levels) {
+          idx <- by.col == bylev
+          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx], ...))
+        }
+        ## add Total
+        bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, weights=weights, ...))
       }
-      for(bylev in by.levels) {
-        idx <- by.col == bylev
-        bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx], ...))
-      }
-      ## add Total
-      bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, weights=weights, ...))
       statList[[statfun]] <- bystatlist
     }
 
