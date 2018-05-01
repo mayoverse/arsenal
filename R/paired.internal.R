@@ -1,3 +1,3 @@
 
-na.paired <- function(x, ...) na.pass(x)
+na.paired <- function(x, ...) stats::na.pass(x)
 # take away na's in tp and id
