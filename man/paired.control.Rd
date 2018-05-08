@@ -9,9 +9,11 @@ paired.control(test = TRUE, diff = TRUE, test.pname = NULL,
   ordered.test = "signed.rank", date.test = "paired.t",
   numeric.stats = c("Nmiss", "meansd", "range"), cat.stats = c("Nmiss",
   "countpct"), ordered.stats = c("Nmiss", "countpct"),
-  date.stats = c("Nmiss", "median", "range"), stats.labels = list(),
-  digits = 3L, digits.count = 0L, digits.p = 3L, format.p = TRUE,
-  mcnemar.correct = TRUE, signed.rank.exact = NULL,
+  date.stats = c("Nmiss", "median", "range"), stats.labels = list(Nmiss =
+  "N-Miss", Nmiss2 = "N-Miss", meansd = "Mean (SD)", medianq1q3 =
+  "Median (Q1, Q3)", q1q3 = "Q1, Q3", range = "Range", countpct =
+  "Count (Pct)"), digits = 3L, digits.count = 0L, digits.p = 3L,
+  format.p = TRUE, mcnemar.correct = TRUE, signed.rank.exact = NULL,
   signed.rank.correct = TRUE, ...)
 }
 \arguments{
