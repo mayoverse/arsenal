@@ -335,7 +335,7 @@ na.tableby <- function(object, ...) {
     omit <- is.na(object[[1]])
     xx <- object[!omit, , drop = FALSE]
     if(any(omit)) {
-        temp <- stats::setNames(seq(omit)[omit], attr(object, "row.names")[omit])
+        temp <- stats::setNames(seq_along(omit)[omit], attr(object, "row.names")[omit])
         attr(temp, "class") <- "omit"
         attr(xx, "na.action") <- temp
     }
