@@ -20,7 +20,7 @@ na.modelsum(object, ...)
 \method{merge}{modelsum}(x, y, ...)
 }
 \arguments{
-\item{object}{A \code{data.frame} resulting form evaluating \code{modelsum} formula.}
+\item{object}{A \code{data.frame} resulting from evaluating a \code{modelsum} formula.}
 
 \item{...}{Other arguments, or a vector of indices for extracting.}
 

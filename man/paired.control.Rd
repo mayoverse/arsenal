@@ -22,22 +22,21 @@ paired.control(test = TRUE, diff = TRUE, test.pname = NULL,
 \item{test.pname}{character string denoting the p-value column name in \code{\link{summary.tableby}}.
 Modifiable also with \code{\link{modpval.tableby}}.}
 
-\item{numeric.test}{set test for numeric RHS variables in \code{tableby} to anova or kwt (Kruskal-Wallis) rank-based tests.
-If no LHS variable exists, then a mean is required for a univariate test.}
+\item{numeric.test}{name of test for numeric RHS variables in \code{paired}: paired.t, signed.rank, sign.test.}
 
-\item{cat.test}{name of test for categorical variables: chisq, fe (Fisher's Exact)}
+\item{cat.test}{name of test for categorical variables: mcnemar}
 
-\item{ordered.test}{name of test for ordered variables: trend}
+\item{ordered.test}{name of test for ordered variables: signed.rank, sign.test}
 
-\item{date.test}{name of test to perform for date variables: kwt}
+\item{date.test}{name of test to perform for date variables: paired.t, signed.rank, sign.test}
 
-\item{numeric.stats}{summary statistics to include for numeric RHS variables of \code{tableby} within the levels of the group LHS variable.
+\item{numeric.stats}{summary statistics to include for numeric RHS variables within the levels of the group LHS variable.
 Options are N, Nmiss, Nmiss2, mean, meansd, median, q1q3, medianq1q3, iqr, range, medianrange, or other R built-in or user-written functions.}
 
-\item{cat.stats}{summary statistics to include for categorical RHS variables of \code{tableby} within the levels of the group LHS variable.
+\item{cat.stats}{summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
 Options are N, Nmiss, Nmiss2, count, countpct, countrowpct, or other R built-in or user-written functions.}
 
-\item{ordered.stats}{summary statistics to include for categorical RHS variables of \code{tableby} within the levels of the group LHS variable.
+\item{ordered.stats}{summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
 Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.}
 
 \item{date.stats}{stats functions to perform for Date variables: Nmiss, median, range, medianrange, q1q3, medianq1q3,

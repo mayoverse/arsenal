@@ -11,23 +11,23 @@
 #'   If \code{TRUE}, only the summary stats of the second level, and total (if \code{TRUE}), are calculated.
 #'   NOTE: this only simplifies to one line if \code{cat.stats} is only one statistic, such as countpct.
 #'   Specifically, if \code{cat.stats} includes Nmiss and there are missings, then Nmiss is included in the stats.
-#' @param numeric.test set test for numeric RHS variables in \code{tableby} to anova or kwt (Kruskal-Wallis) rank-based tests.
+#' @param numeric.test name of test for numeric RHS variables in \code{tableby}: anova, kwt (Kruskal-Wallis).
 #'   If no LHS variable exists, then a mean is required for a univariate test.
-#' @param numeric.stats summary statistics to include for numeric RHS variables of \code{tableby} within the levels of the group LHS variable.
+#' @param numeric.stats summary statistics to include for numeric RHS variables within the levels of the group LHS variable.
 #'   Options are N, Nmiss, Nmiss2, mean, meansd, median, q1q3, medianq1q3, iqr, range, medianrange, or other R built-in or user-written functions.
-#' @param cat.test  name of test for categorical variables: chisq, fe (Fisher's Exact)
-#' @param cat.stats summary statistics to include for categorical RHS variables of \code{tableby} within the levels of the group LHS variable.
+#' @param cat.test name of test for categorical variables: chisq, fe (Fisher's Exact)
+#' @param cat.stats summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
 #'   Options are N, Nmiss, Nmiss2, count, countpct, countrowpct, or other R built-in or user-written functions.
-#' @param chisq.correct  logical, correction factor for chisq.test
-#' @param simulate.p.value  logical, simulate p-value for categorical tests (fe and chisq)
-#' @param B  number of simulations to perform for simulation-based p-value
+#' @param chisq.correct logical, correction factor for chisq.test
+#' @param simulate.p.value logical, simulate p-value for categorical tests (fe and chisq)
+#' @param B number of simulations to perform for simulation-based p-value
 #' @param ordered.test name of test for ordered variables: trend
-#' @param ordered.stats summary statistics to include for categorical RHS variables of \code{tableby} within the levels of the group LHS variable.
+#' @param ordered.stats summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
 #'   Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.
-#' @param surv.test name of test to perform for survival variables: logrank
-#' @param surv.stats summary statistics to include for time-to-event (survival) RHS variables of \code{tableby} within the levels of the group LHS variable.
+#' @param surv.test name of test for survival variables: logrank
+#' @param surv.stats summary statistics to include for time-to-event (survival) RHS variables within the levels of the group LHS variable.
 #'   Options are Nevents, medsurv, NeventsSurv, NriskSurv, medTime, rangeTime.
-#' @param date.test name of test to perform for date variables: kwt
+#' @param date.test name of test for date variables: kwt
 #' @param date.stats stats functions to perform for Date variables: Nmiss, median, range, medianrange, q1q3, medianq1q3,
 #'   or other R built-in or user-written functions.
 #' @param stats.labels A named list of labels for all the statistics function names, where the function name is the named element in the list

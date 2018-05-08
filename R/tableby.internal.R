@@ -115,7 +115,7 @@ extract2_tbstat <- function(x, ...)
 #'
 #' A set of helper functions for \code{\link{tableby}}.
 #'
-#' @param object A \code{data.frame} resulting form evaluating \code{modelsum} formula.
+#' @param object A \code{data.frame} resulting from evaluating a \code{tableby} formula.
 #' @param ... Other arguments, or a vector of indices for extracting.
 #' @param x,y A \code{tableby} object.
 #' @param i A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.

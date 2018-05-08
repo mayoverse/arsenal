@@ -39,7 +39,7 @@ p-values (or some test stat), and the third column is the method name (optional)
 \item{use.pname}{Logical, denoting whether the column name in \code{pdata} corresponding to the p-values should be used
 in the output of the object.}
 
-\item{object}{A \code{data.frame} resulting form evaluating \code{modelsum} formula.}
+\item{object}{A \code{data.frame} resulting from evaluating a \code{tableby} formula.}
 
 \item{value}{A list of new labels.}
 
