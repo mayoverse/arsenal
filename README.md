@@ -41,7 +41,7 @@ Other S3 methods are implemented for objects of class `"freqlist"`, including `p
 `compare.data.frame()` is the S3 method for comparing two data.frames and reporting any differences between them,
 much like SAS's `PROC COMPARE` procedure.
 
-The `compare.data.frame()` output is easily nknitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
+The `compare.data.frame()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
 Other S3 methods are implemented for objects of class `"compare.data.frame"`, including `print()` and `diffs()`.
 
 ## The `write2*()` Family of Functions
