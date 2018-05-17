@@ -129,6 +129,10 @@ extract2_tbstat <- function(x, ...)
 #'   a logical vector. \code{xtfrm.tableby} returns the p-values (which are ordered by \code{\link{order}} to \code{\link{sort}}).
 #' @details
 #' Logical comparisons are implemented for \code{Ops.tableby}.
+#'
+#' \code{xtfrm.tableby} also allows the use of \code{\link{order}} and \code{\link{sort}}.
+#'
+#' \code{length.tableby} also allows for the use of \code{\link[utils]{head}} and \code{\link[utils]{tail}}.
 #' @name tableby.internal
 NULL
 #> NULL
@@ -366,3 +370,7 @@ Ops.tableby <- function(e1, e2)
   if(inherits(e2, "tableby")) e2 <- xtfrm(e2)
   get(.Generic, mode = "function")(e1, e2)
 }
+
+#' @rdname tableby.internal
+#' @export
+length.tableby <- function(x) length(x$x)

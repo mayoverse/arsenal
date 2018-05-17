@@ -455,6 +455,7 @@ summary(mytab[c('age','sex')], digits = 2)
 summary(mytab[c(3,1)], digits = 3)
 summary(sort(mytab, decreasing = TRUE))
 summary(mytab[mytab < 0.5])
+head(mytab, 1) # can also use tail()
 ```
 
 ## 11. Merge two `tableby` objects together 

@@ -12,6 +12,7 @@
 \alias{na.tableby}
 \alias{xtfrm.tableby}
 \alias{Ops.tableby}
+\alias{length.tableby}
 \title{Helper functions for tableby}
 \usage{
 \method{merge}{tableby}(x, y, ...)
@@ -33,6 +34,8 @@ na.tableby(object, ...)
 \method{xtfrm}{tableby}(x)
 
 \method{Ops}{tableby}(e1, e2)
+
+\method{length}{tableby}(x)
 }
 \arguments{
 \item{x, y}{A \code{tableby} object.}
@@ -62,4 +65,8 @@ A set of helper functions for \code{\link{tableby}}.
 }
 \details{
 Logical comparisons are implemented for \code{Ops.tableby}.
+
+\code{xtfrm.tableby} also allows the use of \code{\link{order}} and \code{\link{sort}}.
+
+\code{length.tableby} also allows for the use of \code{\link[utils]{head}} and \code{\link[utils]{tail}}.
 }
