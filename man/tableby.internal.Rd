@@ -10,6 +10,8 @@
 \alias{labels<-.tableby}
 \alias{[.tableby}
 \alias{na.tableby}
+\alias{xtfrm.tableby}
+\alias{Ops.tableby}
 \title{Helper functions for tableby}
 \usage{
 \method{merge}{tableby}(x, y, ...)
@@ -27,6 +29,10 @@ tests(x)
 \method{[}{tableby}(x, i)
 
 na.tableby(object, ...)
+
+\method{xtfrm}{tableby}(x)
+
+\method{Ops}{tableby}(e1, e2)
 }
 \arguments{
 \item{x, y}{A \code{tableby} object.}
@@ -44,10 +50,16 @@ in the output of the object.}
 \item{value}{A list of new labels.}
 
 \item{i}{A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.}
+
+\item{e1, e2}{\code{\link{tableby}} objects, or numbers to compare them to.}
 }
 \value{
-\code{na.tableby} returns a subsetted version of \code{object} (with attributes).
+\code{na.tableby} returns a subsetted version of \code{object} (with attributes). \code{Ops.tableby} returns
+  a logical vector. \code{xtfrm.tableby} returns the p-values (which are ordered by \code{\link{order}} to \code{\link{sort}}).
 }
 \description{
 A set of helper functions for \code{\link{tableby}}.
+}
+\details{
+Logical comparisons are implemented for \code{Ops.tableby}.
 }

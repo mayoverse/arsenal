@@ -122,9 +122,13 @@ extract2_tbstat <- function(x, ...)
 #' @param value A list of new labels.
 #' @param pdata A named data.frame where the first column is the x variable names matched by name, the second is the
 #'   p-values (or some test stat), and the third column is the method name (optional)
+#' @param e1,e2 \code{\link{tableby}} objects, or numbers to compare them to.
 #' @param use.pname Logical, denoting whether the column name in \code{pdata} corresponding to the p-values should be used
 #'   in the output of the object.
-#' @return \code{na.tableby} returns a subsetted version of \code{object} (with attributes).
+#' @return \code{na.tableby} returns a subsetted version of \code{object} (with attributes). \code{Ops.tableby} returns
+#'   a logical vector. \code{xtfrm.tableby} returns the p-values (which are ordered by \code{\link{order}} to \code{\link{sort}}).
+#' @details
+#' Logical comparisons are implemented for \code{Ops.tableby}.
 #' @name tableby.internal
 NULL
 #> NULL
@@ -342,3 +346,23 @@ na.tableby <- function(object, ...) {
     xx
 }
 
+
+#' @rdname tableby.internal
+#' @export
+xtfrm.tableby <- function(x)
+{
+  if(!x$control$test) stop("Can't extract p-values from a tableby object created with test=FALSE.")
+  vapply(x$x, function(lst) lst$test$p.value, NA_real_)
+}
+
+#' @rdname tableby.internal
+#' @export
+Ops.tableby <- function(e1, e2)
+{
+  ok <- switch(.Generic, `<` = , `>` = , `<=` = , `>=` = , `==` = , `!=` = TRUE, FALSE)
+  if(!ok) stop("'", .Generic, "' is not meaningful for tableby objects")
+
+  if(inherits(e1, "tableby")) e1 <- xtfrm(e1)
+  if(inherits(e2, "tableby")) e2 <- xtfrm(e2)
+  get(.Generic, mode = "function")(e1, e2)
+}

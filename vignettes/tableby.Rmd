@@ -445,7 +445,7 @@ summary(tableby(arm ~ chisq(mdquality.s, "Nmiss","countpct"), data=mockstudy))
 ```
 
 
-## 10. Change the ordering of the variables or delete a variable
+## 10. Subsetting (change the ordering of the variables, delete a variable, sort by p-value, filter by p-value)
 
 ```{r, results='asis'}
 mytab <- tableby(arm ~ sex + alk.phos + age, data=mockstudy)
@@ -453,7 +453,8 @@ mytab2 <- mytab[c('age','sex','alk.phos')]
 summary(mytab2)
 summary(mytab[c('age','sex')], digits = 2)
 summary(mytab[c(3,1)], digits = 3)
-
+summary(sort(mytab, decreasing = TRUE))
+summary(mytab[mytab < 0.5])
 ```
 
 ## 11. Merge two `tableby` objects together 
