@@ -138,7 +138,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
     labelEff <-  attributes(currCol)$label
     if(is.null(labelEff)) labelEff <- xname
 
-    temp.call <- Call[c(1, indx.main)]
+    temp.call <- Call[c(1, match(c("data", "subset", "na.action", "weights"), names(Call), 0L))]
     temp.call$formula <- adj.formula
 
     ## placeholder for ordered, don't do any fitting
