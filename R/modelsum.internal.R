@@ -33,6 +33,31 @@ join_formula <- function(x, y)
   x
 }
 
+add_categorical_space <- function(x)
+{
+  UseMethod("add_categorical_space")
+}
+
+add_categorical_space.data.frame <- function(x)
+{
+  i <- !vapply(x, is.numeric, NA)
+  x[i] <- lapply(x[i], add_categorical_space)
+  x
+}
+
+add_categorical_space.numeric <- function(x) x
+add_categorical_space.Date <- function(x) x
+add_categorical_space.factor <- function(x)
+{
+  levels(x) <- paste0(" ", levels(x))
+  x
+}
+
+add_categorical_space.default <- function(x)
+{
+  paste0(" ", x)
+}
+
 #' @rdname modelsum.internal
 #' @export
 na.modelsum <- function (object, ...) {
