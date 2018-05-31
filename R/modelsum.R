@@ -231,7 +231,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
     {
       xterms <- coeffTidy$term[coeffTidy$term %in% paste0(xname2, unique(currCol))]
       ## handle when xterm is categorical with level tagged on
-      labelEff <- gsub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
+      labelEff <- sub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
     } else xterms <- xname2
 
 
@@ -244,7 +244,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       if(!is.numericish(adjcol))
       {
         aterm <- coeffTidy$term[coeffTidy$term %in% paste0(adjVars2[adj], unique(adjcol))]
-        alabel <- gsub(adjVars2[adj], paste0(alabel, " "), aterm, fixed = TRUE)
+        alabel <- sub(adjVars2[adj], paste0(alabel, " "), aterm, fixed = TRUE)
       } else aterm <- adjVars2[adj]
 
       adjterms <- c(adjterms, aterm)
