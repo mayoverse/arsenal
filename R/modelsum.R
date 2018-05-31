@@ -70,7 +70,7 @@ NULL
 modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action = NULL,
                      subset=NULL, weights=NULL, control = NULL, ...) {
   Call <- match.call()
-
+  find_term <- function(trms, x) starts_with(trms, paste0(x, " ")) | trms == x
   ## Allow family parameter to passed with or without quotes
   ##    exception is survival, would require public function named survival.
   ## Here, we force quotes to simplify in for loop below
@@ -140,6 +140,8 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
     temp.call <- Call[c(1, match(c("data", "subset", "na.action", "weights"), names(Call), 0L))]
     temp.call$formula <- adj.formula
+    if(!missing(data)) temp.call$data <- as.call(list(add_categorical_space, temp.call$data))
+    if(!is.null(temp.call$subset)) temp.call$subset <- eval(substitute(subset), if(!missing(data)) data, parent.frame())
 
     ## placeholder for ordered, don't do any fitting
     ## y is ordered factor
@@ -165,20 +167,20 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       coeffTidy$standard.estimate <- lm.beta(lmfit)
       names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
       names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
-      xterms <- coeffTidy$term[starts_with(coeffTidy$term, xname2)]
+      xterms <- coeffTidy$term[find_term(coeffTidy$term, xname2)]
       ## handle when xterm is categorical with level tagged on
-      if(nchar(xterms[1]) > nchar(xname2)) labelEff <- gsub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
+      if(nchar(xterms[1]) > nchar(xname2)) labelEff <- gsub(xname2, labelEff, xterms, fixed = TRUE)
 
       adjterms <- adjlabels <- NULL
       for(adj in adjVars) { ## manage adj terms and labels
-        aterm <- coeffTidy$term[starts_with(coeffTidy$term, adj)]
+        aterm <- coeffTidy$term[find_term(coeffTidy$term, adj)]
         if(length(aterm) > 0)
         {
           adjterms <- c(adjterms, aterm)
           alabel <- attributes(adjustdf[[adj]])$label
           if(is.null(alabel)) alabel <- adj
           ## handle when adj term is categorical with level tagged on
-          if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
+          if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, alabel, aterm, fixed = TRUE)
           adjlabels <- c(adjlabels, alabel)
         }
       }
@@ -210,21 +212,21 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
       names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
       coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
-      xterms <- coeffTidy$term[starts_with(coeffTidy$term, xname2)]
+      xterms <- coeffTidy$term[find_term(coeffTidy$term, xname2)]
       ## handle when xterm is categorical with level tagged on
-      if(nchar(xterms[1]) > nchar(xname2)) labelEff <- gsub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
+      if(nchar(xterms[1]) > nchar(xname2)) labelEff <- gsub(xname2, labelEff, xterms, fixed = TRUE)
 
 
       adjterms <- adjlabels <- NULL
       for(adj in adjVars) { ## manage adj terms and labels
-        aterm <- coeffTidy$term[starts_with(coeffTidy$term, adj)]
+        aterm <- coeffTidy$term[find_term(coeffTidy$term, adj)]
         if(length(aterm) > 0)
         {
           adjterms <- c(adjterms, aterm)
           alabel <- attributes(adjustdf[[adj]])$label
           if(is.null(alabel)) alabel <- adj
           ## handle when adj term is categorical with level tagged on
-          if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
+          if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, alabel, aterm, fixed = TRUE)
           adjlabels <- c(adjlabels, alabel)
         }
       }
@@ -253,21 +255,21 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
 
       coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
-      xterms <- coeffTidy$term[starts_with(coeffTidy$term, xname2)]
+      xterms <- coeffTidy$term[find_term(coeffTidy$term, xname2)]
       ## handle when xterm is categorical with level tagged on
-      if(nchar(xterms[1]) > nchar(xname2)) labelEff <- gsub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
+      if(nchar(xterms[1]) > nchar(xname2)) labelEff <- gsub(xname2, labelEff, xterms, fixed = TRUE)
 
 
       adjterms <- adjlabels <- NULL
       for(adj in adjVars) { ## manage adj terms and labels
-        aterm <- coeffTidy$term[starts_with(coeffTidy$term, adj)]
+        aterm <- coeffTidy$term[find_term(coeffTidy$term, adj)]
         if(length(aterm) > 0)
         {
           adjterms <- c(adjterms, aterm)
           alabel <- attributes(adjustdf[[adj]])$label
           if(is.null(alabel)) alabel <- adj
           ## handle when adj term is categorical with level tagged on
-          if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
+          if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, alabel, aterm, fixed = TRUE)
           adjlabels <- c(adjlabels, alabel)
         }
       }
@@ -294,21 +296,21 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
 
       coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
-      xterms <- coeffTidy$term[starts_with(coeffTidy$term, xname2)]
+      xterms <- coeffTidy$term[find_term(coeffTidy$term, xname2)]
       ## handle when xterm is categorical with level tagged on
-      if(nchar(xterms[1]) > nchar(xname2)) labelEff <- gsub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
+      if(nchar(xterms[1]) > nchar(xname2)) labelEff <- gsub(xname2, labelEff, xterms, fixed = TRUE)
 
 
       adjterms <- adjlabels <- NULL
       for(adj in adjVars) { ## manage adj terms and labels
-        aterm <- coeffTidy$term[starts_with(coeffTidy$term, adj)]
+        aterm <- coeffTidy$term[find_term(coeffTidy$term, adj)]
         if(length(aterm) > 0)
         {
           adjterms <- c(adjterms, aterm)
           alabel <- attributes(adjustdf[[adj]])$label
           if(is.null(alabel)) alabel <- adj
           ## handle when adj term is categorical with level tagged on
-          if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
+          if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, alabel, aterm, fixed = TRUE)
           adjlabels <- c(adjlabels, alabel)
         }
       }

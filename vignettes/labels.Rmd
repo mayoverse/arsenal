@@ -46,7 +46,7 @@ summary(freqlist(tab.ex),
 summary(tableby(arm ~ sex + age, data = mockstudy),
         labelTranslations = c(sex = "SEX", age = "Age, yrs"))
 summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy),
-        labelTranslations = list(sexFemale = "Female", age = "Age, yrs"))
+        labelTranslations = list("sex Female" = "Female", age = "Age, yrs"))
 ```
 
 ## Modify labels after the fact
@@ -68,7 +68,7 @@ mockstudy %>%
 
 mockstudy %>% 
   modelsum(bmi ~ age, adjust = ~ sex, data = .) %>% 
-  set_labels(list(sexFemale = "Female", age = "Age, yrs")) %>% 
+  set_labels(list("sex Female" = "Female", age = "Age, yrs")) %>% 
   summary()
 ```
 

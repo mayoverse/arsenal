@@ -264,7 +264,7 @@ test_that("07/27/2017: Too many adjustment vars in as.data.frame.modelsum (#12)"
 
 test_that("07/27/2017: modelsum labels (#13)", {
   expect_identical(
-    capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = list(sexFemale = "Female", age = "Age, yrs"), text = TRUE)),
+    capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = list("sex Female" = "Female", age = "Age, yrs"), text = TRUE)),
     c("|            |estimate |std.error |p.value |adj.r.squared |",
       "|:-----------|:--------|:---------|:-------|:-------------|",
       "|(Intercept) |26.793   |0.766     |< 0.001 |0.004         |",
@@ -273,8 +273,8 @@ test_that("07/27/2017: modelsum labels (#13)", {
     )
   )
   expect_identical(
-    capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = list(sexFemale = "Female", age = "Age, yrs"), text = TRUE)),
-    capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = c(sexFemale = "Female", age = "Age, yrs"), text = TRUE))
+    capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = list("sex Female" = "Female", age = "Age, yrs"), text = TRUE)),
+    capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = c("sex Female" = "Female", age = "Age, yrs"), text = TRUE))
   )
   expect_warning(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = c(badvar = "Eek")), "badvar")
 })
@@ -327,6 +327,8 @@ test_that("01/05/2018: leading/trailing whitespace (#48)", {
   )
 })
 
+#################################################################################################################################
+
 test_that("02/23/2018: wrapping long labels (#59)", {
   labs <- list(
     Group = "This is a really long label for the Group variable",
@@ -349,6 +351,25 @@ test_that("02/23/2018: wrapping long labels (#59)", {
       "|(Intercept)                    |41.531   |2.017     |< 0.001 |-0.001        |",
       "|ThisLabelHasNoSpacesSoLetsSeeH |0.000    |0.000     |0.348   |              |",
       "|owItBehaves                    |         |          |        |              |"
+    )
+  )
+})
+
+#################################################################################################################################
+
+test_that("05/31/2018: similar column names (#98)", {
+  dat <- data.frame(
+    y = 1:10,
+    a = factor(rep(c("a", "b"), each = 5), levels = c("b", "a")),
+    aa = c(1, 1:9)
+  )
+  expect_identical(
+    capture.kable(summary(modelsum(y ~ a, adjust = ~ aa, data = dat), text = TRUE)),
+    c("|            |estimate |std.error |p.value |adj.r.squared |",
+      "|:-----------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept) |0.500    |0.564     |0.405   |0.989         |",
+      "|a a         |0.143    |0.425     |0.747   |              |",
+      "|aa          |1.071    |0.078     |< 0.001 |              |"
     )
   )
 })

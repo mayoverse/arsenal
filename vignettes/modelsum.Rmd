@@ -448,7 +448,7 @@ summary(tab1)
 Another option is to add labels after you have created the table
 
 ```{r, results='asis'}
-mylabels <- list(sexFemale = "Female", age ="Age, yrs")
+mylabels <- list("sex Female" = "Female", age ="Age, yrs")
 summary(tab1, labelTranslations = mylabels)
 ```
 
@@ -456,7 +456,7 @@ Alternatively, you can check the variable labels and manipulate them with a func
 
 ```{r, eval=TRUE}
 labels(tab1)
-labels(tab1) <- c(sexFemale="Female", age="Baseline Age (yrs)")
+labels(tab1) <- c("sex Female"="Female", age="Baseline Age (yrs)")
 labels(tab1)
 ```
 
