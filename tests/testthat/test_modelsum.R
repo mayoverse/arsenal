@@ -126,6 +126,30 @@ test_that("offset() works", {
                                 data=mockstudy, family=poisson)), NA)
 })
 
+test_that("strata() works", {
+  if(require(survival) && packageVersion("survival") >= "2.41-3")
+  {
+    expect_identical(
+      capture.kable(summary(modelsum(Surv(time, status) ~ ethan, adjust = ~strata(Sex), data = mdat, family="survival"), text = TRUE)),
+      c("|              |HR    |CI.lower.HR |CI.upper.HR |p.value |concordance |Nmiss |",
+        "|:-------------|:-----|:-----------|:-----------|:-------|:-----------|:-----|",
+        "|ethan Heinzen |1.051 |0.549       |2.014       |0.880   |0.499       |3     |"
+      )
+    )
+  } else skip("survival package not available or not the right version.")
+})
+
+test_that("'weights=' works", {
+  expect_identical(
+    capture.kable(summary(modelsum(Age ~ Sex, data = mdat, weights = weights))),
+    c("|             |estimate |std.error |p.value |adj.r.squared |",
+      "|:------------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept)  |39.826   |0.889     |< 0.001 |0.020         |",
+      "|**Sex Male** |1.953    |1.167     |0.098   |              |"
+    )
+  )
+})
+
 ###########################################################################################################
 #### Reported bugs for modelsum
 ###########################################################################################################
