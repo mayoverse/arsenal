@@ -99,7 +99,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   if(!is.null(adjust) && length(adjust) != 2) stop("'adjust' shouldn't have a response variable!")
   main.call <- Call[c(1, indx.main)]
   main.call[[1]] <- quote(stats::model.frame)
-  main.call$na.action <- quote(stats::na.pass) # for now, keep all rows
+  main.call$na.action <- quote(stats::na.pass) # for now, keep all rows, except for what is subset out
   if(!missing(data))
   {
     # instead of call("keep.labels", ...), which breaks when arsenal isn't loaded (Can't find "keep.labels")
@@ -126,12 +126,15 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   if(is.null(yLabel)) yLabel <- yTerm
   fitList <- list()
 
+  is.numericish <- function(x) is.numeric(x) || is.Date(x)
+
   for(eff in effCols) {
 
     currCol <- maindf[[eff]]
     adj.formula <- join_formula(stats::drop.terms(Terms, if(length(effCols) > 1) setdiff(effCols, eff) - 1L else NULL, keep.response = TRUE), adjust)
     adj.Terms <- stats::terms(adj.formula)
-    adjVars <- attr(adj.Terms, "term.labels")[-1]
+    adjVars <- colnames(adjustdf)
+    adjVars2 <- attr(adj.Terms, "term.labels")[-1]
 
     xname <- colnames(maindf)[eff]
     xname2 <- attr(adj.Terms, "term.labels")[1] # this one will have backticks for non-syntactic names
@@ -144,11 +147,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
     ## placeholder for ordered, don't do any fitting
     ## y is ordered factor
     if (family == "ordered") {
-      ## look into using same ordered test from tableby
-      modelGlance <- list()
-
-      fitList[[xname]] <- list(#coeff=summary(coeff(p(maindf[,1]~ currCol),
-                               family="ordered", label=xname)
+      stop("family == 'ordered' isn't implemented yet")
     } else if (family == "gaussian") {
       # ## issue warning if appears categorical
       if(length(unique(maindf[[1]])) <= 5) {
@@ -165,32 +164,12 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       coeffTidy$standard.estimate <- lm.beta(lmfit)
       names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
       names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
-      xterms <- coeffTidy$term[starts_with(coeffTidy$term, xname2)]
-      ## handle when xterm is categorical with level tagged on
-      if(nchar(xterms[1]) > nchar(xname2)) labelEff <- gsub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
-
-      adjterms <- adjlabels <- NULL
-      for(adj in adjVars) { ## manage adj terms and labels
-        aterm <- coeffTidy$term[starts_with(coeffTidy$term, adj)]
-        if(length(aterm) > 0)
-        {
-          adjterms <- c(adjterms, aterm)
-          alabel <- attributes(adjustdf[[adj]])$label
-          if(is.null(alabel)) alabel <- adj
-          ## handle when adj term is categorical with level tagged on
-          if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
-          adjlabels <- c(adjlabels, alabel)
-        }
-      }
 
       ## Continuous variable (numeric) ###############
       ## Note: Using tidy changes colname from 't value' to 'statistic'
       modelGlance <- broom::glance(lmfit)
       names(modelGlance) <- gsub("p.value","p.value.F", names(modelGlance))
-      fitList[[xname]] <- list(coeff=coeffTidy,
-                               family="gaussian",
-                               xterms=xterms, label=labelEff,
-                               adjterms=adjterms, adjlabels=adjlabels)
+
 
     } else if (family == "binomial" || family == "quasibinomial") {
       ## These families are used in glm
@@ -209,32 +188,9 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
       names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
       names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
+
       coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
-      xterms <- coeffTidy$term[starts_with(coeffTidy$term, xname2)]
-      ## handle when xterm is categorical with level tagged on
-      if(nchar(xterms[1]) > nchar(xname2)) labelEff <- gsub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
-
-
-      adjterms <- adjlabels <- NULL
-      for(adj in adjVars) { ## manage adj terms and labels
-        aterm <- coeffTidy$term[starts_with(coeffTidy$term, adj)]
-        if(length(aterm) > 0)
-        {
-          adjterms <- c(adjterms, aterm)
-          alabel <- attributes(adjustdf[[adj]])$label
-          if(is.null(alabel)) alabel <- adj
-          ## handle when adj term is categorical with level tagged on
-          if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
-          adjlabels <- c(adjlabels, alabel)
-        }
-      }
-      ## tidy data frame has extra column for terms (row names), shift col index +1
-      ## 'z value' changed to 'statistic'
       modelGlance <- c(broom::glance(fit), concordance = pROC::auc(rocOut))
-      fitList[[xname]] <- list(coeff=coeffTidy,
-                               family=family,
-                               xterms=xterms, label=labelEff,
-                               adjterms=adjterms, adjlabels=adjlabels)
 
     } else if (family == "quasipoisson" || family == "poisson") {
       ## These families use glm
@@ -253,33 +209,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
 
       coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
-      xterms <- coeffTidy$term[starts_with(coeffTidy$term, xname2)]
-      ## handle when xterm is categorical with level tagged on
-      if(nchar(xterms[1]) > nchar(xname2)) labelEff <- gsub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
-
-
-      adjterms <- adjlabels <- NULL
-      for(adj in adjVars) { ## manage adj terms and labels
-        aterm <- coeffTidy$term[starts_with(coeffTidy$term, adj)]
-        if(length(aterm) > 0)
-        {
-          adjterms <- c(adjterms, aterm)
-          alabel <- attributes(adjustdf[[adj]])$label
-          if(is.null(alabel)) alabel <- adj
-          ## handle when adj term is categorical with level tagged on
-          if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
-          adjlabels <- c(adjlabels, alabel)
-        }
-      }
-
-      ## tidy data frame has extra column for terms (row names), shift col index +1
-      ## 'z value' changed to 'statistic'
-
       modelGlance <- broom::glance(fit)
-      fitList[[xname]] <- list(coeff=coeffTidy,
-                            family=family,
-                            xterms=xterms, label=labelEff,
-                            adjterms=adjterms, adjlabels=adjlabels)
 
     } else if(family=="survival") {
 
@@ -294,35 +224,38 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
 
       coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
-      xterms <- coeffTidy$term[starts_with(coeffTidy$term, xname2)]
-      ## handle when xterm is categorical with level tagged on
-      if(nchar(xterms[1]) > nchar(xname2)) labelEff <- gsub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
-
-
-      adjterms <- adjlabels <- NULL
-      for(adj in adjVars) { ## manage adj terms and labels
-        aterm <- coeffTidy$term[starts_with(coeffTidy$term, adj)]
-        if(length(aterm) > 0)
-        {
-          adjterms <- c(adjterms, aterm)
-          alabel <- attributes(adjustdf[[adj]])$label
-          if(is.null(alabel)) alabel <- adj
-          ## handle when adj term is categorical with level tagged on
-          if(nchar(aterm[1]) > nchar(adj)) alabel <- gsub(adj, paste0(alabel, " "), aterm, fixed = TRUE)
-          adjlabels <- c(adjlabels, alabel)
-        }
-      }
-
-      ## work with fit to get hr, try summary(fit) as above
       modelGlance <-  broom::glance(ph)
-
-      ## Survival (time to event) #######
-      fitList[[xname]] <- list(coeff=coeffTidy,
-                           family="survival",
-                           xterms=xterms, label=labelEff,
-                           adjterms=adjterms, adjlabels=adjlabels)
     }
-## put xname and endpoint in glance, summary and as.data.frame to pull from there
+
+    if(!is.numericish(currCol))
+    {
+      xterms <- coeffTidy$term[coeffTidy$term %in% paste0(xname2, unique(currCol))]
+      ## handle when xterm is categorical with level tagged on
+      labelEff <- gsub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
+    } else xterms <- xname2
+
+
+    adjterms <- adjlabels <- NULL
+    for(adj in seq_along(adjustdf)) { ## manage adj terms and labels
+      adjcol <- adjustdf[[adj]]
+      alabel <- attributes(adjcol)$label
+      if(is.null(alabel)) alabel <- adjVars[adj]
+
+      if(!is.numericish(adjcol))
+      {
+        aterm <- coeffTidy$term[coeffTidy$term %in% paste0(adjVars2[adj], unique(adjcol))]
+        alabel <- gsub(adjVars2[adj], paste0(alabel, " "), aterm, fixed = TRUE)
+      } else aterm <- adjVars2[adj]
+
+      adjterms <- c(adjterms, aterm)
+      adjlabels <- c(adjlabels, alabel)
+    }
+
+    fitList[[xname]] <- list(coeff=coeffTidy, family=family,
+                             xterms=xterms, label=labelEff,
+                             adjterms=adjterms, adjlabels=adjlabels)
+
+    ## put xname and endpoint in glance, summary and as.data.frame to pull from there
     fitList[[xname]]$glance <- c(modelGlance,
                                  N = sum(!is.na(currCol)),
                                  Nmiss = sum(is.na(currCol)),

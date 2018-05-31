@@ -328,6 +328,8 @@ test_that("01/05/2018: leading/trailing whitespace (#48)", {
   )
 })
 
+#################################################################################################################################
+
 test_that("02/23/2018: wrapping long labels (#59)", {
   labs <- list(
     Group = "This is a really long label for the Group variable",
@@ -353,3 +355,26 @@ test_that("02/23/2018: wrapping long labels (#59)", {
     )
   )
 })
+
+#################################################################################################################################
+
+test_that("05/31/2018: similar column names (#98)", {
+  dat <- data.frame(
+    y = 1:10,
+    a = c(2, 2, 1:8),
+    aa = c(1, 1:9),
+    b = factor(rep(c("a", "b"), each = 5))
+  )
+  expect_identical(
+    capture.kable(summary(modelsum(y ~ b, adjust = ~a + aa, data = dat))),
+    c("|            |estimate |std.error |p.value |adj.r.squared |",
+      "|:-----------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept) |0.750    |0.212     |0.012   |0.991         |",
+      "|**b b**     |0.000    |0.394     |1.000   |              |",
+      "|**a**       |-0.250   |0.156     |0.160   |              |",
+      "|**aa**      |1.250    |0.132     |< 0.001 |              |"
+    )
+  )
+})
+
+
