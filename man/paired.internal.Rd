@@ -5,18 +5,24 @@
 \alias{na.paired}
 \title{Helper functions for paired}
 \usage{
-na.paired(object, ...)
+na.paired(missings = c("in.both", "fill", "asis"))
 }
 \arguments{
-\item{object}{A \code{data.frame} resulting from evaluating a \code{paired} formula.}
+\item{missings}{A character string denoting which action to take. See "Details", below.}
 
 \item{...}{Other arguments, or a vector of indices for extracting.}
 }
 \value{
-\code{na.paired} returns a subsetted version of \code{object} (with attributes).
+\code{na.paired} returns a function used to subset data.frames in \code{\link{paired}}.
 }
 \description{
 A set of helper functions for \code{\link{paired}}.
+}
+\details{
+All methods subset out any NA time points or IDs.
+  \code{"in.both"} (the default) subsets the data.frame to individuals who appear at both time points.
+  \code{"fill"} adds explicit missings for the people missing second time points.
+  \code{"asis"} does nothing to add or remove missings.
 }
 \seealso{
 \link{tableby.internal}

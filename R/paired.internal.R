@@ -3,9 +3,14 @@
 #'
 #' A set of helper functions for \code{\link{paired}}.
 #'
-#' @param object A \code{data.frame} resulting from evaluating a \code{paired} formula.
+#' @param missings A character string denoting which action to take. See "Details", below.
 #' @param ... Other arguments, or a vector of indices for extracting.
-#' @return \code{na.paired} returns a subsetted version of \code{object} (with attributes).
+#' @return \code{na.paired} returns a function used to subset data.frames in \code{\link{paired}}.
+#' @details
+#'   All methods subset out any NA time points or IDs.
+#'   \code{"in.both"} (the default) subsets the data.frame to individuals who appear at both time points.
+#'   \code{"fill"} adds explicit missings for the people missing second time points.
+#'   \code{"asis"} does nothing to add or remove missings.
 #' @seealso \link{tableby.internal}
 #' @name paired.internal
 NULL
