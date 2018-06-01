@@ -14,14 +14,30 @@ NULL
 
 # 'fill' puts in the missing time points
 # 'asis' doesn't do anything
+# 'in.both' subsets to the people in both
 
 #' @rdname paired.internal
 #' @export
-na.paired <- function(missings = c("fill", "asis"))
+na.paired <- function(missings = c("in.both", "fill", "asis"))
 {
   missings <- match.arg(missings)
   switch(
     missings,
+    in.both = function(object, ...)
+    {
+      omit <- is.na(object[[1]]) | is.na(object[["(id)"]])
+      xx <- object[!omit, , drop = FALSE]
+
+      by.col <- xx[[1]]
+      if(is.factor(by.col)) {
+        by.col <- droplevels(by.col)
+        by.levels <- levels(by.col)
+      } else by.levels <- sort(unique(by.col))
+
+      ids <- xx[["(id)"]]
+      ids.both <- intersect(ids[by.col == by.levels[1]], ids[by.col == by.levels[2]])
+      xx[ids %in% ids.both, , drop = FALSE]
+    },
     fill = function(object, ...)
     {
       omit <- is.na(object[[1]]) | is.na(object[["(id)"]])

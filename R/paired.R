@@ -41,7 +41,7 @@ paired <- function(formula, data, id, na.action = na.paired, subset=NULL, contro
   temp.call <- Call[c(1, indx)]
   temp.call[[1]] <- as.name("model.frame")
 
-  if(is.null(temp.call$na.action)) temp.call$na.action <- na.paired("fill")
+  if(is.null(temp.call$na.action)) temp.call$na.action <- na.paired("in.both")
 
   special <- c("paired.t", "mcnemar", "signed.rank", "sign.test")
   if (missing(data)) {
