@@ -21,9 +21,10 @@ dat <- data.frame(
 for(i in 1:3)
 {
   if(i == 2) dat$id <- as.character(dat$id) else if(i == 3) dat$id <- as.factor(dat$id)
-  test_that(paste0("Basic paired call; class(id) = ", class(dat$id)), {
+  test_that(paste0("Basic paired call; class(id) = ", class(dat$id), "; na.paired('asis')"), {
     expect_identical(
-      capture.kable(summary(paired(tp ~ Cat + Fac + Num + Ord + Lgl + Dat, data = dat, id = id, signed.rank.exact = FALSE), text = TRUE)),
+      capture.kable(summary(paired(tp ~ Cat + Fac + Num + Ord + Lgl + Dat, data = dat, id = id,
+                                   signed.rank.exact = FALSE, na.action = na.paired("asis")), text = TRUE)),
       c("|             |         1 (N=5)         |         2 (N=5)         | Difference (N=4) | p value|",
         "|:------------|:-----------------------:|:-----------------------:|:----------------:|-------:|",
         "|Cat          |                         |                         |                  |   1.000|",
@@ -52,6 +53,41 @@ for(i in 1:3)
     )
   })
 
+  test_that(paste0("Basic paired call; class(id) = ", class(dat$id), "; na.paired('fill')"), {
+    expect_identical(
+      capture.kable(summary(paired(tp ~ Cat + Fac + Num + Ord + Lgl + Dat, data = dat, id = id,
+                                   signed.rank.exact = FALSE, na.action = na.paired("fill")), text = TRUE)),
+      c("|             |         1 (N=6)         |         2 (N=6)         | Difference (N=6) | p value|",
+        "|:------------|:-----------------------:|:-----------------------:|:----------------:|-------:|",
+        "|Cat          |                         |                         |                  |   1.000|",
+        "|-  N-Miss    |            2            |            1            |        2         |        |",
+        "|-  A         |        2 (50.0%)        |        2 (40.0%)        |    1 (50.0%)     |        |",
+        "|-  B         |        2 (50.0%)        |        3 (60.0%)        |    1 (50.0%)     |        |",
+        "|Fac          |                         |                         |                  |   0.261|",
+        "|-  N-Miss    |            1            |            1            |        2         |        |",
+        "|-  A         |        2 (40.0%)        |        2 (40.0%)        |    2 (100.0%)    |        |",
+        "|-  B         |        1 (20.0%)        |        2 (40.0%)        |    1 (100.0%)    |        |",
+        "|-  C         |        2 (40.0%)        |        1 (20.0%)        |    1 (100.0%)    |        |",
+        "|Num          |                         |                         |                  |   0.391|",
+        "|-  N-Miss    |            1            |            2            |        2         |        |",
+        "|-  Mean (SD) |      2.200 (1.643)      |      3.250 (0.957)      |  0.500 (1.000)   |        |",
+        "|-  Range     |      0.000 - 4.000      |      2.000 - 4.000      |  -1.000 - 1.000  |        |",
+        "|Ord          |                         |                         |                  |   0.174|",
+        "|-  N-Miss    |            1            |            1            |        2         |        |",
+        "|-  I         |        2 (40.0%)        |        1 (20.0%)        |    2 (100.0%)    |        |",
+        "|-  II        |        2 (40.0%)        |        1 (20.0%)        |    1 (100.0%)    |        |",
+        "|-  III       |        1 (20.0%)        |        3 (60.0%)        |     0 (0.0%)     |        |",
+        "|Lgl          |                         |                         |                  |   1.000|",
+        "|-  N-Miss    |            1            |            1            |        2         |        |",
+        "|-  FALSE     |        3 (60.0%)        |        2 (40.0%)        |    2 (100.0%)    |        |",
+        "|-  TRUE      |        2 (40.0%)        |        3 (60.0%)        |    1 (50.0%)     |        |",
+        "|Dat          |                         |                         |                  |   0.182|",
+        "|-  N-Miss    |            1            |            1            |        2         |        |",
+        "|-  median    |       2018-05-04        |       2018-05-05        |      0.500       |        |",
+        "|-  Range     | 2018-05-02 - 2018-05-06 | 2018-05-02 - 2018-05-07 |  0.000 - 1.000   |        |"
+      )
+    )
+  })
 }
 
 dat$id[10] <- NA
