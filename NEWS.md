@@ -4,6 +4,8 @@
 
 * Fixed a problem with a column named "method" in `freqlist()`. (#95)
 
+* Update `formulize()` to handle non-syntactic names in the `data=` argument. (#105)
+
 * `tableby()`: change how arguments are passed to stat tests.
 
 * `tableby()`: fix `trend()` and `anova()` to return an object instead of the object being invisible.

@@ -109,3 +109,13 @@ test_that("08/26/2017: changing environment of resulting formula", {
     capture.output(print(environment(formulize("y", "x"))))
   )
 })
+
+test_that("06/04/2018: non-syntactic names", {
+  dat <- data.frame(`:)` = 1:10, "log(hi)" = log(1:10), check.names = FALSE)
+  tmp <- capture.output(print(formulize(1, 2, data = dat)))
+  expect_identical(tmp[1], "`:)` ~ `log(hi)`")
+  tmp <- capture.output(print(formulize("", 1:2, data = dat)))
+  expect_identical(tmp[1], "~`:)` + `log(hi)`")
+  tmp <- capture.output(print(formulize("log(hi)", 1, data = dat)))
+  expect_identical(tmp[1], "log(hi) ~ `:)`")
+})
