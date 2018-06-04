@@ -1,6 +1,28 @@
-# arsenal v1.2.0.9000
+# arsenal v1.2.0.9000+
+
+* Implemented the function `paired()` for paired data, based on `tableby()`.
 
 * Fixed a problem with a column named "method" in `freqlist()`. (#95)
+
+* `tableby()`: change how arguments are passed to stat tests.
+
+* `tableby()`: fix `trend()` and `anova()` to return an object instead of the object being invisible.
+
+* `summary.tableby()`, `summary.modelsum()`, `summary.freqlist()`: ignore row.names when printing summary objects.
+
+* `tableby()`: Implement `Ops.tableby()` to compare tableby objects to a number (p-value).
+
+* `tableby()`: Implement `xtfrm.tableby()`, so that tableby objects can be sorted by p-value.
+
+* `tableby()`: Implement `length.tableby()`, so that `head()` and `tail()` also work.
+
+* `modelsum()`: Allow for `weights=` and `na.action=`. (#99)
+
+* `modelsum()`: Fix problem with column names which are prefixes of other column names. (#98)
+
+* `modelsum()`: Fix problem with column labels overwriting categorical levels which also match. (#100)
+
+* Update documentation.
 
 # arsenal 1.2.0
 
