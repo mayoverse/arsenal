@@ -31,13 +31,15 @@ paired.control <- function(test=TRUE, diff=TRUE, test.pname=NULL,
 
   ## can't do match.call()[[1]] <- "tableby.control", which would ignore new defaults
   out <- tableby.control(
-    test=test, diff=diff, test.pname=test.pname, total = FALSE, cat.simplify = FALSE,
+    test=test, diff=diff, test.pname=test.pname,
     numeric.test=numeric.test, cat.test=cat.test, ordered.test=ordered.test, date.test=date.test,
     numeric.stats=numeric.stats, cat.stats=cat.stats, ordered.stats=ordered.stats, date.stats=date.stats,
     stats.labels=stats.labels, digits=digits, digits.p=digits.p, digits.count = digits.count, format.p = format.p,
     ...
   )
   out$diff <- diff
+  out$total <- FALSE
+  out$cat.simplify <- FALSE
   out$mcnemar.correct <- mcnemar.correct
   out$signed.rank.correct <- signed.rank.correct
   out$signed.rank.exact <- signed.rank.exact

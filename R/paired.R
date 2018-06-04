@@ -41,7 +41,7 @@ paired <- function(formula, data, id, na.action = na.paired, subset=NULL, contro
   temp.call <- Call[c(1, indx)]
   temp.call[[1]] <- as.name("model.frame")
 
-  if(is.null(temp.call$na.action)) temp.call$na.action <- na.paired
+  if(is.null(temp.call$na.action)) temp.call$na.action <- na.paired("in.both")
 
   special <- c("paired.t", "mcnemar", "signed.rank", "sign.test")
   if (missing(data)) {
@@ -73,7 +73,6 @@ paired <- function(formula, data, id, na.action = na.paired, subset=NULL, contro
   ## list of x variables
   xList <- list()
 
-  ## fix of droplevels on by factor suggested by Ethan Heinzen 4/12/2016
   by.col <- modeldf[[1]]
   if(is.factor(by.col)) {
     by.col <- droplevels(by.col)
@@ -209,7 +208,7 @@ paired <- function(formula, data, id, na.action = na.paired, subset=NULL, contro
       if(statfun %in% c("countpct", "countrowpct"))
       {
         bystatlist$Difference <- countrowpct(TP1[[eff]], levels = xlevels, by = TP1[[eff]] == TP2[[eff]],
-                                             by.levels = c(TRUE, FALSE), na.rm = TRUE)[[1]]
+                                             by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
       } else if(statfun == "count")
       {
         bystatlist$Difference <- count(ifelse(TP1[[eff]] == TP2[[eff]], TP1[[eff]], NA), levels = xlevels, na.rm = TRUE)
