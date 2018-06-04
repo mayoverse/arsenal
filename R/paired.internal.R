@@ -30,18 +30,25 @@ na.paired <- function(missings = c("in.both", "fill", "asis"))
     missings,
     in.both = function(object, ...)
     {
-      omit <- is.na(object[[1]]) | is.na(object[["(id)"]])
-      xx <- object[!omit, , drop = FALSE]
+      obj.id <- object[["(id)"]]
+      omit <- is.na(object[[1]]) | is.na(obj.id)
 
-      by.col <- xx[[1]]
+      by.col <- object[[1]][!omit]
       if(is.factor(by.col)) {
         by.col <- droplevels(by.col)
         by.levels <- levels(by.col)
       } else by.levels <- sort(unique(by.col))
 
-      ids <- xx[["(id)"]]
-      ids.both <- intersect(ids[by.col == by.levels[1]], ids[by.col == by.levels[2]])
-      xx[ids %in% ids.both, , drop = FALSE]
+      ids <- object[["(id)"]][!omit]
+      omit <- omit | (obj.id %nin% intersect(ids[by.col == by.levels[1]], ids[by.col == by.levels[2]]))
+      xx <- object[!omit, , drop = FALSE]
+
+      if(any(omit)) {
+        temp <- stats::setNames(seq_along(omit)[omit], attr(object, "row.names")[omit])
+        attr(temp, "class") <- "omit"
+        attr(xx, "na.action") <- temp
+      }
+      xx
     },
     fill = function(object, ...)
     {
@@ -50,8 +57,14 @@ na.paired <- function(missings = c("in.both", "fill", "asis"))
 
       all.pairs <- expand.grid(times = unique(xx[[1]]), id = unique(xx[["(id)"]]),
                                stringsAsFactors = FALSE, KEEP.OUT.ATTRS = FALSE)
-      merge(xx, all.pairs, by.x = c(colnames(xx)[1], "(id)"), by.y = c("times", "id"),
+      xx <- merge(xx, all.pairs, by.x = c(colnames(xx)[1], "(id)"), by.y = c("times", "id"),
             all = TRUE, sort = FALSE)[names(xx)]
+      if(any(omit)) {
+        temp <- stats::setNames(seq_along(omit)[omit], attr(object, "row.names")[omit])
+        attr(temp, "class") <- "omit"
+        attr(xx, "na.action") <- temp
+      }
+      xx
     },
     asis = function(object, ...)
     {
