@@ -46,7 +46,7 @@ If no LHS variable exists, then a mean is required for a univariate test.}
 Options are N, Nmiss, Nmiss2, mean, meansd, median, q1q3, medianq1q3, iqr, range, medianrange, or other R built-in or user-written functions.}
 
 \item{cat.stats}{summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
-Options are N, Nmiss, Nmiss2, count, countpct, countrowpct, or other R built-in or user-written functions.}
+Options are N, Nmiss, Nmiss2, count, countpct, countrowpct, countcellpct, or other R built-in or user-written functions.}
 
 \item{ordered.stats}{summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
 Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.}

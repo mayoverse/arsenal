@@ -636,33 +636,44 @@ test_that("01/30/2018: additional follow-up statistics (#32)", {
 })
 
 
-test_that("01/31/2018: row percents (#9)", {
+test_that("01/31/2018 and 6/4/18: row and cell percents (#9, #106)", {
   expect_identical(
-    capture.kable(summary(tableby(Group ~ Sex + ethan, data = mdat, cat.stats = c("Nmiss", "countrowpct")), text = TRUE)),
+    capture.kable(summary(tableby(Group ~ Sex + ethan, data = mdat,
+                                  cat.stats = c("Nmiss", "countrowpct", "countcellpct")), text = TRUE)),
     c("|           | High (N=30) | Low (N=30) | Med (N=30) | Total (N=90) | p value|",
       "|:----------|:-----------:|:----------:|:----------:|:------------:|-------:|",
       "|Sex        |             |            |            |              |   0.733|",
       "|-  Female  | 15 (32.6%)  | 17 (37.0%) | 14 (30.4%) | 46 (100.0%)  |        |",
       "|-  Male    | 15 (34.1%)  | 13 (29.5%) | 16 (36.4%) | 44 (100.0%)  |        |",
+      "|-  Female  | 15 (16.7%)  | 17 (18.9%) | 14 (15.6%) |  46 (51.1%)  |        |",
+      "|-  Male    | 15 (16.7%)  | 13 (14.4%) | 16 (17.8%) |  44 (48.9%)  |        |",
       "|ethan      |             |            |            |              |   0.178|",
       "|-  N-Miss  |      3      |     0      |     0      |      3       |        |",
       "|-  Ethan   | 17 (40.5%)  | 13 (31.0%) | 12 (28.6%) | 42 (100.0%)  |        |",
-      "|-  Heinzen | 10 (22.2%)  | 17 (37.8%) | 18 (40.0%) | 45 (100.0%)  |        |"
+      "|-  Heinzen | 10 (22.2%)  | 17 (37.8%) | 18 (40.0%) | 45 (100.0%)  |        |",
+      "|-  Ethan   | 17 (19.5%)  | 13 (14.9%) | 12 (13.8%) |  42 (48.3%)  |        |",
+      "|-  Heinzen | 10 (11.5%)  | 17 (19.5%) | 18 (20.7%) |  45 (51.7%)  |        |"
     )
   )
 
   expect_identical(
-    capture.kable(summary(tableby(Sex ~ Group + ethan, data = mdat, cat.stats = c("Nmiss", "countrowpct")), text = TRUE)),
+    capture.kable(summary(tableby(Sex ~ Group + ethan, data = mdat,
+                                  cat.stats = c("Nmiss", "countrowpct", "countcellpct")), text = TRUE)),
     c("|           | Female (N=46) | Male (N=44) | Total (N=90) | p value|",
       "|:----------|:-------------:|:-----------:|:------------:|-------:|",
       "|Group      |               |             |              |   0.733|",
       "|-  High    |  15 (50.0%)   | 15 (50.0%)  | 30 (100.0%)  |        |",
       "|-  Low     |  17 (56.7%)   | 13 (43.3%)  | 30 (100.0%)  |        |",
       "|-  Med     |  14 (46.7%)   | 16 (53.3%)  | 30 (100.0%)  |        |",
+      "|-  High    |  15 (16.7%)   | 15 (16.7%)  |  30 (33.3%)  |        |",
+      "|-  Low     |  17 (18.9%)   | 13 (14.4%)  |  30 (33.3%)  |        |",
+      "|-  Med     |  14 (15.6%)   | 16 (17.8%)  |  30 (33.3%)  |        |",
       "|ethan      |               |             |              |   0.166|",
       "|-  N-Miss  |       1       |      2      |      3       |        |",
       "|-  Ethan   |  18 (42.9%)   | 24 (57.1%)  | 42 (100.0%)  |        |",
-      "|-  Heinzen |  27 (60.0%)   | 18 (40.0%)  | 45 (100.0%)  |        |"
+      "|-  Heinzen |  27 (60.0%)   | 18 (40.0%)  | 45 (100.0%)  |        |",
+      "|-  Ethan   |  18 (20.7%)   | 24 (27.6%)  |  42 (48.3%)  |        |",
+      "|-  Heinzen |  27 (31.0%)   | 18 (20.7%)  |  45 (51.7%)  |        |"
     )
   )
 })

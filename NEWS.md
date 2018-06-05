@@ -18,6 +18,8 @@
 
 * `tableby()`: Implement `length.tableby()`, so that `head()` and `tail()` also work.
 
+* `tableby()`: Implement `countcellpct()` for counts and cell percentages. (#106)
+
 * `modelsum()`: Allow for `weights=` and `na.action=`. (#99)
 
 * `modelsum()`: Fix problem with column names which are prefixes of other column names. (#98)

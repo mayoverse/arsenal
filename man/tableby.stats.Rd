@@ -21,6 +21,7 @@
 \alias{count}
 \alias{countpct}
 \alias{countrowpct}
+\alias{countcellpct}
 \title{tableby Summary Statistics Functions}
 \usage{
 meansd(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
@@ -60,6 +61,9 @@ count(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
 countpct(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
 countrowpct(x, levels = NULL, by, by.levels = sort(unique(by)),
+  na.rm = TRUE, weights = rep(1, length(x)), ...)
+
+countcellpct(x, levels = NULL, by, by.levels = sort(unique(by)),
   na.rm = TRUE, weights = rep(1, length(x)), ...)
 }
 \arguments{

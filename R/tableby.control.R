@@ -17,7 +17,7 @@
 #'   Options are N, Nmiss, Nmiss2, mean, meansd, median, q1q3, medianq1q3, iqr, range, medianrange, or other R built-in or user-written functions.
 #' @param cat.test name of test for categorical variables: chisq, fe (Fisher's Exact)
 #' @param cat.stats summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
-#'   Options are N, Nmiss, Nmiss2, count, countpct, countrowpct, or other R built-in or user-written functions.
+#'   Options are N, Nmiss, Nmiss2, count, countpct, countrowpct, countcellpct, or other R built-in or user-written functions.
 #' @param chisq.correct logical, correction factor for chisq.test
 #' @param simulate.p.value logical, simulate p-value for categorical tests (fe and chisq)
 #' @param B number of simulations to perform for simulation-based p-value

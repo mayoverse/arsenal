@@ -193,7 +193,7 @@ paired <- function(formula, data, id, na.action = na.paired, subset=NULL, contro
     currstats <- if(length(attributes(currcol)$stats)>0) attributes(currcol)$stats else currstats
     if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
     for(statfun in currstats) {
-      if(statfun == "countrowpct")
+      if(statfun %in% c("countrowpct", "countcellpct"))
       {
         bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                             by = by.col, by.levels = by.levels, na.rm = TRUE))
@@ -205,7 +205,7 @@ paired <- function(formula, data, id, na.action = na.paired, subset=NULL, contro
           bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, ...))
         }
       }
-      if(statfun %in% c("countpct", "countrowpct"))
+      if(statfun %in% c("countpct", "countrowpct", "countcellpct"))
       {
         bystatlist$Difference <- countrowpct(TP1[[eff]], levels = xlevels, by = TP1[[eff]] == TP2[[eff]],
                                              by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]

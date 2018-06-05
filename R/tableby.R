@@ -281,7 +281,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     currstats <- if(length(attributes(currcol)$stats)>0) attributes(currcol)$stats else currstats
     if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
     for(statfun in currstats) {
-      if(statfun == "countrowpct")
+      if(statfun %in% c("countrowpct", "countcellpct"))
       {
         bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                             by = by.col, by.levels = by.levels, weights = weights, na.rm = TRUE))
