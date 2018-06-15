@@ -199,6 +199,12 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     by.levels <- levels(by.col)
   } else by.levels <- sort(unique(by.col))
 
+  if(length(by.levels) < 2 && attributes(Terms)$response != 0)
+  {
+    warning("The by-variable has fewer than two levels; statistical tests are ignored")
+    control$test <- FALSE
+  }
+
   for(eff in 2:ncol(modeldf)) {
 
     currcol <- modeldf[[eff]]
