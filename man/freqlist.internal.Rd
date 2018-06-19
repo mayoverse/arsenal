@@ -2,10 +2,16 @@
 % Please edit documentation in R/freqlist.internal.R
 \name{freqlist.internal}
 \alias{freqlist.internal}
+\alias{is.freqlist}
+\alias{is.summary.freqlist}
 \alias{labels<-.freqlist}
 \alias{labels.freqlist}
 \title{Helper functions for freqlist}
 \usage{
+is.freqlist(x)
+
+is.summary.freqlist(x)
+
 \method{labels}{freqlist}(x) <- value
 
 \method{labels}{freqlist}(object, ...)

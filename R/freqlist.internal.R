@@ -24,6 +24,14 @@ NULL
 
 #' @rdname freqlist.internal
 #' @export
+is.freqlist <- function(x) inherits(x, "freqlist")
+
+#' @rdname freqlist.internal
+#' @export
+is.summary.freqlist <- function(x) inherits(x, "summary.freqlist")
+
+#' @rdname freqlist.internal
+#' @export
 'labels<-.freqlist' <- function(x, value) {
 
   if(is.null(value))
