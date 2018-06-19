@@ -8,10 +8,10 @@
 \title{The summary method for a \code{tableby} object}
 \usage{
 \method{summary}{tableby}(object, ..., labelTranslations = NULL,
-  text = FALSE, title = NULL, pfootnote = FALSE)
+  text = FALSE, title = NULL, pfootnote = FALSE, term.name = "")
 
 \method{as.data.frame}{summary.tableby}(x, ..., text = x$text,
-  pfootnote = x$pfootnote)
+  pfootnote = x$pfootnote, term.name = "")
 
 \method{print}{summary.tableby}(x, ..., format = "markdown")
 }
@@ -35,6 +35,8 @@ Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R ses
 of the tableby object}
 
 \item{pfootnote}{Logical, denoting whether to put footnotes describing the tests used to generate the p-values.}
+
+\item{term.name}{A character string denoting the column name for the first column.}
 
 \item{x}{An object of class \code{"summary.tableby"}.}
 

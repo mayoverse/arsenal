@@ -19,6 +19,7 @@
 #'		Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development. For
 #'		\code{as.data.frame}, this can be set to \code{NULL} to avoid changing the labels at all.
 #' @param pfootnote Logical, denoting whether to put footnotes describing the tests used to generate the p-values.
+#' @param term.name A character string denoting the column name for the first column.
 #' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
 #'   To use the default in \code{kable}, pass \code{NULL}.
 #' @return An object of class \code{summary.tableby}
@@ -48,7 +49,7 @@ NULL
 
 #' @rdname summary.tableby
 #' @export
-summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, pfootnote = FALSE)
+summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, pfootnote = FALSE, term.name = "")
 {
   dat <- as.data.frame(object, ..., labelTranslations = labelTranslations)
   structure(list(
@@ -57,13 +58,14 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
     totals = object$y[[1]]$stats,
     text = text,
     title = title,
-    pfootnote = pfootnote
+    pfootnote = pfootnote,
+    term.name = term.name
   ), class = "summary.tableby")
 }
 
 #' @rdname summary.tableby
 #' @export
-as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote)
+as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote, term.name = "")
 {
   df <- x$object
 
@@ -127,7 +129,7 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
   align <- paste0(c("l", rep("c", times = sum(cn != "p.value")-1), if("p.value" %in% cn) "r"), collapse = "")
   nm <- intersect(cn, names(x$totals))
   if(length(nm)) cn[nm] <- paste0(cn[nm], " (N=", x$totals[nm], ")")
-  cn["label"] <- ""
+  cn["label"] <- term.name
   if("p.value" %in% cn && is.null(x$control$test.pname)) cn["p.value"] <- "p value" else if("p.value" %in% cn) cn["p.value"] <- x$control$test.pname
   colnames(df) <- cn
 
@@ -138,7 +140,7 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
 #' @export
 print.summary.tableby <- function(x, ..., format = "markdown")
 {
-  df <- as.data.frame(x, ...)
+  df <- as.data.frame(x, ..., term.name = x$term.name)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
