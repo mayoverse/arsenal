@@ -8,9 +8,10 @@
 \title{Summarize a \code{modelsum} object.}
 \usage{
 \method{summary}{modelsum}(object, ..., labelTranslations = NULL,
-  text = FALSE, title = NULL)
+  text = FALSE, title = NULL, term.name = "")
 
-\method{as.data.frame}{summary.modelsum}(x, ..., text = x$text)
+\method{as.data.frame}{summary.modelsum}(x, ..., text = x$text,
+  term.name = "")
 
 \method{print}{summary.modelsum}(x, ..., format = "markdown")
 }
@@ -31,6 +32,8 @@ string value for the named element of the list, e.g.,
 to print out the text version.}
 
 \item{title}{Title for the table, defaults to \code{NULL} (no title)}
+
+\item{term.name}{A character string denoting the column name for the first column.}
 
 \item{x}{An object of class \code{"summary.modelsum"}.}
 

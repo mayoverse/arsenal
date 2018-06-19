@@ -396,3 +396,20 @@ test_that("05/31/2018: similar column names (#100)", {
   )
 })
 
+#################################################################################################################################
+
+test_that("06/19/2018: term.name (#109)", {
+  expect_identical(
+    capture.kable(summary(modelsum(Age ~ Sex + time, adjust = ~ trt, data = mdat), text = TRUE, term.name = "Term")),
+    c("|Term            |estimate |std.error |p.value |adj.r.squared |",
+      "|:---------------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept)     |40.632   |1.024     |< 0.001 |-0.005        |",
+      "|Sex Male        |-0.221   |1.112     |0.843   |              |",
+      "|Treatment Arm B |-1.373   |1.135     |0.229   |              |",
+      "|(Intercept)     |41.938   |1.366     |< 0.001 |0.014         |",
+      "|time            |-0.368   |0.275     |0.184   |              |",
+      "|Treatment Arm B |-1.366   |1.123     |0.227   |              |"
+    )
+  )
+})
+

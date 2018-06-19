@@ -19,6 +19,7 @@
 #' @param text Logical, denoting whether to print out the text version. Passing \code{NULL} is the same as \code{TRUE},
 #'   to print out the text version.
 #' @param title	Title for the table, defaults to \code{NULL} (no title)
+#' @param term.name A character string denoting the column name for the first column.
 #' @param x An object of class \code{"summary.modelsum"}.
 #' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
 #'   To use the default in \code{kable}, pass \code{NULL}.
@@ -31,20 +32,21 @@ NULL
 
 #' @rdname summary.modelsum
 #' @export
-summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL)
+summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, term.name = "")
 {
   object <- as.data.frame(object, ..., labelTranslations = labelTranslations)
   structure(list(
     object = set_attr(object, "control", NULL),
     control = attr(object, "control"),
     text = text,
-    title = title
+    title = title,
+    term.name = term.name
   ), class = "summary.modelsum")
 }
 
 #' @rdname summary.modelsum
 #' @export
-as.data.frame.summary.modelsum <- function(x, ..., text = x$text)
+as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = "")
 {
 
   #### format the digits and nsmall things ####
@@ -114,7 +116,7 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text)
     nm <- intersect(cn, names(x$control$stat.labels))
     if(length(nm)) cn[nm] <- unlist(x$control$stat.labels[nm])
   }
-  cn["label"] <- ""
+  cn["label"] <- term.name
   colnames(df) <- cn
 
   df
@@ -124,7 +126,7 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text)
 #' @export
 print.summary.modelsum <- function(x, ..., format = "markdown")
 {
-  df <- as.data.frame(x, ...)
+  df <- as.data.frame(x, ..., term.name = x$term.name)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
