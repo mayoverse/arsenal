@@ -2,6 +2,8 @@
 % Please edit documentation in R/tableby.internal.R
 \name{tableby.internal}
 \alias{tableby.internal}
+\alias{is.tableby}
+\alias{is.summary.tableby}
 \alias{merge.tableby}
 \alias{modpval.tableby}
 \alias{labels.tableby}
@@ -15,6 +17,10 @@
 \alias{length.tableby}
 \title{Helper functions for tableby}
 \usage{
+is.tableby(x)
+
+is.summary.tableby(x)
+
 \method{merge}{tableby}(x, y, ...)
 
 modpval.tableby(x, pdata, use.pname = FALSE)

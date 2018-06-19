@@ -139,6 +139,14 @@ NULL
 
 #' @rdname tableby.internal
 #' @export
+is.tableby <- function(x) inherits(x, "tableby")
+
+#' @rdname tableby.internal
+#' @export
+is.summary.tableby <- function(x) inherits(x, "summary.tableby")
+
+#' @rdname tableby.internal
+#' @export
 merge.tableby <- function(x, y, ...) {
 
   if(names(x$y) != names(y$y)) {
