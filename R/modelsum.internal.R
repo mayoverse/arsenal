@@ -35,6 +35,14 @@ join_formula <- function(x, y)
 
 #' @rdname modelsum.internal
 #' @export
+is.modelsum <- function(x) inherits(x, "modelsum")
+
+#' @rdname modelsum.internal
+#' @export
+is.summary.modelsum <- function(x) inherits(x, "summary.modelsum")
+
+#' @rdname modelsum.internal
+#' @export
 na.modelsum <- function (object, ...) {
     omit <- is.na(object[[1]])
     xx <- object[!omit, , drop = FALSE]

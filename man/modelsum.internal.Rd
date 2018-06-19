@@ -2,6 +2,8 @@
 % Please edit documentation in R/modelsum.internal.R
 \name{modelsum.internal}
 \alias{modelsum.internal}
+\alias{is.modelsum}
+\alias{is.summary.modelsum}
 \alias{na.modelsum}
 \alias{[.modelsum}
 \alias{labels.modelsum}
@@ -9,6 +11,10 @@
 \alias{merge.modelsum}
 \title{Helper functions for modelsum}
 \usage{
+is.modelsum(x)
+
+is.summary.modelsum(x)
+
 na.modelsum(object, ...)
 
 \method{[}{modelsum}(x, i)
@@ -20,11 +26,11 @@ na.modelsum(object, ...)
 \method{merge}{modelsum}(x, y, ...)
 }
 \arguments{
+\item{x, y}{A \code{modelsum} object.}
+
 \item{object}{A \code{data.frame} resulting from evaluating a \code{modelsum} formula.}
 
 \item{...}{Other arguments, or a vector of indices for extracting.}
-
-\item{x, y}{A \code{modelsum} object.}
 
 \item{i}{A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.}
 
