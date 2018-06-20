@@ -27,9 +27,10 @@ For \code{print}ing the summary object, these are passed to both \code{as.data.f
 output to be replaced in the pretty rendering of tableby by the character string
 value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.}
 
-\item{text}{Logical, tell R to print the raw text version of the summary to the screen.
-Default is \code{FALSE}, but recommended to be \code{TRUE} for interactive R session development. For
-\code{as.data.frame}, this can be set to \code{NULL} to avoid changing the labels at all.}
+\item{text}{An argument denoting how to print the summary to the screen.
+Default is \code{FALSE} (show markdown output). \code{TRUE} outputs a text-only version.
+\code{NULL} avoids changing the labels at all. \code{"html"} is like \code{FALSE}, except that it uses
+the HTML tag \code{<strong>} instead of the markdown formatting.}
 
 \item{title}{Title that will appear on the top of the header in the pretty-table rendering
 of the tableby object}
