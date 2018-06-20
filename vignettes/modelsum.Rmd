@@ -743,6 +743,30 @@ write2html(tab2, "~/ibm/trash.html")
 write2word(tab2, "~/ibm/trash.doc", title="My table in Word")
 ```
 
+## 18. Use `modelsum` in R Shiny
+
+The easiest way to output a `modelsum()` object in an R Shiny app is to use the `tableOutput()` UI in combination with
+the `renderTable()` server function and `as.data.frame(summary(modelsum()))`:
+
+```{r eval=FALSE}
+# A standalone shiny app
+library(shiny)
+library(arsenal)
+data(mockstudy)
+
+shinyApp(
+  ui = fluidPage(tableOutput("table")),
+  server = function(input, output) {
+    output$table <- renderTable({
+      as.data.frame(summary(modelsum(age ~ sex, data = mockstudy), text = "html"))
+    }, sanitize.text.function = function(x) x)
+  }
+)
+```
+
+This can be especially powerful if you feed the selections from a `selectInput(multiple = TRUE)` into `formulize()` to make
+the table dynamic!
+
 # Available Function Options
 
 ## Summary statistics

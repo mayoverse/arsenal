@@ -28,8 +28,9 @@ output to be replaced in the pretty rendering of modelsum by the character
 string value for the named element of the list, e.g.,
 \code{list(age = "Age(years)")}.}
 
-\item{text}{Logical, denoting whether to print out the text version. Passing \code{NULL} is the same as \code{TRUE},
-to print out the text version.}
+\item{text}{An argument denoting how to print the summary to the screen.
+Default is \code{FALSE} (show markdown output). \code{TRUE} and \code{NULL} output a text-only version.
+\code{"html"} is like \code{FALSE}, except that it uses the HTML tag \code{<strong>} instead of the markdown formatting.}
 
 \item{title}{Title for the table, defaults to \code{NULL} (no title)}
 
