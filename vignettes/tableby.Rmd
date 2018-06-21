@@ -735,6 +735,8 @@ however there are a number of extra functions defined specifically for the table
 * `countpct`: print the number of values in a category plus the column-percentage in the format `N (%)`
 * `countrowpct`: print the number of values in a category plus the row-percentage in the format `N (%)`
 * `countcellpct`: print the number of values in a category plus the cell-percentage in the format `N (%)`
+* `binomCI`: print the proportion in a category plus a binomial confidence interval.
+* `rowbinomCI`: print the row proportion in a category plus a binomial confidence interval.
 * `medianq1q3`: print the median, 25th, and 75th quantiles `median (Q1, Q3)`
 * `q1q3`: print the 25th and 75th quantiles `Q1, Q3`
 * `iqr`: print the inter-quartile range.

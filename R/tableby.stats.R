@@ -15,6 +15,7 @@
 #' @param times A vector of times to use for survival summaries.
 #' @param by a vector of the by-values.
 #' @param by.levels a vector of the levels of \code{by}.
+#' @param conf.level Numeric, denoting what confidence level to use for confidence intervals.
 #' @param ... Other arguments.
 #' @return Usually a vector of the appropriate numbers.
 #' @details Not all these functions are exported, in order to avoid conflicting NAMESPACES.
@@ -207,6 +208,10 @@ countpct <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...)
   as.tbstat_multirow(lapply(Map(c, wtbl, 100*wtbl/sum(wtbl)), as.countpct, parens = c("(", ")"), pct = "%"))
 }
 
+transpose_list <- function(x, levels, by.levels)
+  stats::setNames(lapply(by.levels, function(i) as.tbstat_multirow(stats::setNames(lapply(x, "[[", i), levels))), by.levels)
+
+
 #' @rdname tableby.stats
 #' @export
 countrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights=rep(1, length(x)), ...) {
@@ -221,19 +226,11 @@ countrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TR
 
   wtbls <- lapply(levels, function(L) {
     tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
-    c(tmp, Total = sum(tmp))
+    wtbl <- c(tmp, Total = sum(tmp))
+    lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/sum(tmp)), parens = c("(", ")"), pct = "%"))
   })
-  pcts <- lapply(wtbls, function(tab) c(100*tab/utils::tail(tab, 1)))
-
-  nms <- c(by.levels, "Total")
-  transpose <- function(what) stats::setNames(lapply(nms, function(i) stats::setNames(lapply(what, "[", i), levels)), nms)
-  wtbls <- transpose(wtbls)
-  pcts <- transpose(pcts)
-
-  combine <- function(elt1, elt2) as.countpct(unname(c(elt1, elt2)), parens = c("(", ")"), pct = "%")
-  Map(function(L1, L2) as.tbstat_multirow(Map(combine, L1, L2)), wtbls, pcts)
+  transpose_list(wtbls, levels, c(by.levels, "Total"))
 }
-
 
 #' @rdname tableby.stats
 #' @export
@@ -247,22 +244,58 @@ countcellpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=T
     weights <- weights[idx]
   }
 
+  tot <- sum(vapply(levels, function(L) {
+    sum(wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L]))
+  }, numeric(1)))
+
   wtbls <- lapply(levels, function(L) {
     tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
-    c(tmp, Total = sum(tmp))
+    wtbl <- c(tmp, Total = sum(tmp))
+    lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/tot), parens = c("(", ")"), pct = "%"))
   })
-  tot <- sum(vapply(wtbls, utils::tail, NA_real_, n = 1L))
-  pcts <- lapply(wtbls, function(tab) c(100*tab/tot))
-
-  nms <- c(by.levels, "Total")
-  transpose <- function(what) stats::setNames(lapply(nms, function(i) stats::setNames(lapply(what, "[", i), levels)), nms)
-  wtbls <- transpose(wtbls)
-  pcts <- transpose(pcts)
-
-  combine <- function(elt1, elt2) as.countpct(unname(c(elt1, elt2)), parens = c("(", ")"), pct = "%")
-  Map(function(L1, L2) as.tbstat_multirow(Map(combine, L1, L2)), wtbls, pcts)
+  transpose_list(wtbls, levels, c(by.levels, "Total"))
 }
 
+get_binom_est_ci <- function(x, tot, setNA, conf.level = 0.95) {
+  if(setNA) return(c(NA_real_, NA_real_, NA_real_))
+
+  b <- stats::binom.test(x, tot, conf.level = conf.level)
+  unname(c(b$estimate, b$conf.int))
+}
+
+#' @rdname tableby.stats
+#' @export
+binomCI <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), conf.level = 0.95, ...) {
+  if(is.null(levels)) levels <- sort(unique(x))
+  wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)])
+  wts <- !all(weights == 1, na.rm = na.rm)
+
+  ests <- lapply(wtbl, get_binom_est_ci, tot = sum(wtbl), setNA = wts, conf.level = conf.level)
+  as.tbstat_multirow(lapply(ests, as.tbstat, parens = c("(", ")"), sep2 = ", "))
+}
+
+#' @rdname tableby.stats
+#' @export
+rowbinomCI <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights=rep(1, length(x)), conf.level = 0.95, ...) {
+  if(is.null(levels)) levels <- sort(unique(x))
+  if(na.rm)
+  {
+    idx <- !is.na(x) & !is.na(by) & !is.na(weights)
+    x <- x[idx]
+    by <- by[idx]
+    weights <- weights[idx]
+  }
+  wts <- !all(weights == 1, na.rm = na.rm)
+
+  wtbls <- lapply(levels, function(L) {
+    tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
+    wtbl <- c(tmp, Total = sum(tmp))
+    wtbl <- lapply(wtbl, get_binom_est_ci, tot = sum(tmp), setNA = wts, conf.level = conf.level)
+    lapply(wtbl, as.tbstat, parens = c("(", ")"), sep2 = ", ")
+  })
+  # as.tbstat_multirow(lapply(wtbl, f))
+  transpose_list(wtbls, levels, c(by.levels, "Total"))
+}
 
 ######## internal functions that we use above ########
 

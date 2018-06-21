@@ -13,8 +13,8 @@ paired.control(test = TRUE, diff = TRUE, test.pname = NULL,
   "N-Miss", Nmiss2 = "N-Miss", meansd = "Mean (SD)", medianq1q3 =
   "Median (Q1, Q3)", q1q3 = "Q1, Q3", range = "Range", countpct =
   "Count (Pct)"), digits = 3L, digits.count = 0L, digits.p = 3L,
-  format.p = TRUE, mcnemar.correct = TRUE, signed.rank.exact = NULL,
-  signed.rank.correct = TRUE, ...)
+  format.p = TRUE, conf.level = 0.95, mcnemar.correct = TRUE,
+  signed.rank.exact = NULL, signed.rank.correct = TRUE, ...)
 }
 \arguments{
 \item{test}{logical, telling \code{paired} whether to perform tests of x variables across time points.}
@@ -55,6 +55,9 @@ e.g., \code{list(countpct="Count (Pct)")}.}
 \item{digits.p}{Number of decimal places for p-values.}
 
 \item{format.p}{Logical, denoting whether to format p-values. See "Details", below.}
+
+\item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.
+(See, e.g., \code{\link{binomCI}})}
 
 \item{mcnemar.correct, signed.rank.exact, signed.rank.correct}{Options for statistical tests. See \code{\link{wilcox.test}}
 and \code{\link{mcnemar.test}} for details.}

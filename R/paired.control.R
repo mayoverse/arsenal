@@ -26,7 +26,7 @@ paired.control <- function(test=TRUE, diff=TRUE, test.pname=NULL,
    ordered.stats=c("Nmiss", "countpct"), date.stats=c("Nmiss", "median","range"),
    stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3",
                      range="Range", countpct="Count (Pct)"),
-   digits = 3L, digits.count = 0L, digits.p = 3L, format.p = TRUE,
+   digits = 3L, digits.count = 0L, digits.p = 3L, format.p = TRUE, conf.level = 0.95,
    mcnemar.correct = TRUE, signed.rank.exact = NULL, signed.rank.correct = TRUE, ...) {
 
   ## can't do match.call()[[1]] <- "tableby.control", which would ignore new defaults
@@ -35,7 +35,7 @@ paired.control <- function(test=TRUE, diff=TRUE, test.pname=NULL,
     numeric.test=numeric.test, cat.test=cat.test, ordered.test=ordered.test, date.test=date.test,
     numeric.stats=numeric.stats, cat.stats=cat.stats, ordered.stats=ordered.stats, date.stats=date.stats,
     stats.labels=stats.labels, digits=digits, digits.p=digits.p, digits.count = digits.count, format.p = format.p,
-    ...
+    conf.level=conf.level, ...
   )
   out$diff <- diff
   out$total <- FALSE

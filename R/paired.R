@@ -193,7 +193,7 @@ paired <- function(formula, data, id, na.action = na.paired, subset=NULL, contro
     currstats <- if(length(attributes(currcol)$stats)>0) attributes(currcol)$stats else currstats
     if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
     for(statfun in currstats) {
-      if(statfun %in% c("countrowpct", "countcellpct"))
+      if(statfun %in% c("countrowpct", "countcellpct", "rowbinomCI"))
       {
         bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                             by = by.col, by.levels = by.levels, na.rm = TRUE))
@@ -207,11 +207,17 @@ paired <- function(formula, data, id, na.action = na.paired, subset=NULL, contro
       }
       if(statfun %in% c("countpct", "countrowpct", "countcellpct"))
       {
+        # countrowpct to get the right percentages
         bystatlist$Difference <- countrowpct(TP1[[eff]], levels = xlevels, by = TP1[[eff]] == TP2[[eff]],
                                              by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
       } else if(statfun == "count")
       {
+        # this doesn't have percentages
         bystatlist$Difference <- count(ifelse(TP1[[eff]] == TP2[[eff]], TP1[[eff]], NA), levels = xlevels, na.rm = TRUE)
+      } else if(statfun %in% c("binomCI", "rowbinomCI"))
+      {
+        bystatlist$Difference <- rowbinomCI(TP1[[eff]], levels = xlevels, by = TP1[[eff]] == TP2[[eff]],
+                                            by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
       } else
       {
         bystatlist$Difference <- do.call(statfun, list(as.numeric(TP2[[eff]]) - as.numeric(TP1[[eff]]),

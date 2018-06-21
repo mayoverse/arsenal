@@ -22,6 +22,8 @@
 \alias{countpct}
 \alias{countrowpct}
 \alias{countcellpct}
+\alias{binomCI}
+\alias{rowbinomCI}
 \title{tableby Summary Statistics Functions}
 \usage{
 meansd(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
@@ -65,6 +67,12 @@ countrowpct(x, levels = NULL, by, by.levels = sort(unique(by)),
 
 countcellpct(x, levels = NULL, by, by.levels = sort(unique(by)),
   na.rm = TRUE, weights = rep(1, length(x)), ...)
+
+binomCI(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)),
+  conf.level = 0.95, ...)
+
+rowbinomCI(x, levels = NULL, by, by.levels = sort(unique(by)),
+  na.rm = TRUE, weights = rep(1, length(x)), conf.level = 0.95, ...)
 }
 \arguments{
 \item{x}{Usually a vector.}
@@ -82,6 +90,8 @@ countcellpct(x, levels = NULL, by, by.levels = sort(unique(by)),
 \item{by}{a vector of the by-values.}
 
 \item{by.levels}{a vector of the levels of \code{by}.}
+
+\item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.}
 }
 \value{
 Usually a vector of the appropriate numbers.

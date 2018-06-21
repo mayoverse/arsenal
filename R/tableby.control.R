@@ -38,6 +38,8 @@
 #' @param digits.pct Number of decimal places for percents.
 #' @param digits.p Number of decimal places for p-values.
 #' @param format.p Logical, denoting whether to format p-values. See "Details", below.
+#' @param conf.level Numeric, denoting what confidence level to use for confidence intervals.
+#'   (See, e.g., \code{\link{binomCI}})
 #' @param ... additional arguments.
 #' @details
 #' All tests can be turned off by setting \code{test} to FALSE.
@@ -76,7 +78,7 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
    stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3",
                      range="Range", countpct="Count (Pct)", Nevents="Events", medSurv="Median Survival",
                      medTime = "Median Follow-Up", rangeTime = "Range of Follow-Up"),
-   digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE,
+   digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE, conf.level = 0.95,
    chisq.correct=TRUE, simulate.p.value=FALSE, B=2000, ...) {
 
   nm <- names(list(...))
@@ -147,7 +149,7 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
        numeric.stats=numeric.stats, cat.stats=cat.stats,
        ordered.stats=ordered.stats,  surv.stats=surv.stats,
        date.test=date.test, date.stats=date.stats,
-       chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B,
        stats.labels=stats.labels,
-       digits=digits, digits.p=digits.p, digits.count = digits.count, digits.pct = digits.pct, format.p = format.p)
+       digits=digits, digits.p=digits.p, digits.count = digits.count, digits.pct = digits.pct, format.p = format.p,
+       conf.level=conf.level, chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B)
 }
