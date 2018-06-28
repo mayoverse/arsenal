@@ -81,11 +81,11 @@ that by default these attributes get dropped upon subsetting, hence the call to 
 mockstudy.lab <- keep.labels(mockstudy)
 ```
 
-You can set attributes one at a time:
+You can set attributes one at a time in two ways:
 
 ```{r}
 attr(mockstudy.lab$sex, "label") <- "Sex"
-attr(mockstudy.lab$age, "label") <- "Age, yrs"
+labels(mockstudy.lab$age) <- "Age, yrs"
 ```
 
 ...or all at once:

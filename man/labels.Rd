@@ -6,6 +6,7 @@
 \alias{labels.keep_labels}
 \alias{labels<-}
 \alias{labels<-.keep_labels}
+\alias{labels<-.default}
 \alias{labels<-.data.frame}
 \alias{set_labels}
 \alias{set_attr}
@@ -18,6 +19,8 @@
 labels(x) <- value
 
 \method{labels}{keep_labels}(x) <- value
+
+\method{labels}{default}(x) <- value
 
 \method{labels}{data.frame}(x) <- value
 

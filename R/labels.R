@@ -52,6 +52,13 @@ labels.keep_labels <- function(object, ...)
 
 #' @rdname labels
 #' @export
+`labels<-.default` <- function(x, value) # we can't overwrite labels.default(), but nothing is stopping us from doing this
+{
+  set_attr(x, "label", value)
+}
+
+#' @rdname labels
+#' @export
 `labels<-.data.frame` <- function(x, value)
 {
   if(is.null(value))
