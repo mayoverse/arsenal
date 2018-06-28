@@ -6,17 +6,31 @@
 
 * Update `formulize()` to handle non-syntactic names in the `data=` argument. (#105)
 
+* `tableby()` and `summary.tableby()`: Implemented `is.tableby()` and `is.summary.tableby()`. (#112)
+
+* `modelsum()` and `summary.modelsum()`: Implemented `is.modelsum()` and `is.summary.modelsum()`. (#111)
+
+* `freqlist()` and `summary.freqlist()`: Implemented `is.freqlist()` and `is.summary.freqlist()`. (#113)
+
 * `tableby()`: change how arguments are passed to stat tests.
+
+* `tableby()`: issue a warning if statistical tests are requested when there are fewer than two by-levels. (#108)
 
 * `tableby()`: fix `trend()` and `anova()` to return an object instead of the object being invisible.
 
+* Implemented the `tableby()` stat functions `binomCI()` and `rowbinomCI()` for binomial confidence intervals. (#117)
+
 * `summary.tableby()`, `summary.modelsum()`, `summary.freqlist()`: ignore row.names when printing summary objects.
 
-* `tableby()`: Implement `Ops.tableby()` to compare tableby objects to a number (p-value).
+* `summary.tableby()` and `as.data.frame.summary.tableby()`: added a `term.name=` argument. (#110)
 
-* `tableby()`: Implement `xtfrm.tableby()`, so that tableby objects can be sorted by p-value.
+* `summary.modelsum()` and `as.data.frame.summary.modelsum()`: added a `term.name=` argument. (#109)
 
-* `tableby()`: Implement `length.tableby()`, so that `head()` and `tail()` also work.
+* `tableby()`: Implement `Ops.tableby()` to compare tableby objects to a number (p-value). (#96)
+
+* `tableby()`: Implement `xtfrm.tableby()`, so that tableby objects can be sorted by p-value. (#96)
+
+* `tableby()`: Implement `length.tableby()`, so that `head()` and `tail()` also work. (#97)
 
 * `tableby()`: Implement `countcellpct()` for counts and cell percentages. (#106)
 
@@ -25,6 +39,12 @@
 * `modelsum()`: Fix problem with column names which are prefixes of other column names. (#98)
 
 * `modelsum()`: Fix problem with column labels overwriting categorical levels which also match. (#100)
+
+* `summary.tableby()`: pass `text="html"` to get better formatting in R shiny. (#114)
+
+* `summary.modelsum()`: pass `text="html"` to get better formatting in R shiny. (#115)
+
+* Added the a default method for label assignment (`labels<-`). (#118)
 
 * Update documentation.
 
