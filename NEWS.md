@@ -34,6 +34,8 @@
 
 * `tableby()`: Implement `countcellpct()` for counts and cell percentages. (#106)
 
+* `tableby()`: Change default for chi-square tests to `correct=FALSE`. Note that this only affects the 2 x 2 case.
+
 * `modelsum()`: Allow for `weights=` and `na.action=`. (#99)
 
 * `modelsum()`: Fix problem with column names which are prefixes of other column names. (#98)

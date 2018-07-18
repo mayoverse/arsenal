@@ -79,7 +79,7 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
                      range="Range", countpct="Count (Pct)", Nevents="Events", medSurv="Median Survival",
                      medTime = "Median Follow-Up", rangeTime = "Range of Follow-Up"),
    digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE, conf.level = 0.95,
-   chisq.correct=TRUE, simulate.p.value=FALSE, B=2000, ...) {
+   chisq.correct=FALSE, simulate.p.value=FALSE, B=2000, ...) {
 
   nm <- names(list(...))
   if("digits.test" %in% nm) .Deprecated(msg = "Using 'digits.test = ' is deprecated. Use 'digits.p = ' instead.")

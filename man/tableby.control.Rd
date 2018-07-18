@@ -15,7 +15,7 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   countpct = "Count (Pct)", Nevents = "Events", medSurv = "Median Survival",
   medTime = "Median Follow-Up", rangeTime = "Range of Follow-Up"),
   digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L,
-  format.p = TRUE, conf.level = 0.95, chisq.correct = TRUE,
+  format.p = TRUE, conf.level = 0.95, chisq.correct = FALSE,
   simulate.p.value = FALSE, B = 2000, ...)
 }
 \arguments{

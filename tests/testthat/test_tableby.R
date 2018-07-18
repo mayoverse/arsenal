@@ -207,7 +207,7 @@ test_that("The by-variable droplevels is working correctly", {
     capture.kable(summary(tableby(Group.fac ~ Sex + time + dt, data = mdat[mdat$Group.fac %in% c("High", "Low"), ]), text = TRUE)),
     c("|             |       High (N=30)       |       Low (N=30)        |      Total (N=60)       | p value|",
       "|:------------|:-----------------------:|:-----------------------:|:-----------------------:|-------:|",
-      "|Sex          |                         |                         |                         |   0.796|",
+      "|Sex          |                         |                         |                         |   0.605|",
       "|-  Female    |       15 (50.0%)        |       17 (56.7%)        |       32 (53.3%)        |        |",
       "|-  Male      |       15 (50.0%)        |       13 (43.3%)        |       28 (46.7%)        |        |",
       "|time         |                         |                         |                         |   0.007|",
@@ -562,7 +562,7 @@ test_that("11/15/2017: Krista Goergen and non-syntactic names (#41)", {
     capture.kable(summary(tableby(`1y` ~ `2x`, data = dat), text = TRUE)),
     c("|     |  a (N=3)  |  b (N=3)  | Total (N=6) | p value|",
       "|:----|:---------:|:---------:|:-----------:|-------:|",
-      "|2x   |           |           |             |   1.000|",
+      "|2x   |           |           |             |   0.414|",
       "|-  a | 1 (33.3%) | 2 (66.7%) |  3 (50.0%)  |        |",
       "|-  b | 2 (66.7%) | 1 (33.3%) |  3 (50.0%)  |        |"
     )
@@ -598,7 +598,7 @@ test_that("01/24/2018: count and countpct at the same time (#51)", {
     capture.kable(summary(tableby(y ~ x, data = dat, cat.stats = c("count", "countpct")), text = TRUE)),
     c("|     |  C (N=5)  |  D (N=5)  | Total (N=10) | p value|",
       "|:----|:---------:|:---------:|:------------:|-------:|",
-      "|x    |           |           |              |   1.000|",
+      "|x    |           |           |              |   0.527|",
       "|-  A |     3     |     2     |      5       |        |",
       "|-  B |     2     |     3     |      5       |        |",
       "|-  A | 3 (60.0%) | 2 (40.0%) |  5 (50.0%)   |        |",

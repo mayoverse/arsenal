@@ -27,7 +27,7 @@ kwt <- function(x, x.by, ...) {
 
 ## two tests for categorical,
 ## 1. chisq goodness of fit, equal proportions across table cells
-chisq <- function(x, x.by, ..., chisq.correct=TRUE, simulate.p.value=FALSE, B=2000) {
+chisq <- function(x, x.by, ..., chisq.correct=FALSE, simulate.p.value=FALSE, B=2000) {
   tab <- table(x, x.by, exclude=NA)
   if(sum(rowSums(tab)>0)>1) {
     suppressWarnings(stats::chisq.test(tab[rowSums(tab)>0,], correct=chisq.correct, simulate.p.value=simulate.p.value, B=B))
