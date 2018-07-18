@@ -1,6 +1,6 @@
 # arsenal v1.2.0.9000+
 
-* Implemented the function `paired()` for paired data, based on `tableby()`.
+* Implemented the function `paired()` for paired data, based on `tableby()`. This comes with a very light vignette.
 
 * Fixed a problem with a column named "method" in `freqlist()`. (#95)
 

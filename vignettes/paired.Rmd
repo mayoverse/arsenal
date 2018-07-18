@@ -1,0 +1,87 @@
+---
+title: "The paired function"
+author: "Ethan Heinzen, Beth Atkinson, Jason Sinnwell"
+date: '`r format(Sys.time(),"%d %B, %Y")`'
+output: 
+  rmarkdown::html_vignette:
+    toc: yes
+    toc_depth: 3
+vignette: |
+  %\VignetteIndexEntry{The paired function}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r echo = FALSE}
+options(width = 100)
+```
+
+# Introduction
+
+Another one of the most common tables in medical literature includes summary statistics for a set of variables paired across
+two time points.  Locally at Mayo, the SAS macro `%paired` was written to create summary tables with a single call.
+With the increasing interest in R, we have developed the function `paired()` to create similar tables within the R environment.  
+
+This vignette is light on purpose; `paired()` piggybacks off of tableby, so most documentation there applies here, too.
+
+# Simple Example
+
+The first step when using the `paired()` function is to load the `arsenal` package.  We can't use `mockstudy` here because
+we need a dataset with paired observations, so we'll create our own dataset.
+
+```{r, load-data}
+devtools::load_all("~/consult/packages/rpkg-arsenal/")
+
+dat <- data.frame(
+  tp = paste0("Time Point ", c(1, 2, 1, 2, 1, 2, 1, 2, 1, 2)),
+  id = c(1, 1, 2, 2, 3, 3, 4, 4, 5, 6),
+  Cat = c("A", "A", "A", "B", "B", "B", "B", "A", NA, "B"),
+  Fac = factor(c("A", "B", "C", "A", "B", "C", "A", "B", "C", "A")),
+  Num = c(1, 2, 3, 4, 4, 3, 3, 4, 0, NA),
+  Ord = ordered(c("I", "II", "II", "III", "III", "III", "I", "III", "II", "I")),
+  Lgl = c(TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE),
+  Dat = as.Date("2018-05-01") + c(1, 1, 2, 2, 3, 4, 5, 6, 3, 4),
+  stringsAsFactors = FALSE
+)
+```
+
+To create a simple table stratified by time point, use a `formula=` statement to specify the variables that you want summarized and
+the `id=` argument to specify the paired observations.
+
+```{r results = 'asis'}
+p <- paired(tp ~ Cat + Fac + Num + Ord + Lgl + Dat, data = dat, id = id, signed.rank.exact = FALSE)
+summary(p)
+```
+
+The third column shows the difference between time point 1 and time point 2. For categorical variables, it reports
+the percent of observations from time point 1 which changed in time point 2.
+
+# NAs
+
+Note that by default, observations which do not have both timepoints are removed.
+This is easily changed using the `na.action = na.paired("<arg>")` argument. For example:
+
+```{r results = 'asis'}
+p <- paired(tp ~ Cat + Fac + Num + Ord + Lgl + Dat, data = dat, id = id,
+            signed.rank.exact = FALSE, na.action = na.paired("fill"))
+summary(p)
+```
+
+For more details, see the help page for `na.paired()`.
+
+# Available Function Options
+
+## Testing options
+
+The tests used to calculate p-values differ by the variable type, but can be specified
+explicitly in the formula statement or in the control function.
+
+The following tests are accepted:
+
+* `paired.t`: A paired t-test. 
+
+* `mcnemar`: McNemar's test.
+
+* `signed.rank`: the signed-rank test.
+  
+* `sign.test`: the sign test.

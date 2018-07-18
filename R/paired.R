@@ -6,7 +6,7 @@
 #' @inheritParams tableby
 #' @param id The vector giving IDs to match up data for the same subject across two timepoints.
 #' @param na.action a function which indicates what should happen when the data contain \code{NA}s.
-#'   The default is \code{na.paired}, which removes any missing time point information, but keeps everything else.
+#'   The default is \code{na.paired("in.both")}. See \code{\link{na.paired}} for more details
 #' @param control control parameters to handle optional settings within \code{paired}.
 #'   Two aspects of \code{paired} are controlled with these: test options of RHS variables and x variable summaries.
 #'   Arguments for \code{paired.control} can be passed to \code{paired} via the \code{...} argument,
@@ -22,7 +22,7 @@ NULL
 
 #' @rdname paired
 #' @export
-paired <- function(formula, data, id, na.action = na.paired, subset=NULL, control = NULL, ...) {
+paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ...) {
   control <- c(list(...), control)
   control <- do.call("paired.control", control[!duplicated(names(control))])
 

@@ -6,8 +6,7 @@
 \alias{print.paired}
 \title{Make a tableby for paired data}
 \usage{
-paired(formula, data, id, na.action = na.paired, subset = NULL,
-  control = NULL, ...)
+paired(formula, data, id, na.action, subset = NULL, control = NULL, ...)
 
 \method{print}{paired}(x, ...)
 }
@@ -22,7 +21,7 @@ typically the environment from which the function is called.}
 \item{id}{The vector giving IDs to match up data for the same subject across two timepoints.}
 
 \item{na.action}{a function which indicates what should happen when the data contain \code{NA}s.
-The default is \code{na.paired}, which removes any missing time point information, but keeps everything else.}
+The default is \code{na.paired("in.both")}. See \code{\link{na.paired}} for more details}
 
 \item{subset}{an optional vector specifying a subset of observations (rows of data) to be used in the results.
 Works as vector of logicals or an index.}
