@@ -30,8 +30,7 @@ The first step when using the `paired()` function is to load the `arsenal` packa
 we need a dataset with paired observations, so we'll create our own dataset.
 
 ```{r, load-data}
-devtools::load_all("~/consult/packages/rpkg-arsenal/")
-
+library(arsenal)
 dat <- data.frame(
   tp = paste0("Time Point ", c(1, 2, 1, 2, 1, 2, 1, 2, 1, 2)),
   id = c(1, 1, 2, 2, 3, 3, 4, 4, 5, 6),
