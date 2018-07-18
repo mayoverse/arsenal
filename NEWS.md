@@ -1,52 +1,68 @@
 # arsenal v1.2.0.9000+
 
+**This is a mostly backwards-compatible update.**
+
+Major changes:
+
 * Implemented the function `paired()` for paired data, based on `tableby()`. This comes with a very light vignette.
-
-* Fixed a problem with a column named "method" in `freqlist()`. (#95)
-
-* Update `formulize()` to handle non-syntactic names in the `data=` argument. (#105)
-
-* `tableby()` and `summary.tableby()`: Implemented `is.tableby()` and `is.summary.tableby()`. (#112)
-
-* `modelsum()` and `summary.modelsum()`: Implemented `is.modelsum()` and `is.summary.modelsum()`. (#111)
-
-* `freqlist()` and `summary.freqlist()`: Implemented `is.freqlist()` and `is.summary.freqlist()`. (#113)
-
-* `tableby()`: change how arguments are passed to stat tests.
-
-* `tableby()`: issue a warning if statistical tests are requested when there are fewer than two by-levels. (#108)
-
-* `tableby()`: fix `trend()` and `anova()` to return an object instead of the object being invisible.
-
-* Implemented the `tableby()` stat functions `binomCI()` and `rowbinomCI()` for binomial confidence intervals. (#117)
-
-* `summary.tableby()`, `summary.modelsum()`, `summary.freqlist()`: ignore row.names when printing summary objects.
-
-* `summary.tableby()` and `as.data.frame.summary.tableby()`: added a `term.name=` argument. (#110)
-
-* `summary.modelsum()` and `as.data.frame.summary.modelsum()`: added a `term.name=` argument. (#109)
-
-* `tableby()`: Implement `Ops.tableby()` to compare tableby objects to a number (p-value). (#96)
-
-* `tableby()`: Implement `xtfrm.tableby()`, so that tableby objects can be sorted by p-value. (#96)
-
-* `tableby()`: Implement `length.tableby()`, so that `head()` and `tail()` also work. (#97)
-
-* `tableby()`: Implement `countcellpct()` for counts and cell percentages. (#106)
 
 * `tableby()`: Change default for chi-square tests to `correct=FALSE`. Note that this only affects the 2 x 2 case.
 
-* `modelsum()`: Allow for `weights=` and `na.action=`. (#99)
-
-* `modelsum()`: Fix problem with column names which are prefixes of other column names. (#98)
-
-* `modelsum()`: Fix problem with column labels overwriting categorical levels which also match. (#100)
-
-* `summary.tableby()`: pass `text="html"` to get better formatting in R shiny. (#114)
-
-* `summary.modelsum()`: pass `text="html"` to get better formatting in R shiny. (#115)
-
 * Added the a default method for label assignment (`labels<-`). (#118)
+
+* Update `formulize()` to handle non-syntactic names in the `data=` argument. (#105)
+
+Smaller changes:
+
+* `tableby()`:
+
+    - Implemented `is.tableby()` and `is.summary.tableby()`. (#112)
+    
+    - Changed how arguments are passed to stat tests.
+    
+    - Issue a warning if statistical tests are requested when there are fewer than two by-levels. (#108)
+    
+    - Fixed `trend()` and `anova()` to return an object instead of the object being invisible.
+    
+    - Implemented the stat functions `binomCI()` and `rowbinomCI()` for binomial confidence intervals. (#117)
+    
+    - `summary.tableby()`: ignore row.names when printing summary objects.
+    
+    - `summary.tableby()` and `as.data.frame.summary.tableby()`: added a `term.name=` argument. (#110)
+    
+    - `summary.tableby()`: pass `text="html"` to get better formatting in R shiny. (#114)
+
+* `modelsum()`:
+
+    - Implemented `is.modelsum()` and `is.summary.modelsum()`. (#111)
+    
+    - `summary.modelsum()`: ignore row.names when printing summary objects.
+    
+    - `summary.modelsum()` and `as.data.frame.summary.modelsum()`: added a `term.name=` argument. (#109)
+    
+    - Implemented `Ops.tableby()` to compare tableby objects to a number (p-value). (#96)
+    
+    - Implemented `xtfrm.tableby()`, so that tableby objects can be sorted by p-value. (#96)
+    
+    - Implemented `length.tableby()`, so that `head()` and `tail()` also work. (#97)
+    
+    - Implemented `countcellpct()` for counts and cell percentages. (#106)
+    
+    - Allow for `weights=` and `na.action=`. (#99)
+    
+    - Fixed problem with column names which are prefixes of other column names. (#98)
+    
+    - Fixed problem with column labels overwriting categorical levels which also match. (#100)
+    
+    - `summary.modelsum()`: pass `text="html"` to get better formatting in R shiny. (#115)
+    
+* `freqlist()`:
+
+    - Implemented `is.freqlist()` and `is.summary.freqlist()`. (#113)
+    
+    - Fixed a problem with a column named "method". (#95)
+    
+    - `summary.freqlist()`: ignore row.names when printing summary objects.
 
 * Update documentation.
 
