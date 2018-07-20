@@ -17,7 +17,7 @@
 #' @param ... additional arguments.
 #' @inherit tableby.control details
 #' @return A list with settings to be used within the \code{paired} function.
-#' @seealso \code{\link{paired}}, \code{\link{tableby}}, \code{\link{summary.tableby}}
+#' @seealso \code{\link{paired}}, \code{\link{tableby}}, \code{\link{tableby.control}}, \code{\link{summary.tableby}}
 #' @author Ethan Heinzen
 #' @export
 paired.control <- function(test=TRUE, diff=TRUE, test.pname=NULL,

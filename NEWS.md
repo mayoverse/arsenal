@@ -8,11 +8,11 @@ Major changes:
 
 * `tableby()`: Change default for chi-square tests to `correct=FALSE`. Note that this only affects the 2 x 2 case.
 
+Smaller changes:
+
 * Added the a default method for label assignment (`labels<-`). (#118)
 
 * Update `formulize()` to handle non-syntactic names in the `data=` argument. (#105)
-
-Smaller changes:
 
 * `tableby()`:
 

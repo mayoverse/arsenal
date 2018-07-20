@@ -1,6 +1,10 @@
 
-#' Make a tableby for paired data
+#' Summary Statistics of a Set of Independent Variables Paired Across Two Timepoints
 #'
+#' Summarize one or more variables (x) by a paired time variable (y). Variables
+#'   on the right side of the formula, i.e. independent variables, are summarized by the
+#'   two time points on the left of the formula. Optionally, an appropriate test is performed to test the
+#'   distribution of the independent variables across the time points.
 #' @param formula an object of class \code{\link{formula}} of the form \code{time ~ var1 + ...}.
 #'   See "Details" for more information.
 #' @inheritParams tableby
@@ -14,6 +18,9 @@
 #'   the latter are used. See \code{\link{paired.control}} for more details.
 #' @param ... additional arguments to be passed to internal \code{paired} functions or \code{\link{paired.control}}.
 #' @return An object with class \code{c("paired", "tableby")}
+#' @details
+#'   Do note that this function piggybacks off of \code{\link{tableby}} quite heavily, so there is no
+#'   \code{summary.paired} function (for instance).
 #' @seealso \code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}
 #' @author Jason Sinnwell, Beth Atkinson, Ryan Lennon, and Ethan Heinzen
 #' @name paired

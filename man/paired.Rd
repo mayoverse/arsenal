@@ -4,7 +4,7 @@
 \alias{paired}
 \alias{paired}
 \alias{print.paired}
-\title{Make a tableby for paired data}
+\title{Summary Statistics of a Set of Independent Variables Paired Across Two Timepoints}
 \usage{
 paired(formula, data, id, na.action, subset = NULL, control = NULL, ...)
 
@@ -40,7 +40,14 @@ the latter are used. See \code{\link{paired.control}} for more details.}
 An object with class \code{c("paired", "tableby")}
 }
 \description{
-Make a tableby for paired data
+Summarize one or more variables (x) by a paired time variable (y). Variables
+  on the right side of the formula, i.e. independent variables, are summarized by the
+  two time points on the left of the formula. Optionally, an appropriate test is performed to test the
+  distribution of the independent variables across the time points.
+}
+\details{
+Do note that this function piggybacks off of \code{\link{tableby}} quite heavily, so there is no
+  \code{summary.paired} function (for instance).
 }
 \seealso{
 \code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}

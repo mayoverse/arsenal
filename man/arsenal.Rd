@@ -18,7 +18,9 @@ The package download, NEWS, and README are available on CRAN: \url{https://cran.
 
 Below are listed some of the most widely used functions available in \code{arsenal}:
 
-\code{\link{tableby}}: Summary statistics Of a set of independent variables by a categorical variable.
+\code{\link{tableby}}: Summary statistics of a set of independent variables by a categorical variable.
+
+\code{\link{paired}}: Summary statistics of a set of independent variables paired across two timepoints.
 
 \code{\link{modelsum}}: Fit models over each of a set of independent variables with a response variable.
 
