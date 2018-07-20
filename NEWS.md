@@ -1,4 +1,4 @@
-# arsenal v1.2.0.9000+
+# arsenal v1.3.0
 
 **This is a mostly backwards-compatible update.**
 

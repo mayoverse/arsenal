@@ -1,17 +1,21 @@
-## Submission for arsenal 1.2.0
+## Submission for arsenal 1.3.0
 
 This is a new version. In this version:
 
-* We made output formatting updates to the `print.summary.tableby()` function.
+* We updated the DESCRIPTION text.
 
-* We added three new methods for `write2()`.
+* We added the `paired()` function.
+
+* We changed the default for `chisq.correct=` argument to false (do not correct).
+
+* We closed 20+ bugs and new feature requests.
 
 * We updated documentation where appropriate.
 
 ## Test environments
 
 * local Linux install: R 3.4.2
-* ubuntu 14.04 (on travis-ci): R devel, R 3.4.3 (release), R 3.3.3, R 3.2.3
+* ubuntu 14.04 (on travis-ci): R devel, R 3.5.0 (release), R 3.4.4 (oldrel), R 3.3.1, R 3.2.3
 * win-builder (devel and release)
 
 ## R CMD check results
