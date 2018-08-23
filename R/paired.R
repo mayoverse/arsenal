@@ -106,13 +106,6 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
   TP2 <- TP2[match(ids.both, TP2$`(id)`, nomatch = 0), cn, drop = FALSE]
   modeldf <- modeldf[, cn, drop = FALSE]
 
-  ## fix of droplevels on by factor suggested by Ethan Heinzen 4/12/2016
-  by.col <- modeldf[[1]]
-  if(is.factor(by.col)) {
-    by.col <- droplevels(by.col)
-    by.levels <- levels(by.col)
-  } else by.levels <- sort(unique(by.col))
-
   for(eff in 2:ncol(modeldf)) {
 
     currcol <- modeldf[[eff]]
