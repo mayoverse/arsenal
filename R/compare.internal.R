@@ -165,7 +165,7 @@ idx_var_sum <- function(object, which = c("vars.not.shared", "vars.compared", "v
 
 #' Extract differences
 #'
-#' Extract differences and number of differences from a \code{compare} object.
+#' Extract differences, number of differences, or number of not-shared observations from a \code{compare} object.
 #'
 #' @param object An object of class \code{compare.data.frame} or \code{summary.compare.data.frame}.
 #' @param vars A character vector of variable names to subset the results to.
@@ -178,6 +178,27 @@ idx_var_sum <- function(object, which = c("vars.not.shared", "vars.compared", "v
 NULL
 #> NULL
 
+
+#' @rdname diffs
+#' @export
+n.diff.obs <- function(object, ...)
+{
+  UseMethod("n.diff.obs")
+}
+
+#' @rdname diffs
+#' @export
+n.diff.obs.compare.data.frame <- function(object, ...)
+{
+  nrow(object$frame.summary$unique[[1]]) + nrow(object$frame.summary$unique[[2]])
+}
+
+#' @rdname diffs
+#' @export
+n.diff.obs.summary.compare.data.frame <- function(object, ...)
+{
+  nrow(object$obs.table)
+}
 
 #' @rdname diffs
 #' @export

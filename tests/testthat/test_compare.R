@@ -265,6 +265,10 @@ test_that("custom tolerances are working correctly", {
 ###########################################################################################################
 
 test_that("helper functions are working correctly", {
+
+  expect_true(n.diffs(compare(mockstudy, mockstudy2, by = "case")) ==
+                n.diffs(summary(compare(mockstudy, mockstudy2, by = "case"))))
+
   expect_true(n.diffs(compare(df1, df2, by = "id")) == n.diffs(summary(compare(df1, df2, by = "id"))))
   expect_identical(diffs(compare(df1, df2, by = "id")), diffs(summary(compare(df1, df2, by = "id"))))
   expect_identical(diffs(compare(df1, df2, by = "id"), by.var = TRUE), diffs(summary(compare(df1, df2, by = "id")), by.var = TRUE))

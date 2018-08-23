@@ -24,7 +24,7 @@
 #' summary(compare(df1, df2, by = "id"))
 #' summary(compare(df1, df2, by = "row.names"))
 #' @author Ethan Heinzen, adapted from code from Andrew Hanson
-#' @seealso \code{\link{summary.compare.data.frame}}
+#' @seealso \code{\link{summary.compare.data.frame}}, \code{\link{n.diffs}}, \code{\link{n.diff.obs}}
 #' @name compare.data.frame
 NULL
 #> NULL
@@ -144,8 +144,7 @@ print.compare.data.frame <- function(x, ...)
   cat("\n")
   cat("Shared: ", sum(!idx_var_sum(x, "vars.not.shared")), " variables and ", x$frame.summary$n.shared[1], " observations.\n", sep = "")
   cat("Not shared: ", sum(idx_var_sum(x, "vars.not.shared")), " variables and ",
-      nrow(x$frame.summary$unique[[1]]) + nrow(x$frame.summary$unique[[2]]),
-      " observations.\n", sep = "")
+      n.diff.obs(x), " observations.\n", sep = "")
   cat("\n")
   cat("Differences found in ", sum(idx_var_sum(x, "differences.found")), "/", sum(idx_var_sum(x, "vars.compared")), " variables compared.\n", sep = "")
   cat(sum(idx_var_sum(x, "non.identical.attributes")), " variables compared have non-identical attributes.\n", sep = "")

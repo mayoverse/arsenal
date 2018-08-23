@@ -4,6 +4,8 @@
 
 * `tableby()`, `paired()`: Add warning for when by-variable contains empty string. (#121)
 
+* `compare()`: implement `n.diff.obs()`. (#124)
+
 # arsenal v1.3.0
 
 **This is a mostly backwards-compatible update.**
