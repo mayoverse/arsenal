@@ -20,7 +20,7 @@ df2 <- data.frame(id = paste0("person", 3:1), a = c("c", "b", "a"), b = c(1, 3, 
 
 test_that("Basic comparison works: by row", {
   expect_identical(
-    capture.output(print(compare(df1, df2))),
+    capture.output(compare(df1, df2)),
     c("Compare Object"                                     ,
       ""                                                   ,
       "Function Call: "                                    ,
@@ -38,7 +38,7 @@ test_that("Basic comparison works: by row", {
 
 test_that("Basic comparison works: by id", {
   expect_identical(
-    capture.output(print(compare(df1, df2, by = "id"))),
+    capture.output(compare(df1, df2, by = "id")),
     c("Compare Object"                                     ,
       ""                                                   ,
       "Function Call: "                                    ,
@@ -56,7 +56,7 @@ test_that("Basic comparison works: by id", {
 
 test_that("Basic comparison works: by row.names", {
   expect_identical(
-    capture.output(print(compare(df1, df2, by = "row.names"))),
+    capture.output(compare(df1, df2, by = "row.names")),
     c("Compare Object"                                          ,
       ""                                                        ,
       "Function Call: "                                         ,
@@ -74,7 +74,7 @@ test_that("Basic comparison works: by row.names", {
 
 test_that("Basic comparison works: by row.names for x and something else for y", {
   expect_identical(
-    capture.output(print(compare(df1, df2, by.x = "row.names", by.y = "d"))),
+    capture.output(compare(df1, df2, by.x = "row.names", by.y = "d")),
     c("Compare Object"                                                          ,
       ""                                                                        ,
       "Function Call: "                                                         ,
@@ -94,7 +94,7 @@ df2$listcol <- list(FALSE, "bye now", 1:2)
 
 test_that("List-column comparison works: by id", {
   expect_identical(
-    capture.output(print(compare(df1, df2, by = "id"))),
+    capture.output(compare(df1, df2, by = "id")),
     c("Compare Object"                                     ,
       ""                                                   ,
       "Function Call: "                                    ,
@@ -115,7 +115,7 @@ df2$testdate <- as.Date(c("2017-09-07", "2017-08-08", "2017-09-07"))
 
 test_that("Dates comparison works: by id", {
   expect_identical(
-    capture.output(print(compare(df1, df2, by = "id"))),
+    capture.output(compare(df1, df2, by = "id")),
     c("Compare Object"                                     ,
       ""                                                   ,
       "Function Call: "                                    ,
@@ -133,7 +133,7 @@ test_that("Dates comparison works: by id", {
 
 test_that("Basic mockstudy comparison works: by id", {
   expect_identical(
-    capture.output(print(compare(mockstudy, mockstudy2, by = 'case'))),
+    capture.output(compare(mockstudy, mockstudy2, by = 'case')),
     c("Compare Object"                                                  ,
       ""                                                                ,
       "Function Call: "                                                 ,
@@ -167,7 +167,7 @@ test_that("Using forbidden names throws an error", {
 
 test_that("tol.vars is working correctly", {
   expect_identical(
-    capture.output(print(compare(mockstudy, mockstudy2, by = 'case', tol.vars = "._ "))),
+    capture.output(compare(mockstudy, mockstudy2, by = 'case', tol.vars = "._ ")),
     c("Compare Object"                                                   ,
       ""                                                                 ,
       "Function Call: "                                                  ,
@@ -183,7 +183,7 @@ test_that("tol.vars is working correctly", {
   )
 
   expect_identical(
-    capture.output(print(compare(mockstudy, mockstudy2, by = 'case', tol.vars = c("._ ", "case")))),
+    capture.output(compare(mockstudy, mockstudy2, by = 'case', tol.vars = c("._ ", "case"))),
     c("Compare Object"                                                   ,
       ""                                                                 ,
       "Function Call: "                                                  ,
@@ -206,7 +206,7 @@ tmp <- compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
 
 test_that("tolerances are working correctly", {
   expect_identical(
-    capture.output(print(tmp)),
+    capture.output(tmp),
     c("Compare Object"                                                            ,
       ""                                                                          ,
       "Function Call: "                                                           ,
@@ -242,7 +242,7 @@ tmp2 <- compare(mockstudy, mockstudy2, by = "case",
 
 test_that("custom tolerances are working correctly", {
   expect_identical(
-    capture.output(print(tmp2)),
+    capture.output(tmp2),
     c("Compare Object"                                                            ,
       ""                                                                          ,
       "Function Call: "                                                           ,
