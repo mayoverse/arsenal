@@ -186,3 +186,6 @@ test_that("Paired with missings", {
   )
 })
 
+dat$tp <- replace(as.character(dat$tp), dat$tp == "2", "")
+test_that("08/23/2018: empty string in by-variable (#121)",
+          expect_warning(summary(paired(tp ~ Cat, id = id, data = dat, signed.rank.exact = FALSE)), "Empty"))

@@ -2,6 +2,8 @@
 
 * Added error to `na.paired("in.both")` when there are more than two time points.
 
+* `tableby()`, `paired()`: Add warning for when by-variable contains empty string. (#121)
+
 # arsenal v1.3.0
 
 **This is a mostly backwards-compatible update.**

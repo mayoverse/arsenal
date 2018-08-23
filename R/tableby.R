@@ -198,6 +198,14 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     by.col <- droplevels(by.col)
     by.levels <- levels(by.col)
   } else by.levels <- sort(unique(by.col))
+  by.col <- as.character(by.col)
+  by.levels <- as.character(by.levels)
+  if(any(by.levels == ""))
+  {
+    warning('Empty string detected in by-variable is not allowed; converting to " ".')
+    by.col[by.col == ""] <- " "
+    by.levels <- unique(replace(by.levels, by.levels == "", " "))
+  }
 
   if(length(by.levels) < 2 && attributes(Terms)$response != 0 && control$test)
   {
@@ -295,7 +303,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       {
         for(bylev in by.levels) {
           idx <- by.col == bylev
-          bystatlist[[as.character(bylev)]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx], ...))
+          bystatlist[[bylev]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, weights=weights[idx], ...))
         }
         ## add Total
         bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, weights=weights, ...))
