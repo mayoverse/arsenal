@@ -38,6 +38,7 @@ na.paired <- function(missings = c("in.both", "fill", "asis"))
         by.col <- droplevels(by.col)
         by.levels <- levels(by.col)
       } else by.levels <- sort(unique(by.col))
+      if(length(by.levels) != 2) stop("Please specify exactly 2 time points")
 
       ids <- object[["(id)"]][!omit]
       omit <- omit | (obj.id %nin% intersect(ids[by.col == by.levels[1]], ids[by.col == by.levels[2]]))

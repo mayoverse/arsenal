@@ -1,3 +1,7 @@
+# arsenal v1.3.0.9000
+
+* Added error to `na.paired("in.both")` when there are more than two time points.
+
 # arsenal v1.3.0
 
 **This is a mostly backwards-compatible update.**
