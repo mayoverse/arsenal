@@ -413,3 +413,24 @@ test_that("06/19/2018: term.name (#109)", {
   )
 })
 
+#################################################################################################################################
+
+test_that("08/24/2018: latex (#123)", {
+  expect_identical(
+    capture.output(summary(modelsum(Age ~ Sex, adjust = ~ trt, data = mdat), text = "latex")),
+    c(""                                                         ,
+      "\\begin{tabular}{l|l|l|l|l}"                              ,
+      "\\hline"                                                  ,
+      " & estimate & std.error & p.value & adj.r.squared\\\\"    ,
+      "\\hline"                                                  ,
+      "(Intercept) & 40.632 & 1.024 & < 0.001 & -0.005\\\\"      ,
+      "\\hline"                                                  ,
+      "\\textbf{Sex Male} & -0.221 & 1.112 & 0.843 & \\\\"       ,
+      "\\hline"                                                  ,
+      "\\textbf{Treatment Arm B} & -1.373 & 1.135 & 0.229 & \\\\",
+      "\\hline"                                                  ,
+      "\\end{tabular}"                                           ,
+      ""
+    )
+  )
+})

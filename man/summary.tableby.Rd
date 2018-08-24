@@ -13,7 +13,9 @@
 \method{as.data.frame}{summary.tableby}(x, ..., text = x$text,
   pfootnote = x$pfootnote, term.name = x$term.name)
 
-\method{print}{summary.tableby}(x, ..., format = "markdown")
+\method{print}{summary.tableby}(x, ..., format = if (!is.null(x$text) &&
+  x$text \%in\% c("html", "latex")) x$text else "markdown", escape = x$text
+  \%nin\% c("html", "latex"))
 }
 \arguments{
 \item{object}{An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.}
@@ -28,12 +30,12 @@ output to be replaced in the pretty rendering of tableby by the character string
 value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.}
 
 \item{text}{An argument denoting how to print the summary to the screen.
-Default is \code{FALSE} (show markdown output). \code{TRUE} outputs a text-only version.
-\code{NULL} avoids changing the labels at all. \code{"html"} is like \code{FALSE}, except that it uses
-the HTML tag \code{<strong>} instead of the markdown formatting.}
+Default is \code{FALSE} (show markdown output). \code{TRUE} and \code{NULL} output a text-only version, with
+the latter avoiding all formatting.
+\code{"html"} uses the HTML tag \code{<strong>} instead of the markdown formatting, and \code{"latex"} uses
+the LaTeX command \code{\\textbf}.}
 
-\item{title}{Title that will appear on the top of the header in the pretty-table rendering
-of the tableby object}
+\item{title}{Title for the table, defaulting to \code{NULL} (no title)}
 
 \item{pfootnote}{Logical, denoting whether to put footnotes describing the tests used to generate the p-values.}
 
@@ -42,7 +44,10 @@ of the tableby object}
 \item{x}{An object of class \code{"summary.tableby"}.}
 
 \item{format}{Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
-To use the default in \code{kable}, pass \code{NULL}.}
+To use the default in \code{kable}, pass \code{NULL}. If \code{x$text} specifies LaTeX or HTML formatting,
+that format is used in the table.}
+
+\item{escape}{Passed to \code{\link[knitr]{kable}}: should special characters be escaped when printed?}
 }
 \value{
 An object of class \code{summary.tableby}

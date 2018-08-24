@@ -16,14 +16,8 @@
 #'   output to be replaced in the pretty rendering of modelsum by the character
 #'   string value for the named element of the list, e.g.,
 #'   \code{list(age = "Age(years)")}.
-#' @param text An argument denoting how to print the summary to the screen.
-#'		Default is \code{FALSE} (show markdown output). \code{TRUE} and \code{NULL} output a text-only version.
-#'		\code{"html"} is like \code{FALSE}, except that it uses the HTML tag \code{<strong>} instead of the markdown formatting.
-#' @param title	Title for the table, defaults to \code{NULL} (no title)
-#' @param term.name A character string denoting the column name for the first column.
+#' @inheritParams summary.tableby
 #' @param x An object of class \code{"summary.modelsum"}.
-#' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
-#'   To use the default in \code{kable}, pass \code{NULL}.
 #' @seealso \code{\link{modelsum}}, \code{\link{print.modelsum}}, \code{\link{as.data.frame.modelsum}}
 #' @return An object of class \code{"summary.modelsum"}
 #' @author Ethan Heinzen, based on code originally by Greg Dougherty
@@ -112,6 +106,9 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
     if(identical(text, "html"))
     {
       df$label <- ifelse(term.type == "Intercept", df$label, paste0("<strong>", df$label, "</strong>"))
+    } else if(identical(text, "latex"))
+    {
+      df$label <- ifelse(term.type == "Intercept", df$label, paste0("\\textbf{", df$label, "}"))
     } else if(!text)
     {
       df$label <- ifelse(term.type == "Intercept", df$label, paste0("**", ifelse(df$label == "", "&nbsp;", df$label), "**"))
@@ -133,13 +130,14 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
 
 #' @rdname summary.modelsum
 #' @export
-print.summary.modelsum <- function(x, ..., format = "markdown")
+print.summary.modelsum <- function(x, ..., format = if(!is.null(x$text) && x$text %in% c("html", "latex")) x$text else "markdown",
+                                   escape = x$text %nin% c("html", "latex"))
 {
   df <- as.data.frame(x, ...)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  print(knitr::kable(df, caption = NULL, format = format, row.names = FALSE, ...))
+  print(knitr::kable(df, caption = NULL, format = format, row.names = FALSE, escape = escape, ...))
   cat("\n")
 
   invisible(x)
