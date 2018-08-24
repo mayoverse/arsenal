@@ -66,7 +66,7 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
 
 #' @rdname summary.tableby
 #' @export
-as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote, term.name = "")
+as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote, term.name = x$term.name)
 {
   df <- x$object
 

@@ -11,7 +11,7 @@
   text = FALSE, title = NULL, pfootnote = FALSE, term.name = "")
 
 \method{as.data.frame}{summary.tableby}(x, ..., text = x$text,
-  pfootnote = x$pfootnote, term.name = "")
+  pfootnote = x$pfootnote, term.name = x$term.name)
 
 \method{print}{summary.tableby}(x, ..., format = "markdown")
 }
