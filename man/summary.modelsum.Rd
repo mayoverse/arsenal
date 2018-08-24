@@ -11,7 +11,7 @@
   text = FALSE, title = NULL, term.name = "")
 
 \method{as.data.frame}{summary.modelsum}(x, ..., text = x$text,
-  term.name = "")
+  term.name = x$term.name)
 
 \method{print}{summary.modelsum}(x, ..., format = "markdown")
 }

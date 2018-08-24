@@ -47,7 +47,7 @@ summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE
 
 #' @rdname summary.modelsum
 #' @export
-as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = "")
+as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$term.name)
 {
 
   #### format the digits and nsmall things ####
