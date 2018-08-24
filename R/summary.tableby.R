@@ -144,7 +144,7 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
 #' @export
 print.summary.tableby <- function(x, ..., format = "markdown")
 {
-  df <- as.data.frame(x, ..., term.name = x$term.name)
+  df <- as.data.frame(x, ...)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")

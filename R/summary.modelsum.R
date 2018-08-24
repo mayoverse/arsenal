@@ -135,7 +135,7 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
 #' @export
 print.summary.modelsum <- function(x, ..., format = "markdown")
 {
-  df <- as.data.frame(x, ..., term.name = x$term.name)
+  df <- as.data.frame(x, ...)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
