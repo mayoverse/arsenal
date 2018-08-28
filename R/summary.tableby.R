@@ -10,19 +10,21 @@
 #'   For \code{as.data.frame.summary.tableby}, "width" and "min.split" are passed to \code{\link{smart.split}}.
 #'   For \code{print}ing the summary object, these are passed to both \code{as.data.frame.summary.tableby} and
 #'   \code{\link[knitr]{kable}}.
-#' @param title Title that will appear on the top of the header in the pretty-table rendering
-#'		of the tableby object
+#' @param title	Title for the table, defaulting to \code{NULL} (no title)
 #' @param labelTranslations  A named list (or vector) where the name is the label in the
 #'        output to be replaced in the pretty rendering of tableby by the character string
 #'        value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.
 #' @param text An argument denoting how to print the summary to the screen.
-#'		Default is \code{FALSE} (show markdown output). \code{TRUE} outputs a text-only version.
-#'		\code{NULL} avoids changing the labels at all. \code{"html"} is like \code{FALSE}, except that it uses
-#'		the HTML tag \code{<strong>} instead of the markdown formatting.
+#'		Default is \code{FALSE} (show markdown output). \code{TRUE} and \code{NULL} output a text-only version, with
+#'		the latter avoiding all formatting.
+#'		\code{"html"} uses the HTML tag \code{<strong>} instead of the markdown formatting, and \code{"latex"} uses
+#'		the LaTeX command \code{\\textbf}.
 #' @param pfootnote Logical, denoting whether to put footnotes describing the tests used to generate the p-values.
 #' @param term.name A character string denoting the column name for the first column.
 #' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
-#'   To use the default in \code{kable}, pass \code{NULL}.
+#'   To use the default in \code{kable}, pass \code{NULL}. If \code{x$text} specifies LaTeX or HTML formatting,
+#'   that format is used in the table.
+#' @param escape Passed to \code{\link[knitr]{kable}}: should special characters be escaped when printed?
 #' @return An object of class \code{summary.tableby}
 #' @seealso \code{\link{tableby.control}}, \code{\link{tableby}}
 #' @author Ethan Heinzen, based on code by Gregory Dougherty, Jason Sinnwell, Beth Atkinson,
@@ -66,7 +68,7 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
 
 #' @rdname summary.tableby
 #' @export
-as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote, term.name = "")
+as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote, term.name = x$term.name)
 {
   df <- x$object
 
@@ -122,6 +124,9 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
     df$label <- if(identical(text, "html"))
     {
       ifelse(dups, paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("<strong>", df$label, "</strong>"))
+    } else if(identical(text, "latex"))
+    {
+      ifelse(dups, paste0("~~~", df$label), paste0("\\textbf{", df$label, "}"))
     } else if(text)
     {
       ifelse(dups, paste0("-  ", df$label), df$label)
@@ -142,13 +147,14 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
 
 #' @rdname summary.tableby
 #' @export
-print.summary.tableby <- function(x, ..., format = "markdown")
+print.summary.tableby <- function(x, ..., format = if(!is.null(x$text) && x$text %in% c("html", "latex")) x$text else "markdown",
+                                  escape = x$text %nin% c("html", "latex"))
 {
-  df <- as.data.frame(x, ..., term.name = x$term.name)
+  df <- as.data.frame(x, ...)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  print(knitr::kable(df, caption = NULL, align = attr(df, "align"), format = format, row.names = FALSE, ...))
+  print(knitr::kable(df, caption = NULL, align = attr(df, "align"), format = format, row.names = FALSE, escape = escape, ...))
   if(!is.null(attr(df, "tests"))) cat(paste0(attr(df, "tests"), "\n", collapse = ""))
   cat("\n")
 
