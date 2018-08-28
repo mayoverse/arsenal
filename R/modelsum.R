@@ -162,9 +162,6 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
         lmfit$model <- lmfit$model[,-grep("(weights)", colnames(lmfit$model))]
       }
       coeffTidy$standard.estimate <- lm.beta(lmfit)
-      names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
-      names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
-
       ## Continuous variable (numeric) ###############
       ## Note: Using tidy changes colname from 't value' to 'statistic'
       modelGlance <- broom::glance(lmfit)
@@ -185,10 +182,6 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
       coeffORTidy[grep("Intercept",coeffORTidy$term),-1] <- NA
       coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
-
-      names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
-      names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
-
       coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
       modelGlance <- c(broom::glance(fit), concordance = pROC::auc(rocOut))
 
@@ -200,14 +193,9 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       temp.call$family <- family
       fit <- eval(temp.call, parent.frame())
 
-      ## find out that broom:::tidy.lm allows conf.int and exp
       coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
       coeffRRTidy[grep("Intercept",coeffRRTidy$term),-1] <- NA
       coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
-
-      names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
-      names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
-
       coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
       modelGlance <- broom::glance(fit)
 
@@ -219,13 +207,12 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       ## use tidy to get both CIs, merge
       coeffHRTidy <- broom::tidy(ph, exponentiate=TRUE, conf.int=.95)
       coeffTidy <- broom::tidy(ph, exponentiate=FALSE, conf.int=.95)
-
-      names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
-      names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
-
       coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
       modelGlance <-  broom::glance(ph)
     }
+
+    names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
+    names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
 
     if(!is.numericish(currCol))
     {
