@@ -8,6 +8,8 @@
 
 * `tableby()`, `modelsum()`: Allow for LaTeX formatting. NOTE: this changes the formatting behavior when specifying
   `text="html"`! (#123)
+  
+* `modelsum()`: Fix formatting of error about unsupported families.
 
 # arsenal v1.3.0
 

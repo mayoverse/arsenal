@@ -77,7 +77,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   if (is.function(family)) family <- family()$family
 
   if(family %nin% c("survival", "gaussian", "binomial", "poisson", "quasibinomial", "quasipoisson"))
-    stop("Family ", family, "not supported.\n")
+    stop("Family ", family, " not supported.\n")
 
   if(family != "survival" && any(grepl("Surv\\(", formula))) {
     warning("Found Surv in formula, assuming family='survival'\n")
