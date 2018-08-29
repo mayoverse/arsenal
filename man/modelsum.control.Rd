@@ -6,7 +6,8 @@
 \usage{
 modelsum.control(digits = 3L, digits.ratio = 3L, digits.p = 3L,
   format.p = TRUE, show.adjust = TRUE, show.intercept = TRUE,
-  conf.level = 0.95, binomial.stats = c("OR", "CI.lower.OR", "CI.upper.OR",
+  conf.level = 0.95, ordinal.stats = c("OR", "CI.lower.OR", "CI.upper.OR",
+  "p.value", "Nmiss"), binomial.stats = c("OR", "CI.lower.OR", "CI.upper.OR",
   "p.value", "concordance", "Nmiss"), gaussian.stats = c("estimate",
   "std.error", "p.value", "adj.r.squared", "Nmiss"), poisson.stats = c("RR",
   "CI.lower.RR", "CI.upper.RR", "p.value", "concordance", "Nmiss"),
@@ -28,7 +29,7 @@ modelsum.control(digits = 3L, digits.ratio = 3L, digits.p = 3L,
 
 \item{conf.level}{Numeric, giving the confidence level.}
 
-\item{binomial.stats, survival.stats, gaussian.stats, poisson.stats}{Character vectors denoting which stats to show for the various model types.}
+\item{ordinal.stats, binomial.stats, survival.stats, gaussian.stats, poisson.stats}{Character vectors denoting which stats to show for the various model types.}
 
 \item{stat.labels}{A named list of labels for all the stats used above.}
 

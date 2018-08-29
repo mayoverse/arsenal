@@ -13,7 +13,7 @@
 #' @param show.adjust Logical, denoting whether to show adjustment terms.
 #' @param show.intercept Logical, denoting whether to show intercept terms.
 #' @param conf.level Numeric, giving the confidence level.
-#' @param binomial.stats,survival.stats,gaussian.stats,poisson.stats
+#' @param ordinal.stats,binomial.stats,survival.stats,gaussian.stats,poisson.stats
 #'   Character vectors denoting which stats to show for the various model types.
 #' @param stat.labels A named list of labels for all the stats used above.
 #' @param ... Other arguments (not in use at this time).
@@ -25,14 +25,16 @@
 #'   is less than the resulting number of places, it will be formatted to show so.
 #' @seealso \code{\link{modelsum}}, \code{\link{summary.modelsum}}
 #' @export
-modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, format.p = TRUE,
-            show.adjust = TRUE, show.intercept = TRUE, conf.level = 0.95,
-            binomial.stats=c("OR","CI.lower.OR","CI.upper.OR","p.value", "concordance","Nmiss"),
-            gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
-            poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","concordance","Nmiss"),
-            survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),
-            stat.labels = list(), ...)
-{
+modelsum.control <- function(
+  digits = 3L, digits.ratio = 3L, digits.p = 3L, format.p = TRUE,
+  show.adjust = TRUE, show.intercept = TRUE, conf.level = 0.95,
+  ordinal.stats=c("OR","CI.lower.OR","CI.upper.OR", "p.value","Nmiss"),
+  binomial.stats=c("OR","CI.lower.OR","CI.upper.OR","p.value", "concordance","Nmiss"),
+  gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
+  poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","concordance","Nmiss"),
+  survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),
+  stat.labels = list(), ...
+) {
 
   if("nsmall" %in% names(list(...))) .Deprecated(msg = "Using 'nsmall = ' is deprecated. Use 'digits = ' instead.")
   if("nsmall.ratio" %in% names(list(...))) .Deprecated(msg = "Using 'nsmall.ratio = ' is deprecated. Use 'digits.ratio = ' instead.")
@@ -60,6 +62,27 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
     conf.level <- 0.95
   }
 
+  ##########################
+  ## Ordinal stats:
+  ##########################
+
+  ordinal.stats.valid <- c(
+    "Nmiss", "OR", "CI.lower.OR", "CI.upper.OR", "p.value", # default
+    "estimate", "CI.OR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "N", "Nmiss2", "endpoint", "std.error", "statistic",
+    "logLik", "AIC", "BIC", "edf", "deviance", "df.residual"
+  )
+
+  if(any(ordinal.stats %nin% ordinal.stats.valid)) {
+    stop("Invalid binomial stats: ",
+         paste(ordinal.stats[ordinal.stats %nin% ordinal.stats.valid],collapse=","), "\n")
+  }
+  ## let CI.OR decode to CI.lower.OR and CI.upper.OR
+  if(any(ordinal.stats == "CI.OR")) {
+    ordinal.stats <- unique(c(ordinal.stats[ordinal.stats != "CI.OR"], "CI.lower.OR", "CI.upper.OR"))
+  }
+  if(any(ordinal.stats == "CI.estimate")) {
+    ordinal.stats <- unique(c(ordinal.stats[ordinal.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
+  }
 
   ##########################
   ## Binomial stats:
@@ -155,6 +178,6 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
   }
   list(digits=digits, digits.ratio=digits.ratio, digits.p = digits.p, format.p = format.p,
        show.adjust=show.adjust, show.intercept=show.intercept, conf.level=conf.level,
-       binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
+       ordinal.stats=ordinal.stats, binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
        poisson.stats=poisson.stats, survival.stats=survival.stats, stat.labels = stat.labels)
 }

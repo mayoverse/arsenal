@@ -74,9 +74,17 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   ## Allow family parameter to passed with or without quotes
   ##    exception is survival, would require public function named survival.
   ## Here, we force quotes to simplify in for loop below
-  if (is.function(family)) family <- family()$family
+  if(is.function(family) || is.character(family))
+  {
+    family.list <- match.fun(family)()
+    family <- family.list$family
+  } else
+  {
+    family.list <- family
+    family <- family$family
+  }
 
-  if(family %nin% c("survival", "gaussian", "binomial", "poisson", "quasibinomial", "quasipoisson"))
+  if(family %nin% c("survival", "gaussian", "binomial", "poisson", "quasibinomial", "quasipoisson", "ordinal"))
     stop("Family ", family, " not supported.\n")
 
   if(family != "survival" && any(grepl("Surv\\(", formula))) {
@@ -146,8 +154,18 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
     ## placeholder for ordered, don't do any fitting
     ## y is ordered factor
-    if (family == "ordered") {
-      stop("family == 'ordered' isn't implemented yet")
+    if (family == "ordinal") {
+      temp.call[[1]] <- quote(MASS::polr)
+      temp.call$Hess <- TRUE
+      temp.call$method <- family.list$method
+      fit <- eval(temp.call, parent.frame())
+      coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
+      coeffORTidy[coeffORTidy$coefficient_type == "zeta", names(coeffORTidy) %nin% c("term", "coefficient_type")] <- NA
+      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
+      coeffTidy$p.value <- 2*pnorm(abs(coeffTidy$statistic), lower.tail = FALSE)
+      coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
+      modelGlance <- broom::glance(fit)
+
     } else if (family == "gaussian") {
       # ## issue warning if appears categorical
       if(length(unique(maindf[[1]])) <= 5) {
@@ -262,6 +280,12 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 ## Needed for being able to use "survival" with or without quotes,
 ##   keep as private function
 survival <- function() list(family="survival")
+
+ordinal <- function(method = c("logistic", "probit", "loglog", "cloglog", "cauchit"))
+{
+  list(family = "ordinal", method = match.arg(method))
+}
+
 
 #' @rdname modelsum
 #' @export

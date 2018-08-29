@@ -11,6 +11,8 @@
   
 * `modelsum()`: Fix formatting of error about unsupported families.
 
+* `modelsum()`: Add `family="ordinal"` to do ordinal logistic regression using `MASS::polr()`. (#130)
+
 # arsenal v1.3.0
 
 **This is a mostly backwards-compatible update.**

@@ -51,7 +51,7 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
   # non-integers, one-per-model
   use.digits1 <- c("logLik", "AIC", "BIC", "null.deviance", "deviance",
                    "statistic.F", "dispersion", "statistic.sc", "concordance", "std.error.concordance",
-                   "adj.r.squared", "r.squared")
+                   "adj.r.squared", "r.squared", "edf")
 
   # non-integers, many-per-model
   use.digits2 <- c("estimate", "CI.lower.estimate", "CI.upper.estimate", "std.error", "statistic", "standard.estimate")

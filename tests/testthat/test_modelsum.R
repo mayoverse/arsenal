@@ -151,6 +151,52 @@ test_that("'weights=' works", {
 })
 
 
+test_that("OLR works", {
+  if(require(MASS))
+  {
+    data(housing)
+    expect_identical(
+      capture.kable(summary(modelsum(Sat ~ Infl, adjust = ~ Type + Cont, weights = Freq, data = housing, family = "ordinal"))),
+      c("|                   |OR    |CI.lower.OR |CI.upper.OR |p.value |",
+        "|:------------------|:-----|:-----------|:-----------|:-------|",
+        "|**Cont High**      |1.434 |1.189       |1.730       |< 0.001 |",
+        "|**Infl High**      |3.628 |2.832       |4.663       |< 0.001 |",
+        "|**Infl Medium**    |1.762 |1.436       |2.164       |< 0.001 |",
+        "|Low&#124;Medium    |NA    |NA          |NA          |< 0.001 |",
+        "|Medium&#124;High   |NA    |NA          |NA          |< 0.001 |",
+        "|**Type Apartment** |0.564 |0.446       |0.712       |< 0.001 |",
+        "|**Type Atrium**    |0.693 |0.511       |0.940       |0.018   |",
+        "|**Type Terrace**   |0.336 |0.249       |0.451       |< 0.001 |"
+      )
+    )
+    expect_identical(
+      capture.kable(summary(modelsum(Sat ~ Infl, adjust = ~ Type + Cont, weights = Freq, data = housing, family = "ordinal",
+                                     ordinal.stats = c("estimate", "statistic", "p.value")), text = TRUE)),
+      c("|                 |estimate |statistic |p.value |",
+        "|:----------------|:--------|:---------|:-------|",
+        "|Cont High        |0.360    |3.771     |< 0.001 |",
+        "|Infl High        |1.289    |10.136    |< 0.001 |",
+        "|Infl Medium      |0.566    |5.412     |< 0.001 |",
+        "|Low&#124;Medium  |-0.496   |-3.974    |< 0.001 |",
+        "|Medium&#124;High |0.691    |5.505     |< 0.001 |",
+        "|Type Apartment   |-0.572   |-4.800    |< 0.001 |",
+        "|Type Atrium      |-0.366   |-2.360    |0.018   |",
+        "|Type Terrace     |-1.091   |-7.202    |< 0.001 |"
+      )
+    )
+    expect_identical(
+      capture.kable(summary(modelsum(Sat ~ Infl, adjust = ~ Type + Cont, weights = Freq, data = housing, family = "ordinal",
+                                     show.adjust = FALSE, show.intercept = FALSE), text = TRUE)),
+      c("|            |OR    |CI.lower.OR |CI.upper.OR |p.value |",
+        "|:-----------|:-----|:-----------|:-----------|:-------|",
+        "|Infl High   |3.628 |2.832       |4.663       |< 0.001 |",
+        "|Infl Medium |1.762 |1.436       |2.164       |< 0.001 |"
+      )
+    )
+  } else skip("'MASS' is not available")
+})
+
+
 ###########################################################################################################
 #### Reported bugs for modelsum
 ###########################################################################################################
