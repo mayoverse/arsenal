@@ -31,8 +31,8 @@ modelsum.control <- function(
   ordinal.stats=c("OR","CI.lower.OR","CI.upper.OR", "p.value","Nmiss"),
   binomial.stats=c("OR","CI.lower.OR","CI.upper.OR","p.value", "concordance","Nmiss"),
   gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
-  poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","concordance","Nmiss"),
-  negbin.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","concordance","Nmiss"),
+  poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","Nmiss"),
+  negbin.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","Nmiss"),
   survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),
   stat.labels = list(), ...
 ) {
@@ -137,7 +137,7 @@ modelsum.control <- function(
   ##Other model fits: AIC,BIC,logLik, dispersion
   ##  dispersion = deviance/df.residual
   poisson.stats.valid <- c(
-    "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "concordance", "Nmiss", # default
+    "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss", # default
     "CI.RR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "CI.RR", "Nmiss2", "std.error", "estimate", "statistic", "endpoint",
     "AIC", "BIC", "logLik", "dispersion", "null.deviance", "deviance", "df.residual", "df.null"
   )
@@ -159,7 +159,7 @@ modelsum.control <- function(
   ##########################
 
   negbin.stats.valid <- c(
-    "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "concordance", "Nmiss", # default
+    "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss", # default
     "CI.RR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "CI.RR", "Nmiss2", "std.error", "estimate", "statistic", "endpoint",
     "AIC", "BIC", "logLik", "dispersion", "null.deviance", "deviance", "df.residual", "df.null", "theta", "SE.theta"
   )
