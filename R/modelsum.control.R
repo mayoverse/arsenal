@@ -74,8 +74,8 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
   )
 
   if(any(binomial.stats %nin% binomial.stats.valid)) {
-    stop(paste0("Invalid binomial stats: ",
-           paste(binomial.stats[binomial.stats %nin% binomial.stats.valid],collapse=","), "\n"))
+    stop("Invalid binomial stats: ",
+         paste(binomial.stats[binomial.stats %nin% binomial.stats.valid],collapse=","), "\n")
   }
   ## let CI.OR decode to CI.lower.OR and CI.upper.OR
   if(any(binomial.stats == "CI.OR")) {
@@ -97,8 +97,8 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
   )
 
   if(any(gaussian.stats %nin% gaussian.stats.valid)) {
-    stop(paste0("Invalid gaussian stats: ",
-           paste(gaussian.stats[gaussian.stats %nin% gaussian.stats.valid],collapse=","), "\n"))
+    stop("Invalid gaussian stats: ",
+         paste(gaussian.stats[gaussian.stats %nin% gaussian.stats.valid],collapse=","), "\n")
   }
   if(any(gaussian.stats == "CI.estimate")) {
     gaussian.stats <- unique(c(gaussian.stats[gaussian.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
@@ -119,10 +119,10 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
   )
 
   if(any(poisson.stats %nin% poisson.stats.valid)) {
-      stop(paste0("Invalid poisson stats: ",
-           paste(poisson.stats[poisson.stats %nin% poisson.stats.valid],collapse=","), "\n"))
+    stop("Invalid poisson stats: ",
+         paste(poisson.stats[poisson.stats %nin% poisson.stats.valid],collapse=","), "\n")
   }
-   ## let CI.RR decode to CI.lower.RR and CI.upper.RR
+  ## let CI.RR decode to CI.lower.RR and CI.upper.RR
   if(any(poisson.stats == "CI.RR")) {
     poisson.stats <- unique(c(poisson.stats[poisson.stats != "CI.RR"], "CI.lower.RR", "CI.upper.RR"))
   }
@@ -142,8 +142,8 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
   )
 
   if(any(survival.stats %nin% surv.stats.valid)) {
-    stop(paste0("Invalid survival stats: ",
-           paste(survival.stats[survival.stats %nin% surv.stats.valid], collapse=","), "\n"))
+    stop("Invalid survival stats: ",
+         paste(survival.stats[survival.stats %nin% surv.stats.valid], collapse=","), "\n")
   }
 
   ## let CI.HR decode to CI.lower.HR and CI.upper.HR
