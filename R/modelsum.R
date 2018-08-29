@@ -1,15 +1,3 @@
-## Purpose: multiple models from multiple y and x variables
-## Author: P Votruba J Sinnwell and Beth Atkinson
-## Created: 9/3/2015
-## Updated: 10/6/2015
-## Updated: 4/6/2016 to complete using of broom tidy and glance
-## Updated: 4/12/2016 to make lm.beta work to skip categorical and psplines
-## Updated: 5/19/2016 get labels and y~. and y~x1 working. subsets working.
-## Updated: 6/28/2016 -label() works for assign and get, for x, adjust, and y.
-##                    -Expanded labels for categorical adjust and x variables.
-## Updated: 7/25/2016 bug fix for when multiple data columns match y name
-
-## examples now in modelsum.Rd and test.modelsum.R and modelsum.Rmd vignette
 
 #' Fit models over each of a set of independent variables with a response variable
 #'
@@ -18,8 +6,10 @@
 #' @param formula an object of class \code{\link{formula}}; a symbolic description of the variables to be modeled.  See "Details" for more information.
 #' @param adjust an object of class \code{\link{formula}}, listing variables to adjust by in all models. Specify as a one-sided formula,
 #'   like: \code{~Age+ Sex}.
-#' @param family similar mechanism to \code{\link[stats]{glm}}, where the model to be fit is driven by the family, options include: binomial, gaussian, survival,
-#'   Poisson. Family options supported in glm can be in quotes or not, but survival requires quotes.
+#' @param family similar mechanism to \code{\link[stats]{glm}}, where the model to be fit is driven by the family.
+#'   Options include: binomial, gaussian, survival, poisson, and ordinal. These can be passed as a string, as a function,
+#'   or as a list resulting from a call to one of the functions. See \code{\link{modelsum.family}} for details on
+#'   survival and ordinal families.
 #' @param data an optional data.frame, list or environment (or object coercible by \code{\link[base]{as.data.frame}} to a data frame) containing the
 #'   variables in the model. If not found in \code{data}, the variables are taken from \code{environment(formula)}, typically
 #'   the environment from which \code{modelsum} is called.
