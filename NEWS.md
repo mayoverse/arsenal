@@ -8,6 +8,10 @@
 
 * `tableby()`, `modelsum()`: Allow for LaTeX formatting. NOTE: this changes the formatting behavior when specifying
   `text="html"`! (#123)
+  
+* `modelsum()`: Fix formatting of error about unsupported families.
+
+* `modelsum()`: Add `family="ordinal"` to do ordinal logistic regression using `MASS::polr()`. (#130)
 
 # arsenal v1.3.0
 
