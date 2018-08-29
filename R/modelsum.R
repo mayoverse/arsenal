@@ -182,7 +182,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
       temp.call[[1]] <- quote(stats::glm)
       temp.call$x <- TRUE
-      temp.call$family <- family
+      temp.call$family <- family.list
       fit <- eval(temp.call, parent.frame())
 
       rocOut <- pROC::roc(fit$y ~ predict(fit, type='response'))
@@ -199,7 +199,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
       temp.call[[1]] <- quote(stats::glm)
       temp.call$x <- TRUE
-      temp.call$family <- family
+      temp.call$family <- family.list
       fit <- eval(temp.call, parent.frame())
 
       coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
