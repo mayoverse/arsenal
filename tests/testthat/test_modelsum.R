@@ -151,7 +151,7 @@ test_that("'weights=' works", {
 })
 
 
-test_that("OLR works", {
+test_that("ordinal works", {
   if(require(MASS))
   {
     data(housing)
@@ -196,6 +196,25 @@ test_that("OLR works", {
   } else skip("'MASS' is not available")
 })
 
+
+test_that("negbin works", {
+  if(require(MASS))
+  {
+    data(mockstudy)
+    expect_identical(
+      capture.kable(summary(modelsum(fu.time ~ sex, adjust = ~ age + arm, data = mockstudy, family = negbin),
+                            negbin.stats = c("estimate", "p.value", "theta"), text = TRUE, digits = 5)),
+      c("|                        |estimate |p.value |theta   |",
+        "|:-----------------------|:--------|:-------|:-------|",
+        "|(Intercept)             |6.52819  |< 0.001 |1.84776 |",
+        "|sex Female              |-0.02370 |0.545   |        |",
+        "|Age in Years            |-0.00342 |0.039   |        |",
+        "|Treatment Arm F: FOLFOX |0.28161  |< 0.001 |        |",
+        "|Treatment Arm G: IROX   |0.09396  |0.071   |        |"
+      )
+    )
+  } else skip("'MASS' is not available")
+})
 
 ###########################################################################################################
 #### Reported bugs for modelsum

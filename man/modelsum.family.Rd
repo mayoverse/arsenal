@@ -4,14 +4,19 @@
 \alias{modelsum.family}
 \alias{survival}
 \alias{ordinal}
+\alias{negbin}
 \title{Family functions for modelsum}
 \usage{
 survival()
 
 ordinal(method = c("logistic", "probit", "loglog", "cloglog", "cauchit"))
+
+negbin(link = c("log", "identity", "sqrt"))
 }
 \arguments{
 \item{method}{See \code{MASS::\link[MASS]{polr}}.}
+
+\item{link}{See \code{MASS::\link[MASS]{glm.nb}}.}
 }
 \value{
 A list, in particular with element \code{family}.

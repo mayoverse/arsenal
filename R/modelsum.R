@@ -7,7 +7,7 @@
 #' @param adjust an object of class \code{\link{formula}}, listing variables to adjust by in all models. Specify as a one-sided formula,
 #'   like: \code{~Age+ Sex}.
 #' @param family similar mechanism to \code{\link[stats]{glm}}, where the model to be fit is driven by the family.
-#'   Options include: binomial, gaussian, survival, poisson, and ordinal. These can be passed as a string, as a function,
+#'   Options include: binomial, gaussian, survival, poisson, negbin, and ordinal. These can be passed as a string, as a function,
 #'   or as a list resulting from a call to one of the functions. See \code{\link{modelsum.family}} for details on
 #'   survival and ordinal families.
 #' @param data an optional data.frame, list or environment (or object coercible by \code{\link[base]{as.data.frame}} to a data frame) containing the
@@ -62,7 +62,6 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   Call <- match.call()
 
   ## Allow family parameter to passed with or without quotes
-  ##    exception is survival, would require public function named survival.
   ## Here, we force quotes to simplify in for loop below
   if(is.function(family) || is.character(family))
   {
@@ -74,7 +73,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
     family <- family$family
   }
 
-  if(family %nin% c("survival", "gaussian", "binomial", "poisson", "quasibinomial", "quasipoisson", "ordinal"))
+  if(family %nin% c("survival", "gaussian", "binomial", "poisson", "quasibinomial", "quasipoisson", "ordinal", "negbin"))
     stop("Family ", family, " not supported.\n")
 
   if(family != "survival" && any(grepl("Surv\\(", formula))) {
@@ -208,6 +207,21 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
       coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
       modelGlance <- broom::glance(fit)
+
+    } else if (family == "negbin") {
+      ## Also uses glm
+      temp.call[[1]] <- quote(MASS::glm.nb)
+      temp.call$x <- TRUE
+      temp.call$link <- family.list$link
+      fit <- eval(temp.call, parent.frame())
+
+      coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
+      coeffRRTidy[grep("Intercept",coeffRRTidy$term),-1] <- NA
+      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
+      coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
+      modelGlance <- broom::glance(fit)
+      modelGlance$theta <- fit$theta
+      modelGlance$SE.theta <- fit$SE.theta
 
     } else if(family=="survival") {
 

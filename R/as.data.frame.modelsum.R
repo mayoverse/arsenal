@@ -17,6 +17,7 @@ get_the_estimate <- function(fitList, cntrl)
   statFields <- switch(fitList$family,
                        quasibinomial = cntrl$binomial.stats, binomial = cntrl$binomial.stats,
                        quasipoisson = cntrl$poisson.stats, poisson = cntrl$poisson.stats,
+                       negbin = cntrl$negbin.stats,
                        survival = cntrl$survival.stats, ordinal = cntrl$ordinal.stats,
                        cntrl$gaussian.stats)
 
