@@ -277,15 +277,6 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   return(msList)
 }
 
-## Needed for being able to use "survival" with or without quotes,
-##   keep as private function
-survival <- function() list(family="survival")
-
-ordinal <- function(method = c("logistic", "probit", "loglog", "cloglog", "cauchit"))
-{
-  list(family = "ordinal", method = match.arg(method))
-}
-
 
 #' @rdname modelsum
 #' @export
