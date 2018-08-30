@@ -13,6 +13,12 @@
 
 * `modelsum()`: Add `family="ordinal"` to do ordinal logistic regression using `MASS::polr()`. (#130)
 
+* `modelsum()` now supports *calls* to the family functions, in case a different link function (for example) is required.
+
+* `modelsum()`: removed "concordance" from the list of supported statistics for Poisson regression.
+
+* Updated documentation where appropriate.
+
 # arsenal v1.3.0
 
 **This is a mostly backwards-compatible update.**
