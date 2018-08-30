@@ -13,7 +13,7 @@
 #' @param show.adjust Logical, denoting whether to show adjustment terms.
 #' @param show.intercept Logical, denoting whether to show intercept terms.
 #' @param conf.level Numeric, giving the confidence level.
-#' @param ordinal.stats,binomial.stats,survival.stats,gaussian.stats,poisson.stats
+#' @param ordinal.stats,binomial.stats,survival.stats,gaussian.stats,poisson.stats,negbin.stats
 #'   Character vectors denoting which stats to show for the various model types.
 #' @param stat.labels A named list of labels for all the stats used above.
 #' @param ... Other arguments (not in use at this time).
@@ -31,7 +31,8 @@ modelsum.control <- function(
   ordinal.stats=c("OR","CI.lower.OR","CI.upper.OR", "p.value","Nmiss"),
   binomial.stats=c("OR","CI.lower.OR","CI.upper.OR","p.value", "concordance","Nmiss"),
   gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
-  poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","concordance","Nmiss"),
+  poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","Nmiss"),
+  negbin.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","Nmiss"),
   survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),
   stat.labels = list(), ...
 ) {
@@ -136,7 +137,7 @@ modelsum.control <- function(
   ##Other model fits: AIC,BIC,logLik, dispersion
   ##  dispersion = deviance/df.residual
   poisson.stats.valid <- c(
-    "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "concordance", "Nmiss", # default
+    "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss", # default
     "CI.RR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "CI.RR", "Nmiss2", "std.error", "estimate", "statistic", "endpoint",
     "AIC", "BIC", "logLik", "dispersion", "null.deviance", "deviance", "df.residual", "df.null"
   )
@@ -152,6 +153,29 @@ modelsum.control <- function(
   if(any(poisson.stats == "CI.estimate")) {
     poisson.stats <- unique(c(poisson.stats[poisson.stats == "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
+
+  ##########################
+  ## Poisson stats:
+  ##########################
+
+  negbin.stats.valid <- c(
+    "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss", # default
+    "CI.RR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "CI.RR", "Nmiss2", "std.error", "estimate", "statistic", "endpoint",
+    "AIC", "BIC", "logLik", "dispersion", "null.deviance", "deviance", "df.residual", "df.null", "theta", "SE.theta"
+  )
+
+  if(any(negbin.stats %nin% negbin.stats.valid)) {
+    stop("Invalid poisson stats: ",
+         paste(negbin.stats[negbin.stats %nin% negbin.stats.valid],collapse=","), "\n")
+  }
+  ## let CI.RR decode to CI.lower.RR and CI.upper.RR
+  if(any(negbin.stats == "CI.RR")) {
+    negbin.stats <- unique(c(negbin.stats[negbin.stats != "CI.RR"], "CI.lower.RR", "CI.upper.RR"))
+  }
+  if(any(negbin.stats == "CI.estimate")) {
+    negbin.stats <- unique(c(negbin.stats[negbin.stats == "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
+  }
+
   ##########################
   ## Survival stats:
   ##########################
@@ -179,5 +203,5 @@ modelsum.control <- function(
   list(digits=digits, digits.ratio=digits.ratio, digits.p = digits.p, format.p = format.p,
        show.adjust=show.adjust, show.intercept=show.intercept, conf.level=conf.level,
        ordinal.stats=ordinal.stats, binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
-       poisson.stats=poisson.stats, survival.stats=survival.stats, stat.labels = stat.labels)
+       poisson.stats=poisson.stats, negbin.stats = negbin.stats, survival.stats=survival.stats, stat.labels = stat.labels)
 }

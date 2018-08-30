@@ -773,27 +773,31 @@ the table dynamic!
 
 The available summary statistics, by varible type, are:
 
+* `ordinal`: Ordinal logistic regression models
+  + default: `Nmiss, OR, CI.lower.OR, CI.upper.OR, p.value`
+  + optional: `estimate, CI.OR, CI.estimate, CI.lower.estimate, CI.upper.estimate,`
+       `N, Nmiss2, endpoint, std.error, statistic, logLik, AIC, BIC, edf, deviance, df.residual`
 * `binomial`,`quasibinomial`: Logistic regression models 
   +  default:  `OR, CI.lower.OR, CI.upper.OR, p.value, concordance, Nmiss`
-  +  optional: `estimate, CI.lower.estimate, CI.upper.estimate, N, Nmiss2, 
-        endpoint, std.error, statistic, logLik, AIC, 
-        BIC, null.deviance, deviance, df.residual, df.null`
+  +  optional: `estimate, CI.OR, CI.estimate, CI.lower.estimate, CI.upper.estimate,`
+        `N, Nmiss2, endpoint, std.error, statistic, logLik, AIC, BIC, null.deviance, deviance, df.residual, df.null`
 * `gaussian`: Linear regression models 
   +  default:  `estimate, std.error, p.value, adj.r.squared, Nmiss`
-  +  optional: `CI.lower.estimate, CI.upper.estimate, 
-        N, Nmiss2, statistic, standard.estimate, endpoint, 
-        r.squared, AIC, BIC, logLik, statistic.F, p.value.F`
+  +  optional: `CI.estimate, CI.lower.estimate, CI.upper.estimate, N, Nmiss2, statistic,`
+        `standard.estimate, endpoint, r.squared, AIC, BIC, logLik, statistic.F, p.value.F`
 * `poisson`, `quasipoisson`: Poisson regression models 
-  +  default: `RR, CI.lower.RR, CI.upper.RR, p.value, concordance, Nmiss`
-  +  optional: `CI.lower.estimate, CI.upper.estimate, CI.RR, Nmiss2, se, estimate, 
-        z.stat, endpoint, AIC, BIC, logLik, dispersion, 
-        null.deviance, deviance, df.residual, df.null`
+  +  default: `RR, CI.lower.RR, CI.upper.RR, p.value, Nmiss`
+  +  optional: `CI.RR, CI.estimate, CI.lower.estimate, CI.upper.estimate, CI.RR, Nmiss2, std.error,`
+        `estimate, statistic, endpoint, AIC, BIC, logLik, dispersion, null.deviance, deviance, df.residual, df.null`
+* `negbin`: Negative binomial regression models 
+  +  default: `RR, CI.lower.RR, CI.upper.RR, p.value, Nmiss`
+  +  optional: `CI.RR, CI.estimate, CI.lower.estimate, CI.upper.estimate, CI.RR, Nmiss2, std.error, estimate,`
+        `statistic, endpoint, AIC, BIC, logLik, dispersion, null.deviance, deviance, df.residual, df.null, theta, SE.theta`
 * `survival`: Cox models 
   +  default: `HR, CI.lower.HR, CI.upper.HR, p.value, concordance, Nmiss`
-  +  optional: `CI.lower.estimate, CI.upper.estimate, N, Nmiss2, estimate, se, 
-        endpoint, Nevents, z.stat, r.squared, logLik, 
-        AIC, BIC, statistic.sc, p.value.sc, p.value.log, 
-        p.value.wald, N, std.error.concordance`
+  +  optional: `CI.HR, CI.estimate, CI.lower.estimate, CI.upper.estimate, N, Nmiss2, estimate, std.error, endpoint,`
+        `Nevents, statistic, r.squared, logLik, AIC, BIC, statistic.sc, p.value.sc, p.value.log,`
+        `p.value.wald, N, std.error.concordance`
 
 The full description of these parameters that can be shown for models include:
 
@@ -803,7 +807,7 @@ The full description of these parameters that can be shown for models include:
 * `endpoint`: dependent variable used in the model
 * `std.err`: print the standard error
 * `statistic`: test statistic
-* `statistic.F': test statistic (F test)
+* `statistic.F`: test statistic (F test)
 * `p.value`: print the p-value
 * `r.squared`: print the model R-square 
 * `adj.r.squared`: print the model adjusted R-square 
@@ -831,7 +835,9 @@ The full description of these parameters that can be shown for models include:
 * `estimate`: print beta coefficient
 * `standardized.estimate`: print the standardized beta coefficient 
 * `CI.lower.estimate, CI.upper.estimate`: print the confidence interval for the beta coefficient
-
+* `edf`: print the effective degrees of freedom.
+* `theta`: print the estimate of theta.
+* `SE.theta`: print the estimate of theta's standard error.
 
 ## `modelsum.control` settings
 

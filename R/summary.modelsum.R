@@ -46,12 +46,12 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
 
   #### format the digits and nsmall things ####
   # integers, one-per-model
-  use.digits0 <- c("Nmiss", "N", "Nmiss2", "Nevents", "df.residual", "df.null")
+  use.digits0 <- c("Nmiss", "N", "Nmiss2", "Nevents", "df.residual", "df.null", "edf")
 
   # non-integers, one-per-model
   use.digits1 <- c("logLik", "AIC", "BIC", "null.deviance", "deviance",
                    "statistic.F", "dispersion", "statistic.sc", "concordance", "std.error.concordance",
-                   "adj.r.squared", "r.squared", "edf")
+                   "adj.r.squared", "r.squared", "theta", "SE.theta")
 
   # non-integers, many-per-model
   use.digits2 <- c("estimate", "CI.lower.estimate", "CI.upper.estimate", "std.error", "statistic", "standard.estimate")
