@@ -167,14 +167,13 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       lmfit <- eval(temp.call, parent.frame())
       coeffTidy <- broom::tidy(lmfit, conf.int=TRUE, conf.level=control$conf.level)
 
-      if(any(grepl("(weights)", colnames(lmfit$model)))) {
-        lmfit$model <- lmfit$model[,-grep("(weights)", colnames(lmfit$model))]
-      }
+      if("(weights)" %in% colnames(lmfit$model)) lmfit$model <- lmfit$model[, colnames(lmfit$model) != "(weights)"]
+
       coeffTidy$standard.estimate <- lm.beta(lmfit)
       ## Continuous variable (numeric) ###############
       ## Note: Using tidy changes colname from 't value' to 'statistic'
       modelGlance <- broom::glance(lmfit)
-      names(modelGlance) <- gsub("p.value","p.value.F", names(modelGlance))
+      names(modelGlance)[names(modelGlance) == "p.value"] <- "p.value.F"
 
 
     } else if (family == "binomial" || family == "quasibinomial") {
@@ -189,7 +188,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       #coeffbeta <- summary(fit)$coef
       ## find out that broom:::tidy.lm allows conf.int and exp
       coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffORTidy[grep("Intercept",coeffORTidy$term),-1] <- NA
+      coeffORTidy[coeffORTidy$term == "Intercept", -1] <- NA
       coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
       coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
       modelGlance <- c(broom::glance(fit), concordance = pROC::auc(rocOut))
@@ -203,7 +202,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       fit <- eval(temp.call, parent.frame())
 
       coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffRRTidy[grep("Intercept",coeffRRTidy$term),-1] <- NA
+      coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
       coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
       coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
       modelGlance <- broom::glance(fit)
@@ -216,7 +215,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       fit <- eval(temp.call, parent.frame())
 
       coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffRRTidy[grep("Intercept",coeffRRTidy$term),-1] <- NA
+      coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
       coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
       coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
       modelGlance <- broom::glance(fit)
