@@ -164,15 +164,15 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       }
       temp.call[[1]] <- quote(stats::lm)
       temp.call$x <- TRUE
-      lmfit <- eval(temp.call, parent.frame())
-      coeffTidy <- broom::tidy(lmfit, conf.int=TRUE, conf.level=control$conf.level)
+      fit <- eval(temp.call, parent.frame())
+      coeffTidy <- broom::tidy(fit, conf.int=TRUE, conf.level=control$conf.level)
 
-      if("(weights)" %in% colnames(lmfit$model)) lmfit$model <- lmfit$model[, colnames(lmfit$model) != "(weights)"]
+      if("(weights)" %in% colnames(fit$model)) fit$model <- fit$model[, colnames(fit$model) != "(weights)"]
 
-      coeffTidy$standard.estimate <- lm.beta(lmfit)
+      coeffTidy$standard.estimate <- lm.beta(fit)
       ## Continuous variable (numeric) ###############
       ## Note: Using tidy changes colname from 't value' to 'statistic'
-      modelGlance <- broom::glance(lmfit)
+      modelGlance <- broom::glance(fit)
       names(modelGlance)[names(modelGlance) == "p.value"] <- "p.value.F"
 
 
@@ -225,13 +225,13 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
     } else if(family=="survival") {
 
       temp.call[[1]] <- quote(survival::coxph)
-      ph <- eval(temp.call, parent.frame())
+      fit <- eval(temp.call, parent.frame())
 
       ## use tidy to get both CIs, merge
-      coeffHRTidy <- broom::tidy(ph, exponentiate=TRUE, conf.int=.95)
-      coeffTidy <- broom::tidy(ph, exponentiate=FALSE, conf.int=.95)
+      coeffHRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=.95)
+      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=.95)
       coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
-      modelGlance <-  broom::glance(ph)
+      modelGlance <-  broom::glance(fit)
     }
 
     names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
