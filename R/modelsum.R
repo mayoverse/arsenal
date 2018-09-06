@@ -239,8 +239,16 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
     if(!is.numericish(currCol))
     {
-      xterms <- coeffTidy$term[coeffTidy$term %in% paste0(xname2, unique(currCol))]
-      ## handle when xterm is categorical with level tagged on
+      lvls <- unique(currCol)
+      findlvls <- if(identical(fit$contrasts[[xname]], "contr.treatment"))
+      {
+        paste0(xname2, lvls)
+      } else if(identical(fit$contrasts[[xname]], "contr.poly"))
+      {
+        paste0(xname2, c(".L", ".Q", ".C", paste0("^", seq_along(lvls))))
+      } else paste0(xname2, seq_along(lvls))
+
+      xterms <- coeffTidy$term[coeffTidy$term %in% findlvls]
       labelEff <- sub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
     } else xterms <- xname2
 
@@ -253,7 +261,16 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
       if(!is.numericish(adjcol))
       {
-        aterm <- coeffTidy$term[coeffTidy$term %in% paste0(adjVars2[adj], unique(adjcol))]
+        lvls.a <- unique(adjcol)
+        findlvls.a <- if(identical(fit$contrasts[[adjVars[adj]]], "contr.treatment"))
+        {
+          paste0(adjVars2[adj], lvls.a)
+        } else if(identical(fit$contrasts[[adjVars[adj]]], "contr.poly"))
+        {
+          paste0(adjVars2[adj], c(".L", ".Q", ".C", paste0("^", seq_along(lvls.a))))
+        } else paste0(adjVars2[adj], seq_along(lvls.a))
+
+        aterm <- coeffTidy$term[coeffTidy$term %in% findlvls.a]
         alabel <- sub(adjVars2[adj], paste0(alabel, " "), aterm, fixed = TRUE)
       } else aterm <- adjVars2[adj]
 
@@ -272,7 +289,8 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
                                  Nmiss2 = sum(is.na(currCol)),
                                  endpoint=yTerm,
                                  endlabel=yLabel,
-                                 x=xname)
+                                 x=xname,
+                                 contrasts=list(fit$contrasts))
 
   } # end for: eff
 

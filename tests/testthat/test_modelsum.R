@@ -499,3 +499,22 @@ test_that("08/24/2018: latex (#123)", {
     )
   )
 })
+
+#################################################################################################################################
+
+test_that("09/05/2018: correctly label contrasts for ordinal variables (#133)", {
+  mdat$Group.ord <- ordered(mdat$Group.fac, levels = c("Low", "Med", "High"))
+  expect_identical(
+    capture.kable(summary(modelsum(Age ~ Phase, adjust = ~ Group.ord + trt + ht_in, data = mdat), text = TRUE)),
+    c("|                 |estimate |std.error |p.value |adj.r.squared |",
+      "|:----------------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept)      |47.686   |7.301     |< 0.001 |-0.019        |",
+      "|Phase .L         |-0.679   |1.152     |0.557   |              |",
+      "|Phase .Q         |-1.044   |0.960     |0.280   |              |",
+      "|Group.ord .L     |0.243    |0.977     |0.804   |              |",
+      "|Group.ord .Q     |0.410    |1.069     |0.702   |              |",
+      "|Treatment Arm B  |-1.460   |1.159     |0.211   |              |",
+      "|Height in Inches |-0.112   |0.110     |0.314   |              |"
+    )
+  )
+})
