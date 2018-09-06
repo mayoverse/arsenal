@@ -164,17 +164,16 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       }
       temp.call[[1]] <- quote(stats::lm)
       temp.call$x <- TRUE
-      lmfit <- eval(temp.call, parent.frame())
-      coeffTidy <- broom::tidy(lmfit, conf.int=TRUE, conf.level=control$conf.level)
+      fit <- eval(temp.call, parent.frame())
+      coeffTidy <- broom::tidy(fit, conf.int=TRUE, conf.level=control$conf.level)
 
-      if(any(grepl("(weights)", colnames(lmfit$model)))) {
-        lmfit$model <- lmfit$model[,-grep("(weights)", colnames(lmfit$model))]
-      }
-      coeffTidy$standard.estimate <- lm.beta(lmfit)
+      if("(weights)" %in% colnames(fit$model)) fit$model <- fit$model[, colnames(fit$model) != "(weights)"]
+
+      coeffTidy$standard.estimate <- lm.beta(fit)
       ## Continuous variable (numeric) ###############
       ## Note: Using tidy changes colname from 't value' to 'statistic'
-      modelGlance <- broom::glance(lmfit)
-      names(modelGlance) <- gsub("p.value","p.value.F", names(modelGlance))
+      modelGlance <- broom::glance(fit)
+      names(modelGlance)[names(modelGlance) == "p.value"] <- "p.value.F"
 
 
     } else if (family == "binomial" || family == "quasibinomial") {
@@ -189,7 +188,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       #coeffbeta <- summary(fit)$coef
       ## find out that broom:::tidy.lm allows conf.int and exp
       coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffORTidy[grep("Intercept",coeffORTidy$term),-1] <- NA
+      coeffORTidy[coeffORTidy$term == "Intercept", -1] <- NA
       coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
       coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
       modelGlance <- c(broom::glance(fit), concordance = pROC::auc(rocOut))
@@ -203,7 +202,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       fit <- eval(temp.call, parent.frame())
 
       coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffRRTidy[grep("Intercept",coeffRRTidy$term),-1] <- NA
+      coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
       coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
       coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
       modelGlance <- broom::glance(fit)
@@ -216,7 +215,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       fit <- eval(temp.call, parent.frame())
 
       coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffRRTidy[grep("Intercept",coeffRRTidy$term),-1] <- NA
+      coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
       coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
       coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
       modelGlance <- broom::glance(fit)
@@ -226,13 +225,13 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
     } else if(family=="survival") {
 
       temp.call[[1]] <- quote(survival::coxph)
-      ph <- eval(temp.call, parent.frame())
+      fit <- eval(temp.call, parent.frame())
 
       ## use tidy to get both CIs, merge
-      coeffHRTidy <- broom::tidy(ph, exponentiate=TRUE, conf.int=.95)
-      coeffTidy <- broom::tidy(ph, exponentiate=FALSE, conf.int=.95)
+      coeffHRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=.95)
+      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=.95)
       coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
-      modelGlance <-  broom::glance(ph)
+      modelGlance <-  broom::glance(fit)
     }
 
     names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
@@ -240,8 +239,16 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
     if(!is.numericish(currCol))
     {
-      xterms <- coeffTidy$term[coeffTidy$term %in% paste0(xname2, unique(currCol))]
-      ## handle when xterm is categorical with level tagged on
+      lvls <- unique(currCol)
+      findlvls <- if(identical(fit$contrasts[[xname]], "contr.treatment"))
+      {
+        paste0(xname2, lvls)
+      } else if(identical(fit$contrasts[[xname]], "contr.poly"))
+      {
+        paste0(xname2, c(".L", ".Q", ".C", paste0("^", seq_along(lvls))))
+      } else paste0(xname2, seq_along(lvls))
+
+      xterms <- coeffTidy$term[coeffTidy$term %in% findlvls]
       labelEff <- sub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
     } else xterms <- xname2
 
@@ -254,7 +261,16 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
       if(!is.numericish(adjcol))
       {
-        aterm <- coeffTidy$term[coeffTidy$term %in% paste0(adjVars2[adj], unique(adjcol))]
+        lvls.a <- unique(adjcol)
+        findlvls.a <- if(identical(fit$contrasts[[adjVars[adj]]], "contr.treatment"))
+        {
+          paste0(adjVars2[adj], lvls.a)
+        } else if(identical(fit$contrasts[[adjVars[adj]]], "contr.poly"))
+        {
+          paste0(adjVars2[adj], c(".L", ".Q", ".C", paste0("^", seq_along(lvls.a))))
+        } else paste0(adjVars2[adj], seq_along(lvls.a))
+
+        aterm <- coeffTidy$term[coeffTidy$term %in% findlvls.a]
         alabel <- sub(adjVars2[adj], paste0(alabel, " "), aterm, fixed = TRUE)
       } else aterm <- adjVars2[adj]
 
@@ -273,7 +289,8 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
                                  Nmiss2 = sum(is.na(currCol)),
                                  endpoint=yTerm,
                                  endlabel=yLabel,
-                                 x=xname)
+                                 x=xname,
+                                 contrasts=list(fit$contrasts))
 
   } # end for: eff
 
