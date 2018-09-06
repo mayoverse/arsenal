@@ -17,6 +17,8 @@
 
 * `modelsum()`: removed "concordance" from the list of supported statistics for Poisson regression.
 
+* `modelsum()`: added support for ordinal regressors and adjustment terms (by adding support for their associated contrasts). (#133)
+
 * Updated documentation where appropriate.
 
 # arsenal v1.3.0
