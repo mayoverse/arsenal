@@ -4,6 +4,8 @@
 
 * `tableby()`, `paired()`: Add warning for when by-variable contains empty string. (#121)
 
+* `compare()`: implement `n.diff.obs()`. (#124)
+
 * `tableby()`, `modelsum()`: properly propogated "term.name" to the `as.data.frame()` method. (#127, #128)
 
 * `tableby()`, `modelsum()`: Allow for LaTeX formatting. NOTE: this changes the formatting behavior when specifying

@@ -2,6 +2,9 @@
 % Please edit documentation in R/compare.internal.R
 \name{diffs}
 \alias{diffs}
+\alias{n.diff.obs}
+\alias{n.diff.obs.compare.data.frame}
+\alias{n.diff.obs.summary.compare.data.frame}
 \alias{n.diffs}
 \alias{n.diffs.compare.data.frame}
 \alias{n.diffs.summary.compare.data.frame}
@@ -10,6 +13,12 @@
 \alias{diffs.summary.compare.data.frame}
 \title{Extract differences}
 \usage{
+n.diff.obs(object, ...)
+
+\method{n.diff.obs}{compare.data.frame}(object, ...)
+
+\method{n.diff.obs}{summary.compare.data.frame}(object, ...)
+
 n.diffs(object, ...)
 
 \method{n.diffs}{compare.data.frame}(object, ...)
@@ -34,7 +43,7 @@ diffs(object, ...)
 all differences be reported (the default).}
 }
 \description{
-Extract differences and number of differences from a \code{compare} object.
+Extract differences, number of differences, or number of not-shared observations from a \code{compare} object.
 }
 \seealso{
 \code{\link{compare.data.frame}} \code{\link{summary.compare.data.frame}}

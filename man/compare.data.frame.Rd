@@ -39,7 +39,7 @@ summary(compare(df1, df2, by = "id"))
 summary(compare(df1, df2, by = "row.names"))
 }
 \seealso{
-\code{\link{summary.compare.data.frame}}
+\code{\link{summary.compare.data.frame}}, \code{\link{n.diffs}}, \code{\link{n.diff.obs}}
 }
 \author{
 Ethan Heinzen, adapted from code from Andrew Hanson
