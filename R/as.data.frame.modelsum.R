@@ -4,18 +4,21 @@ get_the_estimate <- function(fitList, cntrl)
   # even if the model doesn't have an intercept, that's okay
   labs <- c("(Intercept)", fitList$label, fitList$adjlabels)
   names(labs) <- c("(Intercept)", fitList$xterms, fitList$adjterms)
+  trms <- fitList$coeff$term
 
   out <- data.frame(
-    term = fitList$coeff$term,
-    label = labs[fitList$coeff$term],
-    term.type = ifelse(fitList$coeff$term == "(Intercept)", "Intercept", ifelse(fitList$coeff$term %in% fitList$adjterms, "Adjuster", "Term")),
+    term = trms,
+    label = ifelse(trms %in% names(labs), labs[trms], trms),
+    term.type = ifelse(trms %in% fitList$adjterms, "Adjuster",
+                       ifelse(trms %in% fitList$xterms, "Term", "Intercept")),
     stringsAsFactors = FALSE
   )
 
   statFields <- switch(fitList$family,
                        quasibinomial = cntrl$binomial.stats, binomial = cntrl$binomial.stats,
                        quasipoisson = cntrl$poisson.stats, poisson = cntrl$poisson.stats,
-                       survival = cntrl$survival.stats,
+                       negbin = cntrl$negbin.stats,
+                       survival = cntrl$survival.stats, ordinal = cntrl$ordinal.stats,
                        cntrl$gaussian.stats)
 
   if(any(names(fitList$coeff) %in% statFields)) out <- cbind(out, fitList$coeff[, intersect(statFields, names(fitList$coeff)), drop = FALSE])

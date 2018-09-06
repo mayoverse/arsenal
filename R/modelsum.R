@@ -1,15 +1,3 @@
-## Purpose: multiple models from multiple y and x variables
-## Author: P Votruba J Sinnwell and Beth Atkinson
-## Created: 9/3/2015
-## Updated: 10/6/2015
-## Updated: 4/6/2016 to complete using of broom tidy and glance
-## Updated: 4/12/2016 to make lm.beta work to skip categorical and psplines
-## Updated: 5/19/2016 get labels and y~. and y~x1 working. subsets working.
-## Updated: 6/28/2016 -label() works for assign and get, for x, adjust, and y.
-##                    -Expanded labels for categorical adjust and x variables.
-## Updated: 7/25/2016 bug fix for when multiple data columns match y name
-
-## examples now in modelsum.Rd and test.modelsum.R and modelsum.Rmd vignette
 
 #' Fit models over each of a set of independent variables with a response variable
 #'
@@ -18,8 +6,10 @@
 #' @param formula an object of class \code{\link{formula}}; a symbolic description of the variables to be modeled.  See "Details" for more information.
 #' @param adjust an object of class \code{\link{formula}}, listing variables to adjust by in all models. Specify as a one-sided formula,
 #'   like: \code{~Age+ Sex}.
-#' @param family similar mechanism to \code{\link[stats]{glm}}, where the model to be fit is driven by the family, options include: binomial, gaussian, survival,
-#'   Poisson. Family options supported in glm can be in quotes or not, but survival requires quotes.
+#' @param family similar mechanism to \code{\link[stats]{glm}}, where the model to be fit is driven by the family.
+#'   Options include: binomial, gaussian, survival, poisson, negbin, and ordinal. These can be passed as a string, as a function,
+#'   or as a list resulting from a call to one of the functions. See \code{\link{modelsum.family}} for details on
+#'   survival and ordinal families.
 #' @param data an optional data.frame, list or environment (or object coercible by \code{\link[base]{as.data.frame}} to a data frame) containing the
 #'   variables in the model. If not found in \code{data}, the variables are taken from \code{environment(formula)}, typically
 #'   the environment from which \code{modelsum} is called.
@@ -72,12 +62,19 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   Call <- match.call()
 
   ## Allow family parameter to passed with or without quotes
-  ##    exception is survival, would require public function named survival.
   ## Here, we force quotes to simplify in for loop below
-  if (is.function(family)) family <- family()$family
+  if(is.function(family) || is.character(family))
+  {
+    family.list <- match.fun(family)()
+    family <- family.list$family
+  } else
+  {
+    family.list <- family
+    family <- family$family
+  }
 
-  if(family %nin% c("survival", "gaussian", "binomial", "poisson", "quasibinomial", "quasipoisson"))
-    stop("Family ", family, "not supported.\n")
+  if(family %nin% c("survival", "gaussian", "binomial", "poisson", "quasibinomial", "quasipoisson", "ordinal", "negbin"))
+    stop("Family ", family, " not supported.\n")
 
   if(family != "survival" && any(grepl("Surv\\(", formula))) {
     warning("Found Surv in formula, assuming family='survival'\n")
@@ -146,8 +143,20 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
     ## placeholder for ordered, don't do any fitting
     ## y is ordered factor
-    if (family == "ordered") {
-      stop("family == 'ordered' isn't implemented yet")
+    if (family == "ordinal") {
+      temp.call[[1]] <- quote(MASS::polr)
+      temp.call$Hess <- TRUE
+      temp.call$method <- family.list$method
+      fit <- eval(temp.call, parent.frame())
+      coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
+      coeffORTidy[coeffORTidy$coefficient_type == "zeta", names(coeffORTidy) %nin% c("term", "coefficient_type")] <- NA
+      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
+      coeffTidy$p.value <- 2*stats::pnorm(abs(coeffTidy$statistic), lower.tail = FALSE)
+      coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
+      # sort so that zeta comes first, but hold all else fixed
+      coeffTidy <- coeffTidy[order(coeffTidy$coefficient_type == "coefficient", 1:nrow(coeffTidy)), ]
+      modelGlance <- broom::glance(fit)
+
     } else if (family == "gaussian") {
       # ## issue warning if appears categorical
       if(length(unique(maindf[[1]])) <= 5) {
@@ -155,20 +164,16 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       }
       temp.call[[1]] <- quote(stats::lm)
       temp.call$x <- TRUE
-      lmfit <- eval(temp.call, parent.frame())
-      coeffTidy <- broom::tidy(lmfit, conf.int=TRUE, conf.level=control$conf.level)
+      fit <- eval(temp.call, parent.frame())
+      coeffTidy <- broom::tidy(fit, conf.int=TRUE, conf.level=control$conf.level)
 
-      if(any(grepl("(weights)", colnames(lmfit$model)))) {
-        lmfit$model <- lmfit$model[,-grep("(weights)", colnames(lmfit$model))]
-      }
-      coeffTidy$standard.estimate <- lm.beta(lmfit)
-      names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
-      names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
+      if("(weights)" %in% colnames(fit$model)) fit$model <- fit$model[, colnames(fit$model) != "(weights)"]
 
+      coeffTidy$standard.estimate <- lm.beta(fit)
       ## Continuous variable (numeric) ###############
       ## Note: Using tidy changes colname from 't value' to 'statistic'
-      modelGlance <- broom::glance(lmfit)
-      names(modelGlance) <- gsub("p.value","p.value.F", names(modelGlance))
+      modelGlance <- broom::glance(fit)
+      names(modelGlance)[names(modelGlance) == "p.value"] <- "p.value.F"
 
 
     } else if (family == "binomial" || family == "quasibinomial") {
@@ -176,19 +181,15 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
       temp.call[[1]] <- quote(stats::glm)
       temp.call$x <- TRUE
-      temp.call$family <- family
+      temp.call$family <- family.list
       fit <- eval(temp.call, parent.frame())
 
       rocOut <- pROC::roc(fit$y ~ predict(fit, type='response'))
       #coeffbeta <- summary(fit)$coef
       ## find out that broom:::tidy.lm allows conf.int and exp
       coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffORTidy[grep("Intercept",coeffORTidy$term),-1] <- NA
+      coeffORTidy[coeffORTidy$term == "Intercept", -1] <- NA
       coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
-
-      names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
-      names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
-
       coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
       modelGlance <- c(broom::glance(fit), concordance = pROC::auc(rocOut))
 
@@ -197,40 +198,57 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
       temp.call[[1]] <- quote(stats::glm)
       temp.call$x <- TRUE
-      temp.call$family <- family
+      temp.call$family <- family.list
       fit <- eval(temp.call, parent.frame())
 
-      ## find out that broom:::tidy.lm allows conf.int and exp
       coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffRRTidy[grep("Intercept",coeffRRTidy$term),-1] <- NA
+      coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
       coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
-
-      names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
-      names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
-
       coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
       modelGlance <- broom::glance(fit)
+
+    } else if (family == "negbin") {
+      ## Also uses glm
+      temp.call[[1]] <- quote(MASS::glm.nb)
+      temp.call$x <- TRUE
+      temp.call$link <- family.list$link
+      fit <- eval(temp.call, parent.frame())
+
+      coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
+      coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
+      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
+      coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
+      modelGlance <- broom::glance(fit)
+      modelGlance$theta <- fit$theta
+      modelGlance$SE.theta <- fit$SE.theta
 
     } else if(family=="survival") {
 
       temp.call[[1]] <- quote(survival::coxph)
-      ph <- eval(temp.call, parent.frame())
+      fit <- eval(temp.call, parent.frame())
 
       ## use tidy to get both CIs, merge
-      coeffHRTidy <- broom::tidy(ph, exponentiate=TRUE, conf.int=.95)
-      coeffTidy <- broom::tidy(ph, exponentiate=FALSE, conf.int=.95)
-
-      names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
-      names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
-
+      coeffHRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=.95)
+      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=.95)
       coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
-      modelGlance <-  broom::glance(ph)
+      modelGlance <-  broom::glance(fit)
     }
+
+    names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
+    names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
 
     if(!is.numericish(currCol))
     {
-      xterms <- coeffTidy$term[coeffTidy$term %in% paste0(xname2, unique(currCol))]
-      ## handle when xterm is categorical with level tagged on
+      lvls <- unique(currCol)
+      findlvls <- if(identical(fit$contrasts[[xname]], "contr.treatment"))
+      {
+        paste0(xname2, lvls)
+      } else if(identical(fit$contrasts[[xname]], "contr.poly"))
+      {
+        paste0(xname2, c(".L", ".Q", ".C", paste0("^", seq_along(lvls))))
+      } else paste0(xname2, seq_along(lvls))
+
+      xterms <- coeffTidy$term[coeffTidy$term %in% findlvls]
       labelEff <- sub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
     } else xterms <- xname2
 
@@ -243,7 +261,16 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
       if(!is.numericish(adjcol))
       {
-        aterm <- coeffTidy$term[coeffTidy$term %in% paste0(adjVars2[adj], unique(adjcol))]
+        lvls.a <- unique(adjcol)
+        findlvls.a <- if(identical(fit$contrasts[[adjVars[adj]]], "contr.treatment"))
+        {
+          paste0(adjVars2[adj], lvls.a)
+        } else if(identical(fit$contrasts[[adjVars[adj]]], "contr.poly"))
+        {
+          paste0(adjVars2[adj], c(".L", ".Q", ".C", paste0("^", seq_along(lvls.a))))
+        } else paste0(adjVars2[adj], seq_along(lvls.a))
+
+        aterm <- coeffTidy$term[coeffTidy$term %in% findlvls.a]
         alabel <- sub(adjVars2[adj], paste0(alabel, " "), aterm, fixed = TRUE)
       } else aterm <- adjVars2[adj]
 
@@ -262,7 +289,8 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
                                  Nmiss2 = sum(is.na(currCol)),
                                  endpoint=yTerm,
                                  endlabel=yLabel,
-                                 x=xname)
+                                 x=xname,
+                                 contrasts=list(fit$contrasts))
 
   } # end for: eff
 
@@ -272,9 +300,6 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   return(msList)
 }
 
-## Needed for being able to use "survival" with or without quotes,
-##   keep as private function
-survival <- function() list(family="survival")
 
 #' @rdname modelsum
 #' @export

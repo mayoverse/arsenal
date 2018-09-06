@@ -11,9 +11,11 @@
   text = FALSE, title = NULL, term.name = "")
 
 \method{as.data.frame}{summary.modelsum}(x, ..., text = x$text,
-  term.name = "")
+  term.name = x$term.name)
 
-\method{print}{summary.modelsum}(x, ..., format = "markdown")
+\method{print}{summary.modelsum}(x, ..., format = if (!is.null(x$text) &&
+  x$text \%in\% c("html", "latex")) x$text else "markdown", escape = x$text
+  \%nin\% c("html", "latex"))
 }
 \arguments{
 \item{object}{A \code{\link{modelsum}} object.}
@@ -29,17 +31,22 @@ string value for the named element of the list, e.g.,
 \code{list(age = "Age(years)")}.}
 
 \item{text}{An argument denoting how to print the summary to the screen.
-Default is \code{FALSE} (show markdown output). \code{TRUE} and \code{NULL} output a text-only version.
-\code{"html"} is like \code{FALSE}, except that it uses the HTML tag \code{<strong>} instead of the markdown formatting.}
+Default is \code{FALSE} (show markdown output). \code{TRUE} and \code{NULL} output a text-only version, with
+the latter avoiding all formatting.
+\code{"html"} uses the HTML tag \code{<strong>} instead of the markdown formatting, and \code{"latex"} uses
+the LaTeX command \code{\\textbf}.}
 
-\item{title}{Title for the table, defaults to \code{NULL} (no title)}
+\item{title}{Title for the table, defaulting to \code{NULL} (no title)}
 
 \item{term.name}{A character string denoting the column name for the first column.}
 
 \item{x}{An object of class \code{"summary.modelsum"}.}
 
 \item{format}{Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
-To use the default in \code{kable}, pass \code{NULL}.}
+To use the default in \code{kable}, pass \code{NULL}. If \code{x$text} specifies LaTeX or HTML formatting,
+that format is used in the table.}
+
+\item{escape}{Passed to \code{\link[knitr]{kable}}: should special characters be escaped when printed?}
 }
 \value{
 An object of class \code{"summary.modelsum"}

@@ -151,6 +151,71 @@ test_that("'weights=' works", {
 })
 
 
+test_that("ordinal works", {
+  if(require(MASS))
+  {
+    data(housing)
+    expect_identical(
+      capture.kable(summary(modelsum(Sat ~ Infl, adjust = ~ Type + Cont, weights = Freq, data = housing, family = "ordinal"))),
+      c("|                   |OR    |CI.lower.OR |CI.upper.OR |p.value |",
+        "|:------------------|:-----|:-----------|:-----------|:-------|",
+        "|Low&#124;Medium    |NA    |NA          |NA          |< 0.001 |",
+        "|Medium&#124;High   |NA    |NA          |NA          |< 0.001 |",
+        "|**Cont High**      |1.434 |1.189       |1.730       |< 0.001 |",
+        "|**Infl High**      |3.628 |2.832       |4.663       |< 0.001 |",
+        "|**Infl Medium**    |1.762 |1.436       |2.164       |< 0.001 |",
+        "|**Type Apartment** |0.564 |0.446       |0.712       |< 0.001 |",
+        "|**Type Atrium**    |0.693 |0.511       |0.940       |0.018   |",
+        "|**Type Terrace**   |0.336 |0.249       |0.451       |< 0.001 |"
+      )
+    )
+    expect_identical(
+      capture.kable(summary(modelsum(Sat ~ Infl, adjust = ~ Type + Cont, weights = Freq, data = housing, family = "ordinal",
+                                     ordinal.stats = c("estimate", "statistic", "p.value")), text = TRUE)),
+      c("|                 |estimate |statistic |p.value |",
+        "|:----------------|:--------|:---------|:-------|",
+        "|Low&#124;Medium  |-0.496   |-3.974    |< 0.001 |",
+        "|Medium&#124;High |0.691    |5.505     |< 0.001 |",
+        "|Cont High        |0.360    |3.771     |< 0.001 |",
+        "|Infl High        |1.289    |10.136    |< 0.001 |",
+        "|Infl Medium      |0.566    |5.412     |< 0.001 |",
+        "|Type Apartment   |-0.572   |-4.800    |< 0.001 |",
+        "|Type Atrium      |-0.366   |-2.360    |0.018   |",
+        "|Type Terrace     |-1.091   |-7.202    |< 0.001 |"
+      )
+    )
+    expect_identical(
+      capture.kable(summary(modelsum(Sat ~ Infl, adjust = ~ Type + Cont, weights = Freq, data = housing, family = "ordinal",
+                                     show.adjust = FALSE, show.intercept = FALSE), text = TRUE)),
+      c("|            |OR    |CI.lower.OR |CI.upper.OR |p.value |",
+        "|:-----------|:-----|:-----------|:-----------|:-------|",
+        "|Infl High   |3.628 |2.832       |4.663       |< 0.001 |",
+        "|Infl Medium |1.762 |1.436       |2.164       |< 0.001 |"
+      )
+    )
+  } else skip("'MASS' is not available")
+})
+
+
+test_that("negbin works", {
+  if(require(MASS))
+  {
+    data(mockstudy)
+    expect_identical(
+      capture.kable(summary(modelsum(fu.time ~ sex, adjust = ~ age + arm, data = mockstudy, family = negbin),
+                            negbin.stats = c("estimate", "p.value", "theta"), text = TRUE, digits = 5)),
+      c("|                        |estimate |p.value |theta   |",
+        "|:-----------------------|:--------|:-------|:-------|",
+        "|(Intercept)             |6.52819  |< 0.001 |1.84776 |",
+        "|sex Female              |-0.02370 |0.545   |        |",
+        "|Age in Years            |-0.00342 |0.039   |        |",
+        "|Treatment Arm F: FOLFOX |0.28161  |< 0.001 |        |",
+        "|Treatment Arm G: IROX   |0.09396  |0.071   |        |"
+      )
+    )
+  } else skip("'MASS' is not available")
+})
+
 ###########################################################################################################
 #### Reported bugs for modelsum
 ###########################################################################################################
@@ -413,3 +478,43 @@ test_that("06/19/2018: term.name (#109)", {
   )
 })
 
+#################################################################################################################################
+
+test_that("08/24/2018: latex (#123)", {
+  expect_identical(
+    capture.output(summary(modelsum(Age ~ Sex, adjust = ~ trt, data = mdat), text = "latex")),
+    c(""                                                         ,
+      "\\begin{tabular}{l|l|l|l|l}"                              ,
+      "\\hline"                                                  ,
+      " & estimate & std.error & p.value & adj.r.squared\\\\"    ,
+      "\\hline"                                                  ,
+      "(Intercept) & 40.632 & 1.024 & < 0.001 & -0.005\\\\"      ,
+      "\\hline"                                                  ,
+      "\\textbf{Sex Male} & -0.221 & 1.112 & 0.843 & \\\\"       ,
+      "\\hline"                                                  ,
+      "\\textbf{Treatment Arm B} & -1.373 & 1.135 & 0.229 & \\\\",
+      "\\hline"                                                  ,
+      "\\end{tabular}"                                           ,
+      ""
+    )
+  )
+})
+
+#################################################################################################################################
+
+test_that("09/05/2018: correctly label contrasts for ordinal variables (#133)", {
+  mdat$Group.ord <- ordered(mdat$Group.fac, levels = c("Low", "Med", "High"))
+  expect_identical(
+    capture.kable(summary(modelsum(Age ~ Phase, adjust = ~ Group.ord + trt + ht_in, data = mdat), text = TRUE)),
+    c("|                 |estimate |std.error |p.value |adj.r.squared |",
+      "|:----------------|:--------|:---------|:-------|:-------------|",
+      "|(Intercept)      |47.686   |7.301     |< 0.001 |-0.019        |",
+      "|Phase .L         |-0.679   |1.152     |0.557   |              |",
+      "|Phase .Q         |-1.044   |0.960     |0.280   |              |",
+      "|Group.ord .L     |0.243    |0.977     |0.804   |              |",
+      "|Group.ord .Q     |0.410    |1.069     |0.702   |              |",
+      "|Treatment Arm B  |-1.460   |1.159     |0.211   |              |",
+      "|Height in Inches |-0.112   |0.110     |0.314   |              |"
+    )
+  )
+})

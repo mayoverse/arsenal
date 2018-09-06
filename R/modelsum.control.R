@@ -13,7 +13,7 @@
 #' @param show.adjust Logical, denoting whether to show adjustment terms.
 #' @param show.intercept Logical, denoting whether to show intercept terms.
 #' @param conf.level Numeric, giving the confidence level.
-#' @param binomial.stats,survival.stats,gaussian.stats,poisson.stats
+#' @param ordinal.stats,binomial.stats,survival.stats,gaussian.stats,poisson.stats,negbin.stats
 #'   Character vectors denoting which stats to show for the various model types.
 #' @param stat.labels A named list of labels for all the stats used above.
 #' @param ... Other arguments (not in use at this time).
@@ -25,14 +25,17 @@
 #'   is less than the resulting number of places, it will be formatted to show so.
 #' @seealso \code{\link{modelsum}}, \code{\link{summary.modelsum}}
 #' @export
-modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, format.p = TRUE,
-            show.adjust = TRUE, show.intercept = TRUE, conf.level = 0.95,
-            binomial.stats=c("OR","CI.lower.OR","CI.upper.OR","p.value", "concordance","Nmiss"),
-            gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
-            poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","concordance","Nmiss"),
-            survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),
-            stat.labels = list(), ...)
-{
+modelsum.control <- function(
+  digits = 3L, digits.ratio = 3L, digits.p = 3L, format.p = TRUE,
+  show.adjust = TRUE, show.intercept = TRUE, conf.level = 0.95,
+  ordinal.stats=c("OR","CI.lower.OR","CI.upper.OR", "p.value","Nmiss"),
+  binomial.stats=c("OR","CI.lower.OR","CI.upper.OR","p.value", "concordance","Nmiss"),
+  gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
+  poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","Nmiss"),
+  negbin.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","Nmiss"),
+  survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),
+  stat.labels = list(), ...
+) {
 
   if("nsmall" %in% names(list(...))) .Deprecated(msg = "Using 'nsmall = ' is deprecated. Use 'digits = ' instead.")
   if("nsmall.ratio" %in% names(list(...))) .Deprecated(msg = "Using 'nsmall.ratio = ' is deprecated. Use 'digits.ratio = ' instead.")
@@ -60,6 +63,27 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
     conf.level <- 0.95
   }
 
+  ##########################
+  ## Ordinal stats:
+  ##########################
+
+  ordinal.stats.valid <- c(
+    "Nmiss", "OR", "CI.lower.OR", "CI.upper.OR", "p.value", # default
+    "estimate", "CI.OR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "N", "Nmiss2", "endpoint", "std.error", "statistic",
+    "logLik", "AIC", "BIC", "edf", "deviance", "df.residual"
+  )
+
+  if(any(ordinal.stats %nin% ordinal.stats.valid)) {
+    stop("Invalid binomial stats: ",
+         paste(ordinal.stats[ordinal.stats %nin% ordinal.stats.valid],collapse=","), "\n")
+  }
+  ## let CI.OR decode to CI.lower.OR and CI.upper.OR
+  if(any(ordinal.stats == "CI.OR")) {
+    ordinal.stats <- unique(c(ordinal.stats[ordinal.stats != "CI.OR"], "CI.lower.OR", "CI.upper.OR"))
+  }
+  if(any(ordinal.stats == "CI.estimate")) {
+    ordinal.stats <- unique(c(ordinal.stats[ordinal.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
+  }
 
   ##########################
   ## Binomial stats:
@@ -74,8 +98,8 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
   )
 
   if(any(binomial.stats %nin% binomial.stats.valid)) {
-    stop(paste0("Invalid binomial stats: ",
-           paste(binomial.stats[binomial.stats %nin% binomial.stats.valid],collapse=","), "\n"))
+    stop("Invalid binomial stats: ",
+         paste(binomial.stats[binomial.stats %nin% binomial.stats.valid],collapse=","), "\n")
   }
   ## let CI.OR decode to CI.lower.OR and CI.upper.OR
   if(any(binomial.stats == "CI.OR")) {
@@ -97,8 +121,8 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
   )
 
   if(any(gaussian.stats %nin% gaussian.stats.valid)) {
-    stop(paste0("Invalid gaussian stats: ",
-           paste(gaussian.stats[gaussian.stats %nin% gaussian.stats.valid],collapse=","), "\n"))
+    stop("Invalid gaussian stats: ",
+         paste(gaussian.stats[gaussian.stats %nin% gaussian.stats.valid],collapse=","), "\n")
   }
   if(any(gaussian.stats == "CI.estimate")) {
     gaussian.stats <- unique(c(gaussian.stats[gaussian.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
@@ -113,22 +137,45 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
   ##Other model fits: AIC,BIC,logLik, dispersion
   ##  dispersion = deviance/df.residual
   poisson.stats.valid <- c(
-    "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "concordance", "Nmiss", # default
+    "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss", # default
     "CI.RR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "CI.RR", "Nmiss2", "std.error", "estimate", "statistic", "endpoint",
     "AIC", "BIC", "logLik", "dispersion", "null.deviance", "deviance", "df.residual", "df.null"
   )
 
   if(any(poisson.stats %nin% poisson.stats.valid)) {
-      stop(paste0("Invalid poisson stats: ",
-           paste(poisson.stats[poisson.stats %nin% poisson.stats.valid],collapse=","), "\n"))
+    stop("Invalid poisson stats: ",
+         paste(poisson.stats[poisson.stats %nin% poisson.stats.valid],collapse=","), "\n")
   }
-   ## let CI.RR decode to CI.lower.RR and CI.upper.RR
+  ## let CI.RR decode to CI.lower.RR and CI.upper.RR
   if(any(poisson.stats == "CI.RR")) {
     poisson.stats <- unique(c(poisson.stats[poisson.stats != "CI.RR"], "CI.lower.RR", "CI.upper.RR"))
   }
   if(any(poisson.stats == "CI.estimate")) {
     poisson.stats <- unique(c(poisson.stats[poisson.stats == "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
+
+  ##########################
+  ## Poisson stats:
+  ##########################
+
+  negbin.stats.valid <- c(
+    "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss", # default
+    "CI.RR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "CI.RR", "Nmiss2", "std.error", "estimate", "statistic", "endpoint",
+    "AIC", "BIC", "logLik", "dispersion", "null.deviance", "deviance", "df.residual", "df.null", "theta", "SE.theta"
+  )
+
+  if(any(negbin.stats %nin% negbin.stats.valid)) {
+    stop("Invalid poisson stats: ",
+         paste(negbin.stats[negbin.stats %nin% negbin.stats.valid],collapse=","), "\n")
+  }
+  ## let CI.RR decode to CI.lower.RR and CI.upper.RR
+  if(any(negbin.stats == "CI.RR")) {
+    negbin.stats <- unique(c(negbin.stats[negbin.stats != "CI.RR"], "CI.lower.RR", "CI.upper.RR"))
+  }
+  if(any(negbin.stats == "CI.estimate")) {
+    negbin.stats <- unique(c(negbin.stats[negbin.stats == "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
+  }
+
   ##########################
   ## Survival stats:
   ##########################
@@ -142,8 +189,8 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
   )
 
   if(any(survival.stats %nin% surv.stats.valid)) {
-    stop(paste0("Invalid survival stats: ",
-           paste(survival.stats[survival.stats %nin% surv.stats.valid], collapse=","), "\n"))
+    stop("Invalid survival stats: ",
+         paste(survival.stats[survival.stats %nin% surv.stats.valid], collapse=","), "\n")
   }
 
   ## let CI.HR decode to CI.lower.HR and CI.upper.HR
@@ -155,6 +202,6 @@ modelsum.control <- function(digits = 3L, digits.ratio = 3L, digits.p = 3L, form
   }
   list(digits=digits, digits.ratio=digits.ratio, digits.p = digits.p, format.p = format.p,
        show.adjust=show.adjust, show.intercept=show.intercept, conf.level=conf.level,
-       binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
-       poisson.stats=poisson.stats, survival.stats=survival.stats, stat.labels = stat.labels)
+       ordinal.stats=ordinal.stats, binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
+       poisson.stats=poisson.stats, negbin.stats = negbin.stats, survival.stats=survival.stats, stat.labels = stat.labels)
 }

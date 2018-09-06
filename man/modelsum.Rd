@@ -17,8 +17,10 @@ modelsum(formula, family = "gaussian", data, adjust = NULL,
 \arguments{
 \item{formula}{an object of class \code{\link{formula}}; a symbolic description of the variables to be modeled.  See "Details" for more information.}
 
-\item{family}{similar mechanism to \code{\link[stats]{glm}}, where the model to be fit is driven by the family, options include: binomial, gaussian, survival,
-Poisson. Family options supported in glm can be in quotes or not, but survival requires quotes.}
+\item{family}{similar mechanism to \code{\link[stats]{glm}}, where the model to be fit is driven by the family.
+Options include: binomial, gaussian, survival, poisson, negbin, and ordinal. These can be passed as a string, as a function,
+or as a list resulting from a call to one of the functions. See \code{\link{modelsum.family}} for details on
+survival and ordinal families.}
 
 \item{data}{an optional data.frame, list or environment (or object coercible by \code{\link[base]{as.data.frame}} to a data frame) containing the
 variables in the model. If not found in \code{data}, the variables are taken from \code{environment(formula)}, typically

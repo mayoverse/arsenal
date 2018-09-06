@@ -6,6 +6,23 @@
 
 * `compare()`: implement `n.diff.obs()`. (#124)
 
+* `tableby()`, `modelsum()`: properly propogated "term.name" to the `as.data.frame()` method. (#127, #128)
+
+* `tableby()`, `modelsum()`: Allow for LaTeX formatting. NOTE: this changes the formatting behavior when specifying
+  `text="html"`! (#123)
+  
+* `modelsum()`: Fix formatting of error about unsupported families.
+
+* `modelsum()`: Add `family="ordinal"` to do ordinal logistic regression using `MASS::polr()`. (#130)
+
+* `modelsum()` now supports *calls* to the family functions, in case a different link function (for example) is required.
+
+* `modelsum()`: removed "concordance" from the list of supported statistics for Poisson regression.
+
+* `modelsum()`: added support for ordinal regressors and adjustment terms (by adding support for their associated contrasts). (#133)
+
+* Updated documentation where appropriate.
+
 # arsenal v1.3.0
 
 **This is a mostly backwards-compatible update.**
