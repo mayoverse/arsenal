@@ -186,15 +186,13 @@ test_that("Paired with missings", {
   )
 })
 
-test_that("09/07/2018: specifying different digits (#107)", {
+test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134)", {
   expect_identical(
-    capture.kable(summary(paired(tp ~ mcnemar(Cat, digits.count = 1, digits.pct = 0) + paired.t(Num, digits = 1),
+    capture.kable(summary(paired(tp ~ mcnemar(Cat, digits.count = 1, digits.pct = 0, cat.simplify = TRUE) + paired.t(Num, digits = 1),
                                  data = dat, id = id), text = TRUE)),
     c("|             |  1 (N=4)  |  2 (N=4)  | Difference (N=4) | p value|",
       "|:------------|:---------:|:---------:|:----------------:|-------:|",
-      "|Cat          |           |           |                  |   1.000|",
-      "|-  A         | 2.0 (50%) | 2.0 (50%) |    1.0 (50%)     |        |",
-      "|-  B         | 2.0 (50%) | 2.0 (50%) |    1.0 (50%)     |        |",
+      "|Cat          | 2.0 (50%) | 2.0 (50%) |    1.0 (50%)     |   1.000|",
       "|Num          |           |           |                  |   0.391|",
       "|-  Mean (SD) | 2.8 (1.3) | 3.2 (1.0) |    0.5 (1.0)     |        |",
       "|-  Range     | 1.0 - 4.0 | 2.0 - 4.0 |    -1.0 - 1.0    |        |"

@@ -864,18 +864,16 @@ test_that("09/07/2018: using countpct with numerics (#137)", {
   )
 })
 
-test_that("09/07/2018: specifying different digits (#107)", {
+test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134)", {
   expect_identical(
-    capture.kable(summary(tableby(arm ~ I(age/10) + chisq(sex, digits.count = 1, digits.pct = 0) + race + anova(ast, digits = 0),
-                                  data = mockstudy), text = TRUE)),
+    capture.kable(summary(tableby(arm ~ I(age/10) + chisq(sex, digits.count = 1, digits.pct = 0, cat.simplify = TRUE) +
+                                    race + anova(ast, digits = 0), data = mockstudy), text = TRUE)),
     c("|                    | A: IFL (N=428) | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499) | p value|",
       "|:-------------------|:--------------:|:-----------------:|:---------------:|:--------------:|-------:|",
       "|Age in Years        |                |                   |                 |                |   0.614|",
       "|-  Mean (SD)        | 5.967 (1.136)  |   6.030 (1.163)   |  5.976 (1.150)  | 5.999 (1.152)  |        |",
       "|-  Range            | 2.700 - 8.800  |   1.900 - 8.800   |  2.600 - 8.500  | 1.900 - 8.800  |        |",
-      "|sex                 |                |                   |                 |                |   0.190|",
-      "|-  Male             |  277.0 (65%)   |    411.0 (59%)    |   228.0 (60%)   |  916.0 (61%)   |        |",
-      "|-  Female           |  151.0 (35%)   |    280.0 (41%)    |   152.0 (40%)   |  583.0 (39%)   |        |",
+      "|sex                 |  151.0 (35%)   |    280.0 (41%)    |   152.0 (40%)   |  583.0 (39%)   |   0.190|",
       "|Race                |                |                   |                 |                |   0.367|",
       "|-  N-Miss           |       0        |         6         |        1        |       7        |        |",
       "|-  African-Am       |   39 (9.1%)    |     49 (7.2%)     |    27 (7.1%)    |   115 (7.7%)   |        |",

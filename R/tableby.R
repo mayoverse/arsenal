@@ -148,11 +148,12 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   ## Store this as attribute in the modeldf column, along with the actual name of the variable,
   ## rather than anova(age) showing up in the result (though anova(age) will be the column name in modeldf
   ## but we pull these attributes off later.
-  tmp.fun <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL)
+  tmp.fun <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL, cat.simplify = NULL)
   {
     attr(x, "name") <- deparse(substitute(x))
     attr(x, "stats") <- list(...)
-    attr(x, "digits.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct)
+    attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
+                                    cat.simplify = cat.simplify)
     x
   }
 
@@ -231,7 +232,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     if(is.null(labelEff))  labelEff <- nameEff
     statList <- list()
     bystatlist <- list()
-    digits.list <- attr(currcol, "digits.list")
+    control.list <- attr(currcol, "control.list")
 
     ############################################################
 
@@ -325,7 +326,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     } else NULL
 
     xList[[nameEff]] <- list(stats=statList, test=testout, variable=nameEff, label=labelEff, term=names(modeldf)[eff],
-                             type=vartype, digits.list = digits.list)
+                             type=vartype, control.list = control.list)
   }
 
   if(length(xList) == 0) stop("No x-variables successfully computed.")

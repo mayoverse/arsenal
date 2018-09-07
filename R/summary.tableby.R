@@ -73,7 +73,7 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
   df <- x$object
 
   idx <- names(df)[names(df) %nin% c("variable", "term", "label", "variable.type", "test", "p.value")]
-  dgt <- attr(x$object, "digits.list")
+  dgt <- attr(x$object, "control.list")
 
   f <- function(j, whch) if(is.null(dgt[[j]]) || is.null(dgt[[j]][[whch]])) x$control[[whch]] else dgt[[j]][[whch]]
 

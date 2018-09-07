@@ -59,11 +59,12 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
     temp.call$formula <- stats::terms(formula, special, data = keep.labels(data))
   }
   tabenv <- new.env(parent = environment(formula))
-  tmp.fun <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL)
+  tmp.fun <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL, cat.simplify = NULL)
   {
     attr(x, "name") <- deparse(substitute(x))
     attr(x, "stats") <- list(...)
-    attr(x, "digits.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct)
+    attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
+                                    cat.simplify = cat.simplify)
     x
   }
   for(sp in special)
@@ -131,7 +132,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
     if(is.null(labelEff))  labelEff <- nameEff
     statList <- list()
     bystatlist <- list()
-    digits.list <- attr(currcol, "digits.list")
+    control.list <- attr(currcol, "control.list")
 
     ############################################################
     if(is.ordered(currcol) || is.logical(currcol) || is.factor(currcol) || is.character(currcol)) {
@@ -248,7 +249,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
     } else NULL
 
     xList[[nameEff]] <- list(stats=statList, test=testout, variable=nameEff, label=labelEff, term=names(modeldf)[eff],
-                             type=vartype, digits.list = digits.list)
+                             type=vartype, control.list = control.list)
   }
 
 
