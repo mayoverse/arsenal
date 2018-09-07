@@ -7,8 +7,8 @@ get_tb_part <- function(tbList, byLvls, statLabs)
   }
 
   out <- data.frame(
-    variable = tbList$name,
-    term = c(tbList$name, unlist(Map(f, tbList$stats, names(tbList$stats)), use.names = FALSE)),
+    variable = tbList$variable,
+    term = c(tbList$term, unlist(Map(f, tbList$stats, names(tbList$stats)), use.names = FALSE)),
     label = c(tbList$label, unlist(Map(f, tbList$stats, names(tbList$stats), lab = TRUE), use.names = FALSE)),
     variable.type = tbList$type
   )
@@ -61,5 +61,5 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL)
   idx <- vapply(out, is.factor, NA)
   if(any(idx)) out[idx] <- lapply(out[idx], as.character) ## this is for R 3.2.3, whose rbind() doesn't have 'stringsAsFactors='
 
-  set_attr(out, "control", control)
+  set_attr(set_attr(out, "control", control), "digits.list", lapply(x$x, function(x) x$digits.list))
 }

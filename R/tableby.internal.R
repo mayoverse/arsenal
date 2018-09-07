@@ -265,8 +265,8 @@ tests.tableby <- function(x) {
   if(is.list(value)) value <- unlist(value)
   if(is.null(value))
   {
-    x$y[[1]]$label <- x$y[[1]]$name
-    for(k in seq_along(x$x)) x$x[[k]]$label <- x$x[[k]]$name
+    x$y[[1]]$label <- x$y[[1]]$term
+    for(k in seq_along(x$x)) x$x[[k]]$label <- x$x[[k]]$term
   } else if(!is.null(names(value))) {
     vNames <- names(value)
     objNames <- c(names(x$y), names(x$x))

@@ -148,7 +148,14 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   ## Store this as attribute in the modeldf column, along with the actual name of the variable,
   ## rather than anova(age) showing up in the result (though anova(age) will be the column name in modeldf
   ## but we pull these attributes off later.
-  tmp.fun <- function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...))
+  tmp.fun <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL)
+  {
+    attr(x, "name") <- deparse(substitute(x))
+    attr(x, "stats") <- list(...)
+    attr(x, "digits.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct)
+    x
+  }
+
   for(sp in special)
   {
     if(!is.null(attr(temp.call$formula, "specials")[[sp]])) assign(sp, tmp.fun, envir = tabenv)
@@ -224,6 +231,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     if(is.null(labelEff))  labelEff <- nameEff
     statList <- list()
     bystatlist <- list()
+    digits.list <- attr(currcol, "digits.list")
 
     ############################################################
 
@@ -316,7 +324,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
       eval(call(currtest, currcol, by.col, chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B))
     } else NULL
 
-    xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type=vartype)
+    xList[[nameEff]] <- list(stats=statList, test=testout, variable=nameEff, label=labelEff, term=names(modeldf)[eff],
+                             type=vartype, digits.list = digits.list)
   }
 
   if(length(xList) == 0) stop("No x-variables successfully computed.")
@@ -326,7 +335,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
   yList <- list()
   yList[[names(modeldf)[1]]] <- list(stats=c(unlist(table(factor(by.col, levels=by.levels), exclude=NA)), Total=sum(!is.na(by.col))),
-                                     label=labelBy, name=names(modeldf)[1])
+                                     label=labelBy, term=names(modeldf)[1])
 
   structure(list(y = yList, x = xList, control = control, Call = match.call(), weights=userWeights), class = "tableby")
 }

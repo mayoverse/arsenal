@@ -72,10 +72,22 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
 {
   df <- x$object
 
-  idx <- colnames(df) %nin% c("variable", "term", "label", "variable.type", "test", "p.value")
-  format_all <- function(x, ...) vapply(x, format, NA_character_, ...)
-  df[idx] <- lapply(df[idx], format_all, digits = x$control$digits, format = "f", # the format="f" is not used for tbstat objects
-                    digits.count = x$control$digits.count, digits.pct = x$control$digits.pct)
+  idx <- names(df)[names(df) %nin% c("variable", "term", "label", "variable.type", "test", "p.value")]
+  dgt <- attr(x$object, "digits.list")
+
+  f <- function(j, whch) if(is.null(dgt[[j]]) || is.null(dgt[[j]][[whch]])) x$control[[whch]] else dgt[[j]][[whch]]
+
+  digits <- vapply(df$variable, function(i) f(i, "digits"), numeric(1))
+  digits.count <- vapply(df$variable, function(i) f(i, "digits.count"), numeric(1))
+  digits.pct <- vapply(df$variable, function(i) f(i, "digits.pct"), numeric(1))
+
+  for(i in idx)
+  {
+    df[[i]] <- unlist(Map(format, df[[i]], digits = digits,
+                          format = "f", # the format="f" is not used for tbstat objects
+                          digits.count = digits.count, digits.pct = digits.pct))
+  }
+
   df[["p.value"]] <- formatC(df[["p.value"]], digits = x$control$digits.p, format = if(x$control$format.p) "f" else "g")
 
   if(x$control$format.p)
