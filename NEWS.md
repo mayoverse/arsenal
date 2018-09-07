@@ -21,6 +21,18 @@
 
 * `modelsum()`: added support for ordinal regressors and adjustment terms (by adding support for their associated contrasts). (#133)
 
+* `tableby()`: fixed an error that sometimes occured when using categorical statistics on numeric variables. (#137)
+
+* `tableby()`: In-formula functions now allow the specification of `digits=` (etc.) and `cat.simplify=` for a single variable.
+  (#107, #134)  NB: this changed the structure of the tableby object:
+    
+    - There is no longer a "name" element; instead it's now called "term"
+    
+    - An element for "variable" was added containing the variable name. This also subtly changed the output
+      of `as.data.frame.tableby()` in the "variable" column.
+      
+    - A "control.list" element was added to record specified options.
+
 * Updated documentation where appropriate.
 
 # arsenal v1.3.0
