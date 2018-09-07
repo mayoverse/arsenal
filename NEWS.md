@@ -23,16 +23,23 @@
 
 * `tableby()`: fixed an error that sometimes occured when using categorical statistics on numeric variables. (#137)
 
-* `tableby()`: In-formula functions now allow the specification of `digits=` (etc.) and `cat.simplify=` for a single variable.
-  (#107, #134)  NB: this changed the structure of the tableby object:
-    
-    - There is no longer a "name" element; instead it's now called "term"
-    
-    - An element for "variable" was added containing the variable name. This also subtly changed the output
-      of `as.data.frame.tableby()` in the "variable" column.
-      
-    - A "control.list" element was added to record specified options.
+* `tableby.control()`: gained an argument to simplify one-line numeric output. (#139)
 
+* `tableby()`: In-formula functions now allow the specification of `digits=` (etc.), `numeric.simplify=`, and `cat.simplify=`
+  for a single variable. (#107, #134, #139)  NB: this has the following breaking changes:
+    
+    - There is no longer a "name" element in the "tableby" object's x-specifications; instead it's now called "term"
+    
+    - An element for "variable", containing the variable name, was added to the "tableby" object's x-specifications.
+    
+    - An element for "control.list", recording format specifications, was added to the "tableby" object's x-specifications.
+    
+    - The output of `as.data.frame.tableby()` now reports only the variable name in the "variable" column when using
+      internal statistical functions (like `anova()` and `chisq()`). It used to include the function call as well.
+      
+    - The output of `as.data.frame.tableby()` no longer includes category levels in the "term" column;
+      instead, it contains the statistical function used (like `countpct()` and `count()`).
+      
 * Updated documentation where appropriate.
 
 # arsenal v1.3.0
