@@ -260,7 +260,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
     } else if(is.Date(currcol)) {
       ######## Date variable ###############
-      xlevels <- NULL
+      xlevels <- sort(unique(currcol))
 
       ## get stats funs from either formula  or control
       currstats <- control$date.stats
@@ -277,10 +277,10 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
     } else if(is.numeric(currcol) || inherits(currcol, "difftime")) {
       ######## Continuous variable (numeric) ###############
-      xlevels <- NULL
 
       ## for difftime, convert to numeric
       if(inherits(currcol, "difftime")) currcol <- as.numeric(currcol)
+      xlevels <- sort(unique(currcol))
 
       ## if no missings, and control says not to show missings,
       ## remove Nmiss stat fun
