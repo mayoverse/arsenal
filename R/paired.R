@@ -59,7 +59,13 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
     temp.call$formula <- stats::terms(formula, special, data = keep.labels(data))
   }
   tabenv <- new.env(parent = environment(formula))
-  tmp.fun <- function(x, ...) set_attr(set_attr(x, "name", deparse(substitute(x))), "stats", list(...))
+  tmp.fun <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL)
+  {
+    attr(x, "name") <- deparse(substitute(x))
+    attr(x, "stats") <- list(...)
+    attr(x, "digits.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct)
+    x
+  }
   for(sp in special)
   {
     if(!is.null(attr(temp.call$formula, "specials")[[sp]])) assign(sp, tmp.fun, envir = tabenv)
@@ -125,6 +131,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
     if(is.null(labelEff))  labelEff <- nameEff
     statList <- list()
     bystatlist <- list()
+    digits.list <- attr(currcol, "digits.list")
 
     ############################################################
     if(is.ordered(currcol) || is.logical(currcol) || is.factor(currcol) || is.character(currcol)) {
@@ -240,7 +247,8 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
                 signed.rank.exact = control$signed.rank.exact, signed.rank.correct = control$signed.rank.correct))
     } else NULL
 
-    xList[[nameEff]] <- list(stats=statList, test=testout, label=labelEff, name=names(modeldf)[eff], type=vartype)
+    xList[[nameEff]] <- list(stats=statList, test=testout, variable=nameEff, label=labelEff, term=names(modeldf)[eff],
+                             type=vartype, digits.list = digits.list)
   }
 
 
@@ -251,7 +259,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
 
   yList <- list()
   yList[[names(modeldf)[1]]] <- list(stats=c(unlist(table(factor(by.col, levels=by.levels), exclude=NA)), Difference=length(ids.both)),
-                                     label=labelBy, name=names(modeldf)[1])
+                                     label=labelBy, term=names(modeldf)[1])
 
   structure(list(y = yList, x = xList, control = control, Call = match.call(), weights=FALSE), class = c("paired", "tableby"))
 }
