@@ -52,11 +52,11 @@ medianq1q3(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
 iqr(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
-Nmiss(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
+Nmiss(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
-Nmiss2(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
+Nmiss2(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
-N(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
+N(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
 count(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
 

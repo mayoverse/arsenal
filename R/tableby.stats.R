@@ -175,7 +175,7 @@ iqr <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 ## Count of missings: always show missings
 #' @rdname tableby.stats
 #' @export
-Nmiss <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
+Nmiss <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   as.countpct(sum(weights[is.na(x)]))
 }
 
@@ -188,7 +188,7 @@ Nmiss2 <- Nmiss
 ## count of complete samples
 #' @rdname tableby.stats
 #' @export
-N <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
+N <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   as.countpct(sum(weights[!is.na(x)]))
 }
 
