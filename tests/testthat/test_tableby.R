@@ -864,10 +864,11 @@ test_that("09/07/2018: using countpct with numerics (#137)", {
   )
 })
 
-test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134)", {
+test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134) and numeric.simplify (#139)", {
   expect_identical(
-    capture.kable(summary(tableby(arm ~ I(age/10) + chisq(sex, digits.count = 1, digits.pct = 0, cat.simplify = TRUE) +
-                                    race + anova(ast, digits = 0), data = mockstudy), text = TRUE)),
+    capture.kable(summary(tableby(arm ~ I(age/10) + chisq(sex, digits.count=1, digits.pct=0, cat.simplify=TRUE) + race +
+                                    anova(ast, digits=0, digits.count=1) +
+                                    kwt(fu.time, "medianq1q3", digits=0), numeric.simplify=TRUE, data=mockstudy), text=TRUE)),
     c("|                    | A: IFL (N=428) | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499) | p value|",
       "|:-------------------|:--------------:|:-----------------:|:---------------:|:--------------:|-------:|",
       "|Age in Years        |                |                   |                 |                |   0.614|",
@@ -884,9 +885,10 @@ test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134
       "|-  Native-Am/Alaska |    2 (0.5%)    |     1 (0.1%)      |    2 (0.5%)     |    5 (0.3%)    |        |",
       "|-  Other            |    2 (0.5%)    |     4 (0.6%)      |    1 (0.3%)     |    7 (0.5%)    |        |",
       "|ast                 |                |                   |                 |                |   0.507|",
-      "|-  N-Miss           |       69       |        141        |       56        |      266       |        |",
+      "|-  N-Miss           |      69.0      |       141.0       |      56.0       |     266.0      |        |",
       "|-  Mean (SD)        |    37 (28)     |      35 (27)      |     36 (26)     |    36 (27)     |        |",
-      "|-  Range            |    10 - 205    |      7 - 174      |     5 - 176     |    5 - 205     |        |"
+      "|-  Range            |    10 - 205    |      7 - 174      |     5 - 176     |    5 - 205     |        |",
+      "|fu.time             | 446 (256, 724) |  601 (345, 1046)  | 516 (306, 807)  | 542 (310, 878) | < 0.001|"
     )
   )
 })

@@ -3,7 +3,8 @@ get_tb_part <- function(tbList, byLvls, statLabs)
 {
   f <- function(x, nm, lab = FALSE)
   {
-    if(inherits(x[[1]], "tbstat_multirow")) names(x[[1]]) else if(lab && nm %in% names(statLabs)) statLabs[[nm]] else nm
+    if(inherits(x[[1]], "tbstat_multirow")) return(if(lab) names(x[[1]]) else rep(nm, length(x[[1]])))
+    if(lab && nm %in% names(statLabs)) statLabs[[nm]] else nm
   }
 
   out <- data.frame(
@@ -46,20 +47,30 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL)
 
   out <- do.call(rbind, c(lapply(x$x, get_tb_part, byLvls = names(x$y[[1]]$stats), statLabs = control$stats.labels), make.row.names = FALSE))
 
-  f <- function(elt) if(is.null(elt$control.list$cat.simplify)) control$cat.simplify else elt$control.list$cat.simplify
-  simp <- vapply(x$x, f, NA)
+  f <- function(elt, whch = "cat.simplify") if(is.null(elt$control.list[[whch]])) control[[whch]] else elt$control.list[[whch]]
+  simp.cat <- vapply(x$x, f, NA)
+  simp.num <- vapply(x$x, f, NA, "numeric.simplify")
 
-  if(any(simp))
+  if(any(simp.cat) || any(simp.num))
   {
-    cat_simplify <- function(x)
+    simplify <- function(x)
     {
-      if(!simp[x$variable[1]] || nrow(x) != 3 || x$variable.type[1] %nin% c("categorical", "ordinal")) return(x)
-      y <- x[3, , drop = FALSE]
-      y$term[1] <- x$term[1]
-      y$label[1] <- x$label[1]
+      if(simp.cat[x$variable[1]] && nrow(x) == 3 &&
+         all(x$term[2:3] %in% c("count", "countpct", "countcellpct", "countrowpct", "binomCI", "rowbinomCI")))
+      {
+        y <- x[3, , drop = FALSE]
+        y$term[1] <- x$term[1]
+        y$label[1] <- x$label[1]
+      } else if(simp.num[x$variable[1]] && nrow(x) == 2)
+      {
+        y <- x[2, , drop = FALSE]
+        y$term[1] <- x$term[1]
+        y$label[1] <- x$label[1]
+      } else y <- x
       y
     }
-    out <- do.call(rbind, c(by(out, factor(out$variable, levels = unique(out$variable)), cat_simplify, simplify = FALSE), make.row.names = FALSE))
+    out <- do.call(rbind, c(by(out, factor(out$variable, levels = unique(out$variable)),
+                               simplify, simplify = FALSE), make.row.names = FALSE))
   }
   idx <- vapply(out, is.factor, NA)
   if(any(idx)) out[idx] <- lapply(out[idx], as.character) ## this is for R 3.2.3, whose rbind() doesn't have 'stringsAsFactors='

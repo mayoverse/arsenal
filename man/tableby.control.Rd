@@ -5,18 +5,18 @@
 \title{Control settings for \code{tableby} function}
 \usage{
 tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
-  cat.simplify = FALSE, numeric.test = "anova", cat.test = "chisq",
-  ordered.test = "trend", surv.test = "logrank", date.test = "kwt",
-  numeric.stats = c("Nmiss", "meansd", "range"), cat.stats = c("Nmiss",
-  "countpct"), ordered.stats = c("Nmiss", "countpct"),
-  surv.stats = c("Nevents", "medSurv"), date.stats = c("Nmiss", "median",
-  "range"), stats.labels = list(Nmiss = "N-Miss", Nmiss2 = "N-Miss", meansd =
-  "Mean (SD)", medianq1q3 = "Median (Q1, Q3)", q1q3 = "Q1, Q3", range = "Range",
-  countpct = "Count (Pct)", Nevents = "Events", medSurv = "Median Survival",
-  medTime = "Median Follow-Up", rangeTime = "Range of Follow-Up"),
-  digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L,
-  format.p = TRUE, conf.level = 0.95, chisq.correct = FALSE,
-  simulate.p.value = FALSE, B = 2000, ...)
+  cat.simplify = FALSE, numeric.simplify = FALSE, numeric.test = "anova",
+  cat.test = "chisq", ordered.test = "trend", surv.test = "logrank",
+  date.test = "kwt", numeric.stats = c("Nmiss", "meansd", "range"),
+  cat.stats = c("Nmiss", "countpct"), ordered.stats = c("Nmiss",
+  "countpct"), surv.stats = c("Nevents", "medSurv"), date.stats = c("Nmiss",
+  "median", "range"), stats.labels = list(Nmiss = "N-Miss", Nmiss2 = "N-Miss",
+  meansd = "Mean (SD)", medianq1q3 = "Median (Q1, Q3)", q1q3 = "Q1, Q3", range =
+  "Range", countpct = "Count (Pct)", Nevents = "Events", medSurv =
+  "Median Survival", medTime = "Median Follow-Up", rangeTime =
+  "Range of Follow-Up"), digits = 3L, digits.count = 0L, digits.pct = 1L,
+  digits.p = 3L, format.p = TRUE, conf.level = 0.95,
+  chisq.correct = FALSE, simulate.p.value = FALSE, B = 2000, ...)
 }
 \arguments{
 \item{test}{logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.}
@@ -26,10 +26,15 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
 \item{test.pname}{character string denoting the p-value column name in \code{\link{summary.tableby}}.
 Modifiable also with \code{\link{modpval.tableby}}.}
 
-\item{cat.simplify}{logical, tell \code{tableby} whether to include the first level of the categorical variable if binary.
-If \code{TRUE}, only the summary stats of the second level, and total (if \code{TRUE}), are calculated.
-NOTE: this only simplifies to one line if \code{cat.stats} is only one statistic, such as countpct.
-Specifically, if \code{cat.stats} includes Nmiss and there are missings, then Nmiss is included in the stats.}
+\item{cat.simplify}{logical, tell \code{tableby} whether to remove the first level of the categorical variable if binary.
+If \code{TRUE}, only the summary stats of the second level are reported.
+NOTE: this only simplifies to one line if \code{cat.stats} is only one statistic, such as \code{countpct}.
+In particular, if \code{cat.stats} also includes \code{Nmiss} and there are missings, then \code{cat.simplify} is ignored.}
+
+\item{numeric.simplify}{logical, tell \code{tableby} whether to condense numeric output to a single line.
+NOTE: this only simplifies to one line if \code{numeric.stats} is only one statistic, such as \code{meansd}.
+In particular, if \code{numeric.stats} also includes \code{Nmiss} and there are missings, then
+\code{numeric.simplify} is ignored.}
 
 \item{numeric.test}{name of test for numeric RHS variables in \code{tableby}: anova, kwt (Kruskal-Wallis).
 If no LHS variable exists, then a mean is required for a univariate test.}

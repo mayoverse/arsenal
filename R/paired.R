@@ -59,12 +59,12 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
     temp.call$formula <- stats::terms(formula, special, data = keep.labels(data))
   }
   tabenv <- new.env(parent = environment(formula))
-  tmp.fun <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL, cat.simplify = NULL)
+  tmp.fun <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL, cat.simplify = NULL, numeric.simplify = NULL)
   {
     attr(x, "name") <- deparse(substitute(x))
     attr(x, "stats") <- list(...)
     attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
-                                    cat.simplify = cat.simplify)
+                                    cat.simplify = cat.simplify, numeric.simplify = numeric.simplify)
     x
   }
   for(sp in special)
