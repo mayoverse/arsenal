@@ -7,8 +7,8 @@ get_tb_part <- function(tbList, byLvls, statLabs)
   }
 
   out <- data.frame(
-    variable = tbList$name,
-    term = c(tbList$name, unlist(Map(f, tbList$stats, names(tbList$stats)), use.names = FALSE)),
+    variable = tbList$variable,
+    term = c(tbList$term, unlist(Map(f, tbList$stats, names(tbList$stats)), use.names = FALSE)),
     label = c(tbList$label, unlist(Map(f, tbList$stats, names(tbList$stats), lab = TRUE), use.names = FALSE)),
     variable.type = tbList$type
   )
@@ -46,11 +46,14 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL)
 
   out <- do.call(rbind, c(lapply(x$x, get_tb_part, byLvls = names(x$y[[1]]$stats), statLabs = control$stats.labels), make.row.names = FALSE))
 
-  if(control$cat.simplify)
+  f <- function(elt) if(is.null(elt$control.list$cat.simplify)) control$cat.simplify else elt$control.list$cat.simplify
+  simp <- vapply(x$x, f, NA)
+
+  if(any(simp))
   {
     cat_simplify <- function(x)
     {
-      if(nrow(x) != 3 || x$variable.type[1] %nin% c("categorical", "ordinal")) return(x)
+      if(!simp[x$variable[1]] || nrow(x) != 3 || x$variable.type[1] %nin% c("categorical", "ordinal")) return(x)
       y <- x[3, , drop = FALSE]
       y$term[1] <- x$term[1]
       y$label[1] <- x$label[1]
@@ -61,5 +64,5 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL)
   idx <- vapply(out, is.factor, NA)
   if(any(idx)) out[idx] <- lapply(out[idx], as.character) ## this is for R 3.2.3, whose rbind() doesn't have 'stringsAsFactors='
 
-  set_attr(out, "control", control)
+  set_attr(set_attr(out, "control", control), "control.list", lapply(x$x, function(x) x$control.list))
 }
