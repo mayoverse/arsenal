@@ -57,7 +57,9 @@ tmpdir <- tempdir()
 
 ## `tableby`
 
-For `tableby` objects, the output function in `write2()` is `summary()`. For available arguments, see the help pages for `summary.tableby()`.
+For `tableby` objects, the output function in `write2()` is `summary()`.
+For `summary.tableby` objects, the output function is `print()`.
+For available arguments, see the help pages for `summary.tableby()`.
 Don't use the option `text = TRUE` with the `write2` functions.
 
 ```{r}
@@ -74,7 +76,9 @@ write2html(
 
 ## `modelsum`
 
-For `modelsum` objects, the output function in `write2()` is `summary()`. For available arguments, see the help pages for `summary.modelsum()`.
+For `modelsum` objects, the output function in `write2()` is `summary()`.
+For `summary.modelsum` objects, the output function is `print()`.
+For available arguments, see the help pages for `summary.modelsum()`.
 Don't use the option `text = TRUE` with the `write2` functions.
 
 ```{r}
@@ -90,7 +94,9 @@ write2pdf(
 
 ## `freqlist`
 
-For `freqlist` objects, the output function in `write2()` is `summary()`. For available arguments, see the help pages for `summary.freqlist()`.
+For `freqlist` objects, the output function in `write2()` is `summary()`.
+For `summary.freqlist` objects, the output function is `print()`.
+For available arguments, see the help pages for `summary.freqlist()`.
 
 ```{r}
 mockstudy[, c("arm", "sex", "mdquality.s")] %>% 

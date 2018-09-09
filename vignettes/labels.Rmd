@@ -75,7 +75,8 @@ mockstudy %>%
 ## Add labels to a `data.frame`
 
 `tableby()` and `modelsum()` also allow you to have label attributes on the data. Note
-that by default these attributes get dropped upon subsetting, hence the call to `keep.labels()`.
+that by default these attributes usually get dropped upon subsetting, but `tableby()` and
+`modelsum()` use the `keep.labels()` function to retain them.
 
 ```{r}
 mockstudy.lab <- keep.labels(mockstudy)

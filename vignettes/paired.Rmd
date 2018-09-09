@@ -82,5 +82,23 @@ The following tests are accepted:
 * `mcnemar`: McNemar's test.
 
 * `signed.rank`: the signed-rank test.
-  
+
 * `sign.test`: the sign test.
+
+## `paired.control` settings
+
+A quick way to see what arguments are possible to utilize in a function is to use the `args()` command. Settings involving the number of digits can be set in `paired.control` or in `summary.tableby`.
+
+```{r}
+args(paired.control)
+```
+
+## `summary.tableby` settings
+
+Since the "paired" object inherits "tableby", the `summary.tableby` function is what's actually used
+to format and print the table.
+
+```{r}
+args(arsenal:::summary.tableby)
+```
+

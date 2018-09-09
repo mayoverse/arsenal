@@ -546,6 +546,15 @@ Within tableby.control function there are 4 options for controlling the number o
 summary(tableby(arm ~ sex + age + fu.time, data=mockstudy), digits=4, digits.p=2, digits.pct=1)
 ```
 
+With the exception of `digits.p`, all of these can be specified on a per-variable basis
+using the in-formula functions that specify which tests are run:
+
+```{r results='asis'}
+summary(tableby(arm ~ chisq(sex, digits.pct=1) + anova(age, digits=4) +
+                  anova(fu.time, digits = 1), data=mockstudy))
+```
+
+
 ## 15. Create a user-defined summary statistic
 
 For purposes of this example, the code below creates a trimmed mean function (trims 10%)
@@ -620,16 +629,35 @@ tab2 <- modpval.tableby(tab1, mypval, use.pname=TRUE)
 summary(tab2, title='Case Weights used, p-values added') #, pfootnote=TRUE)
 ```
 
-## 18. For two-level categorical variables, only display one level.
+## 18. For two-level categorical variables or one-line numeric variables, simplify the output.
 
-If the `cat.simplify` option is set to TRUE then only the second level of the group.  In the example below
-sex has the levels and "Female" is the second level, hence only the %female is shown in the table.  Similarly, "mdquality.s" 
-was turned to a factor and "1" is the second level, hence 
+If the `cat.simplify` option is set to `TRUE`, then only the second level of two-level
+categorical varialbes is shown.  In the example below, `sex` has two levels,
+and "Female" is the second level, hence only the counts and percents for Female are shown.
+Similarly, "mdquality.s" was turned to a factor, and "1" is the second level, but since
+there are missings, the table ignores `cat.simplify` and displays all levels (since the
+output can no longer be displayed on one line).
 
 ```{r, results='asis'}
-levels(mockstudy$sex)
 table2 <- tableby(arm~sex + factor(mdquality.s), data=mockstudy, cat.simplify=TRUE)
 summary(table2, labelTranslations=c(sex="Female", "factor(mdquality.s)"="MD Quality"))
+```
+
+Similarly, if `numeric.simplify` is set to `TRUE`, then any numerics which only have one
+row of summary statistics are simplified into a single row. Note again that `ast` has
+missing values and so is not simplified to a single row.
+
+```{r results='asis'}
+summary(tableby(arm ~ age + ast, data = mockstudy,
+                numeric.simplify=TRUE, numeric.stats=c("Nmiss", "meansd")))
+```
+
+The in-formula functions to change which tests are run can also be used to specify these
+options for each variable at a time.
+
+```{r}
+summary(tableby(arm ~ anova(age, "meansd", numeric.simplify=TRUE) +
+                  chisq(sex, cat.simplify=TRUE), data = mockstudy))
 ```
 
 ## 19. Use `tableby` within an Sweave document
