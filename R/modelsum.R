@@ -154,7 +154,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       coeffTidy$p.value <- 2*stats::pnorm(abs(coeffTidy$statistic), lower.tail = FALSE)
       coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
       # sort so that zeta comes first, but hold all else fixed
-      coeffTidy <- coeffTidy[order(coeffTidy$coefficient_type == "coefficient", 1:nrow(coeffTidy)), ]
+      coeffTidy <- coeffTidy[order(coeffTidy$coefficient_type == "coefficient", seq_len(nrow(coeffTidy))), ]
       modelGlance <- broom::glance(fit)
 
     } else if (family == "gaussian") {

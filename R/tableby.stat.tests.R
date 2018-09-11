@@ -61,6 +61,6 @@ logrank <- function(x, x.by, ...) {
   }
   out <- survival::survdiff(x ~ x.by)
   out$p.value <- 1-stats::pchisq(out$chisq, df=length(unique(x.by))-1)
-  out$method="survdiff logrank"
+  out$method <- "survdiff logrank"
   out
 }

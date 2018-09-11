@@ -48,7 +48,7 @@ summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, d
     output <- tab
     num <- max(stringr::str_count(tab, ","))
 
-    for(col in 1:ncol(tab))
+    for(col in seq_len(ncol(tab)))
     {
       tmp <- apply(tab[, 1:col, drop = FALSE], 1, paste, collapse = paste0(rep(",", num + 1), collapse = "")) # in R >= 3.3.0, we could use strrep instead
       output[duplicated(tmp), col] <- ""

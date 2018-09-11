@@ -113,9 +113,8 @@ lm.beta  <- function (MOD) {
 labels.modelsum <- function(object, ...) {
   ##  get the formal labels from a tableby object's data variables
   ## y and x labels
-  allLabels <- c(object$fits[[1]]$glance$endlabel, unlist(sapply(object$fits, function(obj) obj$label)))
-  ##, sapply(object$x, function(obj) obj$label))
-  names(allLabels) <- c(object$fits[[1]]$glance$endpoint, unlist(sapply(object$fits, function(obj) obj$xterm)))
+  allLabels <- c(object$fits[[1]]$glance$endlabel, vapply(object$fits, function(obj) obj$label, NA_character_))
+  names(allLabels) <- c(object$fits[[1]]$glance$endpoint, vapply(object$fits, function(obj) obj$xterm, NA_character_))
   ## add on labels for adj vars
   if(!is.null(object$fits[[1]]$adjterms)) {
     nadj <- length(object$fits[[1]]$adjlabels)

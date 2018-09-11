@@ -74,12 +74,12 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
 
   if("row.names" %in% by.x)
   {
-    x[["..row.names.."]] <- if(byrow) 1:nrow(x) else row.names(x)
+    x[["..row.names.."]] <- if(byrow) seq_len(nrow(x)) else row.names(x)
     by.x <- "..row.names.."
   }
   if("row.names" %in% by.y)
   {
-    y[["..row.names.."]] <- if(byrow) 1:nrow(y) else row.names(y)
+    y[["..row.names.."]] <- if(byrow) seq_len(nrow(y)) else row.names(y)
     by.y <- "..row.names.."
   }
 
@@ -92,8 +92,8 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
 
   #### now merge the things together ####
 
-  together <- merge(cbind(stats::setNames(x, tcn$cn.x), ..row.x.. = 1:nrow(x)),
-                    cbind(stats::setNames(y, tcn$cn.y), ..row.y.. = 1:nrow(y)), by = by, all = TRUE)
+  together <- merge(cbind(stats::setNames(x, tcn$cn.x), ..row.x.. = seq_len(nrow(x))),
+                    cbind(stats::setNames(y, tcn$cn.y), ..row.y.. = seq_len(nrow(y))), by = by, all = TRUE)
 
   both <- together[!is.na(together[["..row.x.."]]) & !is.na(together[["..row.y.."]]), , drop = FALSE]
 
@@ -125,8 +125,8 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
   vars.summary$class.x <- lapply(vars.summary$class.x, cleanup.null.na)
   vars.summary$class.y <- lapply(vars.summary$class.y, cleanup.null.na)
 
-  vars.summary$values <- lapply(1:nrow(vars.summary), compare_values, v = vars.summary, df = both, byvars = by, contr = control)
-  vars.summary$attrs <- lapply(1:nrow(vars.summary), compare_attrs, v = vars.summary, x_ = x, y_ = y)
+  vars.summary$values <- lapply(seq_len(nrow(vars.summary)), compare_values, v = vars.summary, df = both, byvars = by, contr = control)
+  vars.summary$attrs <- lapply(seq_len(nrow(vars.summary)), compare_attrs, v = vars.summary, x_ = x, y_ = y)
   vars.summary$tmp <- NULL
 
   structure(list(frame.summary = structure(frame.summary, class = c("compare.data.frame.frame.summary", "data.frame")),

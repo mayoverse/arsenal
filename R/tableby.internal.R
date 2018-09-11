@@ -188,7 +188,7 @@ modpval.tableby <- function(x, pdata, use.pname=FALSE) {
     x$control$test <- TRUE
 
     ## change test results
-    for(k in 1:nrow(pdata)) {
+    for(k in seq_len(nrow(pdata))) {
       xname <- pdata[k,1]
       idx <- which(names(x$x)==xname)
       if(length(idx)==1) {
@@ -220,7 +220,8 @@ modpval.tableby <- function(x, pdata, use.pname=FALSE) {
 #' @export
 labels.tableby <- function(object, ...) {
   ##  get the formal labels from a tableby object's data variables
-  allLabels <- c(sapply(object$y, function(obj) obj$label), sapply(object$x, function(obj) obj$label))
+  allLabels <- c(vapply(object$y, function(obj) obj$label, NA_character_),
+                 vapply(object$x, function(obj) obj$label, NA_character_))
   names(allLabels) <- c(names(object$y), names(object$x))
   return(allLabels)
 }

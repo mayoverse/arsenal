@@ -132,7 +132,7 @@ compare_attrs <- function(i, v, x_, y_)
   if(nrow(out) > 0)
   {
     out <- out[order(out$name), , drop = FALSE]
-    out <- out[vapply(1:nrow(out), function(i) !identical(out$attr.x[[i]], out$attr.y[[i]]), logical(1)), , drop = FALSE]
+    out <- out[vapply(seq_len(nrow(out)), function(i) !identical(out$attr.x[[i]], out$attr.y[[i]]), logical(1)), , drop = FALSE]
   }
   out
 }
