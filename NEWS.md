@@ -21,6 +21,8 @@
 
 * `modelsum()`: added support for ordinal regressors and adjustment terms (by adding support for their associated contrasts). (#133)
 
+* `modelsum()`: fixed a bug with formatting one-per-model p-values. (#140)
+
 * `tableby()`: fixed an error that sometimes occured when using categorical statistics on numeric variables. (#137)
 
 * `tableby.control()`: gained an argument to simplify one-line numeric output. (#139)

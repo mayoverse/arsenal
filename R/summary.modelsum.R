@@ -79,8 +79,8 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
   }
 
   #### don't show the same statistics more than once ####
-  df[cn %in% c(use.digits0, use.digits1)] <- lapply(df[cn %in% c(use.digits0, use.digits1, use.digits.p)],
-                                                    replace, list = duplicated(df$model), values = "")
+  df[cn %in% c(use.digits0, use.digits1, use.digits.p)] <- lapply(df[cn %in% c(use.digits0, use.digits1, use.digits.p)],
+                                                                  replace, list = duplicated(df$model), values = "")
 
   #### get rid of unnecessary columns ####
   df$model <- NULL
