@@ -29,6 +29,10 @@ summary.compare.data.frame <- function(object,  ..., show.attrs = FALSE,
   if(!chk(max.print.diff)) stop("'max.print.diff' needs to be a numeric > 0.")
   if(!chk(max.print.attrs)) stop("'max.print.attrs' needs to be a numeric > 0.")
 
+  #### start with summaries of the data.frames ####
+
+  frame.summary <- object$frame.summary[c("version", "arg", "ncol", "nrow")]
+
   #### start with differences in variables first ####
   get.vars.not.shared <- function(a, b)
   {
@@ -65,14 +69,15 @@ summary.compare.data.frame <- function(object,  ..., show.attrs = FALSE,
   if(is.null(attrs.diffs))
   {
     attrs.diffs <- data.frame(var.x = character(0), var.y = character(0), name = character(0), stringsAsFactors = FALSE)
-  } else if(!show.attrs) attrs.diffs <- attrs.diffs[ , c("var.x", "var.y", "name"), drop = FALSE]
+  } else if(!show.attrs) attrs.diffs <- attrs.diffs[c("var.x", "var.y", "name")]
 
-  structure(list(vars.ns.table = vars.ns, vars.nc.table = vars.nc, obs.table = obs.ns,
-                 diffs.byvar.table = diffs(object, by.var = TRUE), diffs.table = diffs(object),
-                 attrs.table = attrs.diffs,
-                 max.print.vars.ns = max.print.vars, max.print.vars.nc = max.print.vars,
-                 max.print.obs = max.print.obs, max.print.diff = max.print.diff, max.print.attrs = max.print.attrs),
-            class = "summary.compare.data.frame")
+  structure(list(
+    frame.summary.table = frame.summary, vars.ns.table = vars.ns, vars.nc.table = vars.nc, obs.table = obs.ns,
+    diffs.byvar.table = diffs(object, by.var = TRUE), diffs.table = diffs(object),
+    attrs.table = attrs.diffs,
+    max.print.vars.ns = max.print.vars, max.print.vars.nc = max.print.vars,
+    max.print.obs = max.print.obs, max.print.diff = max.print.diff, max.print.attrs = max.print.attrs
+  ), class = "summary.compare.data.frame")
 }
 
 #' @rdname summary.compare
@@ -93,7 +98,7 @@ print.summary.compare.data.frame <- function(x, ..., format = "pandoc")
     x$diffs.table$values.y <- lapply(x$diffs.table$values.y, as_char)
   }
 
-  for(v in c("vars.ns", "vars.nc", "obs", "diffs.byvar", "diffs", "attrs"))
+  for(v in c("frame.summary", "vars.ns", "vars.nc", "obs", "diffs.byvar", "diffs", "attrs"))
   {
     obj <- x[[paste0(v, ".table")]]
     nprint <- x[[paste0("max.print.", v)]]
@@ -101,7 +106,9 @@ print.summary.compare.data.frame <- function(x, ..., format = "pandoc")
     # there is purposefully no max.print.diffs
     if(is.null(nprint) || is.na(nprint)) nprint <- nrow(obj)
 
-    caption <- switch(v, vars.ns = "Variables not shared",
+    caption <- switch(v,
+                      frame.summary = "Summary of data.frames",
+                      vars.ns = "Variables not shared",
                       vars.nc = "Other variables not compared",
                       obs = "Observations not shared",
                       diffs.byvar = "Differences detected by variable",

@@ -314,6 +314,8 @@ There are two main objects in the `"compare.data.frame"` object, each with its o
 
 The `frame.summary` contains:
 
+- the substituted-deparsed arguments
+
 - information about the number of columns and rows in each dataset
 
 - the by-variables for each dataset (which may not be the same)

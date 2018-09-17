@@ -36,6 +36,9 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
   control <- c(list(...), control)
   control <- do.call("comparison.control", control[!duplicated(names(control))])
 
+  xname <- paste0(deparse(substitute(x)), collapse = "")
+  yname <- paste0(deparse(substitute(y)), collapse = "")
+
   if(!is.data.frame(x) || !is.data.frame(y))
   {
     stop("Both 'x' and 'y' must be data.frames")
@@ -66,9 +69,12 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
 
   #### data frame summary ####
 
-  frame.summary <- data.frame(version = c("x", "y"),
-                              ncol = c(ncol(x), ncol(y)),
-                              nrow = c(nrow(x), nrow(y)), stringsAsFactors = FALSE)
+  frame.summary <- data.frame(
+    version = c("x", "y"),
+    arg = c(xname, yname),
+    ncol = c(ncol(x), ncol(y)),
+    nrow = c(nrow(x), nrow(y)), stringsAsFactors = FALSE
+  )
   frame.summary$by <- list(by.x, by.y)
   frame.summary$attrs <- list(attributes(x), attributes(y))
 

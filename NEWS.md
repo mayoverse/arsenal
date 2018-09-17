@@ -10,6 +10,9 @@
 
 * `summary.compare()`: return the object passed it. (#141)
 
+* `summary.compare()`: output a small summary of the input data.frames as the first table. (#126)
+  NOTE: this changes the structure and printed output of `summary()`!
+
 * `tableby()`, `modelsum()`: properly propogated "term.name" to the `as.data.frame()` method. (#127, #128)
 
 * `tableby()`, `modelsum()`: Allow for LaTeX formatting. NOTE: this changes the formatting behavior when specifying
