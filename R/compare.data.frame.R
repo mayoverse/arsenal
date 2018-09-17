@@ -154,7 +154,7 @@ print.compare.data.frame <- function(x, ...)
 #' @export
 print.compare.data.frame.vars.summary <- function(x, ...)
 {
-  tmp <- x
+  orig <- x
   f <- function(elt, txt1, txt2)
   {
     if(is.data.frame(elt)) paste0(nrow(elt), txt1) else if(is.null(elt)) txt2 else elt
@@ -163,14 +163,14 @@ print.compare.data.frame.vars.summary <- function(x, ...)
   x$values <- vapply(x$values, f, character(1), txt1 = " differences", txt2 = "Not compared")
   x$attrs <- vapply(x$attrs, f, character(1), txt1 = " attributes", txt2 = "0 attributes")
   NextMethod()
-  invisible(tmp)
+  invisible(orig)
 }
 
 
 #' @export
 print.compare.data.frame.frame.summary <- function(x, ...)
 {
-  tmp <- x
+  orig <- x
   f <- function(elt, txt1, txt2)
   {
     if(is.data.frame(elt)) paste0(nrow(elt), txt1) else if(is.list(elt)) paste0(length(elt), txt1) else if(is.null(elt)) txt2 else elt
@@ -179,5 +179,5 @@ print.compare.data.frame.frame.summary <- function(x, ...)
   x$attrs <- vapply(x$attrs, f, character(1), txt1 = " attributes", txt2 = "0 attributes")
   x$unique <- vapply(x$unique, f, character(1), txt1 = " unique obs", txt2 = "")
   NextMethod()
-  invisible(tmp)
+  invisible(orig)
 }

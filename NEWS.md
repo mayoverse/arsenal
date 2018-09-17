@@ -8,6 +8,8 @@
 
 * `summary.compare()`: allow for the display of attributes. (#125)
 
+* `summary.compare()`: return the object passed it. (#141)
+
 * `tableby()`, `modelsum()`: properly propogated "term.name" to the `as.data.frame()` method. (#127, #128)
 
 * `tableby()`, `modelsum()`: Allow for LaTeX formatting. NOTE: this changes the formatting behavior when specifying

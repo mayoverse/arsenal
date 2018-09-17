@@ -79,6 +79,7 @@ summary.compare.data.frame <- function(object,  ..., show.attrs = FALSE,
 #' @export
 print.summary.compare.data.frame <- function(x, ..., format = "pandoc")
 {
+  orig <- x
   sumdiffs <- sum(x$diffs.byvar.table$n)
 
   if(is.null(x$max.print.diff) || is.na(x$max.print.diff)) x$max.print.diff <- sumdiffs
@@ -124,6 +125,6 @@ print.summary.compare.data.frame <- function(x, ..., format = "pandoc")
     }
     cat("\n")
   }
-  invisible(NULL)
+  invisible(orig)
 }
 
