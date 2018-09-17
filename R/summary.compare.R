@@ -4,7 +4,9 @@
 #' Print a more detailed output of the \code{\link{compare.data.frame}} object.
 #'
 #' @param object An object of class \code{"compare.data.frame"}, as made by the \code{\link{compare.data.frame}} S3 method.
-#' @param ... Other arguments. In \code{print}, these are passed to  (not in use at this time).
+#' @param ... Other arguments. In \code{print}, these are passed to \code{\link[knitr]{kable}}.
+#' @param show.attrs Logical, denoting whether to show the actual attributes which are different. For (e.g.) factors with lots
+#'   of levels, this can make the tables quite wide, so this feature is \code{FALSE} by default.
 #' @param max.print.vars,max.print.obs,max.print.diff,max.print.attrs Integers denoting the maximum number of differences to report
 #'   for each of the three tables. Passing \code{NA} will print all differences.
 #' @param x An object returned by the \code{summary.compare.data.frame} function.
@@ -18,7 +20,8 @@ NULL
 
 #' @rdname summary.compare
 #' @export
-summary.compare.data.frame <- function(object, ..., max.print.vars = NA, max.print.obs = NA, max.print.diff = 10, max.print.attrs = NA)
+summary.compare.data.frame <- function(object,  ..., show.attrs = FALSE,
+                                       max.print.vars = NA, max.print.obs = NA, max.print.diff = 10, max.print.attrs = NA)
 {
   chk <- function(x) is.na(x) || (is.numeric(x) && x > 0)
   if(!chk(max.print.vars)) stop("'max.print.vars' needs to be a numeric > 0.")
@@ -58,8 +61,11 @@ summary.compare.data.frame <- function(object, ..., max.print.vars = NA, max.pri
 
   attrs.tmp <- as.data.frame(object$vars.summary[idx_var_sum(object, "non.identical.attributes"), c("var.x", "var.y", "attrs"), drop = FALSE])
   attrs.diffs <- do.call(rbind, Map(cbind, var.x = attrs.tmp$var.x, var.y = attrs.tmp$var.y, attrs.tmp$attrs,
-                                    MoreArgs = list(stringsAsFactors = FALSE)))[, c("var.x", "var.y", "name"), drop = FALSE]
-  if(is.null(attrs.diffs)) attrs.diffs <- data.frame(var.x = character(0), var.y = character(0), name = character(0), stringsAsFactors = FALSE)
+                                    MoreArgs = list(stringsAsFactors = FALSE)))
+  if(is.null(attrs.diffs))
+  {
+    attrs.diffs <- data.frame(var.x = character(0), var.y = character(0), name = character(0), stringsAsFactors = FALSE)
+  } else if(!show.attrs) attrs.diffs <- attrs.diffs[ , c("var.x", "var.y", "name"), drop = FALSE]
 
   structure(list(vars.ns.table = vars.ns, vars.nc.table = vars.nc, obs.table = obs.ns,
                  diffs.byvar.table = diffs(object, by.var = TRUE), diffs.table = diffs(object),

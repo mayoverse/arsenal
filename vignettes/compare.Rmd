@@ -348,6 +348,8 @@ The `vars.summary` contains:
     - The name of the attributes
     
     - The attributes for x and y, set to `NA` if non-existant
+    
+    - The actual attributes (if `show.attr=TRUE`).
 
 ```{r results='markup'}
 print(obj$vars.summary)

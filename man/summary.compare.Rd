@@ -6,15 +6,19 @@
 \alias{print.summary.compare.data.frame}
 \title{The summary method for a \code{compare.data.frame} object}
 \usage{
-\method{summary}{compare.data.frame}(object, ..., max.print.vars = NA,
-  max.print.obs = NA, max.print.diff = 10, max.print.attrs = NA)
+\method{summary}{compare.data.frame}(object, ..., show.attrs = FALSE,
+  max.print.vars = NA, max.print.obs = NA, max.print.diff = 10,
+  max.print.attrs = NA)
 
 \method{print}{summary.compare.data.frame}(x, ..., format = "pandoc")
 }
 \arguments{
 \item{object}{An object of class \code{"compare.data.frame"}, as made by the \code{\link{compare.data.frame}} S3 method.}
 
-\item{...}{Other arguments. In \code{print}, these are passed to  (not in use at this time).}
+\item{...}{Other arguments. In \code{print}, these are passed to \code{\link[knitr]{kable}}.}
+
+\item{show.attrs}{Logical, denoting whether to show the actual attributes which are different. For (e.g.) factors with lots
+of levels, this can make the tables quite wide, so this feature is \code{FALSE} by default.}
 
 \item{max.print.vars, max.print.obs, max.print.diff, max.print.attrs}{Integers denoting the maximum number of differences to report
 for each of the three tables. Passing \code{NA} will print all differences.}
