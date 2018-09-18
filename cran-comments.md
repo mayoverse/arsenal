@@ -2,13 +2,7 @@
 
 This is a new version. In this version:
 
-* We updated the DESCRIPTION text.
-
-* We added the `paired()` function.
-
-* We changed the default for `chisq.correct=` argument to false (do not correct).
-
-* We closed 20+ bugs and new feature requests.
+* We closed about 20 bugs and new feature requests. This includes some major new functionality for the `modelsum()` and `tableby()` functions.
 
 * We updated documentation where appropriate.
 
