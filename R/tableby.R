@@ -151,7 +151,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
   tmp.fun <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL, cat.simplify = NULL, numeric.simplify = NULL)
   {
     attr(x, "name") <- deparse(substitute(x))
-    attr(x, "stats") <- list(...)
+    attr(x, "stats") <- if(missing(...)) NULL else list(...)
     attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
                                     cat.simplify = cat.simplify, numeric.simplify = numeric.simplify)
     x
@@ -215,7 +215,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     by.levels <- unique(replace(by.levels, by.levels == "", " "))
   }
 
-  if(length(by.levels) < 2 && attributes(Terms)$response != 0 && control$test)
+  if(length(by.levels) < 2 && attr(Terms, "response") != 0 && control$test)
   {
     warning("The by-variable has fewer than two levels; statistical tests are ignored")
     control$test <- FALSE
@@ -226,13 +226,14 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     currcol <- modeldf[[eff]]
 
     ## label
-    nameEff <- attributes(currcol)$name
-    if(is.null(nameEff))  nameEff <- names(modeldf)[eff]
-    labelEff <-  attributes(currcol)$label
-    if(is.null(labelEff))  labelEff <- nameEff
+    nameEff <- attr(currcol, "name")
+    if(is.null(nameEff)) nameEff <- names(modeldf)[eff]
+    labelEff <- attr(currcol, "label")
+    if(is.null(labelEff)) labelEff <- nameEff
     statList <- list()
     bystatlist <- list()
     control.list <- attr(currcol, "control.list")
+    attrstats <- attr(currcol, "stats")
 
     ############################################################
 
@@ -301,7 +302,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
     ## if no missings, and control says not to show missings,
     ## remove Nmiss stat fun
-    currstats <- if(length(attributes(currcol)$stats)>0) attributes(currcol)$stats else currstats
+    currstats <- if(is.null(attrstats)) currstats else attrstats
     if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
     for(statfun in currstats) {
       if(statfun %in% c("countrowpct", "countcellpct", "rowbinomCI"))
@@ -331,7 +332,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
 
   if(length(xList) == 0) stop("No x-variables successfully computed.")
 
-  labelBy <- attributes(by.col)$label
+  labelBy <- attr(by.col, "label")
   if(is.null(labelBy)) labelBy <- names(modeldf)[1]
 
   yList <- list()

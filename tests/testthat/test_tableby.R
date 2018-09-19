@@ -892,3 +892,24 @@ test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134
     )
   )
 })
+
+
+test_that("09/19/2018: specifying different stats for character and logical variables (#142)", {
+  expect_identical(
+    capture.kable(summary(tableby(arm ~ chisq(race, "countpct") + chisq(I(sex == "Male"), "count"), data = mockstudy), text = TRUE)),
+    c('|                    | A: IFL (N=428) | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499) | p value|',
+      '|:-------------------|:--------------:|:-----------------:|:---------------:|:--------------:|-------:|',
+      '|Race                |                |                   |                 |                |   0.367|',
+      '|-  African-Am       |   39 (9.1%)    |     49 (7.2%)     |    27 (7.1%)    |   115 (7.7%)   |        |',
+      '|-  Asian            |    1 (0.2%)    |     14 (2.0%)     |    3 (0.8%)     |   18 (1.2%)    |        |',
+      '|-  Caucasian        |  371 (86.7%)   |    586 (85.5%)    |   331 (87.3%)   |  1288 (86.3%)  |        |',
+      '|-  Hawaii/Pacific   |    1 (0.2%)    |     3 (0.4%)      |    1 (0.3%)     |    5 (0.3%)    |        |',
+      '|-  Hispanic         |   12 (2.8%)    |     28 (4.1%)     |    14 (3.7%)    |   54 (3.6%)    |        |',
+      '|-  Native-Am/Alaska |    2 (0.5%)    |     1 (0.1%)      |    2 (0.5%)     |    5 (0.3%)    |        |',
+      '|-  Other            |    2 (0.5%)    |     4 (0.6%)      |    1 (0.3%)     |    7 (0.5%)    |        |',
+      '|I(sex == "Male")    |                |                   |                 |                |   0.190|',
+      '|-  FALSE            |      151       |        280        |       152       |      583       |        |',
+      '|-  TRUE             |      277       |        411        |       228       |      916       |        |'
+    )
+  )
+})

@@ -1,3 +1,7 @@
+# arsenal v1.4.0.9000
+
+* `tableby()` and `paired()`: fixed a bug with specifying individual statistics for character and logical vectors. (#142)
+
 # arsenal v1.4.0
 
 **There are a few non-backwards-compatible updates.**
