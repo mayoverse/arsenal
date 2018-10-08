@@ -19,8 +19,27 @@
 #' @param ... additional arguments to be passed to internal \code{paired} functions or \code{\link{paired.control}}.
 #' @return An object with class \code{c("paired", "tableby")}
 #' @details
-#'   Do note that this function piggybacks off of \code{\link{tableby}} quite heavily, so there is no
-#'   \code{summary.paired} function (for instance).
+#' Do note that this function piggybacks off of \code{\link{tableby}} quite heavily, so there is no
+#' \code{summary.paired} function (for instance).
+#'
+#' These tests are accepted:
+#' \itemize{
+#'   \item{
+#'     \code{paired.t}: a paired \code{\link[stats:t.test]{t-test}}.
+#'   }
+#'   \item{
+#'     \code{mcnemar}: \link[stats:mcnemar.test]{McNemar's test}.
+#'   }
+#'   \item{
+#'     \code{signed.rank}: a \link[stats:wilcox.test]{signed rank test}.
+#'   }
+#'   \item{
+#'     \code{sign.test}: a sign test.
+#'   }
+#'   \item{
+#'     \code{notest}: no test is performed.
+#'   }
+#' }
 #' @seealso \code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}
 #' @author Jason Sinnwell, Beth Atkinson, Ryan Lennon, and Ethan Heinzen
 #' @name paired

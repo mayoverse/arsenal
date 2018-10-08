@@ -189,13 +189,13 @@ summary(tab3)
 
 In addition to modifying summary options globally, it is possible to modify the test and summary statistics for
 specific variables within the formula statement.  For example, both the kwt (Kruskal-Wallis rank-based) and anova
-(asymptotic analysis of variance) tests apply to numeric variables and we can use one for the variable "age" and
-another for the variable "ast". A list of all the options is  shown at the end of the vignette.
+(asymptotic analysis of variance) tests apply to numeric variables, and we can use one for the variable "age",
+another for the variable "bmi", and no test for the variable "ast". A list of all the options is shown at the end of the vignette.
 
 The `tests` function can do a quick check on what tests were performed on each variable in tableby.
 
 ```{r, testformula}
-tab.test <- tableby(arm ~ kwt(age) + anova(bmi) + kwt(ast), data=mockstudy)
+tab.test <- tableby(arm ~ kwt(age) + anova(bmi) + notest(ast), data=mockstudy)
 tests(tab.test)
 ```
 
@@ -209,7 +209,7 @@ built-in R functions like mean and range, or user-defined functions.
 
 ```{r, testsAndStats, results='asis'}
 tab.test <- tableby(arm ~ kwt(ast, "Nmiss2","median") + anova(age, "N","mean") +
-                    kwt(bmi, "Nmiss","median"), data=mockstudy)
+                    notest(bmi, "Nmiss","median"), data=mockstudy)
 summary(tab.test)
 ```
 
@@ -800,6 +800,8 @@ The following tests are accepted:
 
 * `trend`: The `independence_test` function from the `coin` is used to test for trends.  Whenthe grouping variable has two levels,
   it is equivalent to the Armitage trend test.  This is the default for ordered factors
+  
+* `notest`: Don't perform a test.
 
 ## `tableby.control` settings
 

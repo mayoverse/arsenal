@@ -70,6 +70,9 @@
 #'   \item{
 #'     \code{logrank}: log-rank, the default for time-to-event variables
 #'   }
+#'   \item{
+#'     \code{notest}: no test is performed.
+#'   }
 #' }
 #'
 #' To perform a mixture of asymptotic and rank-based tests on two
