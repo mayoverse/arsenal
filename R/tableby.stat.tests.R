@@ -1,5 +1,10 @@
 ### Test functions #######
 
+notest <- function(x, x.by, ...)
+{
+  list(p.value = NA_real_, method = "No test")
+}
+
 ## continuous tests:
 ## 1. anova  (parametric)
 ## consider allowing glm, for now just lm with gaussian errors

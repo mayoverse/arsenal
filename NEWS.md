@@ -2,6 +2,8 @@
 
 * `tableby()` and `paired()`: fixed a bug with specifying individual statistics for character and logical vectors. (#142)
 
+* `tableby()` and `paired()`: added a function (`notest()`) to prevent performing a test on an individual variable. (#144)
+
 # arsenal v1.4.0
 
 **There are a few non-backwards-compatible updates.**

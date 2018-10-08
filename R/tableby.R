@@ -131,7 +131,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     # purposely using na.action instead of temp.call$na.action here
     warning("It appears you're using na.tableby with a one-sided formula... Results may not be what you expect.")
   }
-  special <- c("anova", "kwt", "chisq", "fe", "logrank", "trend")
+  special <- c("anova", "kwt", "chisq", "fe", "logrank", "trend", "notest")
   if (missing(data)) {
     temp.call$formula <- stats::terms(formula, special)
   } else {

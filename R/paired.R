@@ -50,7 +50,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, control = NULL, ..
 
   if(is.null(temp.call$na.action)) temp.call$na.action <- na.paired("in.both")
 
-  special <- c("paired.t", "mcnemar", "signed.rank", "sign.test")
+  special <- c("paired.t", "mcnemar", "signed.rank", "sign.test", "notest")
   if (missing(data)) {
     temp.call$formula <- stats::terms(formula, special)
   } else {

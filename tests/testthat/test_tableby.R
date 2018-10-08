@@ -289,7 +289,7 @@ test_that("Merging tableby objects", {
 
 test_that("Changing tests", {
   expect_identical(
-    capture.kable(summary(tableby(Group ~ fe(Sex) + kwt(Age), data = mdat, numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
+    capture.kable(summary(tableby(Group ~ fe(Sex) + kwt(Age) + notest(Phase), data = mdat, numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
     c("|             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value|",
       "|:------------|:---------------:|:---------------:|:---------------:|:---------------:|-------:|",
       "|Sex          |                 |                 |                 |                 |   0.806|",
@@ -298,13 +298,17 @@ test_that("Changing tests", {
       "|Age in Years |                 |                 |                 |                 |   0.869|",
       "|-  Mean (SD) | 40.033 (6.217)  | 39.633 (3.873)  | 39.433 (5.569)  | 39.700 (5.258)  |        |",
       "|-  Q1, Q3    | 36.000, 44.500  | 37.250, 41.750  | 35.250, 44.000  | 36.000, 43.000  |        |",
-      "|-  Range     | 29.000 - 53.000 | 32.000 - 48.000 | 30.000 - 52.000 | 29.000 - 53.000 |        |"
+      "|-  Range     | 29.000 - 53.000 | 32.000 - 48.000 | 30.000 - 52.000 | 29.000 - 53.000 |        |",
+      "|Phase        |                 |                 |                 |                 |      NA|",
+      "|-  I         |   11 (36.7%)    |   12 (40.0%)    |    0 (0.0%)     |   23 (25.6%)    |        |",
+      "|-  II        |   10 (33.3%)    |   12 (40.0%)    |   19 (63.3%)    |   41 (45.6%)    |        |",
+      "|-  III       |    9 (30.0%)    |    6 (20.0%)    |   11 (36.7%)    |   26 (28.9%)    |        |"
     )
   )
 
   expect_identical(
-    capture.kable(summary(tableby(Group ~ Sex + Age, data = mdat, numeric.test = "kwt", cat.test = "fe"), text = TRUE)),
-    capture.kable(summary(tableby(Group ~ fe(Sex) + kwt(Age), data = mdat), text = TRUE))
+    capture.kable(summary(tableby(Group ~ Sex + Age + Phase, data = mdat, numeric.test = "kwt", cat.test = "fe", ordered.test = "notest"), text = TRUE)),
+    capture.kable(summary(tableby(Group ~ fe(Sex) + kwt(Age) + notest(Phase), data = mdat), text = TRUE))
   )
 })
 
