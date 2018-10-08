@@ -168,7 +168,7 @@ test_that("A basic two-sided tableby call--p-value, no total", {
 
 test_that("A basic two-sided tableby markdown output", {
   expect_identical(
-    capture.kable(summary(tableby(Group ~ Age + Sex + ethan + dt, data = mdat,
+    capture.kable(summary(tableby(Group ~ Age + Sex + notest(ethan) + dt, data = mdat,
                                    numeric.stats = c("meansd", "q1q3", "range"), total = FALSE), pfootnote = TRUE)),
     c("|                            |       High (N=30)       |       Low (N=30)        |       Med (N=30)        |  p value|",
       "|:---------------------------|:-----------------------:|:-----------------------:|:-----------------------:|--------:|",
@@ -179,7 +179,7 @@ test_that("A basic two-sided tableby markdown output", {
       "|**Sex**                     |                         |                         |                         | 0.733^2^|",
       "|&nbsp;&nbsp;&nbsp;Female    |       15 (50.0%)        |       17 (56.7%)        |       14 (46.7%)        |         |",
       "|&nbsp;&nbsp;&nbsp;Male      |       15 (50.0%)        |       13 (43.3%)        |       16 (53.3%)        |         |",
-      "|**ethan**                   |                         |                         |                         | 0.178^2^|",
+      "|**ethan**                   |                         |                         |                         |         |",
       "|&nbsp;&nbsp;&nbsp;N-Miss    |            3            |            0            |            0            |         |",
       "|&nbsp;&nbsp;&nbsp;Ethan     |       17 (63.0%)        |       13 (43.3%)        |       12 (40.0%)        |         |",
       "|&nbsp;&nbsp;&nbsp;Heinzen   |       10 (37.0%)        |       17 (56.7%)        |       18 (60.0%)        |         |",
@@ -299,7 +299,7 @@ test_that("Changing tests", {
       "|-  Mean (SD) | 40.033 (6.217)  | 39.633 (3.873)  | 39.433 (5.569)  | 39.700 (5.258)  |        |",
       "|-  Q1, Q3    | 36.000, 44.500  | 37.250, 41.750  | 35.250, 44.000  | 36.000, 43.000  |        |",
       "|-  Range     | 29.000 - 53.000 | 32.000 - 48.000 | 30.000 - 52.000 | 29.000 - 53.000 |        |",
-      "|Phase        |                 |                 |                 |                 |      NA|",
+      "|Phase        |                 |                 |                 |                 |        |",
       "|-  I         |   11 (36.7%)    |   12 (40.0%)    |    0 (0.0%)     |   23 (25.6%)    |        |",
       "|-  II        |   10 (33.3%)    |   12 (40.0%)    |   19 (63.3%)    |   41 (45.6%)    |        |",
       "|-  III       |    9 (30.0%)    |    6 (20.0%)    |   11 (36.7%)    |   26 (28.9%)    |        |"
@@ -739,7 +739,7 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
     capture.kable(summary(tableby(y ~ x, data = dat, numeric.test = "anova"), text = TRUE)),
     c("|             |    A (N=3)    | B (N=2) |  Total (N=5)  | p value|",
       "|:------------|:-------------:|:-------:|:-------------:|-------:|",
-      "|x            |               |         |               |      NA|",
+      "|x            |               |         |               |        |",
       "|-  N-Miss    |       0       |    2    |       2       |        |",
       "|-  Mean (SD) | 2.000 (1.000) | NA (NA) | 2.000 (1.000) |        |",
       "|-  Range     | 1.000 - 3.000 | NA - NA | 1.000 - 3.000 |        |"
@@ -749,7 +749,7 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
     capture.kable(summary(tableby(y ~ x, data = dat, numeric.test = "kwt"), text = TRUE)),
     c("|             |    A (N=3)    | B (N=2) |  Total (N=5)  | p value|",
       "|:------------|:-------------:|:-------:|:-------------:|-------:|",
-      "|x            |               |         |               |      NA|",
+      "|x            |               |         |               |        |",
       "|-  N-Miss    |       0       |    2    |       2       |        |",
       "|-  Mean (SD) | 2.000 (1.000) | NA (NA) | 2.000 (1.000) |        |",
       "|-  Range     | 1.000 - 3.000 | NA - NA | 1.000 - 3.000 |        |"
@@ -762,7 +762,7 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
                                     surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime", "rangeTime")), text = TRUE)),
       c("|                      |    A (N=3)    | B (N=2) |  Total (N=5)  | p value|",
         "|:---------------------|:-------------:|:-------:|:-------------:|-------:|",
-        "|Surv(x)               |               |         |               |      NA|",
+        "|Surv(x)               |               |         |               |        |",
         "|-  Median Survival    |     2.000     |   NA    |     2.000     |        |",
         "|-  Events             |       3       |   NA    |       3       |        |",
         "|-  time = 1           |   1 (66.7)    | NA (NA) |   1 (66.7)    |        |",

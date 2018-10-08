@@ -97,18 +97,19 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
 
     df[["p.value"]][x$object[["p.value"]] < cutoff] <- fmt
   }
+  df[["p.value"]][grepl("^\\s*NA$", df[["p.value"]])] <- ""
 
   tests.used <- NULL
   if(x$control$test && pfootnote)
   {
-    tests.used <- unique(df$test)
-    df[["p.value"]] <- paste0(df[["p.value"]], "^", as.integer(factor(df[["test"]], levels = tests.used)), "^")
+    tests.used <- unique(df$test[df$test != "No test"])
+    df[["p.value"]] <- ifelse(df[["p.value"]] == "", "", paste0(df[["p.value"]], "^", as.integer(factor(df[["test"]], levels = tests.used)), "^"))
     tests.used <- paste0(seq_along(tests.used), ". ", tests.used)
   }
 
   #### don't show the same statistics more than once ####
   dups <- duplicated(df$variable)
-  df[["p.value"]] <- replace(df[["p.value"]], dups, "")
+  df[["p.value"]][dups] <- ""
 
   #### get rid of unnecessary columns ####
   df$variable <- NULL
