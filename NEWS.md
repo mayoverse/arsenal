@@ -4,6 +4,8 @@
 
 * `tableby()` and `paired()`: added a function (`notest()`) to prevent performing a test on an individual variable. (#144)
 
+* `summary.tableby()`: changed NA p-values to blanks. (#145)
+
 # arsenal v1.4.0
 
 **There are a few non-backwards-compatible updates.**
