@@ -55,7 +55,7 @@ NULL
 
 #' @rdname padjust
 #' @export
-padjust <- function(p, method, n) UseMethod("padjust")
+padjust <- function(p, method, n, ...) UseMethod("padjust")
 
 #' @rdname padjust
 #' @export

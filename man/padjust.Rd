@@ -8,7 +8,7 @@
 \alias{padjust.summary.tableby}
 \title{Adjust P-values for Multiple Comparisons}
 \usage{
-padjust(p, method, n)
+padjust(p, method, n, ...)
 
 \method{padjust}{default}(p, method, n, ...)
 
