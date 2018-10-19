@@ -897,3 +897,44 @@ test_that("09/19/2018: specifying different stats for character and logical vari
     )
   )
 })
+
+
+test_that("10/19/2018: padjust works on tableby objects (#146)", {
+  tab <- tableby(sex ~ age + arm + race + ps + alk.phos, data = mockstudy)
+  expect_identical(
+    capture.kable(summary(padjust(tab, method = "bonfer"), text = TRUE)),
+    c("|                    |   Male (N=916)    |  Female (N=583)   |  Total (N=1499)   | p value|",
+      "|:-------------------|:-----------------:|:-----------------:|:-----------------:|-------:|",
+      "|Age in Years        |                   |                   |                   |   0.238|",
+      "|-  Mean (SD)        |  60.455 (11.369)  |  59.247 (11.722)  |  59.985 (11.519)  |        |",
+      "|-  Range            |  19.000 - 88.000  |  22.000 - 88.000  |  19.000 - 88.000  |        |",
+      "|Treatment Arm       |                   |                   |                   |   0.952|",
+      "|-  A: IFL           |    277 (30.2%)    |    151 (25.9%)    |    428 (28.6%)    |        |",
+      "|-  F: FOLFOX        |    411 (44.9%)    |    280 (48.0%)    |    691 (46.1%)    |        |",
+      "|-  G: IROX          |    228 (24.9%)    |    152 (26.1%)    |    380 (25.4%)    |        |",
+      "|Race                |                   |                   |                   |   1.000|",
+      "|-  N-Miss           |         6         |         1         |         7         |        |",
+      "|-  African-Am       |     65 (7.1%)     |     50 (8.6%)     |    115 (7.7%)     |        |",
+      "|-  Asian            |     11 (1.2%)     |     7 (1.2%)      |     18 (1.2%)     |        |",
+      "|-  Caucasian        |    787 (86.5%)    |    501 (86.1%)    |   1288 (86.3%)    |        |",
+      "|-  Hawaii/Pacific   |     2 (0.2%)      |     3 (0.5%)      |     5 (0.3%)      |        |",
+      "|-  Hispanic         |     37 (4.1%)     |     17 (2.9%)     |     54 (3.6%)     |        |",
+      "|-  Native-Am/Alaska |     3 (0.3%)      |     2 (0.3%)      |     5 (0.3%)      |        |",
+      "|-  Other            |     5 (0.5%)      |     2 (0.3%)      |     7 (0.5%)      |        |",
+      "|ps                  |                   |                   |                   |   1.000|",
+      "|-  N-Miss           |        162        |        104        |        266        |        |",
+      "|-  Mean (SD)        |   0.527 (0.583)   |   0.559 (0.621)   |   0.539 (0.598)   |        |",
+      "|-  Range            |   0.000 - 2.000   |   0.000 - 2.000   |   0.000 - 2.000   |        |",
+      "|alk.phos            |                   |                   |                   |   1.000|",
+      "|-  N-Miss           |        162        |        104        |        266        |        |",
+      "|-  Mean (SD)        | 167.893 (130.754) | 170.664 (124.965) | 168.969 (128.492) |        |",
+      "|-  Range            | 10.000 - 1014.000 |  7.000 - 771.000  | 7.000 - 1014.000  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(padjust(tab, "bonfer"), pfootnote = TRUE)),
+    capture.kable(padjust(summary(tab, pfootnote = TRUE), "bonfer"))
+  )
+})
+
+
