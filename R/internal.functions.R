@@ -41,3 +41,30 @@ insert_elt <- function(col, times, elt = "")
   unlist(Map(f, col, times), use.names = FALSE)
 }
 
+
+#' Adjust P-values for Multiple Comparisons
+#'
+#' @param p An object.
+#' @inheritParams stats::p.adjust
+#' @param suffix A suffix to add to the footnotes indicating that the tests were adjusted.
+#' @param ... Other arguments.
+#' @seealso \code{\link[stats]{p.adjust}}, \code{\link{modpval.tableby}}, \code{\link{tests.tableby}}
+#' @name padjust
+NULL
+#> NULL
+
+#' @rdname padjust
+#' @export
+padjust <- function(p, method, n) UseMethod("padjust")
+
+#' @rdname padjust
+#' @export
+padjust.default <- function(p, method, n, ...)
+{
+  Call <- match.call()
+  indx <- match(c("p", "method", "n"), names(Call), nomatch = 0)
+  temp.call <- Call[c(1, indx)]
+  temp.call[[1L]] <- quote(stats::p.adjust)
+
+  eval(temp.call, parent.frame())
+}
