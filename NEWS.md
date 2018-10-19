@@ -6,6 +6,8 @@
 
 * `summary.tableby()`: changed NA p-values to blanks. (#145)
 
+* `summary.tableby()`, `summary.modelsum()`, `summary.freqlist()`: added documentation on `bookdown`. (#147)
+
 # arsenal v1.4.0
 
 **There are a few non-backwards-compatible updates.**

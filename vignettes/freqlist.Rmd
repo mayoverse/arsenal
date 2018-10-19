@@ -201,6 +201,16 @@ names(xftbl)[1:3] <- c("Arm", "Gender", "LASA QOL")
 print(xftbl, sanitize.colnames.function = italic, include.rownames = FALSE, type = "html", comment = FALSE)
 ```
 
+## Use `freqlist` in bookdown
+
+Since the backbone of `freqlist()` is `knitr::kable()`, tables still render well in bookdown. However, `print.summary.freqlist()` doesn't use
+the `caption=` argument of `kable()`, so some tables may not have a properly numbered caption. To fix this, use the method described
+[on the bookdown site](https://bookdown.org/yihui/bookdown/tables.html) to give the table a tag/ID.
+
+```{r eval=FALSE}
+summary(freqlist(~ sex + age, data = mockstudy), title="(\\#tab:mytableby) Caption here")
+```
+
 # Appendix: Notes regarding table options in R
 
 ## NAs

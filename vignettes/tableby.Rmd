@@ -741,6 +741,16 @@ shinyApp(
 This can be especially powerful if you feed the selections from a `selectInput(multiple = TRUE)` into `formulize()` to make
 the table dynamic!
 
+## 23. Use `tableby` in bookdown
+
+Since the backbone of `tableby()` is `knitr::kable()`, tables still render well in bookdown. However, `print.summary.tableby()` doesn't use
+the `caption=` argument of `kable()`, so some tables may not have a properly numbered caption. To fix this, use the method described
+[on the bookdown site](https://bookdown.org/yihui/bookdown/tables.html) to give the table a tag/ID.
+
+```{r eval=FALSE}
+summary(tableby(sex ~ age, data = mockstudy), title="(\\#tab:mytableby) Caption here")
+```
+
 # Available Function Options
 
 ## Summary statistics
