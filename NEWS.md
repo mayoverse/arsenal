@@ -8,6 +8,8 @@
 
 * `summary.tableby()`, `summary.modelsum()`, `summary.freqlist()`: added documentation on `bookdown`. (#147)
 
+* Wrote `padjust()`, an S3 wrapper for `p.adjust()`, which can also adjust `tableby()` (and hence `paired()`) objects.
+
 # arsenal v1.4.0
 
 **There are a few non-backwards-compatible updates.**
