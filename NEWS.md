@@ -8,6 +8,9 @@
 
 * `summary.tableby()`, `summary.modelsum()`, `summary.freqlist()`: added documentation on `bookdown`. (#147)
 
+* `print.summary.tableby()`, `as.data.frame.summary.tableby()`, `print.summary.modelsum()`, `as.data.frame.summary.modelsum()`: added `width=` and
+  `min.split=` as formal arguments.
+
 # arsenal v1.4.0
 
 **There are a few non-backwards-compatible updates.**
