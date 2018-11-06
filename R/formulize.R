@@ -41,9 +41,10 @@ formulize <- function(y = "", x = "", ..., data = NULL)
     if(is.null(colnames(data))) stop("colnames(data) is NULL")
     dots <- lapply(dots, function(elt, cn) if(is.numeric(elt)) lapply(cn[elt], as.name) else elt, cn = colnames(data))
   }
+  dots <- lapply(dots, function(elt) if(is.name(elt)) list(elt) else elt)
   is.ok <- function(x) is.character(x) || (is.list(x) && all(vapply(x, is.name, NA)))
   trash <- lapply(dots, function(elt) if(!is.ok(elt))
-    stop("One or more argument isn't a character vector or list of names"))
+    stop("One or more argument isn't a character vector, numeric vector, list of names, or list of calls"))
   elts <- vapply(dots, paste0, character(1), collapse = " + ")
   stats::as.formula(paste0(elts, collapse = " ~ "), env = parent.frame())
 }

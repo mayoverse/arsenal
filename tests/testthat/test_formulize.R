@@ -119,3 +119,7 @@ test_that("06/04/2018: non-syntactic names", {
   tmp <- capture.output(print(formulize("log(hi)", 1, data = dat)))
   expect_identical(tmp[1], "log(hi) ~ `:)`")
 })
+
+test_that("11/06/2018: passing names (#152)" {
+  expect_identical(stats::reformulate(c("`P/E`", "`% Growth`"), response = as.name("+-")), formulize(c("`P/E`", "`% Growth`"), y = as.name("+-")))
+})
