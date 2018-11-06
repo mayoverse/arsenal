@@ -120,6 +120,11 @@ test_that("06/04/2018: non-syntactic names", {
   expect_identical(tmp[1], "log(hi) ~ `:)`")
 })
 
-test_that("11/06/2018: passing names (#152)" {
+test_that("11/06/2018: passing names or calls (#152, #153)", {
   expect_identical(stats::reformulate(c("`P/E`", "`% Growth`"), response = as.name("+-")), formulize(c("`P/E`", "`% Growth`"), y = as.name("+-")))
+  f <- Surv(ft, case) ~ `hi there`
+  expect_identical(stats::reformulate("`hi there`", f[[2]]), formulize(f[[2]], f[[3]])) # can't pass call as first arg of reformulate
+  expect_identical(f, formulize(f[[2]], f[[3]]))
+  f <- Surv(ft, case) ~ `hi there` + b
+  expect_identical(f, formulize(f[[2]], f[[3]]))
 })
