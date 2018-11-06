@@ -7,7 +7,7 @@
 formulize(y = "", x = "", ..., data = NULL)
 }
 \arguments{
-\item{y, x, ...}{Character vectors to be collapsed (by \code{"+"}) and put left-to-right in the formula.
+\item{y, x, ...}{Character vectors, names, or calls to be collapsed (by \code{"+"}) and put left-to-right in the formula.
 If \code{data} is supplied, these can also be numeric, denoting which column name to use. See examples.}
 
 \item{data}{An R object with non-null column names.}
@@ -35,10 +35,19 @@ formulize(1, c("x1", "x2", "x3"), data = mockstudy)
 ## get an interaction
 formulize("y", c("x1*x2", "x3"))
 
+## no intercept
+formulize("y", "x1 - 1")
+formulize("y", c("x1", "x2", "-1"))
+
 ## use in an lm
 form <- formulize(2, 3:4, data = mockstudy)
 summary(lm(form, data = mockstudy))
 
+## using non-syntactic names or calls (like reformulate example)
+formulize(as.name("+-"), c("`P/E`", "`\% Growth`"))
+
+f <- Surv(ft, case) ~ a + b
+formulize(f[[2]], f[[3]])
 }
 \seealso{
 \code{\link[stats]{reformulate}}
