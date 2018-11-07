@@ -2,7 +2,6 @@
 % Please edit documentation in R/internal.functions.R
 \name{padjust}
 \alias{padjust}
-\alias{padjust}
 \alias{padjust.default}
 \alias{padjust.tableby}
 \alias{padjust.summary.tableby}

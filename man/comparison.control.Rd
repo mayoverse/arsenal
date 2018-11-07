@@ -4,11 +4,12 @@
 \alias{comparison.control}
 \title{Control settings for `compare` function}
 \usage{
-comparison.control(tol.logical = "none", tol.num = c("absolute", "percent",
-  "pct"), tol.num.val = sqrt(.Machine$double.eps), int.as.num = FALSE,
-  tol.char = c("none", "trim", "case", "both"), tol.factor = c("none",
-  "levels", "labels"), factor.as.char = FALSE, tol.date = "absolute",
-  tol.date.val = 0, tol.other = "none", tol.vars = "none", ...)
+comparison.control(tol.logical = "none", tol.num = c("absolute",
+  "percent", "pct"), tol.num.val = sqrt(.Machine$double.eps),
+  int.as.num = FALSE, tol.char = c("none", "trim", "case", "both"),
+  tol.factor = c("none", "levels", "labels"), factor.as.char = FALSE,
+  tol.date = "absolute", tol.date.val = 0, tol.other = "none",
+  tol.vars = "none", ...)
 }
 \arguments{
 \item{tol.logical, tol.num, tol.char, tol.factor, tol.date, tol.other}{A function or one of the shortcut character strings,

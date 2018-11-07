@@ -2,7 +2,6 @@
 % Please edit documentation in R/summary.tableby.R
 \name{summary.tableby}
 \alias{summary.tableby}
-\alias{summary.tableby}
 \alias{as.data.frame.summary.tableby}
 \alias{print.summary.tableby}
 \title{The summary method for a \code{tableby} object}
@@ -15,8 +14,9 @@
   min.split = NULL)
 
 \method{print}{summary.tableby}(x, ..., format = if (!is.null(x$text) &&
-  x$text \%in\% c("html", "latex")) x$text else "markdown", escape = x$text
-  \%nin\% c("html", "latex"), width = NULL, min.split = NULL)
+  x$text \%in\% c("html", "latex")) x$text else "markdown",
+  escape = x$text \%nin\% c("html", "latex"), width = NULL,
+  min.split = NULL)
 }
 \arguments{
 \item{object}{An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.}

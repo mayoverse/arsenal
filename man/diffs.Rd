@@ -8,7 +8,6 @@
 \alias{n.diffs}
 \alias{n.diffs.compare.data.frame}
 \alias{n.diffs.summary.compare.data.frame}
-\alias{diffs}
 \alias{diffs.compare.data.frame}
 \alias{diffs.summary.compare.data.frame}
 \title{Extract differences}
@@ -27,7 +26,8 @@ n.diffs(object, ...)
 
 diffs(object, ...)
 
-\method{diffs}{compare.data.frame}(object, vars = NULL, ..., by.var = FALSE)
+\method{diffs}{compare.data.frame}(object, vars = NULL, ...,
+  by.var = FALSE)
 
 \method{diffs}{summary.compare.data.frame}(object, vars = NULL, ...,
   by.var = FALSE)

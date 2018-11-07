@@ -7,8 +7,8 @@
 \alias{as.tbstat_multirow}
 \title{Internal \code{tableby} functions}
 \usage{
-as.tbstat(x, oldClass = NULL, sep = NULL, parens = NULL, sep2 = NULL,
-  pct = NULL)
+as.tbstat(x, oldClass = NULL, sep = NULL, parens = NULL,
+  sep2 = NULL, pct = NULL)
 
 as.countpct(x, ...)
 

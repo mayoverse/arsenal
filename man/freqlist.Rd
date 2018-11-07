@@ -2,7 +2,6 @@
 % Please edit documentation in R/freqlist.R
 \name{freqlist}
 \alias{freqlist}
-\alias{freqlist}
 \alias{freqlist.table}
 \alias{freqlist.formula}
 \alias{print.freqlist}
@@ -10,12 +9,12 @@
 \usage{
 freqlist(object, ...)
 
-\method{freqlist}{table}(object, sparse = FALSE, na.options = c("include",
-  "showexclude", "remove"), digits = 2, labelTranslations = NULL,
-  groupBy = NULL, ...)
+\method{freqlist}{table}(object, sparse = FALSE,
+  na.options = c("include", "showexclude", "remove"), digits = 2,
+  labelTranslations = NULL, groupBy = NULL, ...)
 
-\method{freqlist}{formula}(formula, data, subset, na.action, addNA, exclude,
-  drop.unused.levels, ...)
+\method{freqlist}{formula}(formula, data, subset, na.action, addNA,
+  exclude, drop.unused.levels, ...)
 
 \method{print}{freqlist}(x, ...)
 }

@@ -12,7 +12,7 @@ Coefficients:
 (Intercept)  60.4552     0.3802 159.001   <2e-16 ***
 sexFemale    -1.2082     0.6097  -1.982   0.0477 *  
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 11.51 on 1497 degrees of freedom
 Multiple R-squared:  0.002617,	Adjusted R-squared:  0.00195 

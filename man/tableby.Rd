@@ -2,7 +2,6 @@
 % Please edit documentation in R/tableby.R
 \name{tableby}
 \alias{tableby}
-\alias{tableby}
 \alias{print.tableby}
 \title{Summary Statistics of a Set of Independent Variables by a Categorical Variable}
 \usage{

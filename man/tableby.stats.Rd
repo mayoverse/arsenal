@@ -37,13 +37,13 @@ Nevents(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
 
 medSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
 
-NeventsSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), times = 1:5, ...)
+NeventsSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), times = 1:5,
+  ...)
 
-NriskSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), times = 1:5, ...)
+NriskSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), times = 1:5,
+  ...)
 
 medTime(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
-
-rangeTime(x, na.rm = TRUE, ...)
 
 q1q3(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
@@ -57,9 +57,11 @@ Nmiss2(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
 N(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
 
-count(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
+count(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)),
+  ...)
 
-countpct(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)), ...)
+countpct(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)),
+  ...)
 
 countrowpct(x, levels = NULL, by, by.levels = sort(unique(by)),
   na.rm = TRUE, weights = rep(1, length(x)), ...)

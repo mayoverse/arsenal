@@ -3,7 +3,6 @@
 \docType{data}
 \name{mockstudy}
 \alias{mockstudy}
-\alias{mockstudy}
 \alias{muck_up_mockstudy}
 \title{Mock study data for examples}
 \format{A data frame with 1499 observations on the following 15 variables:

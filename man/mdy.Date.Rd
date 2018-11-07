@@ -2,7 +2,6 @@
 % Please edit documentation in R/mdy.Date.R
 \name{mdy.Date}
 \alias{mdy.Date}
-\alias{mdy.Date}
 \alias{Date.mdy}
 \alias{is.Date}
 \title{Convert numeric dates to Date object, and vice versa}

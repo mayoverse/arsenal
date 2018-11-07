@@ -64,8 +64,7 @@ testthat::compare
 # devtools::check_man()
 # devtools::test()
 # devtools::check()
-# withr::with_libpaths(c("../testinstalls/", .libPaths()),
-#                      devtools::install("../rpkg-arsenal/", build_vignettes = TRUE, dependencies = FALSE))
+# withr::with_libpaths(c("../testinstalls/", .libPaths()), devtools::install(build_vignettes = TRUE, dependencies = FALSE))
 # devtools::build("../rpkg-arsenal/")
 ## < restart R >
 ## library(arsenal, lib.loc = "../testinstalls/")

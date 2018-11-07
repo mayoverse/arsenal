@@ -2,7 +2,6 @@
 % Please edit documentation in R/compare.data.frame.R
 \name{compare.data.frame}
 \alias{compare.data.frame}
-\alias{compare.data.frame}
 \alias{print.compare.data.frame}
 \title{Compare two data.frames and report differences}
 \usage{

@@ -2,7 +2,6 @@
 % Please edit documentation in R/keep.labels.R
 \name{keep.labels}
 \alias{keep.labels}
-\alias{keep.labels}
 \alias{keep.labels.data.frame}
 \alias{keep.labels.default}
 \alias{[.keep_labels}

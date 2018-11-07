@@ -2,12 +2,12 @@
 % Please edit documentation in R/summary.freqlist.R
 \name{summary.freqlist}
 \alias{summary.freqlist}
-\alias{summary.freqlist}
 \alias{print.summary.freqlist}
 \title{summary.freqlist}
 \usage{
-\method{summary}{freqlist}(object, single = FALSE, labelTranslations = NULL,
-  dupLabels = FALSE, title = NULL, ..., format = "markdown")
+\method{summary}{freqlist}(object, single = FALSE,
+  labelTranslations = NULL, dupLabels = FALSE, title = NULL, ...,
+  format = "markdown")
 
 \method{print}{summary.freqlist}(x, ..., format = "markdown")
 }

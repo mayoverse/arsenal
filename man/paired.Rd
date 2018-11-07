@@ -2,11 +2,11 @@
 % Please edit documentation in R/paired.R
 \name{paired}
 \alias{paired}
-\alias{paired}
 \alias{print.paired}
 \title{Summary Statistics of a Set of Independent Variables Paired Across Two Timepoints}
 \usage{
-paired(formula, data, id, na.action, subset = NULL, control = NULL, ...)
+paired(formula, data, id, na.action, subset = NULL, control = NULL,
+  ...)
 
 \method{print}{paired}(x, ...)
 }

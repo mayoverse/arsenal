@@ -2,7 +2,6 @@
 % Please edit documentation in R/yaml.R
 \name{yaml}
 \alias{yaml}
-\alias{yaml}
 \alias{print.yaml}
 \alias{c.yaml}
 \alias{is.yaml}

@@ -2,7 +2,6 @@
 % Please edit documentation in R/summary.modelsum.R
 \name{summary.modelsum}
 \alias{summary.modelsum}
-\alias{summary.modelsum}
 \alias{as.data.frame.summary.modelsum}
 \alias{print.summary.modelsum}
 \title{Summarize a \code{modelsum} object.}
@@ -14,8 +13,9 @@
   term.name = x$term.name, width = NULL, min.split = NULL)
 
 \method{print}{summary.modelsum}(x, ..., format = if (!is.null(x$text) &&
-  x$text \%in\% c("html", "latex")) x$text else "markdown", escape = x$text
-  \%nin\% c("html", "latex"), width = NULL, min.split = NULL)
+  x$text \%in\% c("html", "latex")) x$text else "markdown",
+  escape = x$text \%nin\% c("html", "latex"), width = NULL,
+  min.split = NULL)
 }
 \arguments{
 \item{object}{A \code{\link{modelsum}} object.}

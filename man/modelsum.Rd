@@ -2,13 +2,13 @@
 % Please edit documentation in R/modelsum.R
 \name{modelsum}
 \alias{modelsum}
-\alias{modelsum}
 \alias{print.modelsum}
 \alias{print.modelsumList}
 \title{Fit models over each of a set of independent variables with a response variable}
 \usage{
 modelsum(formula, family = "gaussian", data, adjust = NULL,
-  na.action = NULL, subset = NULL, weights = NULL, control = NULL, ...)
+  na.action = NULL, subset = NULL, weights = NULL, control = NULL,
+  ...)
 
 \method{print}{modelsum}(x, ...)
 
