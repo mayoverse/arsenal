@@ -15,6 +15,8 @@
   
 * `formulize()`: added support for names and calls. (#152, #153)
 
+* Fixed `medSurv()` which was calculating the median survival incorrectly, and removed `rangeTime()`, an ambiguous survival statistic. (#32)
+
 # arsenal v1.4.0
 
 **There are a few non-backwards-compatible updates.**

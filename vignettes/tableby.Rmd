@@ -784,7 +784,6 @@ however there are a number of extra functions defined specifically for the table
 * `NeventsSurv`: print number of events and survival at given times
 * `NriskSurv`: print the number still at risk at given times
 * `medTime`: print the median follow-up time
-* `rangeTime`: print the range of follow-up times
 
 ## Testing options
 
