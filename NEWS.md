@@ -10,6 +10,8 @@
 
 * `print.summary.tableby()`, `as.data.frame.summary.tableby()`, `print.summary.modelsum()`, `as.data.frame.summary.modelsum()`: added `width=` and
   `min.split=` as formal arguments.
+  
+* `formulize()`: added support for names and calls. (#152, #153)
 
 # arsenal v1.4.0
 
