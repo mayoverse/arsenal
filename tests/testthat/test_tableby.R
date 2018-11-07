@@ -616,24 +616,23 @@ test_that("01/30/2018: additional follow-up statistics (#32)", {
   {
     expect_identical(
       capture.kable(summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5,
-                                     surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime", "rangeTime")), text = TRUE)),
-      c("|                              | Male (N=916)  | Female (N=583) | Total (N=1499) | p value|",
-        "|:-----------------------------|:-------------:|:--------------:|:--------------:|-------:|",
-        "|Surv(fu.time/365.25, fu.stat) |               |                |                |   0.975|",
-        "|-  Median Survival            |     1.506     |     1.487      |     1.495      |        |",
-        "|-  Events                     |      829      |      527       |      1356      |        |",
-        "|-  time = 1                   |  286 (68.7)   |   202 (65.3)   |   488 (67.4)   |        |",
-        "|-  time = 2                   |  597 (34.4)   |   391 (32.8)   |   988 (33.7)   |        |",
-        "|-  time = 3                   |  748 (17.5)   |   481 (17.0)   |  1229 (17.3)   |        |",
-        "|-  time = 4                   |   809 (9.4)   |   513 (10.9)   |  1322 (10.1)   |        |",
-        "|-  time = 5                   |   825 (6.3)   |   525 (7.4)    |   1350 (6.8)   |        |",
-        "|-  time = 1                   |      626      |      380       |      1006      |        |",
-        "|-  time = 2                   |      309      |      190       |      499       |        |",
-        "|-  time = 3                   |      152      |       95       |      247       |        |",
-        "|-  time = 4                   |      57       |       51       |      108       |        |",
-        "|-  time = 5                   |      24       |       18       |       42       |        |",
-        "|-  Median Follow-Up           |     1.484     |     1.487      |     1.484      |        |",
-        "|-  Range of Follow-Up         | 0.000 - 6.768 | 0.025 - 6.683  | 0.000 - 6.768  |        |"
+                                     surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime")), text = TRUE)),
+      c("|                              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
+        "|:-----------------------------|:------------:|:--------------:|:--------------:|-------:|",
+        "|Surv(fu.time/365.25, fu.stat) |              |                |                |   0.975|",
+        "|-  Median Survival            |    1.506     |     1.487      |     1.495      |        |",
+        "|-  Events                     |     829      |      527       |      1356      |        |",
+        "|-  time = 1                   |  286 (68.7)  |   202 (65.3)   |   488 (67.4)   |        |",
+        "|-  time = 2                   |  597 (34.4)  |   391 (32.8)   |   988 (33.7)   |        |",
+        "|-  time = 3                   |  748 (17.5)  |   481 (17.0)   |  1229 (17.3)   |        |",
+        "|-  time = 4                   |  809 (9.4)   |   513 (10.9)   |  1322 (10.1)   |        |",
+        "|-  time = 5                   |  825 (6.3)   |   525 (7.4)    |   1350 (6.8)   |        |",
+        "|-  time = 1                   |     626      |      380       |      1006      |        |",
+        "|-  time = 2                   |     309      |      190       |      499       |        |",
+        "|-  time = 3                   |     152      |       95       |      247       |        |",
+        "|-  time = 4                   |      57      |       51       |      108       |        |",
+        "|-  time = 5                   |      24      |       18       |       42       |        |",
+        "|-  Median Follow-Up           |    4.665     |     4.413      |     4.561      |        |"
       )
     )
   } else skip("survival package not available or not the right version.")
@@ -759,18 +758,17 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
   {
     expect_identical(
       capture.kable(summary(tableby(y ~ Surv(x), data=dat, times = 1:2,
-                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime", "rangeTime")), text = TRUE)),
-      c("|                      |    A (N=3)    | B (N=2) |  Total (N=5)  | p value|",
-        "|:---------------------|:-------------:|:-------:|:-------------:|-------:|",
-        "|Surv(x)               |               |         |               |        |",
-        "|-  Median Survival    |     2.000     |   NA    |     2.000     |        |",
-        "|-  Events             |       3       |   NA    |       3       |        |",
-        "|-  time = 1           |   1 (66.7)    | NA (NA) |   1 (66.7)    |        |",
-        "|-  time = 2           |   2 (33.3)    | NA (NA) |   2 (33.3)    |        |",
-        "|-  time = 1           |       3       |   NA    |       3       |        |",
-        "|-  time = 2           |       2       |   NA    |       2       |        |",
-        "|-  Median Follow-Up   |     2.000     |   NA    |     2.000     |        |",
-        "|-  Range of Follow-Up | 1.000 - 3.000 | NA - NA | 1.000 - 3.000 |        |"
+                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime")), text = TRUE)),
+      c("|                    | A (N=3)  | B (N=2) | Total (N=5) | p value|",
+        "|:-------------------|:--------:|:-------:|:-----------:|-------:|",
+        "|Surv(x)             |          |         |             |        |",
+        "|-  Median Survival  |  2.000   |   NA    |    2.000    |        |",
+        "|-  Events           |    3     |   NA    |      3      |        |",
+        "|-  time = 1         | 1 (66.7) | NA (NA) |  1 (66.7)   |        |",
+        "|-  time = 2         | 2 (33.3) | NA (NA) |  2 (33.3)   |        |",
+        "|-  time = 1         |    3     |   NA    |      3      |        |",
+        "|-  time = 2         |    2     |   NA    |      2      |        |",
+        "|-  Median Follow-Up |    NA    |   NA    |     NA      |        |"
       )
     )
   } else skip("survival package not available or not the right version.")

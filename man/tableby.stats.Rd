@@ -11,7 +11,6 @@
 \alias{NeventsSurv}
 \alias{NriskSurv}
 \alias{medTime}
-\alias{rangeTime}
 \alias{q1q3}
 \alias{medianq1q3}
 \alias{iqr}

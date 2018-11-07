@@ -82,7 +82,7 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
    stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", medianrange="Median (Range)",
                      median="Median", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3", iqr = "IQR",
                      range="Range", countpct="Count (Pct)", Nevents="Events", medSurv="Median Survival",
-                     medTime = "Median Follow-Up", rangeTime = "Range of Follow-Up"),
+                     medTime = "Median Follow-Up"),
    digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE, conf.level = 0.95,
    chisq.correct=FALSE, simulate.p.value=FALSE, B=2000, ...) {
 

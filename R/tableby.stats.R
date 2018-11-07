@@ -75,7 +75,6 @@ Nevents <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
     NA_real_
   } else {
     mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
-    if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
     as.numeric(mat["events"])
   }
   as.countpct(y)
@@ -90,8 +89,7 @@ medSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
     NA_real_
   } else {
     mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
-    if("events" %nin% names(mat)) stop("Survival endpoint may not be coded 0/1.\n")
-    as.numeric(mat["median"])
+    as.numeric(mat["median"]) # if we don't hit the median, or if all obs are censors, this is NA
   }
   as.tbstat(y)
 }
@@ -129,19 +127,13 @@ medTime <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
   y <- if(na.rm && allNA(x))
   {
     NA_real_
-  } else wtd.quantile(as.matrix(x)[,1], weights=weights, probs=0.5, na.rm=na.rm)
-  as.tbstat(y)
-}
-
-#' @rdname tableby.stats
-#' @export
-rangeTime <- function(x, na.rm = TRUE, ...)
-{
-  y <- if(na.rm && allNA(x))
+  } else
   {
-    c(NA_real_, NA_real_)
-  } else base::range(as.matrix(x)[,1], na.rm=na.rm)
-  as.tbstat(y, sep = " - ")
+    x[, 2] <- 1 - x[, 2] # censor events instead
+    mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
+    as.numeric(mat["median"]) # if we don't hit the median, or if all obs are events, this is NA
+  }
+  as.tbstat(y)
 }
 
 ## quantiles

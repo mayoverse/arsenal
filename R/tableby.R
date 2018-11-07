@@ -283,6 +283,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, control
     } else if(survival::is.Surv(currcol)) {
       ##### Survival (time to event) #######
       xlevels <- NULL
+      if(any(currcol[, 2] %nin% 0:1)) stop("Survival endpoint may not be coded 0/1.")
 
       currstats <- control$surv.stats
       currtest <- control$surv.test
