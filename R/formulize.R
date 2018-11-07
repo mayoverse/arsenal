@@ -2,7 +2,7 @@
 #'
 #' A shortcut to generate one-, two-, or many-sided formulas from vectors of variable names.
 #'
-#' @param y,x,... Character vectors to be collapsed (by \code{"+"}) and put left-to-right in the formula.
+#' @param y,x,... Character vectors, names, or calls to be collapsed (by \code{"+"}) and put left-to-right in the formula.
 #'   If \code{data} is supplied, these can also be numeric, denoting which column name to use. See examples.
 #' @param data An R object with non-null column names.
 #' @seealso \code{\link[stats]{reformulate}}
@@ -27,10 +27,19 @@
 #' ## get an interaction
 #' formulize("y", c("x1*x2", "x3"))
 #'
+#' ## no intercept
+#' formulize("y", "x1 - 1")
+#' formulize("y", c("x1", "x2", "-1"))
+#'
 #' ## use in an lm
 #' form <- formulize(2, 3:4, data = mockstudy)
 #' summary(lm(form, data = mockstudy))
 #'
+#' ## using non-syntactic names or calls (like reformulate example)
+#' formulize(as.name("+-"), c("`P/E`", "`% Growth`"))
+#'
+#' f <- Surv(ft, case) ~ a + b
+#' formulize(f[[2]], f[[3]])
 #' @export
 
 formulize <- function(y = "", x = "", ..., data = NULL)
@@ -41,9 +50,11 @@ formulize <- function(y = "", x = "", ..., data = NULL)
     if(is.null(colnames(data))) stop("colnames(data) is NULL")
     dots <- lapply(dots, function(elt, cn) if(is.numeric(elt)) lapply(cn[elt], as.name) else elt, cn = colnames(data))
   }
-  is.ok <- function(x) is.character(x) || (is.list(x) && all(vapply(x, is.name, NA)))
+  name.or.call <- function(elt) is.name(elt) || is.call(elt)
+  dots <- lapply(dots, function(elt) if(name.or.call(elt)) list(elt) else elt)
+  is.ok <- function(x) is.character(x) || (is.list(x) && all(vapply(x, name.or.call, NA)))
   trash <- lapply(dots, function(elt) if(!is.ok(elt))
-    stop("One or more argument isn't a character vector or list of names"))
+    stop("One or more argument isn't a character vector, numeric vector, list of names, or list of calls"))
   elts <- vapply(dots, paste0, character(1), collapse = " + ")
   stats::as.formula(paste0(elts, collapse = " ~ "), env = parent.frame())
 }

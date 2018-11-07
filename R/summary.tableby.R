@@ -7,7 +7,6 @@
 #' @param object An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.
 #' @param x An object of class \code{"summary.tableby"}.
 #' @param ... For \code{summary.tableby}, other arguments passed to \code{\link{as.data.frame.tableby}}.
-#'   For \code{as.data.frame.summary.tableby}, "width" and "min.split" are passed to \code{\link{smart.split}}.
 #'   For \code{print}ing the summary object, these are passed to both \code{as.data.frame.summary.tableby} and
 #'   \code{\link[knitr]{kable}}.
 #' @param title	Title for the table, defaulting to \code{NULL} (no title)
@@ -25,6 +24,7 @@
 #'   To use the default in \code{kable}, pass \code{NULL}. If \code{x$text} specifies LaTeX or HTML formatting,
 #'   that format is used in the table.
 #' @param escape Passed to \code{\link[knitr]{kable}}: should special characters be escaped when printed?
+#' @param width,min.split Passed to \code{\link{smart.split}} for formatting of the "term" column.
 #' @return An object of class \code{summary.tableby}
 #' @seealso \code{\link{tableby.control}}, \code{\link{tableby}}
 #' @author Ethan Heinzen, based on code by Gregory Dougherty, Jason Sinnwell, Beth Atkinson,
@@ -68,7 +68,7 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
 
 #' @rdname summary.tableby
 #' @export
-as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote, term.name = x$term.name)
+as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote, term.name = x$term.name, width = NULL, min.split = NULL)
 {
   df <- x$object
 
@@ -120,10 +120,9 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
   if(!x$control$total) df[["Total"]] <- NULL
 
   #### Format if necessary ####
-  opts <- list(...)
-  if(!is.null(width <- opts$width))
+  if(!is.null(width))
   {
-    firstcol <- smart.split(df[[1L]], width = width, min.split = opts$min.split)
+    firstcol <- smart.split(df[[1L]], width = width, min.split = min.split)
     lens <- vapply(firstcol, length, NA_integer_)
 
     df <- do.call(cbind.data.frame, c(list(label = unlist(firstcol, use.names = FALSE)), lapply(df[-1L], insert_elt, times = lens)))
@@ -161,9 +160,9 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
 #' @rdname summary.tableby
 #' @export
 print.summary.tableby <- function(x, ..., format = if(!is.null(x$text) && x$text %in% c("html", "latex")) x$text else "markdown",
-                                  escape = x$text %nin% c("html", "latex"))
+                                  escape = x$text %nin% c("html", "latex"), width = NULL, min.split = NULL)
 {
-  df <- as.data.frame(x, ...)
+  df <- as.data.frame(x, ..., width = width, min.split = min.split)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")

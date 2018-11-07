@@ -11,17 +11,17 @@
   text = FALSE, title = NULL, pfootnote = FALSE, term.name = "")
 
 \method{as.data.frame}{summary.tableby}(x, ..., text = x$text,
-  pfootnote = x$pfootnote, term.name = x$term.name)
+  pfootnote = x$pfootnote, term.name = x$term.name, width = NULL,
+  min.split = NULL)
 
 \method{print}{summary.tableby}(x, ..., format = if (!is.null(x$text) &&
   x$text \%in\% c("html", "latex")) x$text else "markdown", escape = x$text
-  \%nin\% c("html", "latex"))
+  \%nin\% c("html", "latex"), width = NULL, min.split = NULL)
 }
 \arguments{
 \item{object}{An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.}
 
 \item{...}{For \code{summary.tableby}, other arguments passed to \code{\link{as.data.frame.tableby}}.
-For \code{as.data.frame.summary.tableby}, "width" and "min.split" are passed to \code{\link{smart.split}}.
 For \code{print}ing the summary object, these are passed to both \code{as.data.frame.summary.tableby} and
 \code{\link[knitr]{kable}}.}
 
@@ -42,6 +42,8 @@ the LaTeX command \code{\\textbf}.}
 \item{term.name}{A character string denoting the column name for the first column.}
 
 \item{x}{An object of class \code{"summary.tableby"}.}
+
+\item{width, min.split}{Passed to \code{\link{smart.split}} for formatting of the "term" column.}
 
 \item{format}{Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
 To use the default in \code{kable}, pass \code{NULL}. If \code{x$text} specifies LaTeX or HTML formatting,

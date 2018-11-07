@@ -41,7 +41,7 @@ summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE
 
 #' @rdname summary.modelsum
 #' @export
-as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$term.name)
+as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$term.name, width = NULL, min.split = NULL)
 {
 
   #### format the digits and nsmall things ####
@@ -89,10 +89,9 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
   df$term.type <- NULL
 
   #### Format if necessary ####
-  opts <- list(...)
-  if(!is.null(width <- opts$width))
+  if(!is.null(width))
   {
-    firstcol <- smart.split(df[[1L]], width = width, min.split = opts$min.split)
+    firstcol <- smart.split(df[[1L]], width = width, min.split = min.split)
     lens <- vapply(firstcol, length, NA_integer_)
 
     df <- do.call(cbind.data.frame, c(list(label = unlist(firstcol, use.names = FALSE)), lapply(df[-1L], insert_elt, times = lens)))
@@ -131,9 +130,9 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
 #' @rdname summary.modelsum
 #' @export
 print.summary.modelsum <- function(x, ..., format = if(!is.null(x$text) && x$text %in% c("html", "latex")) x$text else "markdown",
-                                   escape = x$text %nin% c("html", "latex"))
+                                   escape = x$text %nin% c("html", "latex"), width = NULL, min.split = NULL)
 {
-  df <- as.data.frame(x, ...)
+  df <- as.data.frame(x, ..., width = width, min.split = min.split)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
