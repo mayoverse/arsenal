@@ -21,7 +21,7 @@ options(width = 100)
 One of the most common tables in medical literature includes summary statistics for a set of variables,
 often stratified by some group (e.g. treatment arm).  Locally at Mayo, the SAS macros `%table` and `%summary` were
 written to create summary tables with a single call. With the increasing interest in R, we have developed
-the function `tableby` to create similar tables within the R environment.  
+the function `tableby` to create similar tables within the R environment.
 
 In developing the `tableby()` function, the goal was to bring the best features of these macros into an R function.
 However, the task was not simply to duplicate all the functionality, but rather to make use of R's strengths
@@ -749,6 +749,16 @@ the `caption=` argument of `kable()`, so some tables may not have a properly num
 
 ```{r eval=FALSE}
 summary(tableby(sex ~ age, data = mockstudy), title="(\\#tab:mytableby) Caption here")
+```
+
+## 24. Adjust `tableby` for multiple p-values
+
+The `padjust()` function is a new S3 generic piggybacking off of `p.adjust()`. It works on both `tableby` and `summary.tableby` objects:
+
+```{r}
+tab <- summary(tableby(sex ~ age + fu.time + bmi + mdquality.s, data = mockstudy))
+tab
+padjust(tab, method = "bonferroni")
 ```
 
 # Available Function Options
