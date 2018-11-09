@@ -1,21 +1,30 @@
-# arsenal v1.4.0.9000
+# arsenal v1.5.0
 
-* `tableby()` and `paired()`: fixed a bug with specifying individual statistics for character and logical vectors. (#142)
+* `tableby()` and `paired()`:
 
-* `tableby()` and `paired()`: added a function (`notest()`) to prevent performing a test on an individual variable. (#144)
+    - fixed a bug with specifying individual statistics for character and logical vectors. (#142)
 
-* `summary.tableby()`: changed NA p-values to blanks. (#145)
+    - `tableby()` and `paired()`: added a function (`notest()`) to prevent performing a test on an individual variable. (#144)
 
-* `summary.tableby()`, `summary.modelsum()`, `summary.freqlist()`: added documentation on `bookdown`. (#147)
+    - `summary.tableby()`: changed NA p-values to blanks. (#145)
 
-* Wrote `padjust()`, an S3 wrapper for `p.adjust()`, which can also adjust `tableby()` (and hence `paired()`) objects.
+    - `summary.tableby()`: added documentation on `bookdown`. (#147)
+    
+    - Wrote `padjust()`, an S3 wrapper for `p.adjust()`, which can also adjust `tableby()` (and hence `paired()`) objects. (#146)
+    
+    - `print.summary.tableby()`, `as.data.frame.summary.tableby()`: added `width=` and `min.split=` as formal arguments.
+    
+    - Fixed `medSurv()` which was calculating the median survival incorrectly, and removed `rangeTime()`, an ambiguous survival statistic. (#32)
 
-* `print.summary.tableby()`, `as.data.frame.summary.tableby()`, `print.summary.modelsum()`, `as.data.frame.summary.modelsum()`: added `width=` and
-  `min.split=` as formal arguments.
-  
+* `modelsum()`:
+
+    - `summary.modelsum()`: added documentation on `bookdown`. (#147)
+    
+    - `print.summary.modelsum()`, `as.data.frame.summary.modelsum()`: added `width=` and `min.split=` as formal arguments.
+    
+* `summary.freqlist()`: added documentation on `bookdown`. (#147)
+
 * `formulize()`: added support for names and calls. (#152, #153)
-
-* Fixed `medSurv()` which was calculating the median survival incorrectly, and removed `rangeTime()`, an ambiguous survival statistic. (#32)
 
 # arsenal v1.4.0
 
