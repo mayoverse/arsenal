@@ -138,14 +138,6 @@ Smaller changes:
     - `summary.tableby()` and `as.data.frame.summary.tableby()`: added a `term.name=` argument. (#110)
     
     - `summary.tableby()`: pass `text="html"` to get better formatting in R shiny. (#114)
-
-* `modelsum()`:
-
-    - Implemented `is.modelsum()` and `is.summary.modelsum()`. (#111)
-    
-    - `summary.modelsum()`: ignore row.names when printing summary objects.
-    
-    - `summary.modelsum()` and `as.data.frame.summary.modelsum()`: added a `term.name=` argument. (#109)
     
     - Implemented `Ops.tableby()` to compare tableby objects to a number (p-value). (#96)
     
@@ -154,6 +146,14 @@ Smaller changes:
     - Implemented `length.tableby()`, so that `head()` and `tail()` also work. (#97)
     
     - Implemented `countcellpct()` for counts and cell percentages. (#106)
+
+* `modelsum()`:
+
+    - Implemented `is.modelsum()` and `is.summary.modelsum()`. (#111)
+    
+    - `summary.modelsum()`: ignore row.names when printing summary objects.
+    
+    - `summary.modelsum()` and `as.data.frame.summary.modelsum()`: added a `term.name=` argument. (#109)
     
     - Allow for `weights=` and `na.action=`. (#99)
     
