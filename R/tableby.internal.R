@@ -118,13 +118,16 @@ extract2_tbstat <- function(x, ...)
 #' @param object A \code{data.frame} resulting from evaluating a \code{tableby} formula.
 #' @param ... Other arguments, or a vector of indices for extracting.
 #' @param x,y A \code{tableby} object.
-#' @param i A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.
+#' @param i,j A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.
+#'   \code{i} indexes the x-variables, and \code{j} indexes the by-variables.
 #' @param value A list of new labels.
-#' @param pdata A named data.frame where the first column is the x variable names matched by name, the second is the
-#'   p-values (or some test stat), and the third column is the method name (optional)
+#' @param pdata A named data.frame where the first column is the by-variable names, the (optional) second is the strata value, the next is
+#'   the x variable names, the next is p-values (or some test stat), and the (optional) next column is the method name.
 #' @param e1,e2 \code{\link{tableby}} objects, or numbers to compare them to.
 #' @param use.pname Logical, denoting whether the column name in \code{pdata} corresponding to the p-values should be used
 #'   in the output of the object.
+#' @param n A single integer. See \code{\link[utils]{head}} or \code{\link[utils]{tail}} for more details
+#' @param lhs Logical, denoting whether to remove \code{NA}s from the first column of the data.frame (the "left-hand side")
 #' @return \code{na.tableby} returns a subsetted version of \code{object} (with attributes). \code{Ops.tableby} returns
 #'   a logical vector. \code{xtfrm.tableby} returns the p-values (which are ordered by \code{\link{order}} to \code{\link{sort}}).
 #' @details
@@ -419,7 +422,7 @@ Ops.tableby <- function(e1, e2)
 
 #' @rdname tableby.internal
 #' @export
-head.tableby <- function(x, n, ...)
+head.tableby <- function(x, n = 6L, ...)
 {
   stopifnot(length(n) == 1L)
   xlen <- unique(vapply(x$tables, function(obj) length(obj$x), NA_integer_))
@@ -430,7 +433,7 @@ head.tableby <- function(x, n, ...)
 
 #' @rdname tableby.internal
 #' @export
-tail.tableby <- function(x, n, ...)
+tail.tableby <- function(x, n = 6L, ...)
 {
   stopifnot(length(n) == 1L)
   xlen <- unique(vapply(x$tables, function(obj) length(obj$x), NA_integer_))

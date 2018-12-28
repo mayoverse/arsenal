@@ -3,9 +3,12 @@
 \name{internal.functions}
 \alias{internal.functions}
 \alias{smart.split}
+\alias{replace2}
 \title{Split a string into pieces intelligently}
 \usage{
 smart.split(string, width = Inf, min.split = -Inf)
+
+replace2(x, list, values)
 }
 \arguments{
 \item{string}{A character vector}
@@ -15,11 +18,22 @@ or a positive integer giving the largest allowed string length.}
 
 \item{min.split}{Either \code{-Inf} or \code{NULL} to specify no
 lower bound on the string length, or a positive integer giving the minimum string length.}
+
+\item{x}{vector}
+
+\item{list}{an index vector}
+
+\item{values}{replacement values}
 }
 \value{
-A list of the same length as \code{string}, with each element being
+For \code{smart.split}, a list of the same length as \code{string}, with each element being
   the "intelligently" split string.
+
+  For \code{replace2}, a vector with the proper values replaced.
 }
 \description{
 Split a string into pieces intelligently
+}
+\seealso{
+\code{\link[base]{replace}}
 }

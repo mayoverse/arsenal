@@ -13,12 +13,13 @@
 #'   containing the variables in the model. If not found in data, the variables are taken from \code{environment(formula)},
 #'   typically the environment from which the function is called.
 #' @param na.action a function which indicates what should happen when the data contain \code{NA}s.
-#'   The default is \code{na.tableby} if there is a by variable, and \code{\link[stats]{na.pass}} if there is not.
+#'   The default is \code{na.tableby(TRUE)} if there is a by-variable, and \code{na.tableby(FALSE)} if there is not.
 #'   This schema thus includes observations with \code{NA}s in x variables,
-#'   but removes those with \code{NA} in the categorical group variable.
+#'   but removes those with \code{NA} in the categorical group variable and strata (if used).
 #' @param subset an optional vector specifying a subset of observations (rows of data) to be used in the results.
 #'   Works as vector of logicals or an index.
-#' @param weights a vector of weights.
+#' @param weights a vector of weights. Using weights will disable statistical tests.
+#' @param strata a vector of strata to separate summaries by an additional group.
 #' @param control control parameters to handle optional settings within \code{tableby}.
 #'   Two aspects of \code{tableby} are controlled with these: test options of RHS variables across levels of the categorical
 #'   grouping variable, and x variable summaries within the grouping variable. Arguments for \code{tableby.control}
@@ -83,6 +84,8 @@
 #' The summary statistics reported for each independent variable within the
 #' group variable can be set in \code{\link{tableby.control}}.
 #'
+#' Finally, multiple by-variables can be set using \code{list()}. See the examples for more details.
+#'
 #' @return An object with class \code{'tableby'}
 #' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}},
 #'   \code{\link{summary.tableby}}, \code{\link{formulize}}
@@ -99,8 +102,12 @@
 #'                 numeric.stats=c("median","q1q3"), numeric.test="kwt")
 #' summary(tab3, text=TRUE)
 #'
+#' # multiple LHS
+#' summary(tableby(list(arm, sex) ~ age, data = mockstudy, strata = ps), text = TRUE)
+#'
 #' tab.test <- tableby(arm ~ kwt(age) + anova(bmi) + kwt(ast), data=mockstudy)
 #' tests(tab.test)
+#'
 #' @author Jason Sinnwell, Beth Atkinson, Gregory Dougherty, and Ethan Heinzen, adapted from SAS Macros written by Paul Novotny and Ryan Lennon
 #' @name tableby
 NULL

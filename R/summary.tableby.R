@@ -25,6 +25,8 @@
 #'   that format is used in the table.
 #' @param escape Passed to \code{\link[knitr]{kable}}: should special characters be escaped when printed?
 #' @param width,min.split Passed to \code{\link{smart.split}} for formatting of the "term" column.
+#' @param list.ok If the object has multiple by-variables, is it okay to return a list of data.frames instead of a single data.frame?
+#'   If \code{FALSE} but there are multiple by-variables, a warning is issued.
 #' @return An object of class \code{summary.tableby}
 #' @seealso \code{\link{tableby.control}}, \code{\link{tableby}}
 #' @author Ethan Heinzen, based on code by Gregory Dougherty, Jason Sinnwell, Beth Atkinson,

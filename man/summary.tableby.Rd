@@ -11,7 +11,7 @@
 
 \method{as.data.frame}{summary.tableby}(x, ..., text = x$text,
   pfootnote = x$pfootnote, term.name = x$term.name, width = NULL,
-  min.split = NULL)
+  min.split = NULL, list.ok = FALSE)
 
 \method{print}{summary.tableby}(x, ..., format = if (!is.null(x$text) &&
   x$text \%in\% c("html", "latex")) x$text else "markdown",
@@ -44,6 +44,9 @@ the LaTeX command \code{\\textbf}.}
 \item{x}{An object of class \code{"summary.tableby"}.}
 
 \item{width, min.split}{Passed to \code{\link{smart.split}} for formatting of the "term" column.}
+
+\item{list.ok}{If the object has multiple by-variables, is it okay to return a list of data.frames instead of a single data.frame?
+If \code{FALSE} but there are multiple by-variables, a warning is issued.}
 
 \item{format}{Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
 To use the default in \code{kable}, pass \code{NULL}. If \code{x$text} specifies LaTeX or HTML formatting,

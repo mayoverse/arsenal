@@ -4,7 +4,8 @@
 \alias{as.data.frame.tableby}
 \title{as.data.frame.tableby}
 \usage{
-\method{as.data.frame}{tableby}(x, ..., labelTranslations = NULL)
+\method{as.data.frame}{tableby}(x, ..., labelTranslations = NULL,
+  list.ok = FALSE)
 }
 \arguments{
 \item{x}{A \code{\link{tableby}} object.}
@@ -14,6 +15,9 @@
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
 output to be replaced in the pretty rendering of tableby by the character string
 value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.}
+
+\item{list.ok}{If the object has multiple by-variables, is it okay to return a list of data.frames instead of a single data.frame?
+If \code{FALSE} but there are multiple by-variables, a warning is issued.}
 }
 \value{
 A \code{data.frame}.
