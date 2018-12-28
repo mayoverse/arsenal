@@ -199,7 +199,8 @@ test_that("A basic two-sided tableby markdown output", {
 ###########################################################################################################
 
 test_that("A warning occurs using one-sided formula and na.tableby", {
-  expect_warning(tableby(~ ethan, data = mdat, na.action = na.tableby))
+  expect_error(tableby(~ ethan, data = mdat, na.action = na.tableby), "na.tableby now generates functions")
+  expect_warning(tableby(~ ethan, data = mdat, na.action = na.tableby(TRUE)))
 })
 
 test_that("The by-variable droplevels is working correctly", {
@@ -235,18 +236,12 @@ test_that("Using cat.simplify", {
 test_that("Reordering variables", {
   expect_identical(
     capture.kable(summary(tableby(Group ~ Sex + dt + Age, data = mdat)[c(3,1,2)], text = TRUE)),
-    c("|             |       High (N=30)       |       Low (N=30)        |       Med (N=30)        |      Total (N=90)       | p value|",
-      "|:------------|:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|-------:|",
-      "|Age in Years |                         |                         |                         |                         |   0.906|",
-      "|-  Mean (SD) |     40.033 (6.217)      |     39.633 (3.873)      |     39.433 (5.569)      |     39.700 (5.258)      |        |",
-      "|-  Range     |     29.000 - 53.000     |     32.000 - 48.000     |     30.000 - 52.000     |     29.000 - 53.000     |        |",
-      "|Sex          |                         |                         |                         |                         |   0.733|",
-      "|-  Female    |       15 (50.0%)        |       17 (56.7%)        |       14 (46.7%)        |       46 (51.1%)        |        |",
-      "|-  Male      |       15 (50.0%)        |       13 (43.3%)        |       16 (53.3%)        |       44 (48.9%)        |        |",
-      "|dt           |                         |                         |                         |                         |   0.391|",
-      "|-  Median    |       1950-01-07        |       1951-06-13        |       1948-09-13        |       1949-10-07        |        |",
-      "|-  Range     | 1935-08-15 - 1968-05-14 | 1937-02-08 - 1959-09-06 | 1939-04-01 - 1958-07-30 | 1935-08-15 - 1968-05-14 |        |"
-    )
+    capture.kable(summary(tableby(Group ~ Age + Sex + dt, data = mdat), text = TRUE))
+  )
+
+  expect_identical(
+    capture.kable(summary(sort(tableby(Group ~ Sex + dt + Age, data = mdat)))),
+    capture.kable(summary(tableby(Group ~ dt + Sex + Age, data = mdat)))
   )
 
   expect_identical(
@@ -315,8 +310,8 @@ test_that("Changing tests", {
 
 test_that("Changing labels", {
   tb <- tableby(Group ~ Sex + Age, data = mdat)
-  expect_error(labels(tb) <- c("Sex", "Age"))
-  expect_warning(labels(tb) <- c(hi = "hi", Sex = "Sex", Age = "Age"))
+  expect_error(labels(tb) <- c("Group", "Sex", "Age"))
+  expect_warning(labels(tb) <- c(hi = "hi", Sex = "Sex", Age = "Age"), NA)
   expect_identical(
     capture.kable(summary(tb, text = TRUE)),
     c("|             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value|",
@@ -369,7 +364,7 @@ set.seed(1000)
 test_that("05/25/2017: simulate.p.value option for chisq.test", {
   expect_true(identical(
     round.p(tests(tableby(Group ~ Sex + time + dt, data = mdat,  subset=Group != "High",simulate.p.value=TRUE))),
-    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.61169, 0.20595, 0.17144),
+    data.frame(Group = "Group", Variable = c("Sex", "time", "dt"), p.value = c(0.61169, 0.20595, 0.17144),
                Method = c("Pearson's Chi-squared test with simulated p-value\n\t (based on 2000 replicates)",
                           "Linear Model ANOVA", "Kruskal-Wallis rank sum test"), stringsAsFactors = FALSE)
   ))
@@ -378,7 +373,7 @@ test_that("05/25/2017: simulate.p.value option for chisq.test", {
 test_that("05/25/2017: chisq.correct=FALSE option for chisq.test", {
   expect_true(identical(
     round.p(tests(tableby(Group ~ Sex + time + dt, data = mdat, subset=Group != "High", chisq.correct=FALSE))),
-    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.43832, 0.20595, 0.17144),
+    data.frame(Group = "Group", Variable = c("Sex", "time", "dt"), p.value = c(0.43832, 0.20595, 0.17144),
                Method = c("Pearson's Chi-squared test", "Linear Model ANOVA", "Kruskal-Wallis rank sum test"),
                stringsAsFactors = FALSE)
   ))
@@ -389,7 +384,7 @@ set.seed(1000)
 test_that("05/25/2017: simulate.p.value=TRUE option for fisher.test", {
   expect_true(identical(
     round.p(tests(tableby(Group ~ fe(Sex) + time + dt, data = mdat, simulate.p.value=TRUE, B = 1999))),
-    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.80000, 0.02480, 0.39127),
+    data.frame(Group = "Group", Variable = c("Sex", "time", "dt"), p.value = c(0.80000, 0.02480, 0.39127),
                Method = c("Fisher's Exact Test for Count Data with simulated p-value\n\t (based on 1999 replicates)",
                           "Linear Model ANOVA", "Kruskal-Wallis rank sum test"), stringsAsFactors = FALSE)
   ))
@@ -515,7 +510,7 @@ test_that("08/02/2017: Chi-square warnings are suppressed", {
 
 test_that("08/26/2017: Richard Pendegraft and using formulize and tableby (#21)", {
   # tableby was having trouble identifying one-sided formulas when you use formulize
-  expect_warning(tableby(formulize(x = 11, data = mdat), data = mdat, na.action = na.tableby))
+  expect_warning(tableby(formulize(x = 11, data = mdat), data = mdat, na.action = na.tableby(TRUE)), "It appears you're using na.tableby")
 
   expect_identical(
     capture.kable(summary(tableby(Group ~ fe(Sex) + kwt(Age), data = mdat), text = TRUE)),
@@ -525,8 +520,7 @@ test_that("08/26/2017: Richard Pendegraft and using formulize and tableby (#21)"
 
 df <- data.frame(a = c("b", "b", "b", "a", "a"), d = NA_character_, e = c(1, 2, 2, 1, 2), stringsAsFactors = FALSE)
 test_that("08/30/2017: Brendan Broderick and zero-length levels (#22)", {
-  expect_warning(tableby(a ~ d + e, data = df), "Zero-length levels")
-  expect_error(suppressWarnings(tableby(a ~ d, data = df)), "No x-variables successfully")
+  expect_error(tableby(a ~ d + e, data = df), "Zero-length levels")
 })
 
 
