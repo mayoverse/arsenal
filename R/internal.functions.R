@@ -19,8 +19,12 @@ smartsplit <- function(string, width, min.split)
 #'   or a positive integer giving the largest allowed string length.
 #' @param min.split Either \code{-Inf} or \code{NULL} to specify no
 #'   lower bound on the string length, or a positive integer giving the minimum string length.
-#' @return A list of the same length as \code{string}, with each element being
+#' @inheritParams base::replace
+#' @return For \code{smart.split}, a list of the same length as \code{string}, with each element being
 #'   the "intelligently" split string.
+#'
+#'   For \code{replace2}, a vector with the proper values replaced.
+#' @seealso \code{\link[base]{replace}}
 #' @name internal.functions
 NULL
 #> NULL
@@ -39,4 +43,32 @@ insert_elt <- function(col, times, elt = "")
 {
   f <- if(is.null(elt)) rep else function(x, i) c(x, rep(elt, times = i - 1L))
   unlist(Map(f, col, times), use.names = FALSE)
+}
+
+#' @rdname internal.functions
+#' @export
+replace2 <- function(x, list, values)
+{
+  x[[list]] <- values
+  x
+}
+
+as_list_formula <- function(formula)
+{
+  if(is.list(formula)) return(formula)
+  if(length(formula) == 2 || is.name(formula[[2]]) || !identical(formula[[2]][[1]], as.name("list")))
+    return(list(formula)) # one-sided or LHS is single arg
+  lapply(formula[[2]][-1], replace2, list = 2, x = formula)
+}
+
+# set all factors to characters
+rbind_chr <- function(...)
+{
+  out <- rbind(...)
+  if(is.data.frame(out))
+  {
+    idx <- vapply(out, is.factor, NA)
+    out[idx] <- lapply(out[idx], as.character)
+  }
+  out
 }
