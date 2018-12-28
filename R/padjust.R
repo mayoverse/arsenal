@@ -30,11 +30,8 @@ padjust.default <- function(p, method, n, ...)
 padjust.tableby <- function(p, method, n, suffix = " (adjusted for multiple comparisons)", ...)
 {
   Call <- match.call()
-  if(!p$control$test)
-  {
-    warning("No tests run on tableby object")
-    return(p)
-  }
+  if(p$hasStrata || length(p$tables) > 1) stop("Can't adjust p-values on tables with strata or multiple by-variables.")
+  if(!p$control$test) stop("Can't adjust p-values when no tests were run")
   indx <- match(c("p", "method", "n"), names(Call), nomatch = 0)
   temp.call <- Call[c(1, indx)]
   temp.call[[1L]] <- quote(stats::p.adjust)
@@ -42,7 +39,6 @@ padjust.tableby <- function(p, method, n, suffix = " (adjusted for multiple comp
   pvals <- tests(p)
   temp.call$p <- pvals$p.value
   pvals$p.value <- eval(temp.call, parent.frame())
-  pvals$Variable <- row.names(pvals)
   pvals$Method <- paste0(pvals$Method, suffix)
   modpval.tableby(p, pvals)
 }
@@ -52,6 +48,7 @@ padjust.tableby <- function(p, method, n, suffix = " (adjusted for multiple comp
 padjust.summary.tableby <- function(p, method, n, suffix = " (adjusted for multiple comparisons)", ...)
 {
   Call <- match.call()
+  if(p$hasStrata || length(p$object) > 1) stop("Can't adjust p-values on tables with strata or multiple by-variables")
   if(!p$control$test)
   {
     warning("No tests run on tableby object")
@@ -60,10 +57,10 @@ padjust.summary.tableby <- function(p, method, n, suffix = " (adjusted for multi
   indx <- match(c("p", "method", "n"), names(Call), nomatch = 0)
   temp.call <- Call[c(1, indx)]
   temp.call[[1L]] <- quote(stats::p.adjust)
-  pvals <- unique(p$object[c("variable", "p.value")]) # find unique variable-pval combos
+  pvals <- unique(p$object[[1]][c("variable", "p.value")]) # find unique variable-pval combos
   temp.call$p <- pvals$p.value
   pvals$p.value <- eval(temp.call, parent.frame())
-  p$object[["p.value"]] <- pvals$p.value[match(p$object[["variable"]], pvals$variable)] # "merge" them back in
-  p$object[["test"]] <- paste0(p$object[["test"]], suffix)
+  p$object[[1]][["p.value"]] <- pvals$p.value[match(p$object[[1]][["variable"]], pvals$variable)] # "merge" them back in
+  p$object[[1]][["test"]] <- paste0(p$object[[1]][["test"]], suffix)
   p
 }

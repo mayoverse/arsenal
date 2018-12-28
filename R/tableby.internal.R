@@ -148,7 +148,7 @@ is.summary.tableby <- function(x) inherits(x, "summary.tableby")
 #' @rdname tableby.internal
 #' @export
 merge.tableby <- function(x, y, ...) {
-
+  stop("still do this")
   if(names(x$y) != names(y$y)) {
     stop("tableby objects cannot be merged unless same 'by' variable name).\n")
   }
@@ -184,27 +184,32 @@ merge.tableby <- function(x, y, ...) {
 #' @export
 modpval.tableby <- function(x, pdata, use.pname=FALSE) {
   ## set control$test to TRUE
-  if(any(pdata[,1] %in% names(x$x))) {
+  if(any(pdata[[1]] %in% names(x$tables))) {
     x$control$test <- TRUE
 
     ## change test results
     for(k in seq_len(nrow(pdata))) {
-      xname <- pdata[k,1]
-      idx <- which(names(x$x)==xname)
-      if(length(idx)==1) {
-        x$x[[idx]]$test$p.value <- pdata[k,2]
-        if(ncol(pdata)>2) {
-          x$x[[idx]]$test$method <- pdata[k,3]
-        } else {
-          x$x[[idx]]$test$method <- "modified by user"
-        }
+      yname <- pdata[[1]][k]
+
+      strat <- if(x$hasStrata) pdata[[2]][k] else ""
+      xname <- pdata[[2 + x$hasStrata]][k]
+      p <- pdata[[3 + x$hasStrata]][k]
+      method <- if(ncol(pdata) > 3 + x$hasStrata) pdata[[4 + x$hasStrata]][k] else "modified by user"
+
+      if(xname %in% names(x$tables[[yname]]$x) && strat %in% x$tables[[yname]]$strata$values)
+      {
+        idx <- which(x$tables[[yname]]$strata$values == strat)
+        stopifnot(length(idx) == 1)
+
+        x$tables[[yname]]$tables[[idx]][[xname]]$test$p.value <- p
+        x$tables[[yname]]$tables[[idx]][[xname]]$test$method <- method
       }
     }
     if(use.pname & nchar(names(pdata)[2])>0) {
       ## put different test column name in control
       x$control$test.pname <- names(pdata)[2]
     }
-  }
+  } else warning("Couldn't match any by-variables to the first column of 'x'.")
   return(x)
 }
 
@@ -219,40 +224,41 @@ modpval.tableby <- function(x, pdata, use.pname=FALSE) {
 #' @rdname tableby.internal
 #' @export
 labels.tableby <- function(object, ...) {
-  ##  get the formal labels from a tableby object's data variables
-  allLabels <- c(vapply(object$y, function(obj) obj$label, NA_character_),
-                 vapply(object$x, function(obj) obj$label, NA_character_))
-  names(allLabels) <- c(names(object$y), names(object$x))
-  return(allLabels)
+
+  get_lab <- function(x)
+  {
+    xLabs <- lapply(x$tables, function(strat) vapply(strat, function(obj) obj$label, NA_character_))
+    out <- c(setNames(x$y$label, x$y$term), unlist(unname(xLabs), recursive = FALSE))
+    out[!duplicated(out) | !duplicated(names(out))]
+  }
+
+  labs <- unlist(unname(lapply(object$tables, get_lab)), recursive = FALSE)
+  labs[!duplicated(labs) | !duplicated(names(labs))]
 }
 
 ## define generic function for tests, so tests(tbObj) will work
 
 #' @rdname tableby.internal
 #' @export
-tests <- function(x) {
-  UseMethod("tests")
-}
+tests <- function(x) UseMethod("tests")
 
 ## retrieve the names of the tests performed per variable
-
 #' @rdname tableby.internal
 #' @export
 tests.tableby <- function(x) {
   if(x$control$test) {
-    testdf <- data.frame(
-      Variable = labels(x)[-1],
-      p.value = vapply(x$x, function(z) z$test$p.value, NA_real_),
-      Method = vapply(x$x, function(z) z$test$method, NA_character_),
-      stringsAsFactors = FALSE
-    )
-    if(!is.null(x$control$test.pname)) {
-      names(testdf)[2] <- x$control$test.pname
-    }
+    df <- as.data.frame(x, list.ok = TRUE)
+    testdf <- do.call(rbind_chr, lapply(df, function(i) i[c("group.label", if(x$hasStrata) names(i)[4], "variable", "p.value", "test")]))
+
+    testdf <- unique(testdf)
+    row.names(testdf) <- NULL
+    names(testdf)[c(1, x$hasStrata + (2:4))] <- c("Group", "Variable",
+                                                  if(!is.null(x$control$test.pname)) x$control$test.pname else "p.value", "Method")
   } else {
-    testdf <- cat("No tests run on tableby object\n")
+    cat("No tests run on tableby object\n")
+    testdf <- NULL
   }
-  return(testdf)
+  testdf
 }
 
 
@@ -266,47 +272,26 @@ tests.tableby <- function(x) {
   if(is.list(value)) value <- unlist(value)
   if(is.null(value))
   {
-    x$y[[1]]$label <- x$y[[1]]$term
-    for(k in seq_along(x$x)) x$x[[k]]$label <- x$x[[k]]$term
-  } else if(!is.null(names(value))) {
-    vNames <- names(value)
-    objNames <- c(names(x$y), names(x$x))
-    v2objIndex <- match(vNames, objNames)
-    if(anyNA(v2objIndex))
+    for(i in seq_along(x$tables))
     {
-      idx <- is.na(v2objIndex)
-      warning("Named value(s) not matched in x: ", paste(vNames[idx],collapse=","), "\n")
-      value <- value[!idx]
-      v2objIndex <- v2objIndex[!idx]
+      for(j in seq_along(x$tables[[i]]$x)) x$tables[[i]]$x[[j]]$label <- x$tables[[i]]$x[[j]]$term
+      x$tables[[i]]$y$label <- x$tables[[i]]$y$term
+      x$tables[[i]]$strata$label <- x$tables[[i]]$strata$term
     }
-
-    ## handle y label first, then remove it
-    if(any(v2objIndex == 1)) {
-      x$y[[1]]$label <- value[v2objIndex == 1]
-      value <- value[v2objIndex != 1]
-      v2objIndex <- v2objIndex[v2objIndex != 1]
+  } else if(!is.null(names(value))) {
+    for(L in seq_along(value))
+    {
+      for(i in seq_along(x$tables))
+      {
+        nm <- names(value)[L]
+        val <- unname(value[L])
+        if(nm %in% names(x$tables[[i]]$x)) x$tables[[i]]$x[[nm]]$label <- val
+        if(nm == x$tables[[i]]$y$term) x$tables[[i]]$y$label <- val
+        if(nm == x$tables[[i]]$strata$term) x$tables[[i]]$strata$label <- val
+      }
     }
-    if(length(v2objIndex) > 0) {
-      ## prepare to iterate over the rest for x, if there are any
-      v2objIndex <- v2objIndex - 1
-      for(k in seq_along(v2objIndex)) x$x[[v2objIndex[k]]]$label <- value[k]
-    }
-  } else  {
-
-    ## Otherwise, assign in the order of how variables appear in formula, starting with y
-    ## check that length of value matches what is expected for x
-    ## for each of the RHS vars of x (1:length(x)-3),
-    ##assign strings in value to the 'label' element of the list for each RHS variable
-
-    if(length(value) != length(x$y) + length(x$x)) {
-      stop("Length of new labels is not the same length as there are variables in the formula.\n")
-    }
-    x$y[[1]]$label <- value[1]
-    for(k in seq_along(x$x)) {
-      x$x[[k]]$label <- value[k+1]
-    }
-  }
-  return(x)
+  } else stop("Unnamed label assignments are no longer supported")
+  x
 }
 
 ## subset a tableby object;
@@ -317,55 +302,107 @@ tests.tableby <- function(x) {
 
 #' @rdname tableby.internal
 #' @export
-"[.tableby" <- function(x, i) {
-  if(missing(i)) return(x)
+"[.tableby" <- function(x, i, j) {
+  if(missing(i) && missing(j)) return(x)
   newx <- x
 
-  if(is.character(i) && any(i %nin% names(x$x)))
+  give_warn <- function(vec) warning(paste0("Some indices not found in tableby object: ", paste0(vec, collapse = ", ")), call. = FALSE)
+  if(!missing(j))
   {
-    tmp <- paste0(i[i %nin% names(x$x)], collapse = ", ")
-    warning(paste0("Some indices not found in tableby object: ", tmp))
-    i <- i[i %in% names(x$x)]
-  } else if(is.numeric(i) && any(i %nin% seq_along(x$x)))
-  {
-    tmp <- paste0(i[i %nin% seq_along(x$x)], collapse = ", ")
-    warning(paste0("Some indices not found in tableby object: ", tmp))
-    i <- i[i %in% seq_along(x$x)]
-  } else if(is.logical(i) && length(i) != length(x$x))
-  {
-    stop("Logical vector index not the right length.")
+    if(is.character(j) && any(tmp <- j %nin% names(newx$tables)))
+    {
+      give_warn(j[tmp])
+      j <- j[!tmp]
+    } else if(is.numeric(j) && any(tmp <- j %nin% seq_along(newx$tables)))
+    {
+      give_warn(j[tmp])
+      j <- j[!tmp]
+    } else if(is.logical(j) && length(j) != length(newx$tables))
+    {
+      stop("Logical vector index not the right length")
+    }
+    if(length(j) == 0 || anyNA(j)) stop("Indices must have nonzero length and no NAs.")
+    newx$tables <- newx$tables[j]
   }
 
-  if(length(i) == 0 || anyNA(i)) stop("Indices must have nonzero length and no NAs.")
-
-  newx$x <- x$x[i]
-  return(newx)
+  if(!missing(i))
+  {
+    newx$tables <- lapply(newx$tables, function(yList) {
+      if(is.character(i) && any(tmp <- i %nin% names(yList$x)))
+      {
+        give_warn(i[tmp])
+        i <- i[!tmp]
+      } else if(is.numeric(i) && any(tmp <- i %nin% seq_along(yList$x)))
+      {
+        give_warn(i[tmp])
+        i <- i[!tmp]
+      } else if(is.logical(i) && length(i) != length(yList$x))
+      {
+        stop("Logical vector index not the right length")
+      }
+      if(length(i) == 0 || anyNA(i)) stop("Indices must have nonzero length and no NAs.")
+      yList$x <- yList$x[i]
+      yList$tables <- lapply(yList$tables, "[", i)
+      yList
+    })
+  }
+  newx
 }
-
 
 
 ## function to handle na.action for tableby formula, data.frame
 
 #' @rdname tableby.internal
 #' @export
-na.tableby <- function(object, ...) {
-    omit <- is.na(object[[1]])
-    xx <- object[!omit, , drop = FALSE]
-    if(any(omit)) {
+na.tableby <- function(lhs = TRUE)
+{
+  if(is.data.frame(lhs)) stop("na.tableby now generates functions (and no longer accepts data.frames). ",
+                              "Use 'na.tableby()' to generate the function that used to be 'na.tableby'.")
+  if(lhs)
+  {
+    function(object, ...) {
+      omit <- is.na(object[[1]])
+      if("(strata)" %in% names(object)) omit <- omit | is.na(object[["(strata)"]])
+
+      xx <- object[!omit, , drop = FALSE]
+      if(any(omit)) {
         temp <- stats::setNames(seq_along(omit)[omit], attr(object, "row.names")[omit])
         attr(temp, "class") <- "omit"
         attr(xx, "na.action") <- temp
+      }
+      xx
     }
-    xx
-}
+  } else
+  {
+    function(object, ...) {
+      omit <- if("(strata)" %in% names(object)) is.na(object[["(strata)"]]) else rep(FALSE, nrow(object))
 
+      xx <- object[!omit, , drop = FALSE]
+      if(any(omit)) {
+        temp <- stats::setNames(seq_along(omit)[omit], attr(object, "row.names")[omit])
+        attr(temp, "class") <- "omit"
+        attr(xx, "na.action") <- temp
+      }
+      xx
+    }
+  }
+}
 
 #' @rdname tableby.internal
 #' @export
 xtfrm.tableby <- function(x)
 {
   if(!x$control$test) stop("Can't extract p-values from a tableby object created with test=FALSE.")
-  vapply(x$x, function(lst) lst$test$p.value, NA_real_)
+  unlist(lapply(x$tables, function(lst) lapply(lst$tables, function(strat) lapply(strat, function(i) i$test$p.value))), use.names = FALSE)
+}
+
+#' @rdname tableby.internal
+#' @export
+sort.tableby <- function(x, ...)
+{
+  if(!x$control$test) stop("Can't sort a tableby object created with test=FALSE.")
+  if(x$hasStrata || length(x$tables) > 1) stop("Can't sort a tableby object with strata or multiple by variables")
+  NextMethod()
 }
 
 #' @rdname tableby.internal
@@ -382,4 +419,22 @@ Ops.tableby <- function(e1, e2)
 
 #' @rdname tableby.internal
 #' @export
-length.tableby <- function(x) length(x$x)
+head.tableby <- function(x, n, ...)
+{
+  stopifnot(length(n) == 1L)
+  xlen <- unique(vapply(x$tables, function(obj) length(obj$x), NA_integer_))
+  if(length(xlen) != 1) stop("length isn't defined for tableby objects with differing x-variables per by-variable")
+  n <- if(n < 0L) max(xlen + n, 0L) else min(n, xlen)
+  x[seq_len(n)]
+}
+
+#' @rdname tableby.internal
+#' @export
+tail.tableby <- function(x, n, ...)
+{
+  stopifnot(length(n) == 1L)
+  xlen <- unique(vapply(x$tables, function(obj) length(obj$x), NA_integer_))
+  if(length(xlen) != 1) stop("length isn't defined for tableby objects with differing x-variables per by-variable")
+  n <- if(n < 0L) max(xlen + n, 0L) else min(n, xlen)
+  x[seq.int(to = xlen, length.out = n)]
+}

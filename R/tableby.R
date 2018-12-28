@@ -143,10 +143,10 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
     temp.call[[1]] <- as.name("model.frame")
 
     if(is.null(temp.call$na.action)) {
-      temp.call$na.action <- if(length(FORM) == 2) stats::na.pass else na.tableby
-    } else if(length(FORM) == 2 && identical(na.action, na.tableby)) {
+      temp.call$na.action <- if(length(FORM) == 2) na.tableby(FALSE) else na.tableby(TRUE)
+    } else if(length(FORM) == 2 && identical(na.action, na.tableby(TRUE), ignore.environment = TRUE)) {
       # purposely using na.action instead of temp.call$na.action here
-      warning("It appears you're using na.tableby with a one-sided formula... Results may not be what you expect.")
+      warning("It appears you're using na.tableby(TRUE) with a one-sided formula... Results may not be what you expect.")
     }
 
     if (missing(data)) {
