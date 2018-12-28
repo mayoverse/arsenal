@@ -23,6 +23,8 @@
       If `tableby()` detects a one-sided formula, it sets this to FALSE. Both versions now remove rows with NAs in the strata column when applicable.
       
     - `padjust.tableby()` and `padjust.summary.tableby()` will error if fed an object with strata or multiple by-variables.
+    
+    - Added logic to statistical tests to detect missing levels of the by-variable.
 
 # arsenal v1.5.0
 
