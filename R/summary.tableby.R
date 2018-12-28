@@ -54,7 +54,7 @@ NULL
 #' @export
 summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, pfootnote = FALSE, term.name = "")
 {
-  dat <- as.data.frame(object, ..., which = seq_along(object$tables), labelTranslations = labelTranslations, list.ok = TRUE)
+  dat <- as.data.frame(object, ..., labelTranslations = labelTranslations, list.ok = TRUE)
   structure(list(
     object = set_attr(dat, "control", NULL),
     control = attr(dat, "control"),

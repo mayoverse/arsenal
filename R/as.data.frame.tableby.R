@@ -49,26 +49,26 @@ get_tb_part <- function(tbList, xList, yList, sList, sValue, statLabs)
 #' @return A \code{data.frame}.
 #' @author Ethan Heinzen, based on code originally by Greg Dougherty
 #' @export
-as.data.frame.tableby <- function(x, ..., which = seq_along(x$tables), labelTranslations = NULL, list.ok = FALSE)
+as.data.frame.tableby <- function(x, ..., labelTranslations = NULL, list.ok = FALSE)
 {
   if(!is.null(labelTranslations)) labels(x) <- labelTranslations
 
   control <- c(list(...), x$control)
   control <- do.call("tableby.control", control[!duplicated(names(control))])
 
-  if(length(which) > 1 || list.ok)
+  out <- lapply(x$tables, as_data_frame_tableby, hasStrata = x$hasStrata, control = control)
+
+  if(!list.ok)
   {
-    if(!list.ok) warning("as.data.frame.tableby is returning a list of data.frames")
-    out <- lapply(which, as_data_frame_tableby, x = x, control = control)
-  } else out <- as_data_frame_tableby(x, which, control = control)
+    if(length(out) == 1) out <- out[[1]] else warning("as.data.frame.tableby is returning a list of data.frames")
+  }
 
   set_attr(out, "control", control)
 }
 
 
-as_data_frame_tableby <- function(x, which, control)
+as_data_frame_tableby <- function(strataList, hasStrata, control)
 {
-  strataList <- x$tables[[which]]
   stopifnot(length(strataList$tables) == length(strataList$strata$values))
   tabs <- Map(get_tb_strata_part, tbList = strataList$tables, sValue = strataList$strata$values,
               MoreArgs = list(yList = strataList$y, sList = strataList$strata, xList = strataList$x, statLabs = control$stats.labels))
@@ -97,7 +97,7 @@ as_data_frame_tableby <- function(x, which, control)
       y
     }
     bylst <- list(factor(out$variable, levels = unique(out$variable)))
-    if(x$hasStrata) bylst[[2]] <- factor(out[[4]], levels = unique(out[[4]]))
+    if(hasStrata) bylst[[2]] <- factor(out[[4]], levels = unique(out[[4]]))
     out <- do.call(rbind_chr, c(by(out, bylst, simplify, simplify = FALSE), make.row.names = FALSE))
   }
   set_attr(out, "control.list", strataList$control.list)
