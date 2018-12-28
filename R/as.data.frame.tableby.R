@@ -49,7 +49,7 @@ get_tb_part <- function(tbList, xList, yList, sList, sValue, statLabs)
 #' @return A \code{data.frame}.
 #' @author Ethan Heinzen, based on code originally by Greg Dougherty
 #' @export
-as.data.frame.tableby <- function(x, which = seq_along(x$tables), ..., labelTranslations = NULL, list.ok = FALSE)
+as.data.frame.tableby <- function(x, ..., which = seq_along(x$tables), labelTranslations = NULL, list.ok = FALSE)
 {
   if(!is.null(labelTranslations)) labels(x) <- labelTranslations
 
