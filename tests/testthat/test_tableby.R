@@ -266,18 +266,23 @@ test_that("Reordering variables", {
 
 
 test_that("Merging tableby objects", {
-  expect_error(merge(tableby(Group ~ Sex, data = mdat), tableby(Group.fac ~ Age, data = mdat)))
+  tb1 <- tableby(Group ~ Sex + Phase, data = mdat)
+  tb2 <- tableby(Group.fac ~ Age, data = mdat)
+  tb3 <- tableby(Group ~ Age + dt, data = mdat)
+  tb4 <- tableby(Group ~ chisq(Sex, "count"), data = mdat)
+  expect_error(merge(tb1, tb2), "No terms in common")
+  expect_error(merge(tb1, tableby(Group ~ Age, data = set_labels(mdat, list(Group = "Eek")))), "By-variables not identical")
   expect_identical(
-    capture.kable(summary(merge(tableby(Group ~ Sex, data = mdat), tableby(Group ~ Age, data = mdat)), text = TRUE)),
-    c("|             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value|",
-      "|:------------|:---------------:|:---------------:|:---------------:|:---------------:|-------:|",
-      "|Sex          |                 |                 |                 |                 |   0.733|",
-      "|-  Female    |   15 (50.0%)    |   17 (56.7%)    |   14 (46.7%)    |   46 (51.1%)    |        |",
-      "|-  Male      |   15 (50.0%)    |   13 (43.3%)    |   16 (53.3%)    |   44 (48.9%)    |        |",
-      "|Age in Years |                 |                 |                 |                 |   0.906|",
-      "|-  Mean (SD) | 40.033 (6.217)  | 39.633 (3.873)  | 39.433 (5.569)  | 39.700 (5.258)  |        |",
-      "|-  Range     | 29.000 - 53.000 | 32.000 - 48.000 | 30.000 - 52.000 | 29.000 - 53.000 |        |"
-    )
+    capture.kable(summary(merge(tb1, tb2, all = TRUE))),
+    c(capture.kable(summary(tb1)), "", "", capture.kable(summary(tb2)))
+  )
+  expect_identical(
+    capture.kable(summary(merge(tb1, tb3), text = TRUE)),
+    capture.kable(summary(tableby(Group ~ Sex + Phase + Age + dt, data = mdat), text = TRUE))
+  )
+  expect_identical(
+    capture.kable(summary(merge(tb1, tb4), text = TRUE)),
+    capture.kable(summary(tableby(Group ~ chisq(Sex, "count") + Phase, data = mdat), text = TRUE))
   )
 })
 

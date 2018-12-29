@@ -17,12 +17,14 @@
       
     - `tests.tableby()` now returns a data.frame with a by-variable column and (if applicable) a strata column.
     
-    - `[.tableby` now has a argument `j=`, to select the by-variables.
+    - `[.tableby` now has an argument `j=` to select the by-variables and an argument `warn=` to turn off warnings if indices aren't found.
     
     - `na.tableby` now generates functions. The "lhs=" argument determines whether to remove NAs from the first column of the data.
       If `tableby()` detects a one-sided formula, it sets this to FALSE. Both versions now remove rows with NAs in the strata column when applicable.
       
     - `padjust.tableby()` and `padjust.summary.tableby()` will error if fed an object with strata or multiple by-variables.
+    
+    - `merge.tableby()` now allows you to choose which by-variables to keep if not all are in common.
     
     - Added logic to statistical tests to detect missing levels of the by-variable.
 

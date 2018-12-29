@@ -23,7 +23,8 @@ is.tableby(x)
 
 is.summary.tableby(x)
 
-\method{merge}{tableby}(x, y, ...)
+\method{merge}{tableby}(x, y, all = FALSE, all.x = all, all.y = all,
+  ...)
 
 modpval.tableby(x, pdata, use.pname = FALSE)
 
@@ -35,7 +36,7 @@ tests(x)
 
 \method{labels}{tableby}(x) <- value
 
-\method{[}{tableby}(x, i, j)
+\method{[}{tableby}(x, i, j, ..., warn = TRUE)
 
 na.tableby(lhs = TRUE)
 
@@ -52,6 +53,8 @@ na.tableby(lhs = TRUE)
 \arguments{
 \item{x, y}{A \code{tableby} object.}
 
+\item{all, all.x, all.y}{Logicals, denoting which terms to keep if not all are in common.}
+
 \item{...}{Other arguments, or a vector of indices for extracting.}
 
 \item{pdata}{A named data.frame where the first column is the by-variable names, the (optional) second is the strata value, the next is
@@ -66,6 +69,8 @@ in the output of the object.}
 
 \item{i, j}{A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.
 \code{i} indexes the x-variables, and \code{j} indexes the by-variables.}
+
+\item{warn}{A logical, indicating whether to warn if some indices aren't found.}
 
 \item{lhs}{Logical, denoting whether to remove \code{NA}s from the first column of the data.frame (the "left-hand side")}
 

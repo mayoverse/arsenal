@@ -133,10 +133,12 @@ extract2_tbstat <- function(x, ...)
 #' @param x,y A \code{tableby} object.
 #' @param i,j A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.
 #'   \code{i} indexes the x-variables, and \code{j} indexes the by-variables.
+#' @param warn A logical, indicating whether to warn if some indices aren't found.
 #' @param value A list of new labels.
 #' @param pdata A named data.frame where the first column is the by-variable names, the (optional) second is the strata value, the next is
 #'   the x variable names, the next is p-values (or some test stat), and the (optional) next column is the method name.
 #' @param e1,e2 \code{\link{tableby}} objects, or numbers to compare them to.
+#' @param all,all.x,all.y Logicals, denoting which terms to keep if not all are in common.
 #' @param use.pname Logical, denoting whether the column name in \code{pdata} corresponding to the p-values should be used
 #'   in the output of the object.
 #' @param n A single integer. See \code{\link[utils]{head}} or \code{\link[utils]{tail}} for more details
@@ -163,32 +165,39 @@ is.summary.tableby <- function(x) inherits(x, "summary.tableby")
 
 #' @rdname tableby.internal
 #' @export
-merge.tableby <- function(x, y, ...) {
-  stop("still do this")
-  if(names(x$y) != names(y$y)) {
-    stop("tableby objects cannot be merged unless same 'by' variable name).\n")
-  }
-  if(!all(names(x$y[[1]]$stats) == names(y$y[[1]]$stats))){
-    stop("tableby objects cannot be merged unless same 'by' variable categories.\n")
-  }
-  newobj <- x
-  y$y[[1]]$label <- paste0(y$y[[1]]$label, ".2")
-  newobj$y[[paste0(names(y$y)[[1]],".2")]] <- y$y[[1]]
-  for(xname in names(y$x)) {
-    thisname <- xname
-    ## if name already present, add "2" to name and add on
-    if(xname %in% names(newobj$x)) {
-      thisname <- paste0(xname, ".2")
-      y$x[[xname]]$label <- paste0(y$x[[xname]]$label, ".2")
+merge.tableby <- function(x, y, all = FALSE, all.x = all, all.y = all, ...) {
+  Call <- match.call()
+  if(x$hasStrata != y$hasStrata) stop("One of x or y has a strata, but the other doesn't.")
+  if(x$hasWeights != y$hasWeights) stop("One of x or y has weights, but the other doesn't.")
+  nms.x <- names(x$tables)
+  nms.y <- names(y$tables)
+  nms <- if(all.x && all.y) union(nms.x, nms.y) else if(all.x) nms.x else if(all.y) nms.y else intersect(nms.x, nms.y)
+  if(length(nms) == 0) stop("No terms in common.")
+  x <- x[, nms, warn = FALSE]
+  y <- y[, nms, warn = FALSE]
+  nms.x <- names(x$tables)
+  nms.y <- names(y$tables)
+
+  for(ytrm in names(y$tables))
+  {
+    if(ytrm %nin% names(x$table))
+    {
+      x$tables[[ytrm]] <- y$tables[[ytrm]]
+      next
     }
-    newobj$x[[thisname]] <- y$x[[xname]]
+    if(!identical(x$tables[[ytrm]]$y, y$tables[[ytrm]]$y)) stop("By-variables not identical for term ", ytrm)
+    if(!identical(x$tables[[ytrm]]$strata, y$tables[[ytrm]]$strata)) stop("Strata not identical for term ", ytrm)
+
+    xtrms <- names(y$tables[[ytrm]]$x)
+    x$tables[[ytrm]]$x[xtrms] <- y$tables[[ytrm]]$x
+    for(j in seq_along(x$tables[[ytrm]]$tables))
+    {
+      x$tables[[ytrm]]$tables[[j]][xtrms] <- y$tables[[ytrm]]$tables[[j]]
+    }
   }
 
-  ## add on call and control from y
-  newobj$Call2 <- y$Call
-  newobj$control2 <- y$control
-
-  return(newobj)
+  x$Call <- Call
+  x
 }
 
 ## pdata is a named data.frame where the first column is the x variable names matched by name,
@@ -318,11 +327,11 @@ tests.tableby <- function(x) {
 
 #' @rdname tableby.internal
 #' @export
-"[.tableby" <- function(x, i, j) {
+"[.tableby" <- function(x, i, j, ..., warn = TRUE) {
   if(missing(i) && missing(j)) return(x)
   newx <- x
 
-  give_warn <- function(vec) warning(paste0("Some indices not found in tableby object: ", paste0(vec, collapse = ", ")), call. = FALSE)
+  give_warn <- function(vec) if(warn) warning(paste0("Some indices not found in tableby object: ", paste0(vec, collapse = ", ")), call. = FALSE)
   if(!missing(j))
   {
     if(is.character(j) && any(tmp <- j %nin% names(newx$tables)))
