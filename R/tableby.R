@@ -370,7 +370,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
 
       strataList[[if(strataTerm == "") 1 else paste0("(", strataTerm, ") == ", strat)]] <- xList
     }
-    out.tables[[termBy]] <- list(formula = FORM, y = yList, strata = list(term = strataTerm, values = strata.levels, label = strataLabel),
+    out.tables[[termBy]] <- list(y = yList, strata = list(term = strataTerm, values = strata.levels, label = strataLabel),
                                  x = xTerms, tables = strataList, control.list = control.list)
   }
   structure(list(Call = Call, control = control, tables = out.tables, hasWeights = hasWeights, hasStrata = hasStrata), class = "tableby")
