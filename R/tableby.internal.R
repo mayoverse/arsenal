@@ -1,4 +1,17 @@
 
+## allow stat functions to be passed as single arguments that are strings of function names
+## Store this as attribute in the modeldf column, along with the actual name of the variable,
+## rather than anova(age) showing up in the result (though anova(age) will be the column name in modeldf
+## but we pull these attributes off later.
+inline_tableby_stat_test <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL, cat.simplify = NULL, numeric.simplify = NULL)
+{
+  attr(x, "name") <- deparse(substitute(x))
+  attr(x, "stats") <- if(missing(...)) NULL else list(...)
+  attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
+                                  cat.simplify = cat.simplify, numeric.simplify = numeric.simplify)
+  x
+}
+
 get_attr <- function(x, which, default)
 {
   x <- attr(x, which, exact = TRUE)

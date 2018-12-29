@@ -123,7 +123,7 @@ as_data_frame_summary_tableby <- function(df, totals, control, hasStrata, text, 
   df$test <- NULL
   df$variable.type <- NULL
   if(!control$test) df$p.value <- NULL
-  if(!control$total) df[["Total"]] <- NULL
+  if(!control$total) df$Total <- NULL
 
   #### Format if necessary ####
   if(!is.null(width))

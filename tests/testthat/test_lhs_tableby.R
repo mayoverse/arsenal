@@ -70,6 +70,23 @@ test_that("A basic two-sided tableby call--no labels, some missings", {
 })
 
 
+test_that("strata levels are maintained", {
+  dat <- data.frame(a = c("A", "A", "A", "B", "A", "B"), b = c(1, 1, 1, 2, 2, 2), stringsAsFactors = FALSE)
+  expect_identical(
+    capture.kable(summary(tableby(~ a, strata = b, data = dat), text = TRUE)),
+    c("|b  |     | Overall (N=3) |",
+      "|:--|:----|:-------------:|",
+      "|1  |a    |               |",
+      "|   |-  A |  3 (100.0%)   |",
+      "|   |-  B |   0 (0.0%)    |",
+      "|2  |a    |               |",
+      "|   |-  A |   1 (33.3%)   |",
+      "|   |-  B |   2 (66.7%)   |"
+    )
+  )
+})
+
+
 ###########################################################################################################
 #### Change totals/p-values
 ###########################################################################################################

@@ -5,8 +5,8 @@
 \alias{print.paired}
 \title{Summary Statistics of a Set of Independent Variables Paired Across Two Timepoints}
 \usage{
-paired(formula, data, id, na.action, subset = NULL, control = NULL,
-  ...)
+paired(formula, data, id, na.action, subset = NULL, strata,
+  control = NULL, ...)
 
 \method{print}{paired}(x, ...)
 }
@@ -25,6 +25,8 @@ The default is \code{na.paired("in.both")}. See \code{\link{na.paired}} for more
 
 \item{subset}{an optional vector specifying a subset of observations (rows of data) to be used in the results.
 Works as vector of logicals or an index.}
+
+\item{strata}{a vector of strata to separate summaries by an additional group.}
 
 \item{control}{control parameters to handle optional settings within \code{paired}.
 Two aspects of \code{paired} are controlled with these: test options of RHS variables and x variable summaries.

@@ -124,24 +124,13 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
   ## Tell user if they passed an argument that was not expected, either here or in control
   expectArgs <- c("formula", "data", "na.action", "subset", "weights", "strata", "control", names(control), "times")
   match.idx <- match(names(Call)[-1], expectArgs)
-  if(anyNA(match.idx)) warning("unused arguments: ", paste(names(Call)[1+which(is.na(match.idx))],collapse=", "), "\n")
+  if(anyNA(match.idx)) warning("unused arguments: ", paste(names(Call)[1+which(is.na(match.idx))], collapse=", "), "\n")
 
   indx <- match(c("formula", "data", "subset", "weights", "na.action", "strata"), names(Call), nomatch = 0)
   if(indx[1] == 0) stop("A formula argument is required")
 
   special <- c("anova", "kwt", "chisq", "fe", "logrank", "trend", "notest")
-  ## allow stat functions to be passed as single arguments that are strings of function names
-  ## Store this as attribute in the modeldf column, along with the actual name of the variable,
-  ## rather than anova(age) showing up in the result (though anova(age) will be the column name in modeldf
-  ## but we pull these attributes off later.
-  tmp.fun <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL, cat.simplify = NULL, numeric.simplify = NULL)
-  {
-    attr(x, "name") <- deparse(substitute(x))
-    attr(x, "stats") <- if(missing(...)) NULL else list(...)
-    attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
-                                    cat.simplify = cat.simplify, numeric.simplify = numeric.simplify)
-    x
-  }
+
   out.tables <- list()
   formula.list <- as_list_formula(formula)
   for(FORM in formula.list)
@@ -166,11 +155,10 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
 
     ##  set up new environment for
     ## if specials, assign dummy versions of those functions
-    ## if(any(!is.null(attr(temp.call$formula, "specials"))))
     tabenv <- new.env(parent = environment(formula))
     for(sp in special)
     {
-      if(!is.null(attr(temp.call$formula, "specials")[[sp]])) assign(sp, tmp.fun, envir = tabenv)
+      if(!is.null(attr(temp.call$formula, "specials")[[sp]])) assign(sp, inline_tableby_stat_test, envir = tabenv)
     }
 
     ## set tabenv as environment in which to evalulate formula
@@ -222,6 +210,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         by.col <- droplevels(by.col)
         by.levels <- levels(by.col)
       } else by.levels <- sort(unique(by.col))
+      by.col <- as.character(by.col)
+      by.levels <- as.character(by.levels)
 
       if(any(by.levels == ""))
       {
@@ -243,8 +233,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
       control$total <- FALSE
       control$test <- FALSE
     }
-    by.col <- as.character(by.col)
-    by.levels <- as.character(by.levels)
+
 
     ## find which columnss of modeldf have specials assigned to known specials
     specialIndices <- unlist(attr(Terms, "specials")) - attributes(Terms)$response
@@ -280,7 +269,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
 
       for(eff in seq_along(modeldf)) {
 
-        currcol <- modeldf[[eff]][strata.col == strat]
+        currcol <- modeldf[[eff]]
 
         ############################################################
 
@@ -347,6 +336,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         ## if no missings, and control says not to show missings,
         ## remove Nmiss stat fun
         if(!is.null(attrstats <- attr(modeldf[[eff]], "stats"))) currstats <- attrstats
+
+        # now finally subset
+        currcol <- currcol[strata.col == strat]
         if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
         statList <- list()
         for(statfun in currstats) {
