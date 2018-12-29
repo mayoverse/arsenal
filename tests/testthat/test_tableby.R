@@ -169,7 +169,7 @@ test_that("A basic two-sided tableby call--p-value, no total", {
 test_that("A basic two-sided tableby markdown output", {
   expect_identical(
     capture.kable(summary(tableby(Group ~ Age + Sex + notest(ethan) + dt, data = mdat,
-                                   numeric.stats = c("meansd", "q1q3", "range"), total = FALSE), pfootnote = TRUE)),
+                                  numeric.stats = c("meansd", "q1q3", "range"), total = FALSE), pfootnote = TRUE)),
     c("|                            |       High (N=30)       |       Low (N=30)        |       Med (N=30)        |  p value|",
       "|:---------------------------|:-----------------------:|:-----------------------:|:-----------------------:|--------:|",
       "|**Age in Years**            |                         |                         |                         | 0.906^1^|",
@@ -449,7 +449,7 @@ rm(dat)
 test_that("03/17/2017: Beth's medianq1q3 label", {
   expect_identical(
     capture.kable(summary(tableby(Group ~ ht_in + time, data = mdat,
-                                   control = tableby.control(numeric.stats = c("Nmiss2", "medianq1q3"))), text = TRUE)),
+                                  control = tableby.control(numeric.stats = c("Nmiss2", "medianq1q3"))), text = TRUE)),
     c("|                   |       High (N=30)       |       Low (N=30)        |       Med (N=30)        |      Total (N=90)       | p value|",
       "|:------------------|:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|-------:|",
       "|Height in Inches   |                         |                         |                         |                         |   0.785|",
@@ -532,7 +532,7 @@ test_that("08/30/2017: Brendan Broderick and zero-length levels (#22)", {
 test_that("09/13/2017: Peter Martin and rounding to integers (#23)", {
   expect_identical(
     capture.kable(summary(tableby(Group ~ Sex + time + dt, data = mdat,
-                                   numeric.stats = c("meansd", "q1q3", "range"), digits = 0, digits.p = 3), text = TRUE)),
+                                  numeric.stats = c("meansd", "q1q3", "range"), digits = 0, digits.p = 3), text = TRUE)),
     c("|             |       High (N=30)       |       Low (N=30)        |       Med (N=30)        |      Total (N=90)       | p value|",
       "|:------------|:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|-------:|",
       "|Sex          |                         |                         |                         |                         |   0.733|",
@@ -615,7 +615,7 @@ test_that("01/30/2018: additional follow-up statistics (#32)", {
   {
     expect_identical(
       capture.kable(summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5,
-                                     surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime")), text = TRUE)),
+                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime")), text = TRUE)),
       c("|                              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
         "|:-----------------------------|:------------:|:--------------:|:--------------:|-------:|",
         "|Surv(fu.time/365.25, fu.stat) |              |                |                |   0.975|",
@@ -676,7 +676,7 @@ test_that("01/31/2018: include NAs in percents (#57, #62)", {
   attr(mdat2$ethan, "label") <- "Ethan"
   expect_identical(
     capture.kable(summary(tableby(Sex ~ includeNA(ethan, label = "N-Miss") + includeNA(ethan, first = TRUE, label = "N-Miss"),
-                                   data = mdat2, cat.stats = "countrowpct"), text = TRUE)),
+                                  data = mdat2, cat.stats = "countrowpct"), text = TRUE)),
     c("|           | Female (N=46) | Male (N=44) | Total (N=90) | p value|",
       "|:----------|:-------------:|:-----------:|:------------:|-------:|",
       "|Ethan      |               |             |              |   0.229|",
