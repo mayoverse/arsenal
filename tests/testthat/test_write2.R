@@ -88,7 +88,7 @@ test_that("write2.list (summary objects) -> PDF", {
 
 mylist <- list(tableby(sex ~ age, data = mockstudy, numeric.stats = c("meansd", "q1q3", "range")),
                freqlist(table(mockstudy[, c("sex", "arm")])),
-               knitr::kable(head(mockstudy)))
+               knitr::kable(utils::head(mockstudy)))
 mylist2 <- list("# Header 1",
                 "This is a small paragraph.",
                 tableby(sex ~ age, data = mockstudy, numeric.stats = c("meansd", "q1q3", "range")))

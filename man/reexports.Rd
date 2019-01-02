@@ -4,9 +4,15 @@
 \name{reexports}
 \alias{reexports}
 \alias{compare}
+\alias{head}
+\alias{tail}
 \title{Objects exported from other packages}
 \seealso{
 \code{\link{compare.data.frame}}
+
+\code{\link[utils]{head}}
+
+\code{\link[utils]{tail}}
 }
 \keyword{internal}
 \description{
@@ -15,5 +21,7 @@ below to see their documentation.
 
 \describe{
   \item{testthat}{\code{\link[testthat]{compare}}}
+
+  \item{utils}{\code{\link[utils]{head}}, \code{\link[utils]{tail}}}
 }}
 
