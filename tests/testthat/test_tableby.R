@@ -343,6 +343,7 @@ test_that("Changing labels", {
     )
   )
   labels(tb) <- list(Age = "Age (yrs)", Sex = "Gender")
+  expect_identical(labels(tb), c(Group = "Group", Sex = "Gender", Age = "Age (yrs)"))
   expect_identical(
     capture.kable(summary(tb, text = TRUE)),
     c("|             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value|",

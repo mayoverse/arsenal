@@ -252,9 +252,8 @@ labels.tableby <- function(object, ...) {
 
   get_lab <- function(x)
   {
-    xLabs <- lapply(x$tables, function(strat) vapply(strat, function(obj) obj$label, NA_character_))
-    out <- c(setNames(x$y$label, x$y$term), unlist(unname(xLabs), recursive = FALSE))
-    out[!duplicated(out) | !duplicated(names(out))]
+    xLabs <- vapply(x$x, function(obj) obj$label, NA_character_)
+    c(setNames(x$y$label, x$y$term), xLabs)
   }
 
   labs <- unlist(unname(lapply(object$tables, get_lab)), recursive = FALSE)
