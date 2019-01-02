@@ -235,6 +235,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
     }
 
 
+    yList <- list(stats=c(table(factor(by.col, levels=by.levels), exclude=NA), Total=sum(!is.na(by.col))),
+                  label=labelBy, term=termBy)
+
     ## find which columnss of modeldf have specials assigned to known specials
     specialIndices <- unlist(attr(Terms, "specials")) - attributes(Terms)$response
     specialTests <- rep("", ncol(modeldf))
@@ -263,9 +266,6 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
 
       bycol <- by.col[strata.col == strat]
       weightscol <- weights[strata.col == strat]
-
-      yList <- list(stats=c(table(factor(bycol, levels=by.levels), exclude=NA), Total=sum(!is.na(bycol))),
-                    label=labelBy, term=termBy)
 
       for(eff in seq_along(modeldf)) {
 

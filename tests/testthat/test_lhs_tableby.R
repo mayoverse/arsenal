@@ -23,7 +23,7 @@ test_that("A three-LHS tableby call", {
 test_that("A tableby call with strata", {
   expect_identical(
     capture.kable(summary(tableby(Group ~ Age + time + Phase, data = mdat, strata = trt), text = TRUE)),
-    c("|Treatment Arm |             |   High (N=16)   |   Low (N=19)    |   Med (N=19)    |  Total (N=54)   | p value |",
+    c("|Treatment Arm |             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value |",
       "|:-------------|:------------|:---------------:|:---------------:|:---------------:|:---------------:|:-------:|",
       "|A             |Age in Years |                 |                 |                 |                 |  0.918  |",
       "|              |-  Mean (SD) | 41.000 (6.493)  | 40.091 (4.571)  | 40.364 (5.573)  | 40.528 (5.537)  |         |",
@@ -74,7 +74,7 @@ test_that("strata levels are maintained", {
   dat <- data.frame(a = c("A", "A", "A", "B", "A", "B"), b = c(1, 1, 1, 2, 2, 2), stringsAsFactors = FALSE)
   expect_identical(
     capture.kable(summary(tableby(~ a, strata = b, data = dat), text = TRUE)),
-    c("|b  |     | Overall (N=3) |",
+    c("|b  |     | Overall (N=6) |",
       "|:--|:----|:-------------:|",
       "|1  |a    |               |",
       "|   |-  A |  3 (100.0%)   |",
@@ -129,7 +129,7 @@ test_that("Using cat.simplify", {
   expect_identical(
     capture.kable(summary(tableby(list(Group, ethan) ~ Sex + Age, strata = trt, data = mdat, cat.simplify = TRUE,
                                   numeric.simplify = TRUE, numeric.stats = "meansd"), text = TRUE)),
-    c("|Treatment Arm |             |  High (N=16)   |   Low (N=19)   |   Med (N=19)   |  Total (N=54)  | p value |",
+    c("|Treatment Arm |             |  High (N=30)   |   Low (N=30)   |   Med (N=30)   |  Total (N=90)  | p value |",
       "|:-------------|:------------|:--------------:|:--------------:|:--------------:|:--------------:|:-------:|",
       "|A             |Sex          |   7 (50.0%)    |   4 (36.4%)    |   6 (54.5%)    |   17 (47.2%)   |  0.670  |",
       "|              |Age in Years | 41.000 (6.493) | 40.091 (4.571) | 40.364 (5.573) | 40.528 (5.537) |  0.918  |",
@@ -137,7 +137,7 @@ test_that("Using cat.simplify", {
       "|              |Age in Years | 39.188 (6.047) | 39.368 (3.515) | 38.895 (5.646) | 39.148 (5.041) |  0.960  |",
       ""                                                                                                            ,
       ""                                                                                                            ,
-      "|Treatment Arm |             |  Ethan (N=25)  | Heinzen (N=29) |  Total (N=54)  | p value |"                 ,
+      "|Treatment Arm |             |  Ethan (N=42)  | Heinzen (N=45) |  Total (N=87)  | p value |"                 ,
       "|:-------------|:------------|:--------------:|:--------------:|:--------------:|:-------:|"                 ,
       "|A             |Sex          |   10 (58.8%)   |   5 (31.2%)    |   15 (45.5%)   |  0.112  |"                 ,
       "|              |Age in Years | 37.647 (5.689) | 42.938 (3.924) | 40.212 (5.533) |  0.004  |"                 ,
@@ -213,7 +213,7 @@ test_that("Changing labels", {
   expect_warning(labels(tb) <- c(hi = "hi", Sex = "Sex label", Age = "Age at event", trt = "Trt Arm", ethan = "EthanH"), NA)
   expect_identical(
     capture.kable(summary(tb, text = TRUE)),
-    c("|Trt Arm |             |   High (N=16)   |   Low (N=19)    |   Med (N=19)    |  Total (N=54)   | p value |",
+    c("|Trt Arm |             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value |",
       "|:-------|:------------|:---------------:|:---------------:|:---------------:|:---------------:|:-------:|",
       "|A       |Sex label    |                 |                 |                 |                 |  0.670  |",
       "|        |-  Female    |    7 (50.0%)    |    7 (63.6%)    |    5 (45.5%)    |   19 (52.8%)    |         |",
@@ -229,7 +229,7 @@ test_that("Changing labels", {
       "|        |-  Range     | 30.000 - 49.000 | 32.000 - 47.000 | 30.000 - 52.000 | 30.000 - 52.000 |         |",
       ""                                                                                                          ,
       ""                                                                                                                ,
-      "|Trt Arm |             |  Ethan (N=25)   | Heinzen (N=29)  |  Total (N=54)   | p value |"                  ,
+      "|Trt Arm |             |  Ethan (N=42)   | Heinzen (N=45)  |  Total (N=87)   | p value |"                  ,
       "|:-------|:------------|:---------------:|:---------------:|:---------------:|:-------:|"                  ,
       "|A       |Sex label    |                 |                 |                 |  0.112  |"                  ,
       "|        |-  Female    |    7 (41.2%)    |   11 (68.8%)    |   18 (54.5%)    |         |"                  ,
@@ -248,7 +248,7 @@ test_that("Changing labels", {
   labels(tb) <- NULL
   expect_identical(
     capture.kable(summary(tb, text = TRUE)),
-    c("|trt |             |   High (N=16)   |   Low (N=19)    |   Med (N=19)    |  Total (N=54)   | p value |",
+    c("|trt |             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value |",
       "|:---|:------------|:---------------:|:---------------:|:---------------:|:---------------:|:-------:|",
       "|A   |Sex          |                 |                 |                 |                 |  0.670  |",
       "|    |-  Female    |    7 (50.0%)    |    7 (63.6%)    |    5 (45.5%)    |   19 (52.8%)    |         |",
@@ -264,7 +264,7 @@ test_that("Changing labels", {
       "|    |-  Range     | 30.000 - 49.000 | 32.000 - 47.000 | 30.000 - 52.000 | 30.000 - 52.000 |         |",
       ""                                                                                                      ,
       ""                                                                                                      ,
-      "|trt |             |  Ethan (N=25)   | Heinzen (N=29)  |  Total (N=54)   | p value |"                  ,
+      "|trt |             |  Ethan (N=42)   | Heinzen (N=45)  |  Total (N=87)   | p value |"                  ,
       "|:---|:------------|:---------------:|:---------------:|:---------------:|:-------:|"                  ,
       "|A   |Sex          |                 |                 |                 |  0.112  |"                  ,
       "|    |-  Female    |    7 (41.2%)    |   11 (68.8%)    |   18 (54.5%)    |         |"                  ,
@@ -295,7 +295,7 @@ test_that("02/23/2018: wrapping long labels (#59)", {
   )
   expect_identical(
     capture.kable(print(summary(tableby(Sex ~ Group + time + dt, strata = trt, data = set_labels(mdat, labs)), text = TRUE), width = 30)),
-    c("|trt |                               |      Female (N=27)      |       Male (N=27)       |      Total (N=54)       | p value |",
+    c("|trt |                               |      Female (N=46)      |       Male (N=44)       |      Total (N=90)       | p value |",
       "|:---|:------------------------------|:-----------------------:|:-----------------------:|:-----------------------:|:-------:|",
       "|A   |This is a really long label    |                         |                         |                         |  0.670  |",
       "|    |for the Group variable         |                         |                         |                         |         |",

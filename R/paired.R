@@ -169,6 +169,9 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
     TP2 <- TP2[idx2, cn, drop = FALSE]
     modeldf[["(id)"]] <- NULL
 
+    yList <- list(stats=c(table(factor(by.col, levels=by.levels), exclude=NA), Difference=length(ids.both)),
+                  label=labelBy, term=termBy)
+
     ## find which columnss of modeldf have specials assigned to known specials
     specialIndices <- unlist(attr(Terms, "specials")) - attributes(Terms)$response
     specialTests <- rep("", ncol(modeldf))
@@ -197,8 +200,6 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
 
       bycol <- by.col[strata.col == strat]
 
-      yList <- list(stats=c(table(factor(bycol, levels=by.levels), exclude=NA), Difference=length(ids.both)),
-                    label=labelBy, term=termBy)
       for(eff in seq_along(modeldf)) {
 
         currcol <- modeldf[[eff]]
