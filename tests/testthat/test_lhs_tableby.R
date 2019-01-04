@@ -56,20 +56,6 @@ test_that("A tableby call with strata", {
   )
 })
 
-test_that("A basic two-sided tableby call--no labels, some missings", {
-  expect_identical(
-    capture.kable(summary(tableby(Group ~ ethan, data = mdat), text = TRUE)),
-    c("|           | High (N=30) | Low (N=30) | Med (N=30) | Total (N=90) | p value|",
-      "|:----------|:-----------:|:----------:|:----------:|:------------:|-------:|",
-      "|ethan      |             |            |            |              |   0.178|",
-      "|-  N-Miss  |      3      |     0      |     0      |      3       |        |",
-      "|-  Ethan   | 17 (63.0%)  | 13 (43.3%) | 12 (40.0%) |  42 (48.3%)  |        |",
-      "|-  Heinzen | 10 (37.0%)  | 17 (56.7%) | 18 (60.0%) |  45 (51.7%)  |        |"
-    )
-  )
-})
-
-
 test_that("strata levels are maintained", {
   dat <- data.frame(a = c("A", "A", "A", "B", "A", "B"), b = c(1, 1, 1, 2, 2, 2), stringsAsFactors = FALSE)
   expect_identical(
