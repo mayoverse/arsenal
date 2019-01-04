@@ -41,7 +41,7 @@ a dataset called `mockstudy` made available by Paul Novotny which includes a var
 numeric, factor, ordered factor, survival) to use as examples.
 
 ```{r, load-data}
-require(arsenal)
+library(arsenal)
 require(knitr)
 require(survival)
 data(mockstudy) ##load data
@@ -460,7 +460,8 @@ head(mytab, 1) # can also use tail()
 
 ## 11. Merge two `tableby` objects together 
 
-It is possible to combine two tableby objects so that they print out together.  
+It is possible to combine two tableby objects so that they print out together. Overlapping by-variables will have their x-variables
+concatenated, and (if `all=TRUE`) non-overlapping by-variables will have their tables printed separately.
 
 ```{r, results="asis"}
 ## demographics
@@ -470,12 +471,9 @@ tab1 <- tableby(arm ~ sex + age, data=mockstudy,
 tab2 <- tableby(arm ~ hgb + alk.phos, data=mockstudy,
                 control=tableby.control(numeric.stats=c("Nmiss","median","q1q3"),
                                         numeric.test="kwt", total=FALSE))
-names(tab1$x)
-names(tab2$x)
-tab12 <- merge(tab1,tab2)
+tab12 <- merge(tab1, tab2)
 class(tab12)
-names(tab12$x)
-summary(tab12) #, pfootnote=TRUE)
+summary(tab12)
 ```
 
 ## 12. Add a title to the table
@@ -655,7 +653,7 @@ summary(tableby(arm ~ age + ast, data = mockstudy,
 The in-formula functions to change which tests are run can also be used to specify these
 options for each variable at a time.
 
-```{r}
+```{r results='asis'}
 summary(tableby(arm ~ anova(age, "meansd", numeric.simplify=TRUE) +
                   chisq(sex, cat.simplify=TRUE), data = mockstudy))
 ```
@@ -755,10 +753,26 @@ summary(tableby(sex ~ age, data = mockstudy), title="(\\#tab:mytableby) Caption 
 
 The `padjust()` function is a new S3 generic piggybacking off of `p.adjust()`. It works on both `tableby` and `summary.tableby` objects:
 
-```{r}
+```{r results='asis'}
 tab <- summary(tableby(sex ~ age + fu.time + bmi + mdquality.s, data = mockstudy))
 tab
 padjust(tab, method = "bonferroni")
+```
+
+## 25. Tabulate multiple endpoints
+
+You can now use `list()` on the left-hand side of `tableby()` to give multiple endpoints.
+
+```{r results='asis'}
+summary(tableby(list(sex, mdquality.s, ps) ~ age + bmi, data = mockstudy))
+```
+
+## 26. Tabulate data by a non-test group (strata)
+
+You can also specify a second grouping variable that doesn't get tested (but instead separates results): a *strata* variable.
+
+```{r results='asis'}
+summary(tableby(list(sex, ps) ~ age + bmi, strata = arm, data = mockstudy))
 ```
 
 # Available Function Options

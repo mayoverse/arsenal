@@ -52,7 +52,8 @@ use a dataset called `mockstudy` made available by Paul Novotny which includes a
 (character, numeric, factor, ordered factor, survival) to use as examples.
 
 ```{r, load-data}
-require(arsenal)
+# require(arsenal)
+devtools::load_all("~/consult/packages/arsenal/")
 data(mockstudy) # load data
 dim(mockstudy)  # look at how many subjects and variables are in the dataset 
 # help(mockstudy) # learn more about the dataset and variables
@@ -578,10 +579,10 @@ summary(mytab[c(3,1)])
 
 ## 10. Merge two `modelsum` objects together 
 
-It is possible to combine two modelsum objects so that they print out together, however you need to pay
-attention to the columns that are being displayed.  It is easier to combine two models of the same
-family (such as two sets of linear models).  If you want to combine linear and logistic model results
-then you would want to display the beta coefficients for the logistic model.
+It is possible to merge two modelsum objects so that they print out together, however you need to pay
+attention to the columns that are being displayed.  It is sometimes easier to combine two models of the same
+family (such as two sets of linear models). Overlapping y-variables will have their x-variables
+concatenated, and (if `all=TRUE`) non-overlapping y-variables will have their tables printed separately.
 
 ```{r, results="asis"}
 ## demographics
@@ -589,11 +590,9 @@ tab1 <- modelsum(bmi ~ sex + age, data=mockstudy)
 ## lab data
 tab2 <- modelsum(mdquality.s ~ hgb + alk.phos, data=mockstudy, family=binomial)
                 
-tab12 <- merge(tab1,tab2)
+tab12 <- merge(tab1, tab2, all = TRUE)
 class(tab12)
-
-##ERROR: The merge works, but not the summary
-#summary(tab12)
+summary(tab12)
 ```
 
 ## 11. Add a title to the table
@@ -775,6 +774,23 @@ the `caption=` argument of `kable()`, so some tables may not have a properly num
 
 ```{r eval=FALSE}
 summary(modelsum(age ~ sex, data = mockstudy), title="(\\#tab:mytableby) Caption here")
+```
+
+## 24. Model multiple endpoints
+
+You can now use `list()` on the left-hand side of `modelsum()` to give multiple endpoints.
+Note that only one "family" can be specified this way (use `merge()` instead if you want multiple families).
+
+```{r results='asis'}
+summary(modelsum(list(age, hgb) ~ bmi + sex, adjust = ~ arm, data = mockstudy))
+```
+
+## 25. Model data by a non-test group (strata)
+
+You can also specify a grouping variable that doesn't get tested (but instead separates results): a *strata* variable.
+
+```{r results='asis'}
+summary(modelsum(list(age, hgb) ~ bmi + sex, strata = arm, data = mockstudy))
 ```
 
 # Available Function Options
