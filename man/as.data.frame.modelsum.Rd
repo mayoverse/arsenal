@@ -4,7 +4,8 @@
 \alias{as.data.frame.modelsum}
 \title{as.data.frame.modelsum}
 \usage{
-\method{as.data.frame}{modelsum}(x, ..., labelTranslations = NULL)
+\method{as.data.frame}{modelsum}(x, ..., labelTranslations = NULL,
+  list.ok = FALSE)
 }
 \arguments{
 \item{x}{A \code{\link{modelsum}} object.}
@@ -15,6 +16,9 @@
 output to be replaced in the pretty rendering of modelsum by the character
 string value for the named element of the list, e.g.,
 \code{list(age = "Age(years)")}.}
+
+\item{list.ok}{If the object has multiple by-variables, is it okay to return a list of data.frames instead of a single data.frame?
+If \code{FALSE} but there are multiple by-variables, a warning is issued.}
 }
 \value{
 A \code{data.frame}.

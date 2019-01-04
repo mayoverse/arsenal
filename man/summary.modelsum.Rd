@@ -10,7 +10,8 @@
   text = FALSE, title = NULL, term.name = "")
 
 \method{as.data.frame}{summary.modelsum}(x, ..., text = x$text,
-  term.name = x$term.name, width = NULL, min.split = NULL)
+  term.name = x$term.name, width = NULL, min.split = NULL,
+  list.ok = FALSE)
 
 \method{print}{summary.modelsum}(x, ..., format = if (!is.null(x$text) &&
   x$text \%in\% c("html", "latex")) x$text else "markdown",
@@ -45,6 +46,9 @@ the LaTeX command \code{\\textbf}.}
 \item{width}{Passed to \code{\link{smart.split}} for formatting of the "term" column.}
 
 \item{min.split}{Passed to \code{\link{smart.split}} for formatting of the "term" column.}
+
+\item{list.ok}{If the object has multiple by-variables, is it okay to return a list of data.frames instead of a single data.frame?
+If \code{FALSE} but there are multiple by-variables, a warning is issued.}
 
 \item{format}{Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
 To use the default in \code{kable}, pass \code{NULL}. If \code{x$text} specifies LaTeX or HTML formatting,
