@@ -52,8 +52,7 @@ use a dataset called `mockstudy` made available by Paul Novotny which includes a
 (character, numeric, factor, ordered factor, survival) to use as examples.
 
 ```{r, load-data}
-# require(arsenal)
-devtools::load_all("~/consult/packages/arsenal/")
+require(arsenal)
 data(mockstudy) # load data
 dim(mockstudy)  # look at how many subjects and variables are in the dataset 
 # help(mockstudy) # learn more about the dataset and variables
