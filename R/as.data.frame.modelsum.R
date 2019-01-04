@@ -13,8 +13,8 @@ get_ms_part <- function(msList, modelnum, xList, yList, aList, sList, sValue, fa
   out <- data.frame(
     y.term = yList$term,
     y.label = yList$label,
-    strata.term = if(sList$term == "") "" else paste0("(", sList$term, ") == ", sValue),
-    strata.value = if(sList$term == "") "" else sValue,
+    strata.term = if(!sList$hasStrata) "" else paste0("(", sList$term, ") == ", sValue),
+    strata.value = if(!sList$hasStrata) "" else sValue,
     model = modelnum,
     term = trms,
     label = ifelse(trms %in% names(labs), labs[trms], trms),
@@ -22,7 +22,7 @@ get_ms_part <- function(msList, modelnum, xList, yList, aList, sList, sValue, fa
                        ifelse(trms %in% xList$term, "Term", "Intercept")),
     stringsAsFactors = FALSE
   )
-  if(sList$term == "") out$strata.value <- NULL else names(out)[4] <- sList$label
+  if(!sList$hasStrata) out$strata.value <- NULL else names(out)[4] <- sList$label
 
   statFields <- switch(
     fam,
@@ -55,7 +55,7 @@ as.data.frame.modelsum <- function(x, ..., labelTranslations = NULL, list.ok = F
   control <- c(list(...), x$control)
   control <- do.call("modelsum.control", control[!duplicated(names(control))])
 
-  out <- lapply(x$tables, as_data_frame_modelsum, hasStrata = x$hasStrata, control = control)
+  out <- lapply(x$tables, as_data_frame_modelsum, control = control)
 
   if(!list.ok)
   {
@@ -65,7 +65,7 @@ as.data.frame.modelsum <- function(x, ..., labelTranslations = NULL, list.ok = F
   set_attr(out, "control", control)
 }
 
-as_data_frame_modelsum <- function(lhsList, hasStrata, control)
+as_data_frame_modelsum <- function(lhsList, control)
 {
   stopifnot(length(lhsList$tables) == length(lhsList$strata$values))
   tabs <- Map(get_ms_strata_part, msList = lhsList$tables, sValue = lhsList$strata$values,

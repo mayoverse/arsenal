@@ -61,7 +61,7 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
     object = set_attr(dat, "control", NULL),
     control = attr(dat, "control"),
     totals = lapply(object$tables, function(x) x$y$stats),
-    hasStrata = object$hasStrata,
+    hasStrata = has_strata(object),
     text = text,
     title = title,
     pfootnote = pfootnote,
@@ -69,7 +69,7 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
   ), class = "summary.tableby")
 }
 
-as_data_frame_summary_tableby <- function(df, totals, control, hasStrata, text, pfootnote, term.name, width, min.split)
+as_data_frame_summary_tableby <- function(df, totals, hasStrata, control, text, pfootnote, term.name, width, min.split)
 {
   df.orig <- df
   idx <- names(df)[names(df) %nin% c("group.term", "group.label", "strata.term", "strata.label", "variable",
@@ -169,8 +169,8 @@ as_data_frame_summary_tableby <- function(df, totals, control, hasStrata, text, 
 as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote, term.name = x$term.name,
                                           width = NULL, min.split = NULL, list.ok = FALSE)
 {
-  out <- Map(as_data_frame_summary_tableby, x$object, x$totals,
-             MoreArgs = list(hasStrata = x$hasStrata, control = x$control, text = text, pfootnote = pfootnote,
+  out <- Map(as_data_frame_summary_tableby, x$object, x$totals, x$hasStrata,
+             MoreArgs = list(control = x$control, text = text, pfootnote = pfootnote,
                              term.name = term.name, width = width, min.split = min.split))
   if(!list.ok)
   {

@@ -190,7 +190,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
     names(control.list) <- names(xTerms)
 
     strataList <- vector("list", length(strata.levels))
-    if(strataTerm != "") names(strataList) <- paste0("(", strataTerm, ") == ", strata.levels)
+    if(hasStrata) names(strataList) <- paste0("(", strataTerm, ") == ", strata.levels)
 
     for(strat in strata.levels)
     {
@@ -327,12 +327,12 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
         xList[[eff]] <- list(stats=statList, test=testout, type=vartype)
       }
 
-      strataList[[if(strataTerm == "") 1 else paste0("(", strataTerm, ") == ", strat)]] <- xList
+      strataList[[if(!hasStrata) 1 else paste0("(", strataTerm, ") == ", strat)]] <- xList
     }
-    out.tables[[termBy]] <- list(formula = FORM, y = yList, strata = list(term = strataTerm, values = strata.levels, label = strataLabel),
-                                 x = xTerms, tables = strataList, control.list = control.list)
+    out.tables[[termBy]] <- list(formula = FORM, y = yList, strata = list(term = strataTerm, values = strata.levels, label = strataLabel, hasStrata = hasStrata),
+                                 x = xTerms, tables = strataList, control.list = control.list, hasWeights = FALSE)
   }
-  structure(list(Call = Call, control = control, tables = out.tables, hasWeights = FALSE, hasStrata = hasStrata), class = c("paired", "tableby"))
+  structure(list(Call = Call, control = control, tables = out.tables), class = c("paired", "tableby"))
 }
 
 #' @rdname paired

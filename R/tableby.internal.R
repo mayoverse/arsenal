@@ -176,10 +176,11 @@ modpval.tableby <- function(x, pdata, use.pname=FALSE) {
     for(k in seq_len(nrow(pdata))) {
       yname <- pdata[[1]][k]
 
-      strat <- if(x$hasStrata) pdata[[2]][k] else ""
-      xname <- pdata[[2 + x$hasStrata]][k]
-      p <- pdata[[3 + x$hasStrata]][k]
-      method <- if(ncol(pdata) > 3 + x$hasStrata) pdata[[4 + x$hasStrata]][k] else "modified by user"
+      hasStrata <- x$tables[[yname]]$strata$hasStrata
+      strat <- if(hasStrata) pdata[[2]][k] else ""
+      xname <- pdata[[2 + hasStrata]][k]
+      p <- pdata[[3 + hasStrata]][k]
+      method <- if(ncol(pdata) > 3 + hasStrata) pdata[[4 + hasStrata]][k] else "modified by user"
 
       if(xname %in% names(x$tables[[yname]]$x) && strat %in% x$tables[[yname]]$strata$values)
       {
@@ -219,12 +220,14 @@ tests <- function(x) UseMethod("tests")
 tests.tableby <- function(x) {
   if(x$control$test) {
     df <- as.data.frame(x, list.ok = TRUE)
-    testdf <- do.call(rbind_chr, lapply(df, function(i) i[c("group.label", if(x$hasStrata) names(i)[4], "variable", "p.value", "test")]))
+    hasStrata <- has_strata(x)
+    if(any(hasStrata) != all(hasStrata)) stop("Some tables in 'x' have strata, but others don't")
+    testdf <- do.call(rbind_chr, Map(df, hasStrata, f = function(i, s) i[c("group.label", if(s) names(i)[4], "variable", "p.value", "test")]))
 
     testdf <- unique(testdf)
     row.names(testdf) <- NULL
-    names(testdf)[c(1, x$hasStrata + (2:4))] <- c("Group", "Variable",
-                                                  if(!is.null(x$control$test.pname)) x$control$test.pname else "p.value", "Method")
+    names(testdf)[c(1, any(hasStrata) + (2:4))] <- c("Group", "Variable",
+                                                     if(!is.null(x$control$test.pname)) x$control$test.pname else "p.value", "Method")
   } else {
     cat("No tests run on tableby object\n")
     testdf <- NULL
@@ -268,7 +271,7 @@ xtfrm.tableby <- function(x)
 sort.tableby <- function(x, ...)
 {
   if(!x$control$test) stop("Can't sort a tableby object created with test=FALSE.")
-  if(x$hasStrata || length(x$tables) > 1) stop("Can't sort a tableby object with strata or multiple by variables")
+  if(any(has_strata(x)) || length(x$tables) > 1) stop("Can't sort a tableby object with strata or multiple by variables")
   NextMethod()
 }
 

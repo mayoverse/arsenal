@@ -33,7 +33,7 @@ summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE
   structure(list(
     object = set_attr(dat, "control", NULL),
     control = attr(dat, "control"),
-    hasStrata = object$hasStrata,
+    hasStrata = has_strata(object),
     text = text,
     title = title,
     term.name = term.name
@@ -140,8 +140,8 @@ as_data_frame_summary_modelsum <- function(df, control, hasStrata, text, term.na
 #' @export
 as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$term.name, width = NULL, min.split = NULL, list.ok = FALSE)
 {
-  out <- lapply(x$object, as_data_frame_summary_modelsum, hasStrata = x$hasStrata, control = x$control, text = text,
-                term.name = term.name, width = width, min.split = min.split)
+  out <- Map(as_data_frame_summary_modelsum, x$object, x$hasStrata,
+             MoreArgs = list(control = x$control, text = text, term.name = term.name, width = width, min.split = min.split))
   if(!list.ok)
   {
     if(length(out) == 1) out <- out[[1]] else warning("as.data.frame.summary.modelsum is returning a list of data.frames")

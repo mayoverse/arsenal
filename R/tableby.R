@@ -256,7 +256,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
     names(control.list) <- names(xTerms)
 
     strataList <- vector("list", length(strata.levels))
-    if(strataTerm != "") names(strataList) <- paste0("(", strataTerm, ") == ", strata.levels)
+    if(hasStrata) names(strataList) <- paste0("(", strataTerm, ") == ", strata.levels)
 
     for(strat in strata.levels)
     {
@@ -368,10 +368,10 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         xList[[eff]] <- list(stats=statList, test=testout, type=vartype)
       }
 
-      strataList[[if(strataTerm == "") 1 else paste0("(", strataTerm, ") == ", strat)]] <- xList
+      strataList[[if(!hasStrata) 1 else paste0("(", strataTerm, ") == ", strat)]] <- xList
     }
-    out.tables[[termBy]] <- list(y = yList, strata = list(term = strataTerm, values = strata.levels, label = strataLabel),
-                                 x = xTerms, tables = strataList, control.list = control.list)
+    out.tables[[termBy]] <- list(y = yList, strata = list(term = strataTerm, values = strata.levels, label = strataLabel, hasStrata = hasStrata),
+                                 x = xTerms, tables = strataList, control.list = control.list, hasWeights = hasWeights)
   }
-  structure(list(Call = Call, control = control, tables = out.tables, hasWeights = hasWeights, hasStrata = hasStrata), class = "tableby")
+  structure(list(Call = Call, control = control, tables = out.tables), class = "tableby")
 }

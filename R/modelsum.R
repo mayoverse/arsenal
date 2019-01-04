@@ -196,13 +196,13 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
 
     strataList <- vector("list", length(strata.levels))
-    if(strataTerm != "") names(strataList) <- paste0("(", strataTerm, ") == ", strata.levels)
+    if(hasStrata) names(strataList) <- paste0("(", strataTerm, ") == ", strata.levels)
 
     for(strat in strata.levels)
     {
       xList <- vector("list", length(effCols))
       names(xList) <- names(xTerms)
-      idx <- if(strataTerm == "") NULL else call("==", call("(", Call$strata), strat)
+      idx <- if(!hasStrata) NULL else call("==", call("(", Call$strata), strat)
 
       for(eff in effCols)
       {
@@ -211,7 +211,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
         temp.call <- Call[c(1, match(c("data", "subset", "na.action", "weights"), names(Call), 0L))]
         temp.call$formula <- adj.formula
-        if(strataTerm != "")
+        if(hasStrata)
         {
           temp.call$subset <- if(!is.null(temp.call$subset)) call("&", call("(", temp.call$subset), idx) else idx
         }
@@ -331,14 +331,14 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
           )
         )
       }
-      strataList[[if(strataTerm == "") 1 else paste0("(", strataTerm, ") == ", strat)]] <- xList
+      strataList[[if(!hasStrata) 1 else paste0("(", strataTerm, ") == ", strat)]] <- xList
     }
 
-    out.tables[[yTerm]] <- list(y = yList, strata = list(term = strataTerm, values = strata.levels, label = strataLabel),
+    out.tables[[yTerm]] <- list(y = yList, strata = list(term = strataTerm, values = strata.levels, label = strataLabel, hasStrata = hasStrata),
                                 x = lapply(xTerms, make_ms_labs),
                                 adjust = if(!is.null(adjTerms)) lapply(adjTerms, make_ms_labs) else adjTerms,
-                                tables = strataList, family = family)
+                                tables = strataList, family = family, hasWeights = hasWeights)
   }
 
-  structure(list(Call = Call, control = control, tables = out.tables, hasWeights = hasWeights, hasStrata = hasStrata), class = "modelsum")
+  structure(list(Call = Call, control = control, tables = out.tables), class = "modelsum")
 }

@@ -15,15 +15,15 @@ get_tb_part <- function(tbList, xList, yList, sList, sValue, statLabs)
   out <- data.frame(
     group.term = yList$term,
     group.label = yList$label,
-    strata.term = if(sList$term == "") "" else paste0("(", sList$term, ") == ", sValue),
-    strata.value = if(sList$term == "") "" else sValue,
+    strata.term = if(!sList$hasStrata) "" else paste0("(", sList$term, ") == ", sValue),
+    strata.value = if(!sList$hasStrata) "" else sValue,
     variable = xList$variable,
     term = c(xList$term, unlist(Map(f, tbList$stats, names(tbList$stats)), use.names = FALSE)),
     label = c(xList$label, unlist(Map(f, tbList$stats, names(tbList$stats), lab = TRUE), use.names = FALSE)),
     variable.type = tbList$type,
     stringsAsFactors = FALSE
   )
-  if(sList$term == "") out$strata.value <- NULL else names(out)[4] <- sList$label
+  if(!sList$hasStrata) out$strata.value <- NULL else names(out)[4] <- sList$label
 
   f2 <- function(x, lv)
   {
@@ -56,7 +56,7 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL, list.ok = FA
   control <- c(list(...), x$control)
   control <- do.call("tableby.control", control[!duplicated(names(control))])
 
-  out <- lapply(x$tables, as_data_frame_tableby, hasStrata = x$hasStrata, control = control)
+  out <- lapply(x$tables, as_data_frame_tableby, control = control)
 
   if(!list.ok)
   {
@@ -67,7 +67,7 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL, list.ok = FA
 }
 
 
-as_data_frame_tableby <- function(byList, hasStrata, control)
+as_data_frame_tableby <- function(byList, control)
 {
   stopifnot(length(byList$tables) == length(byList$strata$values))
   tabs <- Map(get_tb_strata_part, tbList = byList$tables, sValue = byList$strata$values,
@@ -97,7 +97,7 @@ as_data_frame_tableby <- function(byList, hasStrata, control)
       y
     }
     bylst <- list(factor(out$variable, levels = unique(out$variable)))
-    if(hasStrata) bylst[[2]] <- factor(out[[4]], levels = unique(out[[4]]))
+    if(byList$strata$hasStrata) bylst[[2]] <- factor(out[[4]], levels = unique(out[[4]]))
     out <- do.call(rbind_chr, by(out, bylst, simplify, simplify = FALSE))
   }
   set_attr(out, "control.list", byList$control.list)

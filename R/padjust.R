@@ -30,7 +30,7 @@ padjust.default <- function(p, method, n, ...)
 padjust.tableby <- function(p, method, n, suffix = " (adjusted for multiple comparisons)", ...)
 {
   Call <- match.call()
-  if(p$hasStrata || length(p$tables) > 1) stop("Can't adjust p-values on tables with strata or multiple by-variables.")
+  if(any(has_strata(p)) || length(p$tables) > 1) stop("Can't adjust p-values on tables with strata or multiple by-variables.")
   if(!p$control$test) stop("Can't adjust p-values when no tests were run")
   indx <- match(c("p", "method", "n"), names(Call), nomatch = 0)
   temp.call <- Call[c(1, indx)]
@@ -48,7 +48,7 @@ padjust.tableby <- function(p, method, n, suffix = " (adjusted for multiple comp
 padjust.summary.tableby <- function(p, method, n, suffix = " (adjusted for multiple comparisons)", ...)
 {
   Call <- match.call()
-  if(p$hasStrata || length(p$object) > 1) stop("Can't adjust p-values on tables with strata or multiple by-variables")
+  if(any(p$hasStrata) || length(p$object) > 1) stop("Can't adjust p-values on tables with strata or multiple by-variables")
   if(!p$control$test)
   {
     warning("No tests run on tableby object")
