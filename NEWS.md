@@ -7,7 +7,7 @@
     - Removed `length.tableby()` (because it was messing up `str()` and R Studio) and replaced with `head.tableby()` and `tail.tableby()` (the original
       purpose to having `length()` defined).
     
-    - `labels<-.tableby` no longer supports unnamed labels, as it's unclear how to assign them to multiple by-variables and strata. It also no longer
+    - `labels<-.tableby()` no longer supports unnamed labels, as it's unclear how to assign them to multiple by-variables and strata. It also no longer
       give warnings if your labels are not used.
     
     - Implemented `sort.tableby()`, which errors out if the object has strata or multiple by-variables, and then runs the default method.
@@ -17,10 +17,10 @@
       
     - `tests.tableby()` now returns a data.frame with a by-variable column and (if applicable) a strata column.
     
-    - `[.tableby` now has an argument `j=` to select the by-variables and an argument `warn=` to turn off warnings if indices aren't found.
+    - `[.tableby()` now has an argument `j=` to select the by-variables and an argument `warn=` to turn off warnings if indices aren't found.
     
-    - `na.tableby` now generates functions. The "lhs=" argument determines whether to remove NAs from the first column of the data.
-      If `tableby()` detects a one-sided formula, it sets this to FALSE. Both versions now remove rows with NAs in the strata column when applicable.
+    - `na.tableby()` now generates functions. The "lhs=" argument determines whether to remove NAs from the first column of the data.
+      If `tableby()` detects a one-sided formula, it sets this to FALSE. Both versions now remove rows with NAs in the strata column (when applicable).
       
     - `padjust.tableby()` and `padjust.summary.tableby()` will error if fed an object with strata or multiple by-variables.
     
