@@ -250,7 +250,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
       if(is.null(labelEff <- attr(col, "label"))) labelEff <- nameEff
       list(variable=nameEff, label=labelEff, term=nm)
     })
-    names(xTerms) <- vapply(xTerms, function(x) x$variable, NA_character_)
+    names(xTerms) <- vapply(xTerms, "[[", NA_character_, "variable")
 
     control.list <- lapply(modeldf, attr, "control.list")
     names(control.list) <- names(xTerms)
@@ -375,24 +375,3 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
   }
   structure(list(Call = Call, control = control, tables = out.tables, hasWeights = hasWeights, hasStrata = hasStrata), class = "tableby")
 }
-
-
-
-#' @rdname tableby
-#' @export
-print.tableby <- function(x, ...) {
-  cat("Tableby Object\n\n")
-  cat("Function Call: \n")
-  print(x$Call)
-  cat("\n")
-  cat("y variable(s):\n")
-  print(names(x$tables))
-  cat("x variable(s):\n")
-  print(names(x$tables[[1]]$x))
-  if(x$hasStrata)
-  {
-    cat("strata: ", x$tables[[1]]$strata$term, "\n", sep = "")
-  }
-  invisible(x)
-}
-

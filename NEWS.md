@@ -28,6 +28,18 @@
     
     - Added logic to statistical tests to detect missing levels of the by-variable.
 
+* `modelsum()`:
+
+    - Added functionality for multiple by-variables and strata terms. This required completely reworked the innards of the `modelsum` object.
+    
+    - `labels<-.modelsum` no longer give warnings if your labels are not used.
+    
+    - `[.modelsum` now has an argument `j=` to select the by-variables and an argument `warn=` to turn off warnings if indices aren't found.
+    
+    - `na.modelsum()` now removes rows with NAs in the strata column (when applicable).
+    
+    - `merge.modelsum()` is now a real function (instead of just a placeholder).
+
 # arsenal v1.5.0
 
 * `tableby()` and `paired()`:

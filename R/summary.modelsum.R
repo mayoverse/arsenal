@@ -29,20 +29,20 @@ NULL
 #' @export
 summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, term.name = "")
 {
-  object <- as.data.frame(object, ..., labelTranslations = labelTranslations)
+  dat <- as.data.frame(object, ..., labelTranslations = labelTranslations, list.ok = TRUE)
   structure(list(
-    object = set_attr(object, "control", NULL),
-    control = attr(object, "control"),
+    object = set_attr(dat, "control", NULL),
+    control = attr(dat, "control"),
+    hasStrata = object$hasStrata,
     text = text,
     title = title,
     term.name = term.name
   ), class = "summary.modelsum")
 }
 
-#' @rdname summary.modelsum
-#' @export
-as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$term.name, width = NULL, min.split = NULL)
+as_data_frame_summary_modelsum <- function(df, control, hasStrata, text, term.name, width, min.split)
 {
+  df.orig <- df
 
   #### format the digits and nsmall things ####
   # integers, one-per-model
@@ -59,30 +59,39 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
   use.digits.ratio <- c("OR", "CI.lower.OR", "CI.upper.OR", "RR", "CI.lower.RR", "CI.upper.RR", "HR", "CI.lower.HR", "CI.upper.HR")
   use.digits.p <- c("p.value.sc", "p.value.log", "p.value.wald", "p.value.F") #"p.value"
 
-  df <- x$object
   cn <- colnames(df)
 
-  df[cn %in% c(use.digits1, use.digits2)] <- lapply(df[cn %in% c(use.digits1, use.digits2)], formatC, digits = x$control$digits, format = "f")
-  df[cn %in% use.digits.ratio] <- lapply(df[cn %in% use.digits.ratio], formatC, digits = x$control$digits.ratio, format = "f")
-  df[cn %in% c("p.value", use.digits.p)] <- lapply(df[cn %in% c("p.value", use.digits.p)], formatC, digits = x$control$digits.p,
-                                                     format = if(x$control$format.p) "f" else "g")
+  df[cn %in% c(use.digits1, use.digits2)] <- lapply(df[cn %in% c(use.digits1, use.digits2)], formatC, digits = control$digits, format = "f")
+  df[cn %in% use.digits.ratio] <- lapply(df[cn %in% use.digits.ratio], formatC, digits = control$digits.ratio, format = "f")
+  df[cn %in% c("p.value", use.digits.p)] <- lapply(df[cn %in% c("p.value", use.digits.p)], formatC, digits = control$digits.p,
+                                                   format = if(control$format.p) "f" else "g")
 
-  if(x$control$format.p)
+  if(control$format.p)
   {
-    cutoff <- 10^(-x$control$digits.p)
-    fmt <- paste0("< ", format(cutoff, digits = x$control$digits.p, format = "f"))
+    cutoff <- 10^(-control$digits.p)
+    fmt <- paste0("< ", format(cutoff, digits = control$digits.p, format = "f"))
 
     for(tst in c("p.value", use.digits.p))
     {
-      if(tst %in% cn) df[[tst]][x$object[[tst]] < cutoff] <- fmt
+      if(tst %in% cn) df[[tst]][df.orig[[tst]] < cutoff] <- fmt
     }
   }
 
   #### don't show the same statistics more than once ####
+  dups <- if(hasStrata) unlist(by(df, df[[4]], function(x) duplicated(x$model), simplify = FALSE), use.names = FALSE) else duplicated(df$model)
   df[cn %in% c(use.digits0, use.digits1, use.digits.p)] <- lapply(df[cn %in% c(use.digits0, use.digits1, use.digits.p)],
-                                                                  replace, list = duplicated(df$model), values = "")
+                                                                  replace, list = dups, values = "")
+  if(hasStrata)
+  {
+    df[[4]] <- as.character(df[[4]])
+    df[[4]][duplicated(df[[4]])] <- ""
+  }
 
   #### get rid of unnecessary columns ####
+  df$y.term <- NULL
+  df$y.label <- NULL
+  df$strata.term <- NULL
+
   df$model <- NULL
   df$term <- NULL
   term.type <- df$term.type
@@ -91,10 +100,11 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
   #### Format if necessary ####
   if(!is.null(width))
   {
-    firstcol <- smart.split(df[[1L]], width = width, min.split = min.split)
+    firstcol <- smart.split(df[[1L + hasStrata]], width = width, min.split = min.split)
     lens <- vapply(firstcol, length, NA_integer_)
 
-    df <- do.call(cbind.data.frame, c(list(label = unlist(firstcol, use.names = FALSE)), lapply(df[-1L], insert_elt, times = lens)))
+    df <- do.call(cbind.data.frame, c(list(label = unlist(firstcol, use.names = FALSE)), lapply(df[-1L - hasStrata], insert_elt, times = lens)))
+    if(hasStrata) df <- df[replace(seq_along(df), 1:2, 2:1)]
     row.names(df) <- NULL
     term.type <- insert_elt(term.type, times = lens, elt = NULL)
   }
@@ -116,15 +126,27 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
 
   #### tweak column names according to specifications ####
   cn <- stats::setNames(colnames(df), colnames(df))
-  if(length(x$control$stat.labels) > 0)
+  if(length(control$stat.labels) > 0)
   {
-    nm <- intersect(cn, names(x$control$stat.labels))
-    if(length(nm)) cn[nm] <- unlist(x$control$stat.labels[nm])
+    nm <- intersect(cn, names(control$stat.labels))
+    if(length(nm)) cn[nm] <- unlist(control$stat.labels[nm])
   }
   cn["label"] <- term.name
   colnames(df) <- cn
 
   df
+}
+#' @rdname summary.modelsum
+#' @export
+as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$term.name, width = NULL, min.split = NULL, list.ok = FALSE)
+{
+  out <- lapply(x$object, as_data_frame_summary_modelsum, hasStrata = x$hasStrata, control = x$control, text = text,
+                term.name = term.name, width = width, min.split = min.split)
+  if(!list.ok)
+  {
+    if(length(out) == 1) out <- out[[1]] else warning("as.data.frame.summary.modelsum is returning a list of data.frames")
+  }
+  out
 }
 
 #' @rdname summary.modelsum
@@ -132,11 +154,14 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
 print.summary.modelsum <- function(x, ..., format = if(!is.null(x$text) && x$text %in% c("html", "latex")) x$text else "markdown",
                                    escape = x$text %nin% c("html", "latex"), width = NULL, min.split = NULL)
 {
-  df <- as.data.frame(x, ..., width = width, min.split = min.split)
+  df <- as.data.frame(x, ..., width = width, min.split = min.split, list.ok = TRUE)
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  print(knitr::kable(df, caption = NULL, format = format, row.names = FALSE, escape = escape, ...))
+  for(i in seq_along(df))
+  {
+    print(knitr::kable(df[[i]], caption = NULL, format = format, row.names = FALSE, escape = escape, ...))
+  }
   cat("\n")
 
   invisible(x)

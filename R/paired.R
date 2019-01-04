@@ -184,7 +184,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
       if(is.null(labelEff <- attr(col, "label"))) labelEff <- nameEff
       list(variable=nameEff, label=labelEff, term=nm)
     })
-    names(xTerms) <- vapply(xTerms, function(x) x$variable, NA_character_)
+    names(xTerms) <- vapply(xTerms, "[[", NA_character_, "variable")
 
     control.list <- lapply(modeldf, attr, "control.list")
     names(control.list) <- names(xTerms)

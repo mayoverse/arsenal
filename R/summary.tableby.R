@@ -166,7 +166,8 @@ as_data_frame_summary_tableby <- function(df, totals, control, hasStrata, text, 
 
 #' @rdname summary.tableby
 #' @export
-as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote, term.name = x$term.name, width = NULL, min.split = NULL, list.ok = FALSE)
+as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote, term.name = x$term.name,
+                                          width = NULL, min.split = NULL, list.ok = FALSE)
 {
   out <- Map(as_data_frame_summary_tableby, x$object, x$totals,
              MoreArgs = list(hasStrata = x$hasStrata, control = x$control, text = text, pfootnote = pfootnote,

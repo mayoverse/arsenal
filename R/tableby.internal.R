@@ -160,43 +160,6 @@ is.tableby <- function(x) inherits(x, "tableby")
 #' @export
 is.summary.tableby <- function(x) inherits(x, "summary.tableby")
 
-#' @rdname tableby.internal
-#' @export
-merge.tableby <- function(x, y, all = FALSE, all.x = all, all.y = all, ...) {
-  Call <- match.call()
-  if(x$hasStrata != y$hasStrata) stop("One of x or y has a strata, but the other doesn't.")
-  if(x$hasWeights != y$hasWeights) stop("One of x or y has weights, but the other doesn't.")
-  nms.x <- names(x$tables)
-  nms.y <- names(y$tables)
-  nms <- if(all.x && all.y) union(nms.x, nms.y) else if(all.x) nms.x else if(all.y) nms.y else intersect(nms.x, nms.y)
-  if(length(nms) == 0) stop("No terms in common.")
-  x <- x[, nms, warn = FALSE]
-  y <- y[, nms, warn = FALSE]
-  nms.x <- names(x$tables)
-  nms.y <- names(y$tables)
-
-  for(ytrm in names(y$tables))
-  {
-    if(ytrm %nin% names(x$table))
-    {
-      x$tables[[ytrm]] <- y$tables[[ytrm]]
-      next
-    }
-    if(!identical(x$tables[[ytrm]]$y, y$tables[[ytrm]]$y)) stop("By-variables not identical for term ", ytrm)
-    if(!identical(x$tables[[ytrm]]$strata, y$tables[[ytrm]]$strata)) stop("Strata not identical for term ", ytrm)
-
-    xtrms <- names(y$tables[[ytrm]]$x)
-    x$tables[[ytrm]]$x[xtrms] <- y$tables[[ytrm]]$x
-    for(j in seq_along(x$tables[[ytrm]]$tables))
-    {
-      x$tables[[ytrm]]$tables[[j]][xtrms] <- y$tables[[ytrm]]$tables[[j]]
-    }
-  }
-
-  x$Call <- Call
-  x
-}
-
 ## pdata is a named data.frame where the first column is the x variable names matched by name,
 ## p-values (or some test stat) are numbers and the name is matched
 ## method name is the third column (optional)
@@ -243,19 +206,6 @@ modpval.tableby <- function(x, pdata, use.pname=FALSE) {
 
 ## retrieve variable labels (y, x-vec) from tableby object
 
-#' @rdname tableby.internal
-#' @export
-labels.tableby <- function(object, ...) {
-
-  get_lab <- function(x)
-  {
-    xLabs <- vapply(x$x, function(obj) obj$label, NA_character_)
-    c(stats::setNames(x$y$label, x$y$term), xLabs)
-  }
-
-  labs <- unlist(unname(lapply(object$tables, get_lab)), recursive = FALSE)
-  labs[!duplicated(labs) | !duplicated(names(labs))]
-}
 
 ## define generic function for tests, so tests(tbObj) will work
 
@@ -282,95 +232,6 @@ tests.tableby <- function(x) {
   testdf
 }
 
-
-## assign labels to tableby object
-
-#' @rdname tableby.internal
-#' @export
-'labels<-.tableby' <- function(x, value) {
-  ## if the value vector is named, then assign the labels to
-  ## those names that match those in x and y
-  if(is.list(value)) value <- unlist(value)
-  if(is.null(value))
-  {
-    for(i in seq_along(x$tables))
-    {
-      for(j in seq_along(x$tables[[i]]$x)) x$tables[[i]]$x[[j]]$label <- x$tables[[i]]$x[[j]]$term
-      x$tables[[i]]$y$label <- x$tables[[i]]$y$term
-      x$tables[[i]]$strata$label <- x$tables[[i]]$strata$term
-    }
-  } else if(!is.null(names(value))) {
-    for(L in seq_along(value))
-    {
-      for(i in seq_along(x$tables))
-      {
-        nm <- names(value)[L]
-        val <- unname(value[L])
-        if(nm %in% names(x$tables[[i]]$x)) x$tables[[i]]$x[[nm]]$label <- val
-        if(nm == x$tables[[i]]$y$term) x$tables[[i]]$y$label <- val
-        if(nm == x$tables[[i]]$strata$term) x$tables[[i]]$strata$label <- val
-      }
-    }
-  } else stop("Unnamed label assignments are no longer supported")
-  x
-}
-
-## subset a tableby object;
-## syntax of usage: newtb <- tbObj[1:2]
-## x here is the tableby object
-## index is in '...', and allows only 1 vector of integer indices
-## in future, maybe allow subsetting by names
-
-#' @rdname tableby.internal
-#' @export
-"[.tableby" <- function(x, i, j, ..., warn = TRUE) {
-  if(missing(i) && missing(j)) return(x)
-  newx <- x
-
-  give_warn <- function(vec) if(warn) warning(paste0("Some indices not found in tableby object: ", paste0(vec, collapse = ", ")), call. = FALSE)
-  if(!missing(j))
-  {
-    if(is.character(j) && any(tmp <- j %nin% names(newx$tables)))
-    {
-      give_warn(j[tmp])
-      j <- j[!tmp]
-    } else if(is.numeric(j) && any(tmp <- j %nin% seq_along(newx$tables)))
-    {
-      give_warn(j[tmp])
-      j <- j[!tmp]
-    } else if(is.logical(j) && length(j) != length(newx$tables))
-    {
-      stop("Logical vector index not the right length")
-    }
-    if(length(j) == 0 || anyNA(j)) stop("Indices must have nonzero length and no NAs.")
-    newx$tables <- newx$tables[j]
-  }
-
-  if(!missing(i))
-  {
-    newx$tables <- lapply(newx$tables, function(yList) {
-      if(is.character(i) && any(tmp <- i %nin% names(yList$x)))
-      {
-        give_warn(i[tmp])
-        i <- i[!tmp]
-      } else if(is.numeric(i) && any(tmp <- i %nin% seq_along(yList$x)))
-      {
-        give_warn(i[tmp])
-        i <- i[!tmp]
-      } else if(is.logical(i) && length(i) != length(yList$x))
-      {
-        stop("Logical vector index not the right length")
-      }
-      if(length(i) == 0 || anyNA(i)) stop("Indices must have nonzero length and no NAs.")
-      yList$x <- yList$x[i]
-      yList$tables <- lapply(yList$tables, "[", i)
-      yList
-    })
-  }
-  newx
-}
-
-
 ## function to handle na.action for tableby formula, data.frame
 
 #' @rdname tableby.internal
@@ -379,33 +240,18 @@ na.tableby <- function(lhs = TRUE)
 {
   if(is.data.frame(lhs)) stop("na.tableby now generates functions (and no longer accepts data.frames). ",
                               "Use 'na.tableby()' to generate the function that used to be 'na.tableby'.")
-  if(lhs)
-  {
-    function(object, ...) {
-      omit <- is.na(object[[1]])
-      if("(strata)" %in% names(object)) omit <- omit | is.na(object[["(strata)"]])
+  if(lhs) return(na_lhs_strata)
 
-      xx <- object[!omit, , drop = FALSE]
-      if(any(omit)) {
-        temp <- stats::setNames(seq_along(omit)[omit], attr(object, "row.names")[omit])
-        attr(temp, "class") <- "omit"
-        attr(xx, "na.action") <- temp
-      }
-      xx
-    }
-  } else
-  {
-    function(object, ...) {
-      omit <- if("(strata)" %in% names(object)) is.na(object[["(strata)"]]) else rep(FALSE, nrow(object))
+  function(object, ...) {
+    omit <- if("(strata)" %in% names(object)) is.na(object[["(strata)"]]) else rep(FALSE, nrow(object))
 
-      xx <- object[!omit, , drop = FALSE]
-      if(any(omit)) {
-        temp <- stats::setNames(seq_along(omit)[omit], attr(object, "row.names")[omit])
-        attr(temp, "class") <- "omit"
-        attr(xx, "na.action") <- temp
-      }
-      xx
+    xx <- object[!omit, , drop = FALSE]
+    if(any(omit)) {
+      temp <- stats::setNames(seq_along(omit)[omit], attr(object, "row.names")[omit])
+      attr(temp, "class") <- "omit"
+      attr(xx, "na.action") <- temp
     }
+    xx
   }
 }
 

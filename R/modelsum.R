@@ -14,8 +14,9 @@
 #'   variables in the model. If not found in \code{data}, the variables are taken from \code{environment(formula)}, typically
 #'   the environment from which \code{modelsum} is called.
 #' @param subset an optional vector specifying a subset of observations (rows of \code{data}) to be used in the results.
-#'   Works as vector of logicals or an index.
+#'   If \code{strata} is missing, this works as vector of logicals or an index; otherwise, it should be a logical vector.
 #' @param weights an optional vector specifying the weights to apply to each data observation (rows of \code{data})
+#' @param strata a vector of strata to separate model summaries by an additional group.
 #' @param na.action a function which indicates what should happen when the data contain \code{NA}s.
 #'   The default (\code{NULL}) is to use the defaults of \code{\link[stats]{lm}}, \code{\link[stats]{glm}}, or \code{\link[survival]{coxph}},
 #'   depending on the \code{family} specifications.
@@ -24,14 +25,7 @@
 #'   the latter are used. See \code{\link{modelsum.control}} for other details.
 #' @param ... additional arguments to be passed to internal \code{modelsum} functions.
 #' @param x An object of class \code{'modelsum'}, or a list of such objects.
-#' @return
-#' An object with class \code{'modelsum'}, which is effectively a list with the variables from the right-side in x and the group variable in y.
-#'   Then, each item in x has these:
-#'   \item{fits}{a list with an item in X for each x in y ~ X + adjust variables}
-#'   \item{family}{family used in glm}
-#'   \item{Call}{Original call to modelsum}
-#'   \item{control}{list of control parameters used in \code{modelsum}, and to be used in \code{\link{summary.modelsum}},
-#'     the result of \code{\link{modelsum.control}}}
+#' @return An object with class \code{'modelsum'}
 #' @author Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, and Ethan Heinzen, adapted from SAS Macro of the same name
 #' @seealso \code{\link{modelsum.control}}, \code{\link{summary.modelsum}}, \code{\link{formulize}}
 #' @examples
@@ -58,7 +52,7 @@ NULL
 #' @export
 
 modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action = NULL,
-                     subset=NULL, weights=NULL, control = NULL, ...) {
+                     subset=NULL, weights=NULL, strata, control = NULL, ...) {
   Call <- match.call()
 
   ## Allow family parameter to passed with or without quotes
@@ -85,239 +79,266 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   control <- do.call("modelsum.control", control[!duplicated(names(control))])
 
   ## Tell user if they passed an argument that was not expected, either here or in control
-  expectArgs <- c("formula", "family", "adjust", "data", "na.action", "subset", "weights", "control", names(control))
+  expectArgs <- c("formula", "family", "adjust", "data", "na.action", "subset", "weights", "strata", "control", names(control))
   match.idx <- match(names(Call)[-1], expectArgs)
   if(anyNA(match.idx)) warning("Unused arguments: ", paste(names(Call)[c(FALSE, is.na(match.idx))], collapse=", "), "\n")
 
   #### Set up "main effects" dataset ####
-  indx.main <- match(c("formula", "data", "subset"), names(Call), 0L)
+  indx.main <- match(c("formula", "data", "subset", "weights", "strata"), names(Call), 0L)
   if(indx.main[1] == 0) stop("A formula argument is required")
   if(length(formula) == 2) stop("'formula' should have a response variable!")
   if(!is.null(adjust) && length(adjust) != 2) stop("'adjust' shouldn't have a response variable!")
-  main.call <- Call[c(1, indx.main)]
-  main.call[[1]] <- quote(stats::model.frame)
-  main.call$na.action <- quote(stats::na.pass) # for now, keep all rows, except for what is subset out
-  if(!missing(data))
-  {
-    # instead of call("keep.labels", ...), which breaks when arsenal isn't loaded (Can't find "keep.labels")
-    main.call$data <- as.call(list(keep.labels, main.call$data))
-  }
-  maindf <- eval(main.call, parent.frame())
-  if(nrow(maindf) == 0) stop("No (non-missing) observations")
-  Terms <- stats::terms(maindf)
-
-  #### Set up "adjustment" dataset ####
-  if(missing(adjust))
-  {
-    adjustdf <- NULL
-  } else
-  {
-    adj.call <- main.call
-    adj.call$formula <- adjust
-    adjustdf <- eval(adj.call, parent.frame())
-  }
-
-  effCols <- seq_along(maindf)[-1]
-  yTerm <- colnames(maindf)[1]
-  yLabel <- attributes(maindf[[1]])$label
-  if(is.null(yLabel)) yLabel <- yTerm
-  fitList <- list()
 
   is.numericish <- function(x) is.numeric(x) || is.Date(x)
 
-  for(eff in effCols) {
-
-    currCol <- maindf[[eff]]
-    adj.formula <- join_formula(stats::drop.terms(Terms, if(length(effCols) > 1) setdiff(effCols, eff) - 1L else NULL, keep.response = TRUE), adjust)
-    adj.Terms <- stats::terms(adj.formula)
-    adjVars <- colnames(adjustdf)
-    adjVars2 <- attr(adj.Terms, "term.labels")[-1]
-
-    xname <- colnames(maindf)[eff]
-    xname2 <- attr(adj.Terms, "term.labels")[1] # this one will have backticks for non-syntactic names
-    labelEff <-  attributes(currCol)$label
-    if(is.null(labelEff)) labelEff <- xname
-
-    temp.call <- Call[c(1, match(c("data", "subset", "na.action", "weights"), names(Call), 0L))]
-    temp.call$formula <- adj.formula
-
-    ## placeholder for ordered, don't do any fitting
-    ## y is ordered factor
-    if (family == "ordinal") {
-      temp.call[[1]] <- quote(MASS::polr)
-      temp.call$Hess <- TRUE
-      temp.call$method <- family.list$method
-      fit <- eval(temp.call, parent.frame())
-      coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffORTidy[coeffORTidy$coefficient_type == "zeta", names(coeffORTidy) %nin% c("term", "coefficient_type")] <- NA
-      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffTidy$p.value <- 2*stats::pnorm(abs(coeffTidy$statistic), lower.tail = FALSE)
-      coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
-      # sort so that zeta comes first, but hold all else fixed
-      coeffTidy <- coeffTidy[order(coeffTidy$coefficient_type == "coefficient", seq_len(nrow(coeffTidy))), ]
-      modelGlance <- broom::glance(fit)
-
-    } else if (family == "gaussian") {
-      # ## issue warning if appears categorical
-      if(length(unique(maindf[[1]])) <= 5) {
-        warning("Input family=gaussian, but dependent variable has 5 or fewer categories\n")
-      }
-      temp.call[[1]] <- quote(stats::lm)
-      temp.call$x <- TRUE
-      fit <- eval(temp.call, parent.frame())
-      coeffTidy <- broom::tidy(fit, conf.int=TRUE, conf.level=control$conf.level)
-
-      if("(weights)" %in% colnames(fit$model)) fit$model <- fit$model[, colnames(fit$model) != "(weights)"]
-
-      coeffTidy$standard.estimate <- lm.beta(fit)
-      ## Continuous variable (numeric) ###############
-      ## Note: Using tidy changes colname from 't value' to 'statistic'
-      modelGlance <- broom::glance(fit)
-      names(modelGlance)[names(modelGlance) == "p.value"] <- "p.value.F"
-
-
-    } else if (family == "binomial" || family == "quasibinomial") {
-      ## These families are used in glm
-
-      temp.call[[1]] <- quote(stats::glm)
-      temp.call$x <- TRUE
-      temp.call$family <- family.list
-      fit <- eval(temp.call, parent.frame())
-
-      rocOut <- pROC::roc(fit$y ~ predict(fit, type='response'))
-      #coeffbeta <- summary(fit)$coef
-      ## find out that broom:::tidy.lm allows conf.int and exp
-      coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffORTidy[coeffORTidy$term == "Intercept", -1] <- NA
-      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
-      modelGlance <- c(broom::glance(fit), concordance = pROC::auc(rocOut))
-
-    } else if (family == "quasipoisson" || family == "poisson") {
-      ## These families use glm
-
-      temp.call[[1]] <- quote(stats::glm)
-      temp.call$x <- TRUE
-      temp.call$family <- family.list
-      fit <- eval(temp.call, parent.frame())
-
-      coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
-      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
-      modelGlance <- broom::glance(fit)
-
-    } else if (family == "negbin") {
-      ## Also uses glm
-      temp.call[[1]] <- quote(MASS::glm.nb)
-      temp.call$x <- TRUE
-      temp.call$link <- family.list$link
-      fit <- eval(temp.call, parent.frame())
-
-      coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
-      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
-      coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
-      modelGlance <- broom::glance(fit)
-      modelGlance$theta <- fit$theta
-      modelGlance$SE.theta <- fit$SE.theta
-
-    } else if(family=="survival") {
-
-      temp.call[[1]] <- quote(survival::coxph)
-      fit <- eval(temp.call, parent.frame())
-
-      ## use tidy to get both CIs, merge
-      coeffHRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=.95)
-      coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=.95)
-      coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
-      modelGlance <-  broom::glance(fit)
-    }
-
-    names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
-    names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
-
-    if(!is.numericish(currCol))
+  get_terms_with_contrasts <- function(trms, col, coeff, contrs)
+  {
+    if(!is.numeric(col) && !is.Date(col))
     {
-      lvls <- unique(currCol)
-      findlvls <- if(identical(fit$contrasts[[xname]], "contr.treatment"))
+      lvls <- unique(col)
+      findlvls <- if(identical(contrs[[trms$variable]], "contr.treatment"))
       {
-        paste0(xname2, lvls)
-      } else if(identical(fit$contrasts[[xname]], "contr.poly"))
+        paste0(trms$variable2, lvls)
+      } else if(identical(contrs[[trms$variable]], "contr.poly"))
       {
-        paste0(xname2, c(".L", ".Q", ".C", paste0("^", seq_along(lvls))))
-      } else paste0(xname2, seq_along(lvls))
+        paste0(trms$variable2, c(".L", ".Q", ".C", paste0("^", seq_along(lvls))))
+      } else paste0(trms$variable2, seq_along(lvls))
 
-      xterms <- coeffTidy$term[coeffTidy$term %in% findlvls]
-      labelEff <- sub(xname2, paste0(labelEff, " "), xterms, fixed = TRUE)
-    } else xterms <- xname2
+      trms$term <- union(trms$term, coeff$term[coeff$term %in% findlvls])
+    } else trms$term <- union(trms$term, trms$variable2)
 
+    trms
+  }
 
-    adjterms <- adjlabels <- NULL
-    for(adj in seq_along(adjustdf)) { ## manage adj terms and labels
-      adjcol <- adjustdf[[adj]]
-      alabel <- attributes(adjcol)$label
-      if(is.null(alabel)) alabel <- adjVars[adj]
+  out.tables <- list()
+  formula.list <- as_list_formula(formula)
+  for(FORM in formula.list)
+  {
+    main.call <- Call[c(1, indx.main)]
+    main.call[[1]] <- quote(stats::model.frame)
+    main.call$formula <- FORM
+    main.call$na.action <- quote(stats::na.pass) # for now, keep all rows, except for what is subset out
+    if(!missing(data))
+    {
+      # instead of call("keep.labels", ...), which breaks when arsenal isn't loaded (Can't find "keep.labels")
+      main.call$data <- as.call(list(keep.labels, main.call$data))
+    }
+    maindf <- eval(main.call, parent.frame())
+    if(nrow(maindf) == 0) stop("No (non-missing) observations")
+    Terms <- stats::terms(maindf)
 
-      if(!is.numericish(adjcol))
+    #### Check for weights ####
+    if(hasWeights <- "(weights)" %in% colnames(maindf)) maindf[["(weights)"]] <- NULL
+
+    #### Check for strata ####
+    if(hasStrata <- "(strata)" %in% colnames(maindf))
+    {
+      strata.col <- maindf[["(strata)"]]
+      strataTerm <- deparse(Call$strata)
+      if(is.null(strataLabel <- attr(strata.col, "label"))) strataLabel <- strataTerm
+      if(is.factor(strata.col))
       {
-        lvls.a <- unique(adjcol)
-        findlvls.a <- if(identical(fit$contrasts[[adjVars[adj]]], "contr.treatment"))
-        {
-          paste0(adjVars2[adj], lvls.a)
-        } else if(identical(fit$contrasts[[adjVars[adj]]], "contr.poly"))
-        {
-          paste0(adjVars2[adj], c(".L", ".Q", ".C", paste0("^", seq_along(lvls.a))))
-        } else paste0(adjVars2[adj], seq_along(lvls.a))
+        strata.col <- droplevels(strata.col)
+        strata.levels <- levels(strata.col)
+      } else strata.levels <- sort(unique(strata.col))
 
-        aterm <- coeffTidy$term[coeffTidy$term %in% findlvls.a]
-        alabel <- sub(adjVars2[adj], paste0(alabel, " "), aterm, fixed = TRUE)
-      } else aterm <- adjVars2[adj]
-
-      adjterms <- c(adjterms, aterm)
-      adjlabels <- c(adjlabels, alabel)
+      maindf[["(strata)"]] <- NULL
+    } else
+    {
+      strata.col <- rep("", nrow(maindf))
+      strataTerm <- strataLabel <- strata.levels <- ""
     }
 
-    fitList[[xname]] <- list(coeff=coeffTidy, family=family,
-                             xterms=xterms, label=labelEff,
-                             adjterms=adjterms, adjlabels=adjlabels)
+    #### Set up "adjustment" dataset ####
+    if(missing(adjust))
+    {
+      adjustdf <- NULL
+      adjTerms <- NULL
+    } else
+    {
+      adj.call <- main.call
+      adj.call$formula <- adjust
+      adj.call$weights <- NULL
+      adj.call$strata <- NULL
+      adjustdf <- eval(adj.call, parent.frame())
 
-    ## put xname and endpoint in glance, summary and as.data.frame to pull from there
-    fitList[[xname]]$glance <- c(modelGlance,
-                                 N = sum(!is.na(currCol)),
-                                 Nmiss = sum(is.na(currCol)),
-                                 Nmiss2 = sum(is.na(currCol)),
-                                 endpoint=yTerm,
-                                 endlabel=yLabel,
-                                 x=xname,
-                                 contrasts=list(fit$contrasts))
+      Terms.a <- stats::terms(adjustdf)
+      if(!is.null(attr(Terms.a, "offset")))
+      {
+        adjustdf[attr(Terms.a, "offset")] <- NULL
+      }
 
-  } # end for: eff
+      adjTerms <- Map(adjustdf, names(adjustdf), attr(stats::terms(adjustdf), "term.labels"), f = function(col, nm, nm2) {
+        if(is.null(labelEff <- attr(col, "label"))) labelEff <- nm
+        list(variable=nm, variable2=nm2, varlabel=labelEff)
+      })
+      names(adjTerms) <- vapply(adjTerms, "[[", NA_character_, "variable")
+    }
 
-  msList <- list(fits=fitList, control = control, Call = Call, family=family)
-                 ##, adjust=adjVars)
-  class(msList) <- "modelsum"
-  return(msList)
-}
+    #### Get info on y-variable ####
+    yCol <- maindf[[1]]
+    yTerm <- colnames(maindf)[1]
+    if(is.null(yLabel <- attr(yCol, "label"))) yLabel <- yTerm
+    yList <- list(label = yLabel, term = yTerm)
+    maindf[[1]] <- NULL
 
 
-#' @rdname modelsum
-#' @export
-print.modelsum <- function(x, ...) {
-  cat("Modelsum S3 Object\n\n")
-  cat("Function Call: \n")
-  print(x$Call)
-  cat("\n")
-  cat("y variable:\n")
-  print(x$fits[[1]]$glance$endpoint)
-  cat("x variables:\n")
-  print(unname(vapply(x$fits, function(tmp) tmp$glance$x, "")))
-  invisible(x)
-}
+    #### Now finish the x-variables ####
+    effCols <- seq_along(maindf)
 
-#' @rdname modelsum
-#' @export
-print.modelsumList <- function(x, ...) {
-  lapply(x, print.modelsum, ...)
-  invisible(x)
+    xTerms <- Map(maindf, names(maindf), attr(Terms, "term.labels"), f = function(col, nm, nm2) {
+      if(is.null(labelEff <- attr(col, "label"))) labelEff <- nm
+      list(variable=nm, variable2=nm2, varlabel=labelEff)
+    })
+    names(xTerms) <- vapply(xTerms, "[[", NA_character_, "variable")
+
+
+
+
+    strataList <- vector("list", length(strata.levels))
+    if(strataTerm != "") names(strataList) <- paste0("(", strataTerm, ") == ", strata.levels)
+
+    for(strat in strata.levels)
+    {
+      xList <- vector("list", length(effCols))
+      names(xList) <- names(xTerms)
+      idx <- if(strataTerm == "") NULL else call("==", call("(", Call$strata), strat)
+
+      for(eff in effCols)
+      {
+        currCol <- maindf[[eff]]
+        adj.formula <- join_formula(stats::drop.terms(Terms, if(length(effCols) > 1) setdiff(effCols, eff) else NULL, keep.response = TRUE), adjust)
+
+        temp.call <- Call[c(1, match(c("data", "subset", "na.action", "weights"), names(Call), 0L))]
+        temp.call$formula <- adj.formula
+        if(strataTerm != "")
+        {
+          temp.call$subset <- if(!is.null(temp.call$subset)) call("&", call("(", temp.call$subset), idx) else idx
+        }
+
+        ## y is ordered factor
+        if (family == "ordinal") {
+          temp.call[[1]] <- quote(MASS::polr)
+          temp.call$Hess <- TRUE
+          temp.call$method <- family.list$method
+          fit <- eval(temp.call, parent.frame())
+          coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
+          coeffORTidy[coeffORTidy$coefficient_type == "zeta", names(coeffORTidy) %nin% c("term", "coefficient_type")] <- NA
+          coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
+          coeffTidy$p.value <- 2*stats::pnorm(abs(coeffTidy$statistic), lower.tail = FALSE)
+          coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
+          # sort so that zeta comes first, but hold all else fixed
+          coeffTidy <- coeffTidy[order(coeffTidy$coefficient_type == "coefficient", seq_len(nrow(coeffTidy))), ]
+          modelGlance <- broom::glance(fit)
+
+        } else if (family == "gaussian") {
+          # ## issue warning if appears categorical
+          if(length(unique(yCol)) <= 5)
+            warning("Input family=gaussian, but dependent variable has 5 or fewer categories\n")
+
+          temp.call[[1]] <- quote(stats::lm)
+          temp.call$x <- TRUE
+          fit <- eval(temp.call, parent.frame())
+          coeffTidy <- broom::tidy(fit, conf.int=TRUE, conf.level=control$conf.level)
+
+          if("(weights)" %in% colnames(fit$model)) fit$model[["(weights)"]] <- NULL
+
+          coeffTidy$standard.estimate <- lm.beta(fit)
+          ## Continuous variable (numeric) ###############
+          ## Note: Using tidy changes colname from 't value' to 'statistic'
+          modelGlance <- broom::glance(fit)
+          names(modelGlance)[names(modelGlance) == "p.value"] <- "p.value.F"
+
+
+        } else if (family == "binomial" || family == "quasibinomial") {
+          ## These families are used in glm
+
+          temp.call[[1]] <- quote(stats::glm)
+          temp.call$x <- TRUE
+          temp.call$family <- family.list
+          fit <- eval(temp.call, parent.frame())
+
+          rocOut <- pROC::roc(fit$y ~ predict(fit, type='response'))
+          #coeffbeta <- summary(fit)$coef
+          ## find out that broom:::tidy.lm allows conf.int and exp
+          coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
+          coeffORTidy[coeffORTidy$term == "Intercept", -1] <- NA
+          coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
+          coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
+          modelGlance <- c(broom::glance(fit), concordance = pROC::auc(rocOut))
+
+        } else if (family == "quasipoisson" || family == "poisson") {
+          ## These families use glm
+
+          temp.call[[1]] <- quote(stats::glm)
+          temp.call$x <- TRUE
+          temp.call$family <- family.list
+          fit <- eval(temp.call, parent.frame())
+
+          coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
+          coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
+          coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
+          coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
+          modelGlance <- broom::glance(fit)
+
+        } else if (family == "negbin") {
+          ## Also uses glm
+          temp.call[[1]] <- quote(MASS::glm.nb)
+          temp.call$x <- TRUE
+          temp.call$link <- family.list$link
+          fit <- eval(temp.call, parent.frame())
+
+          coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
+          coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
+          coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
+          coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
+          modelGlance <- broom::glance(fit)
+          modelGlance$theta <- fit$theta
+          modelGlance$SE.theta <- fit$SE.theta
+
+        } else if(family == "survival") {
+
+          temp.call[[1]] <- quote(survival::coxph)
+          fit <- eval(temp.call, parent.frame())
+
+          ## use tidy to get both CIs, merge
+          coeffHRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=.95)
+          coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=.95)
+          coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
+          modelGlance <-  broom::glance(fit)
+        }
+
+        names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
+        names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
+
+        xTerms[[eff]] <- get_terms_with_contrasts(xTerms[[eff]], currCol, coeffTidy, fit$contrasts)
+
+        for(adj in seq_along(adjustdf)) { ## manage adj terms and labels
+          adjTerms[[adj]] <- get_terms_with_contrasts(adjTerms[[adj]], adjustdf[[adj]], coeffTidy, fit$contrasts)
+        }
+
+        xList[[eff]] <- list(
+          coeff=coeffTidy,
+          glance = c(
+            modelGlance,
+            N = sum(!is.na(currCol)),
+            Nmiss = sum(is.na(currCol)),
+            Nmiss2 = sum(is.na(currCol)),
+            endpoint=yTerm,
+            endlabel=yLabel,
+            x=xTerms[[eff]]$variable,
+            contrasts=list(fit$contrasts)
+          )
+        )
+      }
+      strataList[[if(strataTerm == "") 1 else paste0("(", strataTerm, ") == ", strat)]] <- xList
+    }
+
+    out.tables[[yTerm]] <- list(y = yList, strata = list(term = strataTerm, values = strata.levels, label = strataLabel),
+                                x = lapply(xTerms, make_ms_labs),
+                                adjust = if(!is.null(adjTerms)) lapply(adjTerms, make_ms_labs) else adjTerms,
+                                tables = strataList, family = family)
+  }
+
+  structure(list(Call = Call, control = control, tables = out.tables, hasWeights = hasWeights, hasStrata = hasStrata), class = "modelsum")
 }

@@ -16,14 +16,14 @@ get_tb_part <- function(tbList, xList, yList, sList, sValue, statLabs)
     group.term = yList$term,
     group.label = yList$label,
     strata.term = if(sList$term == "") "" else paste0("(", sList$term, ") == ", sValue),
-    strata.label = if(sList$term == "") "" else sValue,
+    strata.value = if(sList$term == "") "" else sValue,
     variable = xList$variable,
     term = c(xList$term, unlist(Map(f, tbList$stats, names(tbList$stats)), use.names = FALSE)),
     label = c(xList$label, unlist(Map(f, tbList$stats, names(tbList$stats), lab = TRUE), use.names = FALSE)),
     variable.type = tbList$type,
     stringsAsFactors = FALSE
   )
-  if(sList$term == "") out$strata.label <- NULL else names(out)[4] <- sList$label
+  if(sList$term == "") out$strata.value <- NULL else names(out)[4] <- sList$label
 
   f2 <- function(x, lv)
   {
@@ -67,16 +67,16 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL, list.ok = FA
 }
 
 
-as_data_frame_tableby <- function(strataList, hasStrata, control)
+as_data_frame_tableby <- function(byList, hasStrata, control)
 {
-  stopifnot(length(strataList$tables) == length(strataList$strata$values))
-  tabs <- Map(get_tb_strata_part, tbList = strataList$tables, sValue = strataList$strata$values,
-              MoreArgs = list(yList = strataList$y, sList = strataList$strata, xList = strataList$x, statLabs = control$stats.labels))
+  stopifnot(length(byList$tables) == length(byList$strata$values))
+  tabs <- Map(get_tb_strata_part, tbList = byList$tables, sValue = byList$strata$values,
+              MoreArgs = list(yList = byList$y, sList = byList$strata, xList = byList$x, statLabs = control$stats.labels))
   out <- do.call(rbind_chr, unlist(tabs, recursive = FALSE, use.names = FALSE))
 
   f <- function(elt, whch = "cat.simplify") if(is.null(elt[[whch]])) control[[whch]] else elt[[whch]]
-  simp.cat <- vapply(strataList$control.list, f, NA)
-  simp.num <- vapply(strataList$control.list, f, NA, "numeric.simplify")
+  simp.cat <- vapply(byList$control.list, f, NA)
+  simp.num <- vapply(byList$control.list, f, NA, "numeric.simplify")
 
   if(any(simp.cat) || any(simp.num))
   {
@@ -98,7 +98,7 @@ as_data_frame_tableby <- function(strataList, hasStrata, control)
     }
     bylst <- list(factor(out$variable, levels = unique(out$variable)))
     if(hasStrata) bylst[[2]] <- factor(out[[4]], levels = unique(out[[4]]))
-    out <- do.call(rbind_chr, c(by(out, bylst, simplify, simplify = FALSE), make.row.names = FALSE))
+    out <- do.call(rbind_chr, by(out, bylst, simplify, simplify = FALSE))
   }
-  set_attr(out, "control.list", strataList$control.list)
+  set_attr(out, "control.list", byList$control.list)
 }
