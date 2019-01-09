@@ -1,23 +1,58 @@
-#' as.data.frame.freqlist
-#'
-#' Convert \code{\link{freqlist}} object to a data.frame.
-#'
-#' @param x An object of class \code{"freqlist"}.
-#' @param ... optional arguments included for S3 consistency
-#' @return A data.frame corresponding to the \code{freqlist} object.
-#' @export
-as.data.frame.freqlist <- function(x, ...)
+internalTable <- function(data, na.options = na.options, digits = digits) {
+  # orders and performs calculations for the table
+  # split into a function to be able to use with by statement
+  data <- data[do.call(order, unname(data)), ]
+  na.index <- rowSums(is.na(data))
+  if (na.options == 'remove') {
+    data  <- data[na.index == 0, ]
+    cumFreq <- cumsum(data$Freq)
+    freqPct <- 100 * data$Freq / sum(data$Freq)
+    cumPct <- cumsum(freqPct)
+  } else if(na.options == 'include') {
+    cumFreq <- cumsum(data$Freq)
+    freqPct <- 100 * data$Freq / sum(data$Freq)
+    cumPct <- cumsum(freqPct)
+  } else if(na.options == 'showexclude') {
+    freq_tmp <- data$Freq
+    freq_tmp[na.index != 0] <- NA
+    cumFreq <- cumfun(freq_tmp)
+    freqPct <- 100 * freq_tmp / max(stats::na.omit(cumFreq), na.rm = TRUE)
+    cumPct <- cumfun(freqPct)
+  }
+  data$cumFreq <- cumFreq
+  data$freqPercent <- round(freqPct, digits)
+  data$cumPercent <- round(cumPct, digits)
+  row.names(data) <- NULL
+  data
+}
+
+cumfun <- function(x) {
+  # function to create a cumulative sum retaining NAs, but omitting in sum function
+  x2 <- rep(NA, length(x))
+  x.om <- stats::na.omit(x)
+  if (length(x.om) == 0) {
+    warning("For at least one level, all entries have NAs")
+  } else {
+    x2[!is.na(x)] <- cumsum(x.om)
+  }
+  x2
+}
+
+add_freqlist_xterms <- function(xTerms)
 {
-  return(x$freqlist)
+  xTerms$Freq <- list(variable="Freq", label="Freq", term="Freq")
+  xTerms$cumFreq <- list(variable="cumFreq", label="Cumulative Freq", term="cumFreq")
+  xTerms$freqPercent <- list(variable="freqPercent", label="Percent", term="freqPercent")
+  xTerms$cumPercent <- list(variable="cumPercent", label="Cumulative Percent", term="cumPercent")
+  xTerms
 }
 
 #' Helper functions for freqlist
 #'
 #' A set of helper functions for \code{\link{freqlist}}.
 #'
-#' @param x,object A \code{freqlist} object.
-#' @param value A list or vector of new labels.
-#' @param ... Other arguments (not in use at this time, but included for S3 consistency)
+#' @param x,y A \code{freqlist} object.
+#' @inheritParams tableby.internal
 #' @name freqlist.internal
 NULL
 #> NULL
@@ -29,41 +64,3 @@ is.freqlist <- function(x) inherits(x, "freqlist")
 #' @rdname freqlist.internal
 #' @export
 is.summary.freqlist <- function(x) inherits(x, "summary.freqlist")
-
-#' @rdname freqlist.internal
-#' @export
-'labels<-.freqlist' <- function(x, value) {
-
-  if(is.null(value))
-  {
-    x["labels"] <- list(NULL)
-    return(x)
-  }
-
-  if(is.list(value)) value <- unlist(value)
-
-  if(!is.null(names(value)))
-  {
-    nm <- utils::head(colnames(x$freqlist), -4)
-    value <- value[names(value) %in% nm]
-    idx <- match(names(value), nm)
-  } else idx <- seq_along(value)
-
-  value <- value[idx]
-
-  if(!is.character(value) || length(value) != ncol(x$freqlist) - 4)
-  {
-    stop("New labels must be 'NULL' or character vector of length ", ncol(x$freqlist) - 4, ".")
-  }
-
-  x$labels <- value
-
-  ## return freqlist x with updated labels
-  return(x)
-}
-
-#' @rdname freqlist.internal
-#' @export
-labels.freqlist <- function(object, ...) {
-  return(object$labels)
-}

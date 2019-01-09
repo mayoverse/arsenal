@@ -89,17 +89,22 @@ na_lhs_strata <- function(object, ...) {
   xx
 }
 
-subset_lhs_strata <- function(x, i, j, ..., warn = TRUE) {
+subset_lhs_strata <- function(x, i, j, ...) {
   if(missing(i) && missing(j)) return(x)
   newx <- x
 
-  give_warn <- function(vec) if(warn) warning(paste0("Some indices not found in object: ", paste0(vec, collapse = ", ")), call. = FALSE)
+  give_warn <- function(vec) warning(paste0("Some indices not found in object: ", paste0(vec, collapse = ", ")), call. = FALSE)
   if(!missing(j))
   {
-    if(is.character(j) && any(tmp <- j %nin% names(newx$tables)))
+    if(is.character(j))
     {
-      give_warn(j[tmp])
-      j <- j[!tmp]
+      if(any(tmp <- j %nin% names(newx$tables)))
+      {
+        give_warn(j[tmp])
+        j <- j[!tmp]
+      }
+      # we could leave "j" alone here and use the names, but for when names are missing ("") we'll do this
+      j <- match(names(newx$tables), j, nomatch = 0)
     } else if(is.numeric(j) && any(tmp <- j %nin% seq_along(newx$tables)))
     {
       give_warn(j[tmp])
@@ -119,6 +124,7 @@ subset_lhs_strata <- function(x, i, j, ..., warn = TRUE) {
       {
         give_warn(i[tmp])
         i <- i[!tmp]
+        # we expect the names to be non-missing (""), unlike y
       } else if(is.numeric(i) && any(tmp <- i %nin% seq_along(yList$x)))
       {
         give_warn(i[tmp])
@@ -199,7 +205,7 @@ labels_assign_lhs_strata <- function(x, value) {
         }
 
         if(nm == x$tables[[i]]$y$term) x$tables[[i]]$y$label <- val
-        if(nm == x$tables[[i]]$strata$term) x$tables[[i]]$strata$label <- val
+        if(nm %in% x$tables[[i]]$strata$term) x$tables[[i]]$strata$label[x$tables[[i]]$strata$term == nm] <- val
       }
     }
   } else stop("Unnamed label assignments are no longer supported")
@@ -223,15 +229,20 @@ merge_lhs_strata <- function(x, y, all = FALSE, all.x = all, all.y = all, ...) {
   nms.x <- names(x$tables)
   nms.y <- names(y$tables)
   nms <- if(all.x && all.y) union(nms.x, nms.y) else if(all.x) nms.x else if(all.y) nms.y else intersect(nms.x, nms.y)
-  if(length(nms) == 0) stop("No terms in common.")
-  x <- x[, nms, warn = FALSE]
-  y <- y[, nms, warn = FALSE]
+  if(length(nms) == 0) stop("No terms in common. Do you need 'all=TRUE'?")
+  x <- x[, nms.x %in% nms] # could use names themselves with warn=FALSE, but for freqlist, let's do this instead
+  y <- y[, nms.y %in% nms]
   nms.x <- names(x$tables)
   nms.y <- names(y$tables)
 
-  for(ytrm in names(y$tables))
+  for(i in seq_along(y$tables))
   {
-    if(ytrm %nin% names(x$table))
+    ytrm <- names(y$tables)[i]
+    if(ytrm == "")
+    {
+      x$tables[[length(x$tables) + 1]] <- y$tables[[i]] # this is why we need 'i' instead of just 'ytrm'
+      next
+    } else if(ytrm %nin% names(x$table))
     {
       x$tables[[ytrm]] <- y$tables[[ytrm]]
       next
@@ -296,3 +307,32 @@ print.tableby <- print_lhs_strata
 #' @rdname tableby.internal
 #' @export
 merge.tableby <- merge_lhs_strata
+
+
+
+#' @rdname freqlist.internal
+#' @export
+"[.freqlist" <- subset_lhs_strata
+
+#' @rdname freqlist.internal
+#' @export
+labels.freqlist <- labels_lhs_strata
+
+#' @rdname freqlist.internal
+#' @export
+'labels<-.freqlist' <- labels_assign_lhs_strata
+
+#' @rdname freqlist
+#' @export
+print.freqlist <- print_lhs_strata
+
+#' @rdname freqlist.internal
+#' @export
+merge.freqlist <- function(x, y, all = TRUE, ...)
+{
+  nms.x <- setdiff(names(x$tables), "")
+  nms.y <- setdiff(names(y$tables), "")
+  # this check should be okay even if both nms.x and nms.y are empty
+  if(any(nms.x %in% nms.y)) stop("Can only merge freqlist objects with different left-hand sides")
+  merge_lhs_strata(x, y, all = TRUE, ...)
+}
