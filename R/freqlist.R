@@ -3,25 +3,24 @@
 #' Approximate the output from SAS's \code{PROC FREQ} procedure when using the \code{/list} option of the \code{TABLE} statement.
 #'
 #' @param object An R object, usually of class \code{"table"} or class \code{"xtabs"}
-#' @param sparse a logical value indicating whether to keep rows with counts of zero.
-#'   The default is \code{FALSE} (drop zero-count rows).
 #' @param na.options a character string indicating how to handling missing values: \code{"include"}
 #'   (include values with NAs in counts and percentages),
 #'   \code{"showexclude"} (show NAs but exclude from cumulative counts and all percentages),
 #'   \code{"remove"} (remove values with NAs); default is \code{"include"}.
-#' @param digits a single number indicating the number of digits for percentages (passed to \code{\link{round}}; default is 2.
-#' @param labelTranslations an optional character string (or list) of labels to use for variable levels when summarizing.
-#'   Names will be matched appropriately.
 #' @param strata (formerly \code{groupBy}) an optional character string specifying a variable(s) to use for grouping when calculating cumulative
 #'   counts and percentages. \code{\link{summary.freqlist}} will also separate by grouping variable for printing. Note that this is different
 #'   from \code{modelsum} and \code{tableby}, which take bare column names (and only one, at that!)
-#' @param ... additional arguments. These are only used in the formula method, and are passed to
-#'   the table method.
+#' @param labelTranslations an optional character string (or list) of labels to use for variable levels when summarizing.
+#'   Names will be matched appropriately.
+#' @param control control parameters to handle optional settings within \code{freqlist}. See \code{\link{freq.control}}
+#' @param ... additional arguments. In the formula method, these are passed to the table method. These are also passed to
+#'   \code{\link{freq.control}}
 #' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}. Note
 #'   that \code{addNA=} only works in R >= 3.4.0.
 #' @param x an object of class \code{"freqlist"}
 #' @return An object of class \code{"freqlist"} (invisibly for \code{print.freqlist})
-#' @seealso \code{\link{summary.freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+#' @seealso \code{\link{summary.freqlist}}, \code{\link{freq.control}},
+#'   \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
 #'
 #' @examples
 #' # load mockstudy data
@@ -45,8 +44,11 @@ freqlist <- function(object, ...)
 
 #' @rdname freqlist
 #' @export
-freqlist.table <- function(object, sparse = FALSE, na.options = c("include", "showexclude", "remove"), digits = 2, labelTranslations = NULL, strata = NULL, ...)
+freqlist.table <- function(object, na.options = c("include", "showexclude", "remove"), strata = NULL, labelTranslations = NULL, control = NULL, ...)
 {
+  control <- c(list(...), control)
+  control <- do.call("freq.control", control[!duplicated(names(control))])
+
   Call <- match.call()
   na.options <- match.arg(na.options)
   if(min(dim(object)) < 1) stop("table object has dimension of 0")
@@ -85,7 +87,7 @@ freqlist.table <- function(object, sparse = FALSE, na.options = c("include", "sh
   if(hasStrata) {
     if(na.options != 'remove') tab.freq[strata] <- lapply(tab.freq[strata], function(x) if(anyNA(x)) addNA(x) else x)
 
-    tableout <- unclass(by(tab.freq, tab.freq[rev(strata)], FUN = internalTable, na.options = na.options, digits = digits))
+    tableout <- unclass(by(tab.freq, tab.freq[rev(strata)], FUN = internalTable, na.options = na.options))
     tableout <- lapply(tableout, function(x) {
       x <- x[c(strata, colnames(x)[colnames(x) %nin% strata])]
       row.names(x) <- NULL
@@ -96,10 +98,9 @@ freqlist.table <- function(object, sparse = FALSE, na.options = c("include", "sh
     strataLabel <- strata
 
   } else {
-    tableout <- list(internalTable(tab.freq, na.options = na.options, digits = digits))
+    tableout <- list(internalTable(tab.freq, na.options = na.options))
     strata <- strata.levels <- strataLabel <- ""
   }
-  if(!sparse) tableout <- lapply(tableout, function(x) droplevels(x[x$Freq != 0, , drop = FALSE]))
 
   out.tables = list(
     list(
@@ -111,15 +112,19 @@ freqlist.table <- function(object, sparse = FALSE, na.options = c("include", "sh
     )
   )
 
-  out <- structure(list(Call = Call, control = NULL, tables = out.tables), class = "freqlist")
+  out <- structure(list(Call = Call, control = control, tables = out.tables), class = "freqlist")
   if(!is.null(labelTranslations)) labels(out) <- labelTranslations
   out
 }
 
 #' @rdname freqlist
 #' @export
-freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, labelTranslations = NULL, addNA, exclude, drop.unused.levels, ...)
+freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, labelTranslations = NULL, control = NULL,
+                             addNA, exclude, drop.unused.levels, ...)
 {
+  control <- c(list(...), control)
+  control <- do.call("freq.control", control[!duplicated(names(control))])
+
   Call <- match.call()
   if(!missing(addNA) && "addNA" %nin% names(formals(stats::xtabs)))
   {
@@ -185,7 +190,7 @@ freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, la
     out.tables[[yList$term]] <- tab
   }
 
-  out <- structure(list(Call = Call, control = NULL, tables = out.tables), class = "freqlist")
+  out <- structure(list(Call = Call, control = control, tables = out.tables), class = "freqlist")
   if(!is.null(labelTranslations)) labels(out) <- labelTranslations
   out
 }

@@ -1,4 +1,4 @@
-internalTable <- function(data, na.options = na.options, digits = digits) {
+internalTable <- function(data, na.options) {
   # orders and performs calculations for the table
   # split into a function to be able to use with by statement
   data <- data[do.call(order, unname(data)), ]
@@ -20,8 +20,8 @@ internalTable <- function(data, na.options = na.options, digits = digits) {
     cumPct <- cumfun(freqPct)
   }
   data$cumFreq <- cumFreq
-  data$freqPercent <- round(freqPct, digits)
-  data$cumPercent <- round(cumPct, digits)
+  data$freqPercent <- freqPct
+  data$cumPercent <- cumPct
   row.names(data) <- NULL
   data
 }

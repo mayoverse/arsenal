@@ -43,7 +43,7 @@ get_tb_part <- function(tbList, xList, yList, sList, sValue, statLabs)
 #' Coerce a \code{\link{tableby}} object to a \code{data.frame}.
 #'
 #' @param x A \code{\link{tableby}} object.
-#' @param ... Arguments to pass to \code{\link{tableby}}.
+#' @param ... Arguments to pass to \code{\link{tableby.control}}.
 #' @inheritParams summary.tableby
 #' @seealso \code{\link{tableby}}, \code{\link{tableby}}
 #' @return A \code{data.frame}.

@@ -4,16 +4,13 @@
 \alias{as.data.frame.freqlist}
 \title{as.data.frame.freqlist}
 \usage{
-\method{as.data.frame}{freqlist}(x, ..., single = FALSE,
-  labelTranslations = NULL, list.ok = FALSE)
+\method{as.data.frame}{freqlist}(x, ..., labelTranslations = NULL,
+  list.ok = FALSE)
 }
 \arguments{
 \item{x}{An object of class \code{"freqlist"}.}
 
-\item{...}{For \code{summary.freqlist}, these are not used. For the print method, these are
-additional arguments passed to the \code{\link[knitr]{kable}} function.}
-
-\item{single}{a logical value indicating whether to collapse results created using a strata variable into a single table for printing}
+\item{...}{Arguments to pass to \code{\link{freq.control}}}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
 output to be replaced in the pretty rendering by the character string

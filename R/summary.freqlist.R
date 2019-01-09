@@ -3,10 +3,8 @@
 #' Summarize the \code{freqlist} object.
 #'
 #' @param object an object of class \code{\link{freqlist}}
-#' @param single a logical value indicating whether to collapse results created using a strata variable into a single table for printing
-#' @param dupLabels Should labels which are the same as the row above be printed? The default (\code{FALSE}) more
-#'   closely approximates \code{PROC FREQ} output from SAS, where a label carried down from the row above is left blank.
-#' @param ... For \code{summary.freqlist}, these are not used. For the print method, these are
+#' @param ... For \code{summary.freqlist}, these are passed to \code{\link{as.data.frame.freqlist}} (and hence to
+#'   \code{\link{freq.control}}). For the print method, these are
 #'   additional arguments passed to the \code{\link[knitr]{kable}} function.
 #' @param x An object of class \code{summary.freqlist}.
 #' @inheritParams summary.tableby
@@ -29,26 +27,22 @@ NULL
 
 #' @rdname summary.freqlist
 #' @export
-summary.freqlist <- function(object, single = FALSE, dupLabels = FALSE, ..., labelTranslations = NULL, title = NULL)
+summary.freqlist <- function(object, ..., labelTranslations = NULL, title = NULL)
 {
-  dat <- as.data.frame(object, single = single, ..., labelTranslations = labelTranslations, list.ok = TRUE)
+  dat <- as.data.frame(object, ..., labelTranslations = labelTranslations, list.ok = TRUE)
   structure(list(
-    object = dat,
-    title = title,
-    single = single,
-    dupLabels = dupLabels
+    object = set_attr(dat, "control", NULL),
+    control = attr(dat, "control"),
+    title = title
   ), class = "summary.freqlist")
 }
 
-#' @rdname summary.freqlist
-#' @export
-as.data.frame.summary.freqlist <- function(x, ..., list.ok = FALSE)
+as_data_frame_summary_freqlist <- function(tb, labs, cntrl)
 {
-  fmtdups <- function(x)
+  fmtdups <- function(x, i)
   {
-    idx <- names(x) %nin% c("Freq", "cumFreq", "freqPercent", "cumPercent")
-    x[idx] <- lapply(x[idx], as.character)
-    tab <- as.matrix(x[idx])
+    x[i] <- lapply(x[i], as.character)
+    tab <- as.matrix(x[i])
     tab[is.na(tab)] <- "NA"
     num <- max(stringr::str_count(tab, ","))
 
@@ -60,10 +54,26 @@ as.data.frame.summary.freqlist <- function(x, ..., list.ok = FALSE)
     x
   }
 
-  out <- x$object
-  if(!x$dupLabels) out <- lapply(out, fmtdups)
-  out <- Map(out, lapply(out, attr, "labels"), f = function(x, labs) stats::setNames(x, labs[names(x)]))
-  out <- lapply(out, set_attr, "labels", NULL)
+  fmtdigits <- function(x, digits.count, digits.pct)
+  {
+    if("Freq" %in% names(x)) x$Freq <- formatC(x$Freq, digits = digits.count, format = "f")
+    if("cumFreq" %in% names(x)) x$cumFreq <- formatC(x$cumFreq, digits = digits.count, format = "f")
+    if("freqPercent" %in% names(x)) x$freqPercent <- formatC(x$freqPercent, digits = digits.pct, format = "f")
+    if("cumPercent" %in% names(x)) x$cumPercent <- formatC(x$cumPercent, digits = digits.pct, format = "f")
+    x
+  }
+  idx <- names(tb) %nin% c("Freq", "cumFreq", "freqPercent", "cumPercent")
+  tb <- fmtdigits(tb, digits.count = cntrl$digits.count, digits.pct = cntrl$digits.pct)
+  if(!cntrl$dupLabels) tb <- fmtdups(tb, idx)
+  tb <- stats::setNames(tb, labs[names(tb)])
+  set_attr(set_attr(tb, "labels", NULL), "align", paste0(c("r", "l")[1 + idx], collapse = ""))
+}
+
+#' @rdname summary.freqlist
+#' @export
+as.data.frame.summary.freqlist <- function(x, ..., list.ok = FALSE)
+{
+  out <- Map(x$object, lapply(x$object, attr, "labels"), f = as_data_frame_summary_freqlist, MoreArgs = list(cntrl = x$control))
 
   if(!list.ok)
   {
@@ -83,7 +93,7 @@ print.summary.freqlist <- function(x, ..., format = "markdown")
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
   for(i in seq_along(df))
   {
-    print(knitr::kable(df[[i]], caption = NULL, format = format, row.names = FALSE, ...))
+    print(knitr::kable(df[[i]], caption = NULL, align = attr(df[[i]], "align"), format = format, row.names = FALSE, ...))
   }
   cat("\n")
   invisible(x)
