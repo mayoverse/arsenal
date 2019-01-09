@@ -219,7 +219,7 @@ test_that("Changing the labels on grouped freqlists", {
       ""                                                             ,
       "|Ethan |Treatment | Freq| cumFreq| freqPercent| cumPercent|"  ,
       "|:-----|:---------|----:|-------:|-----------:|----------:|"  ,
-      "|NA    |A         |    3|       3|         100|        100|"
+      "|NA    |A         |    3|       3|      100.00|     100.00|"
     )
   )
 })
@@ -317,7 +317,7 @@ test_that("Adding a title", {
       ""                                                             ,
       "|Ethan |Treatment | Freq| cumFreq| freqPercent| cumPercent|"  ,
       "|:-----|:---------|----:|-------:|-----------:|----------:|"  ,
-      "|NA    |A         |    3|       3|         100|        100|"
+      "|NA    |A         |    3|       3|      100.00|     100.00|"
     )
   )
 })
@@ -364,10 +364,10 @@ test_that("04/17/18: using 'method' in freqlist (#95)", {
     capture.kable(summary(freqlist(~method, data = dat))),
     c("|method | Freq| Cumulative Freq| Percent| Cumulative Percent|",
       "|:------|----:|---------------:|-------:|------------------:|",
-      "|1      |    2|               2|      25|                 25|",
-      "|2      |    2|               4|      25|                 50|",
-      "|3      |    2|               6|      25|                 75|",
-      "|4      |    2|               8|      25|                100|"
+      "|1      |    2|               2|   25.00|              25.00|",
+      "|2      |    2|               4|   25.00|              50.00|",
+      "|3      |    2|               6|   25.00|              75.00|",
+      "|4      |    2|               8|   25.00|             100.00|"
     )
   )
 })

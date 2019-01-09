@@ -6,8 +6,8 @@
 \alias{print.summary.freqlist}
 \title{summary.freqlist}
 \usage{
-\method{summary}{freqlist}(object, single = FALSE, dupLabels = FALSE,
-  ..., labelTranslations = NULL, title = NULL)
+\method{summary}{freqlist}(object, ..., labelTranslations = NULL,
+  title = NULL)
 
 \method{as.data.frame}{summary.freqlist}(x, ..., list.ok = FALSE)
 
@@ -16,12 +16,8 @@
 \arguments{
 \item{object}{an object of class \code{\link{freqlist}}}
 
-\item{single}{a logical value indicating whether to collapse results created using a strata variable into a single table for printing}
-
-\item{dupLabels}{Should labels which are the same as the row above be printed? The default (\code{FALSE}) more
-closely approximates \code{PROC FREQ} output from SAS, where a label carried down from the row above is left blank.}
-
-\item{...}{For \code{summary.freqlist}, these are not used. For the print method, these are
+\item{...}{For \code{summary.freqlist}, these are passed to \code{\link{as.data.frame.freqlist}} (and hence to
+\code{\link{freq.control}}). For the print method, these are
 additional arguments passed to the \code{\link[knitr]{kable}} function.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the

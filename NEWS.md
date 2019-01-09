@@ -26,6 +26,8 @@
     
     - `merge.tableby()` now allows you to choose which by-variables to keep if not all are in common.
     
+    - `as.data.frame.tableby()` and `as.data.frame.summary.tableby()` gain the `list.ok=` argument, for when there are multiple left-hand-sides.
+    
     - Added logic to statistical tests to detect missing levels of the by-variable.
 
 * `modelsum()`:
@@ -40,6 +42,8 @@
     
     - `merge.modelsum()` is now a real function (instead of just a placeholder).
     
+    - `as.data.frame.modelsum()` and `as.data.frame.summary.modelsum()` gain the `list.ok=` argument, for when there are multiple left-hand-sides.
+    
 * `freqlist()`:
 
     - Added functionality for multiple by-variables. This required completely reworking the innards of the `freqlist` object.
@@ -50,6 +54,14 @@
       remove the cumulative and percent columns.
     
     - `labels<-.freqlist()` no longer supports unnamed labels, but now accepts labels for the frequency, cumulative, and percent columns.
+    
+    - Removed the `digits=`, `sparse=`, `single=`, and `dupLabels=` arguments from `freqlist()` and `summary.freqlist()`. These are now
+      arguments to the new `freq.control()`.
+      
+    - Added `as.data.frame.summary.freqlist()`.
+      
+    - `as.data.frame.freqlist()` no longer rounds its digits, nor does it label its columns. Use `as.data.frame.summary.freqlist()` for that instead.
+      It also gained the `list.ok=` argument, for when there are multiple left-hand-sides.
 
 # arsenal v1.5.0
 

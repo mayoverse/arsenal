@@ -10,7 +10,7 @@
 \arguments{
 \item{x}{A \code{\link{tableby}} object.}
 
-\item{...}{Arguments to pass to \code{\link{tableby}}.}
+\item{...}{Arguments to pass to \code{\link{tableby.control}}.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
 output to be replaced in the pretty rendering by the character string
