@@ -5,8 +5,7 @@
 \alias{allNA}
 \alias{includeNA}
 \alias{includeNA.factor}
-\alias{includeNA.character}
-\alias{includeNA.numeric}
+\alias{includeNA.default}
 \title{Some functions to handle NAs}
 \usage{
 allNA(x)
@@ -15,9 +14,7 @@ includeNA(x, label, ...)
 
 \method{includeNA}{factor}(x, label = "(Missing)", first = FALSE, ...)
 
-\method{includeNA}{character}(x, label = "(Missing)", ...)
-
-\method{includeNA}{numeric}(x, label, ...)
+\method{includeNA}{default}(x, label = "(Missing)", ...)
 }
 \arguments{
 \item{x}{An object}
