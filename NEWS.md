@@ -56,7 +56,8 @@
     - `labels<-.freqlist()` no longer supports unnamed labels, but now accepts labels for the frequency, cumulative, and percent columns.
     
     - Removed the `digits=`, `sparse=`, `single=`, and `dupLabels=` arguments from `freqlist()` and `summary.freqlist()`. These are now
-      arguments to the new `freq.control()`.
+      arguments to the new `freq.control()`, and are passed through the dots (for backwards compatibility). `freqlist()` also gained
+      the `control=` argument for objects from `freq.control()`.
       
     - Added `as.data.frame.summary.freqlist()`.
       
