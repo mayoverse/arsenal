@@ -11,19 +11,18 @@
 #' @param digits.count Number of decimal places for count values.
 #' @param digits.pct Number of decimal places for percents.
 #' @param ... additional arguments.
+#' @param digits A deprecated argument
 #' @return A list with settings to be used within the \code{freqlist} function.
 #'
 #' @seealso \code{\link{freqlist}}, \code{\link{summary.freqlist}}
 #' @author Ethan Heinzen
 #' @export
-freq.control <- function(sparse = FALSE, single = FALSE, dupLabels = FALSE, digits.count = 0L, digits.pct = 2L, ...)
+freq.control <- function(sparse = FALSE, single = FALSE, dupLabels = FALSE, digits.count = 0L, digits.pct = 2L, ..., digits = NULL)
 {
-
-  nm <- names(dots <- list(...))
-  if("digits" %in% nm)
+  if(!is.null(digits))
   {
     .Deprecated(msg = "Using 'digits = ' is deprecated. Use 'digits.pct = ' instead.")
-    digits.pct <- dots$digits
+    digits.pct <- digits
   }
 
   # digits are OK to be NULL. See ?format

@@ -119,12 +119,14 @@ summary(freqlist(list(weights, weights2) ~ arm + sex + addNA(mdquality.s), data 
 
 # Rounding percentage digits or changing variable names for printing
 
-The `digits=` argument takes a single numeric value and controls the rounding of percentages in the output.
+The `digits.pct=` argument takes a single numeric value and controls the number of digits of percentages in the output.
+The `digits.count=` argument takes a similar argument and controls the number of digits of the count columns.
 The `labelTranslations=` argument is a named character vector or list.
 Both options are applied in the following example. 
 
 ```{r labelTranslations, results = 'asis'}
-withnames <- freqlist(tab.ex, labelTranslations = c(arm = "Treatment Arm", sex = "Gender", mdquality.s = "LASA QOL"), digits = 0)
+withnames <- freqlist(tab.ex, labelTranslations = c(arm = "Treatment Arm", sex = "Gender", mdquality.s = "LASA QOL"),
+                      digits.pct = 1, digits.count = 1)
 summary(withnames)
 ```
 
@@ -137,7 +139,7 @@ If set to `TRUE`, the sparse option will include combinations with frequencies o
 As our initial table did not have any such levels, we create a second table to use in our example.
 
 ```{r sparse, results = 'asis'}
-summary(freqlist(~ race + sex + arm, data = mockstudy, sparse = TRUE, digits=1))
+summary(freqlist(~ race + sex + arm, data = mockstudy, sparse = TRUE, digits.pct=1))
 ```
 
 ## Options for NA handling

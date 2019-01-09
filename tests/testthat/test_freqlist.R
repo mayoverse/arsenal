@@ -330,6 +330,26 @@ test_that("Formula method works", {
   )
 })
 
+
+test_that("digits specification", {
+  expect_identical(
+    capture.kable(summary(freqlist(~ trt + addNA(ethan), data = mdat), digits.pct = 1, digits.count = 1)),
+    capture.kable(summary(freqlist(~ trt + addNA(ethan), data = mdat, digits.pct = 1, digits.count = 1)))
+  )
+  expect_identical(
+    capture.kable(summary(freqlist(~ trt + addNA(ethan), data = mdat), digits.pct = 1, digits.count = 1)),
+    c(
+      "|Treatment Arm |addNA(ethan) | Freq| Cumulative Freq| Percent| Cumulative Percent|",
+      "|:-------------|:------------|----:|---------------:|-------:|------------------:|",
+      "|A             |Ethan        | 17.0|            17.0|    18.9|               18.9|",
+      "|              |Heinzen      | 16.0|            33.0|    17.8|               36.7|",
+      "|              |NA           |  3.0|            36.0|     3.3|               40.0|",
+      "|B             |Ethan        | 25.0|            61.0|    27.8|               67.8|",
+      "|              |Heinzen      | 29.0|            90.0|    32.2|              100.0|"
+    )
+  )
+})
+
 ###########################################################################################################
 #### Reported bugs for freqlist
 ###########################################################################################################
