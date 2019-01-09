@@ -27,9 +27,8 @@ For \code{print}ing the summary object, these are passed to both \code{as.data.f
 \code{\link[knitr]{kable}}.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
-output to be replaced in the pretty rendering of modelsum by the character
-string value for the named element of the list, e.g.,
-\code{list(age = "Age(years)")}.}
+output to be replaced in the pretty rendering by the character string
+value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.}
 
 \item{text}{An argument denoting how to print the summary to the screen.
 Default is \code{FALSE} (show markdown output). \code{TRUE} and \code{NULL} output a text-only version, with

@@ -13,7 +13,7 @@
 \item{...}{Arguments to pass to \code{\link{tableby}}.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
-output to be replaced in the pretty rendering of tableby by the character string
+output to be replaced in the pretty rendering by the character string
 value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.}
 
 \item{list.ok}{If the object has multiple by-variables, is it okay to return a list of data.frames instead of a single data.frame?

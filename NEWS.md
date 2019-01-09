@@ -2,7 +2,7 @@
 
 * `tableby()`:
 
-    - Added functionality for multiple by-variables and strata terms. This required completely reworked the innards of the `tableby` object.
+    - Added functionality for multiple by-variables and strata terms. This required completely reworking the innards of the `tableby` object.
 
     - Removed `length.tableby()` (because it was messing up `str()` and R Studio) and replaced with `head.tableby()` and `tail.tableby()` (the original
       purpose to having `length()` defined).
@@ -17,7 +17,7 @@
       
     - `tests.tableby()` now returns a data.frame with a by-variable column and (if applicable) a strata column.
     
-    - `[.tableby()` now has an argument `j=` to select the by-variables and an argument `warn=` to turn off warnings if indices aren't found.
+    - `[.tableby()` now has an argument `j=` to select the by-variables.
     
     - `na.tableby()` now generates functions. The "lhs=" argument determines whether to remove NAs from the first column of the data.
       If `tableby()` detects a one-sided formula, it sets this to FALSE. Both versions now remove rows with NAs in the strata column (when applicable).
@@ -30,15 +30,26 @@
 
 * `modelsum()`:
 
-    - Added functionality for multiple by-variables and strata terms. This required completely reworked the innards of the `modelsum` object.
+    - Added functionality for multiple by-variables and strata terms. This required completely reworking the innards of the `modelsum` object.
     
     - `labels<-.modelsum` no longer give warnings if your labels are not used.
     
-    - `[.modelsum` now has an argument `j=` to select the by-variables and an argument `warn=` to turn off warnings if indices aren't found.
+    - `[.modelsum` now has an argument `j=` to select the by-variables.
     
     - `na.modelsum()` now removes rows with NAs in the strata column (when applicable).
     
     - `merge.modelsum()` is now a real function (instead of just a placeholder).
+    
+* `freqlist()`:
+
+    - Added functionality for multiple by-variables. This required completely reworking the innards of the `freqlist` object.
+    
+    - Changed the argument `groupBy=` to `strata=` to match `tableby()` and `modelsum()`.
+    
+    - Added `merge.freqlist()` and `[.freqlist`, and `as.data.frame.summary.freqlist()`. In particular, `[.freqlist` allows you to
+      remove the cumulative and percent columns.
+    
+    - `labels<-.freqlist()` no longer supports unnamed labels, but now accepts labels for the frequency, cumulative, and percent columns.
 
 # arsenal v1.5.0
 

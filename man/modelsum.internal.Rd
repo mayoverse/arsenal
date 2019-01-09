@@ -11,7 +11,7 @@
 \alias{na.modelsum}
 \title{Helper functions for modelsum}
 \usage{
-\method{[}{modelsum}(x, i, j, ..., warn = TRUE)
+\method{[}{modelsum}(x, i, j, ...)
 
 \method{labels}{modelsum}(object, ...)
 
@@ -36,8 +36,6 @@ na.modelsum(object, ...)
 \code{i} indexes the x-variables, and \code{j} indexes the by-variables.}
 
 \item{...}{Other arguments, or a vector of indices for extracting.}
-
-\item{warn}{A logical, indicating whether to warn if some indices aren't found.}
 
 \item{object}{A \code{data.frame} resulting from evaluating a \code{modelsum} formula.}
 

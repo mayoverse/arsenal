@@ -13,7 +13,7 @@ vignette: |
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=80), tidy=TRUE,  comment=NA)
+knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=80), tidy=TRUE, comment=NA)
 options(width=80, max.print=1000)
 ```
 
@@ -44,15 +44,7 @@ tab.ex <- table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA="ifany")
  
 # The `freqlist` object
 
-The `freqlist()` function returns an object of class `"freqlist"`, which has three parts: `freqlist`, `byVar`, and `labels`.
-
- - `freqlist` is a single data frame containing all contingency tables with calculated frequencies,
-   cumulative frequencies, percentages, and cumulative percentages.
- 
- - `byVar` and `labels` are used in the `summary` method for subgroups and variable names,
-   which will be covered in later examples.
- 
-Note that `freqlist()` is an S3 generic, with methods for tables and formulas.
+The `freqlist()` function is an S3 generic (with methods for tables and formulas) which returns an object of class `"freqlist"`.
 
 ```{r console.output}
 noby <- freqlist(tab.ex)
@@ -60,7 +52,7 @@ noby <- freqlist(tab.ex)
 str(noby)
 
 # view the data frame portion of freqlist output
-head(noby[["freqlist"]]) ## or use as.data.frame(noby)
+head(as.data.frame(noby)) ## or use as.data.frame(noby)
 ```
 
 # Basic output using `summary()` 
@@ -82,10 +74,10 @@ summary(noby, title="Basic freqlist output")
 ```
 
 You can also easily pull out the `freqlist` data frame for more complicated formatting or manipulation
-(e.g. with another function such as `xtable()` or `pander()`) using `as.data.frame()`:
+(e.g. with another function such as `xtable()` or `pander()`) using `as.data.frame(summary())`:
 
 ```{r}
-head(as.data.frame(noby))
+head(as.data.frame(summary(noby)))
 ```
 
 # Using a formula with `freqlist`
@@ -97,7 +89,7 @@ to the `freqlist()` table method.
 Note that the `addNA=` argument was added to `xtabs()` in R 3.4.0. In previous versions,
 NAs have to be added to relevant columns using `addNA()`.
 
-```{r}
+```{r results='asis'}
 ### this works in R >= 3.4.0
 # summary(freqlist(~ arm + sex + mdquality.s, data = mockstudy, addNA = TRUE))
 
@@ -107,19 +99,32 @@ summary(freqlist(~ arm + sex + addNA(mdquality.s), data = mockstudy))
 
 One can also set NAs to an explicit value using `includeNA()`.
 
-```{r}
+```{r results='asis'}
 summary(freqlist(~ arm + sex + includeNA(mdquality.s, "Missing"), data = mockstudy))
+```
+
+In fact, since `xtabs()` allows for left-hand-side weights, so does `freqlist()`!
+
+```{r results='asis'}
+mockstudy$weights <- c(10000, rep(1, nrow(mockstudy) - 1))
+summary(freqlist(weights ~ arm + sex + addNA(mdquality.s), data = mockstudy))
+```
+
+You can also specify multiple weights:
+
+```{r results='asis'}
+mockstudy$weights2 <- c(rep(1, nrow(mockstudy) - 1), 10000)
+summary(freqlist(list(weights, weights2) ~ arm + sex + addNA(mdquality.s), data = mockstudy))
 ```
 
 # Rounding percentage digits or changing variable names for printing
 
 The `digits=` argument takes a single numeric value and controls the rounding of percentages in the output.
-The `labelTranslations=` argument is a character vector or list whose length must be equal to the number of factors used in the table.
-Note: this does not change the names of the data frame in the freqlist object, only those used in printing.
+The `labelTranslations=` argument is a named character vector or list.
 Both options are applied in the following example. 
 
 ```{r labelTranslations, results = 'asis'}
-withnames <- freqlist(tab.ex, labelTranslations = c("Treatment Arm","Gender","LASA QOL"), digits = 0)
+withnames <- freqlist(tab.ex, labelTranslations = c(arm = "Treatment Arm", sex = "Gender", mdquality.s = "LASA QOL"), digits = 0)
 summary(withnames)
 ```
 
@@ -149,12 +154,12 @@ summary(freqlist(tab.ex, na.options="remove"))
 
 ## Frequency counts and percentages subset by factor levels 
 
-The `groupBy=` argument internally subsets the data by the specified factor prior to calculating cumulative counts and percentages.
+The `strata=` argument internally subsets the data by the specified factor prior to calculating cumulative counts and percentages.
 By default, when used each subset will print in a separate table. Using the `single = TRUE` option when printing will collapse
 the subsetted result into a single table.
 
 ```{r freq.counts, results='asis'}
-withby <- freqlist(tab.ex, groupBy = c("arm","sex"))
+withby <- freqlist(tab.ex, strata = c("arm","sex"))
 summary(withby)
 
 #using the single = TRUE argument will collapse results into a single table for printing
@@ -164,35 +169,29 @@ summary(withby, single = TRUE)
 
 ## Change labels on the fly
 
-At this time, the labels can be changed just for the variables (e.g. not the frequency columns).
-
 ```{r changelabs, results = 'asis'}
-labels(noby) <- c("Arm", "Sex", "QOL")
+labs <- c(arm = "Arm", sex = "Sex", mdquality.s = "QOL", freqPercent = "%")
+labels(noby) <- labs
 summary(noby)
 ```
 
 You can also supply `labelTranslations=` to `summary()`.
 
 ```{r, results = 'asis'}
-summary(noby, labelTranslations = c("Arm", "Sex", "QOL"))
+summary(noby, labelTranslations = labs)
 ```
 
 ## Using `xtable()` to format and print `freqlist()` results
 
 Fair warning: `xtable()` has kind of a steep learning curve. These examples are given without explanation, for more advanced users.
 
-```{r xtable.setup}
+```{r results='asis'}
 require(xtable)
 
 # set up custom function for xtable text
-italic <- function(x){
-paste0('<i>', x, '</i>')
-}
+italic <- function(x) paste0('<i>', x, '</i>')
 
-```
-
-```{r printxtable, results='asis'}
-xftbl <- xtable(noby[["freqlist"]], 
+xftbl <- xtable(as.data.frame(summary(noby)), 
   caption = "xtable formatted output of freqlist data frame", align="|r|r|r|r|c|c|c|r|")
 
 # change the column names
@@ -224,9 +223,8 @@ tab.d1 <- base::table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA="ifany"
 tab.d1
 ```
 
-`xtabs()` is similar to `table()`, but uses a formula-based syntax. However, there is not an option for retaining NAs in the
-`xtabs()` function; instead, NAs must be added to each level of the factor where present using the `addNA()` function,
-or (in R >= 3.4.0) using the argument `addNA = TRUE`.
+`xtabs()` is similar to `table()`, but uses a formula-based syntax. However, NAs must be explicitly added to each factor
+using the `addNA()` function, or (in R >= 3.4.0) using the argument `addNA = TRUE`.
 
 ```{r}
 # without specifying addNA
@@ -252,16 +250,20 @@ column names will not be preserved.
 
 ```{r}
 # providing variables separately (as vectors) drops column names
-tab.d4 <- base::table(mockstudy$arm, mockstudy$sex, mockstudy$mdquality.s)
-tab.d4
+table(mockstudy$arm, mockstudy$sex, mockstudy$mdquality.s)
 ```
 
 If desired, you can use the `dnn=` argument to pass variable names.
 
 ```{r}
 # add the column name labels back using dnn option in base::table
-tab.dnn <- base::table(mockstudy$arm, mockstudy$sex, mockstudy$mdquality.s, dnn=c("Arm", "Sex", "QOL"))
-tab.dnn
+table(mockstudy$arm, mockstudy$sex, mockstudy$mdquality.s, dnn=c("Arm", "Sex", "QOL"))
+```
+
+You can also name the arguments to `table()`:
+
+```{r}
+table(Arm = mockstudy$arm, Sex = mockstudy$sex, QOL = mockstudy$mdquality.s)
 ```
 
 If using `freqlist()`, you can provide the labels directly to `freqlist()` or to `summary()` using `labelTranslations=`.

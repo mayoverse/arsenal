@@ -12,10 +12,6 @@
 #'   For \code{as.data.frame.summary.modelsum}, "width" and "min.split" are passed to \code{\link{smart.split}}.
 #'   For \code{print}ing the summary object, these are passed to both \code{as.data.frame.summary.modelsum} and
 #'   \code{\link[knitr]{kable}}.
-#' @param labelTranslations A named list (or vector) where the name is the label in the
-#'   output to be replaced in the pretty rendering of modelsum by the character
-#'   string value for the named element of the list, e.g.,
-#'   \code{list(age = "Age(years)")}.
 #' @inheritParams summary.tableby
 #' @param x An object of class \code{"summary.modelsum"}.
 #' @seealso \code{\link{modelsum}}, \code{\link{print.modelsum}}, \code{\link{as.data.frame.modelsum}}

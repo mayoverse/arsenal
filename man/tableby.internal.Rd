@@ -19,7 +19,7 @@
 \alias{tail.tableby}
 \title{Helper functions for tableby}
 \usage{
-\method{[}{tableby}(x, i, j, ..., warn = TRUE)
+\method{[}{tableby}(x, i, j, ...)
 
 \method{labels}{tableby}(object, ...)
 
@@ -58,9 +58,7 @@ na.tableby(lhs = TRUE)
 
 \item{...}{Other arguments, or a vector of indices for extracting.}
 
-\item{warn}{A logical, indicating whether to warn if some indices aren't found.}
-
-\item{object}{A \code{data.frame} resulting from evaluating a \code{tableby} formula.}
+\item{object}{An object}
 
 \item{value}{A list of new labels.}
 

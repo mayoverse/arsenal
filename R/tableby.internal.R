@@ -128,12 +128,11 @@ extract2_tbstat <- function(x, ...)
 #'
 #' A set of helper functions for \code{\link{tableby}}.
 #'
-#' @param object A \code{data.frame} resulting from evaluating a \code{tableby} formula.
+#' @param object An object
 #' @param ... Other arguments, or a vector of indices for extracting.
 #' @param x,y A \code{tableby} object.
 #' @param i,j A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.
 #'   \code{i} indexes the x-variables, and \code{j} indexes the by-variables.
-#' @param warn A logical, indicating whether to warn if some indices aren't found.
 #' @param value A list of new labels.
 #' @param pdata A named data.frame where the first column is the by-variable names, the (optional) second is the strata value, the next is
 #'   the x variable names, the next is p-values (or some test stat), and the (optional) next column is the method name.

@@ -26,7 +26,7 @@ For \code{print}ing the summary object, these are passed to both \code{as.data.f
 \code{\link[knitr]{kable}}.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
-output to be replaced in the pretty rendering of tableby by the character string
+output to be replaced in the pretty rendering by the character string
 value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.}
 
 \item{text}{An argument denoting how to print the summary to the screen.
