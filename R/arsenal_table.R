@@ -171,7 +171,8 @@ print.arsenal_table <- function(x, ...)
   print(x$Call)
   cat("\nVariable(s):\n")
   lapply(x$tables, function(tab) {
-    cat(tab$y$term, " - ", paste0(unlist(lapply(tab$x, "[[", "term"), use.names = FALSE), collapse = ", "), "\n", sep = "")
+    cat(tab$y$term, " ~ ", paste0(unlist(lapply(tab$x, "[[", "term"), use.names = FALSE), collapse = ", "),
+        if(tab$strata$hasStrata) paste0(" (strata = ", paste0(tab$strata$term, collapse = ", "), ")"), "\n", sep = "")
   })
   invisible(x)
 }
