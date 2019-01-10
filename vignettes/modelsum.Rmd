@@ -98,7 +98,8 @@ as.data.frame(tab1)
 
 ## Add an adjustor to the model
 
-The argument `adjust` allows the user to indicate that all the variables should be adjusted for these terms.
+The argument `adjust` allows the user to indicate that all the variables should be adjusted for these terms. To adjust each model
+for age and sex (for instance), we use `adjust = ~ age + sex`:
 
 ```{r adjust, results="asis"}
 tab2 <- modelsum(alk.phos ~ arm + ps + hgb, adjust= ~age + sex, data=mockstudy)

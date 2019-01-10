@@ -50,7 +50,7 @@ dim(mockstudy)  ##look at how many subjects and variables are in the dataset
 str(mockstudy) ##quick look at the data
 ```
 
-To create a simple table stratified by treament arm, use a formula statement to specify the variables that you want summarized.
+To create a simple table stratified by treatment arm, use a formula statement to specify the variables that you want summarized.
 The example below uses age (a continuous variable) and sex (a factor). 
 
 ```{r, simple1}
@@ -72,7 +72,7 @@ summary(tab1, text=TRUE)
 ## Pretty Rmarkdown version of table
 
 In order for the report to look nice within an R markdown (knitr) report, you just need to specify
-`results="asis"` when creating the r chunk. This changes the layout slightly (compresses it) and bolds the variable names. 
+`results="asis"` when creating the R chunk. This changes the layout slightly (compresses it) and bolds the variable names. 
 
 ```{r, simple-markdown, results='asis'}
 summary(tab1)
@@ -225,7 +225,7 @@ tab.catsim <- tableby(arm ~ sex + race, cat.test="fe", simulate.p.value=TRUE, B=
 tests(tab.catsim)
 ```
 
-The chis-square test on 2x2 tables applies Yates' continuity correction by default, so we provide an option
+The chi-square test on 2x2 tables applies Yates' continuity correction by default, so we provide an option
 to turn off the correction. We show the results with and without the correction that is applied to
 treatment arm by sex, if we use subset to ignore one of the three treatment arms.
 
@@ -416,8 +416,8 @@ trans <- tableby(arm ~ I(age/10) + log(bmi) + factor(mdquality.s, levels=0:1, la
 summary(trans)
 ```
 
-The labels for these variables isn't exactly what we'd like so we can change modify those after the fact.
-Instead of typing out the very long variable names you can modify specific labels by position. 
+The labels for these variables aren't exactly what we'd like, so we can change modify those after the fact.
+Instead of typing out the very long variable names, you can modify specific labels by position. 
 
 ```{r, assignlabels2}
 labels(trans)
