@@ -2,6 +2,8 @@
 
 There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `modelsum()`, and `freqlist()`.
 
+* `arsenal` now imports and re-exports `utils::head()` and `utils::tail()`.
+
 * `arsenal_table`:
 
     - Implemented a new class (without a constructor).

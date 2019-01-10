@@ -10,40 +10,42 @@ The goal of `library(arsenal)` is to make statistical reporting easy. It include
 in his/her "arsenal" of functions. There are, at this time, 6 main functions, documented below. Each of these functions is
 motivated by a local SAS macro or procedure of similar functionality.
 
-Note that `arsenal` v1.4.0 (and to a smaller degree, v1.3.0) may not be completely backwards compatible with previous versions.
+Note that `arsenal` v2.0.0 may not be backwards compatible with previous versions.
 See the `NEWS` file for more details.
 
 ## The `tableby()` Function
 
-`tableby()` is a function to easily summarize a set of independent variables by a categorical variable.
+`tableby()` is a function to easily summarize a set of independent variables by one or more categorical variables.
 Optionally, an appropriate test is performed to test the distribution of the independent variables across
-the levels of the categorical variable. Options for this function are easily controled using `tableby.control()`.
+the levels of the categorical variable. Options for this function are easily controlled using `tableby.control()`.
 
 The `tableby()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
-Other S3 methods are implemented for objects of class `"tableby"`, including `print()`, `[`, `as.data.frame()`, and `merge()`.
+Other S3 methods are implemented for objects from `tableby()`, including `print()`, `[`, `as.data.frame()`, and `merge()`.
 
 ## The `paired()` Function
 
 `paired()` is a function to easily summarize a set of independent variables across two time points.
 Optionally, an appropriate test is performed to test the distribution of the independent variables across
-the time points. Options for this function are easily controled using `paired.control()`.
+the time points. Options for this function are easily controlled using `paired.control()`.
 
-The `tableby()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
+The `paired()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
+It has the same S3 methods as `tableby()`, since it's a special case of the `tableby()` object.
 
 ## The `modelsum()` Function
 
-`modelsum()` is a function to fit and summarize models for each independent variable with a response variable,
-with options to adjust by variables for each model. Options for this function are easily controled using `modelsum.control()`.
+`modelsum()` is a function to fit and summarize models for each independent variable with one or more response variables,
+with options to adjust for covariates for each model. Options for this function are easily controlled using `modelsum.control()`.
 
 The `modelsum` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
-Other S3 methods are implemented for objects of class `"modelsum"`, including `print()` and `as.data.frame()`.
+Other S3 methods are implemented for objects from `modelsum()`, including `print()`, `[`, `as.data.frame()`, and `merge()`.
 
 ## The `freqlist()` Function
 
 `freqlist()` is a function to approximate the output from SAS's `PROC FREQ` procedure when using the `/list` option of the `TABLE` statement.
+Options for this function are easily controlled using `freq.control()`.
 
 The `freqlist()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
-Other S3 methods are implemented for objects of class `"freqlist"`, including `print()` and `as.data.frame()`.
+Other S3 methods are implemented for objects from `freqlist()`, including `print()`, `[`, `as.data.frame()`, and `merge()`.
 
 ## The `compare.data.frame()` Function
 
