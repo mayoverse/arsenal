@@ -32,6 +32,7 @@ na.paired <- function(missings = c("in.both", "fill", "asis"))
     {
       obj.id <- object[["(id)"]]
       omit <- is.na(object[[1]]) | is.na(obj.id)
+      if("(strata)" %in% names(object)) omit <- omit | is.na(object[["(strata)"]])
 
       by.col <- object[[1]][!omit]
       if(is.factor(by.col)) {
@@ -54,6 +55,8 @@ na.paired <- function(missings = c("in.both", "fill", "asis"))
     fill = function(object, ...)
     {
       omit <- is.na(object[[1]]) | is.na(object[["(id)"]])
+      if("(strata)" %in% names(object)) omit <- omit | is.na(object[["(strata)"]])
+
       xx <- object[!omit, , drop = FALSE]
 
       all.pairs <- expand.grid(times = unique(xx[[1]]), id = unique(xx[["(id)"]]),
@@ -71,6 +74,8 @@ na.paired <- function(missings = c("in.both", "fill", "asis"))
     {
       # take away na's in tp and id
       omit <- is.na(object[[1]]) | is.na(object[["(id)"]])
+      if("(strata)" %in% names(object)) omit <- omit | is.na(object[["(strata)"]])
+
       xx <- object[!omit, , drop = FALSE]
       if(any(omit)) {
         temp <- stats::setNames(seq_along(omit)[omit], attr(object, "row.names")[omit])

@@ -22,6 +22,8 @@
     - `na.tableby()` now generates functions. The "lhs=" argument determines whether to remove NAs from the first column of the data.
       If `tableby()` detects a one-sided formula, it sets this to FALSE. Both versions now remove rows with NAs in the strata column (when applicable).
       
+    - `na.paired()` now removes rows with NAs in the strata column (when applicable).
+      
     - `padjust.tableby()` and `padjust.summary.tableby()` will error if fed an object with strata or multiple by-variables.
     
     - `merge.tableby()` now allows you to choose which by-variables to keep if not all are in common.
