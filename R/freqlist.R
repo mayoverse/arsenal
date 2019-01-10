@@ -3,32 +3,31 @@
 #' Approximate the output from SAS's \code{PROC FREQ} procedure when using the \code{/list} option of the \code{TABLE} statement.
 #'
 #' @param object An R object, usually of class \code{"table"} or class \code{"xtabs"}
-#' @param sparse a logical value indicating whether to keep rows with counts of zero.
-#'   The default is \code{FALSE} (drop zero-count rows).
 #' @param na.options a character string indicating how to handling missing values: \code{"include"}
 #'   (include values with NAs in counts and percentages),
 #'   \code{"showexclude"} (show NAs but exclude from cumulative counts and all percentages),
 #'   \code{"remove"} (remove values with NAs); default is \code{"include"}.
-#' @param digits a single number indicating the number of digits for percentages (passed to \code{\link{round}}; default is 2.
+#' @param strata (formerly \code{groupBy}) an optional character string specifying a variable(s) to use for grouping when calculating cumulative
+#'   counts and percentages. \code{\link{summary.freqlist}} will also separate by grouping variable for printing. Note that this is different
+#'   from \code{modelsum} and \code{tableby}, which take bare column names (and only one, at that!)
 #' @param labelTranslations an optional character string (or list) of labels to use for variable levels when summarizing.
 #'   Names will be matched appropriately.
-#' @param groupBy an optional character string specifying a variable(s) to use for grouping when calculating cumulative
-#'   counts and percentages. \code{\link{summary.freqlist}} will also separate by grouping variable for printing.
-#' @param ... additional arguments. These are only used in the formula method, and are passed to
-#'   the table method.
+#' @param control control parameters to handle optional settings within \code{freqlist}. See \code{\link{freq.control}}
+#' @param ... additional arguments. In the formula method, these are passed to the table method. These are also passed to
+#'   \code{\link{freq.control}}
 #' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}. Note
 #'   that \code{addNA=} only works in R >= 3.4.0.
-#' @param x an object of class \code{"freqlist"}
-#' @return An object of class \code{"freqlist"} (invisibly for \code{print.freqlist})
-#' @seealso \code{\link{summary.freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+#' @return An object of class \code{c("freqlist", "arsenal_table")}
+#' @seealso \code{\link{arsenal_table}}, \code{\link{summary.freqlist}}, \code{\link{freq.control}},
+#'   \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
 #'
 #' @examples
 #' # load mockstudy data
 #' data(mockstudy)
-#' tab.ex <- table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany")
+#' tab.ex <- table(mockstudy[c("arm", "sex", "mdquality.s")], useNA = "ifany")
 #' noby <- freqlist(tab.ex, na.options = "include")
 #' summary(noby)
-#' withby <- freqlist(tab.ex, groupBy = c("arm","sex"), na.options = "showexclude")
+#' withby <- freqlist(tab.ex, strata = c("arm","sex"), na.options = "showexclude")
 #' summary(withby)
 #' @author Tina Gunderson, with revisions by Ethan Heinzen
 #' @name freqlist
@@ -44,118 +43,154 @@ freqlist <- function(object, ...)
 
 #' @rdname freqlist
 #' @export
-freqlist.table <- function(object, sparse = FALSE, na.options = c("include", "showexclude", "remove"), digits = 2, labelTranslations = NULL, groupBy = NULL, ...)
+freqlist.table <- function(object, na.options = c("include", "showexclude", "remove"), strata = NULL, labelTranslations = NULL, control = NULL, ...)
 {
+  control <- c(list(...), control)
+  control <- do.call("freq.control", control[!duplicated(names(control))])
+
+  Call <- match.call()
   na.options <- match.arg(na.options)
-  if (!is.table(object)) stop("'object' must be a table!")
-  if (min(dim(object)) < 1) stop("table object has dimension of 0")
-  if (!is.logical(sparse)) stop("sparse must be TRUE or FALSE")
-  if (length(digits) > 1) stop("digits must be a single numeric value")
-  if ((digits %% 1) != 0 || (digits < 0)) stop("digits must be a positive whole number")
-  if (!is.null(groupBy) && any(groupBy %nin% names(dimnames(object)))) stop("groupBy variable not found in table names")
-  if (is.list(labelTranslations)) labelTranslations <- unlist(labelTranslations)
-  if (!is.null(labelTranslations) && (!is.character(labelTranslations) || length(labelTranslations) != length(dim(object))))
-    stop("length(labelTranslations) does not match table object dimensions")
-
-  cumfun <- function(x) {
-    # function to create a cumulative sum retaining NAs, but omitting in sum function
-    x2 <- rep(NA, length(x))
-    x.om <- stats::na.omit(x)
-    if (length(x.om) == 0) {
-      warning("For at least one level, all entries have NAs")
-    } else {
-      x2[!is.na(x)] <- cumsum(x.om)
-    }
-    return(x2)
+  if(min(dim(object)) < 1) stop("table object has dimension of 0")
+  if("groupBy" %in% names(list(...)))
+  {
+    if(is.null(strata)) strata <- list(...)$groupBy
+    .Deprecated(msg = "Using 'groupBy = ' is deprecated. Use 'strata = ' instead.")
   }
-  # create data frame from table object
-  tab.freq <- as.data.frame(object)
-  oldnames <- utils::head(names(tab.freq), -1)
 
-  internalTable <- function(data, na.options = na.options, digits = digits) {
-    # orders and performs calculations for the table
-    # split into a function to be able to use with by statement
-    data <- data[do.call(order, unname(data)), ]
-    na.index <- rowSums(is.na(data))
-    if (na.options == 'remove') {
-      data  <- data[na.index == 0, ]
-      cumFreq <- cumsum(data$Freq)
-      freqPct <- 100 * data$Freq / sum(data$Freq)
-      cumPct <- cumsum(freqPct)
-    } else if(na.options == 'include') {
-      cumFreq <- cumsum(data$Freq)
-      freqPct <- 100 * data$Freq / sum(data$Freq)
-      cumPct <- cumsum(freqPct)
-    } else if(na.options == 'showexclude') {
-      freq_tmp <- data$Freq
-      freq_tmp[na.index != 0] <- NA
-      cumFreq <- cumfun(freq_tmp)
-      freqPct <- 100 * freq_tmp / max(stats::na.omit(cumFreq), na.rm = TRUE)
-      cumPct <- cumfun(freqPct)
-    }
-    data$cumFreq <- cumFreq
-    data$freqPercent <- round(freqPct, digits)
-    data$cumPercent <- round(cumPct, digits)
-    row.names(data) <- NULL
-    return(data)
+  hasStrata <- !is.null(strata)
+  if(hasStrata && any(strata %nin% names(dimnames(object)))) stop("strata variable not found in table names")
+
+  # all this just to keep non-syntactic names
+  to_df <- function(x)
+  {
+    data.frame(
+      do.call("expand.grid", c(dimnames(provideDimnames(x, sep = "", base = list(LETTERS))),
+                               KEEP.OUT.ATTRS = FALSE, stringsAsFactors = TRUE)),
+      Freq = c(x), row.names = NULL, check.names = FALSE
+    )
   }
+
+  tab.freq <- to_df(object)
+
+  if(hasStrata && is.null(names(dimnames(object))) && is.null(names(labelTranslations)))
+  {
+    if(length(labelTranslations) != ncol(tab.freq) - 1) stop("'labelTranslations' doesn't appear to be the same length as 'object'")
+    names(labelTranslations) <- utils::head(names(tab.freq), -1)
+  }
+
+  #### x variables (which might include strata) ####
+  xTerms <- lapply(utils::head(names(tab.freq), -1), function(nm) list(variable=nm, label=nm, term=nm))
+  names(xTerms) <- vapply(xTerms, "[[", NA_character_, "variable")
+
   #if a grouping factor is given, will add NA as a factor level so it is not dropped when using the by function
-  if(!is.null(groupBy)) {
-    if(na.options != 'remove') {
-      for(i in groupBy) {
-        if(sum(is.na(tab.freq[[i]])) > 0) {tab.freq[[i]] <- addNA(tab.freq[[i]])}
-      }
-    }
-    byObject <- by(tab.freq, tab.freq[, groupBy, drop = FALSE], FUN = internalTable, na.options = na.options, digits = digits)
-    tableout <- do.call(rbind, byObject)
-    tableout <- tableout[, c(groupBy, colnames(tableout)[colnames(tableout) %nin% groupBy]), drop = FALSE]
-    row.names(tableout) <- NULL
-    tableout <- tableout[do.call(order, tableout), ]
+  if(hasStrata) {
+    if(na.options != 'remove') tab.freq[strata] <- lapply(tab.freq[strata], function(x) if(anyNA(x)) addNA(x) else x)
+
+    tableout <- unclass(by(tab.freq, tab.freq[rev(strata)], FUN = internalTable, na.options = na.options))
+    tableout <- lapply(tableout, function(x) {
+      x <- x[c(strata, colnames(x)[colnames(x) %nin% strata])]
+      row.names(x) <- NULL
+      x
+    })
+
+    strata.levels <- ""
+    strataLabel <- strata
+
   } else {
-    tableout <- internalTable(tab.freq, na.options = na.options, digits = digits)
-  }
-  if (!sparse) {
-    tableout <- tableout[tableout$Freq != 0, ]
-    tableout <- droplevels(tableout)
+    tableout <- list(internalTable(tab.freq, na.options = na.options))
+    strata <- strata.levels <- strataLabel <- ""
   }
 
-  if (!is.null(labelTranslations)) {
-    # applies new variable names, reordering to match current data frame output
-    labelTranslations <- labelTranslations[match(utils::head(names(tableout), -4), oldnames)]
-  }
-  outlist <- list(freqlist=tableout, byVar=groupBy, labels=NULL)
-  class(outlist) <- "freqlist"
-  labels(outlist) <- labelTranslations
-  return(outlist)
+  out.tables = list(
+    list(
+      y = list(term = "", label = ""),
+      strata = list(term = strata, values = strata.levels, label = strataLabel, hasStrata = hasStrata),
+      x = add_freqlist_xterms(xTerms),
+      tables = unname(tableout),
+      hasWeights = FALSE
+    )
+  )
+
+  out <- structure(list(Call = Call, control = control, tables = out.tables), class = c("freqlist", "arsenal_table"))
+  if(!is.null(labelTranslations)) labels(out) <- labelTranslations
+  out
 }
 
 #' @rdname freqlist
 #' @export
-freqlist.formula <- function(formula, data, subset, na.action, addNA, exclude, drop.unused.levels, ...)
+freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, labelTranslations = NULL, control = NULL,
+                             addNA, exclude, drop.unused.levels, ...)
 {
+  control <- c(list(...), control)
+  control <- do.call("freq.control", control[!duplicated(names(control))])
+
   Call <- match.call()
   if(!missing(addNA) && "addNA" %nin% names(formals(stats::xtabs)))
   {
     stop("The 'addNA' argument only works in R >=3.4.0. Consider using addNA() in 'formula' instead.")
   }
+  if("groupBy" %in% names(list(...)))
+  {
+    if(is.null(strata)) strata <- list(...)$groupBy
+    .Deprecated(msg = "Using 'groupBy = ' is deprecated. Use 'strata = ' instead.")
+  }
+
   indx <- match(c("formula", "data", "subset", "na.action", "addNA", "exclude", "drop.unused.levels"), names(Call), nomatch = 0)
   if(indx[1] == 0) stop("A formula argument is required.")
+  formula.list <- as_list_formula(formula)
+  out.tables <- list()
+  for(FORM in formula.list)
+  {
+    temp.call <- Call[c(1, indx[1:4])]
+    temp.call[[1L]] <- quote(stats::model.frame)
+    temp.call$formula <- FORM
+    modeldf <- eval(temp.call, parent.frame())
+    Terms <- stats::terms(modeldf)
+    hasStrata <- !is.null(strata)
+    if(hasStrata && any(strata %nin% names(modeldf))) stop("strata variable not found in table names")
 
-  temp.call <- Call[c(1, indx)]
-  temp.call[[1L]] <- quote(stats::xtabs)
+    #### Check for strata ####
+    if(hasStrata)
+    {
+      strata.levels <- ""
+      strata.terms <- strata
+      strataLabel <- unname(vapply(strata, function(x) if(is.null(labelEff <- attr(modeldf[[x]], "label"))) x else labelEff, NA_character_))
+    } else strata.terms <- strata.levels <- strataLabel <- ""
 
-  tab <- eval(temp.call, parent.frame())
-  freqlist(tab, ...)
-}
+    strataList <- list(term = strata.terms, values = strata.levels, label = strataLabel, hasStrata = hasStrata)
 
+    #### Check for weights ####
 
-#' @rdname freqlist
-#' @export
-print.freqlist <- function(x, ...)
-{
-  cat("Freqlist Object\n\n")
-  cat(ncol(x$freqlist) - 4, " variable", if(ncol(x$freqlist) != 5) "s", ":\n", sep = "")
-  print(utils::head(colnames(x$freqlist), -4L))
-  invisible(x)
+    if(hasWeights <- attributes(Terms)$response != 0)
+    {
+      termBy <- names(modeldf)[1]
+      if(is.null(labelBy <- attr(modeldf[[1]], "label"))) labelBy <- termBy
+      yList <- list(term = termBy, label = labelBy)
+      modeldf[[1]] <- NULL
+    } else yList <- list(term = "", label = "")
+
+    #### x variables (which might include strata) ####
+    xTerms <- Map(modeldf, names(modeldf), f = function(col, nm) {
+      if(is.null(labelEff <- attr(col, "label"))) labelEff <- nm
+      list(variable=nm, label=labelEff, term=nm)
+    })
+    names(xTerms) <- vapply(xTerms, "[[", NA_character_, "variable")
+
+    ####
+
+    temp.call[[1L]] <- quote(stats::xtabs)
+    tab <- freqlist(eval(temp.call, parent.frame()), strata = strata, ...)$tables[[1]]
+    tab$hasWeights <- hasWeights
+    tab$y <- yList
+    tab$strata <- strataList
+    tab$x <- add_freqlist_xterms(xTerms)
+
+    # this should still work even if there's multiple LHS -- test that with list(, , y) ~ x
+    out.tables[[yList$term]] <- tab
+  }
+
+  out <- structure(list(Call = Call, control = control, tables = out.tables), class = c("freqlist", "arsenal_table"))
+  if(!is.null(labelTranslations)) labels(out) <- labelTranslations
+  out
 }
 

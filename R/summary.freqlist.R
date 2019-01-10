@@ -3,28 +3,21 @@
 #' Summarize the \code{freqlist} object.
 #'
 #' @param object an object of class \code{\link{freqlist}}
-#' @param single a logical value indicating whether to collapse results created using a groupBy variable into a single table for printing
-#' @param labelTranslations A named list (or vector) where the name is the label in the output to
-#'        be replaced in the pretty rendering of freqlist by the character string value for the named
-#'        element of the list, e.g., list(age="Age(years)", bmi="Body Mass Index").
-#' @param dupLabels Should labels which are the same as the row above be printed? The default (\code{FALSE}) more
-#'   closely approximates \code{PROC FREQ} output from SAS, where a label carried down from the row above is left blank.
-#' @param title	Title for the table, defaults to \code{NULL} (no title)
-#' @param ... For \code{summary.freqlist}, these are not used. For the print method, these are
+#' @param ... For \code{summary.freqlist}, these are passed to \code{\link{as.data.frame.freqlist}} (and hence to
+#'   \code{\link{freq.control}}). For the print method, these are
 #'   additional arguments passed to the \code{\link[knitr]{kable}} function.
 #' @param x An object of class \code{summary.freqlist}.
-#' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
-#'   To use the default in \code{kable}, pass \code{NULL}.
+#' @inheritParams summary.tableby
 #' @return An object of class \code{"summary.freqlist"} (invisibly for the print method).
 #' @seealso \code{\link{freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
 #'
 #' @examples
 #' # load mockstudy data
 #' data(mockstudy)
-#' tab.ex <- table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany")
+#' tab.ex <- table(mockstudy[c("arm", "sex", "mdquality.s")], useNA = "ifany")
 #' noby <- freqlist(tab.ex, na.options = "include")
 #' summary(noby)
-#' withby <- freqlist(tab.ex, groupBy = c("arm","sex"), na.options = "showexclude")
+#' withby <- freqlist(tab.ex, strata = c("arm","sex"), na.options = "showexclude")
 #' summary(withby)
 #' summary(withby, dupLabels = TRUE)
 #' @author Tina Gunderson, with major revisions by Ethan Heinzen
@@ -34,62 +27,58 @@ NULL
 
 #' @rdname summary.freqlist
 #' @export
-summary.freqlist <- function(object, single = FALSE, labelTranslations = NULL, dupLabels = FALSE, title = NULL, ..., format = "markdown")
+summary.freqlist <- function(object, ..., labelTranslations = NULL, title = NULL)
 {
-  if(!is.logical(single) || length(single) != 1) stop("'single' must be TRUE or FALSE")
-  if(!is.null(labelTranslations)) labels(object) <- labelTranslations
-  if(!is.logical(dupLabels) || length(dupLabels) != 1) stop("'dupLabels' must be TRUE or FALSE")
-  if("caption" %in% names(list(...))) .Defunct(msg = "Using 'caption = ' is defunct. Use 'title = ' instead.")
+  dat <- as.data.frame(object, ..., labelTranslations = labelTranslations, list.ok = TRUE)
+  structure(list(
+    object = set_attr(dat, "control", NULL),
+    control = attr(dat, "control"),
+    title = title
+  ), class = c("summary.freqlist", "summary.arsenal_table"))
+}
 
-  fmtdups <- function(tab)
+as_data_frame_summary_freqlist <- function(tb, labs, cntrl)
+{
+  fmtdups <- function(x, i)
   {
-    tab <- as.matrix(tab)
+    x[i] <- lapply(x[i], as.character)
+    tab <- as.matrix(x[i])
     tab[is.na(tab)] <- "NA"
-    output <- tab
     num <- max(stringr::str_count(tab, ","))
 
     for(col in seq_len(ncol(tab)))
     {
       tmp <- apply(tab[, 1:col, drop = FALSE], 1, paste, collapse = paste0(rep(",", num + 1), collapse = "")) # in R >= 3.3.0, we could use strrep instead
-      output[duplicated(tmp), col] <- ""
+      x[duplicated(tmp), colnames(tab)[col]] <- ""
     }
-    output
+    x
   }
 
-  cnames <- if(is.null(object$labels)) names(object$freqlist) else c(object$labels, "Freq", "cumFreq", "freqPercent", "cumPercent")
-  freqdf <- object$freqlist
-
-  if(is.null(object$byVar) || single)
+  fmtdigits <- function(x, digits.count, digits.pct)
   {
-    if(ncol(freqdf) > 5 && !dupLabels)
-    {
-      freqdf[, 1:(ncol(freqdf)-4)] <- fmtdups(freqdf[, 1:(ncol(freqdf)-4), drop = FALSE])
-    }
-    freqdf <- list(freqdf)
-  } else
-  {
-    byVar <- object$byVar
-    freqdf[byVar] <- lapply(freqdf[byVar], function(x) if(anyNA(x)) addNA(x) else x)
-    freqdf <- by(freqdf, freqdf[, rev(byVar)], FUN = data.frame)
-
-    f <- function(x)
-    {
-      if(!is.null(x) && nrow(x) > 1 && !dupLabels) x[, 1:(ncol(x)-4)] <- fmtdups(x[, 1:(ncol(x)-4), drop = FALSE])
-      x
-    }
-    freqdf <- lapply(freqdf, f)
+    if("Freq" %in% names(x)) x$Freq <- formatC(x$Freq, digits = digits.count, format = "f")
+    if("cumFreq" %in% names(x)) x$cumFreq <- formatC(x$cumFreq, digits = digits.count, format = "f")
+    if("freqPercent" %in% names(x)) x$freqPercent <- formatC(x$freqPercent, digits = digits.pct, format = "f")
+    if("cumPercent" %in% names(x)) x$cumPercent <- formatC(x$cumPercent, digits = digits.pct, format = "f")
+    x
   }
-  freqdf <- lapply(freqdf, stats::setNames, cnames)
-  structure(list(object = freqdf, title = title), class = "summary.freqlist")
+  idx <- names(tb) %nin% c("Freq", "cumFreq", "freqPercent", "cumPercent")
+  tb <- fmtdigits(tb, digits.count = cntrl$digits.count, digits.pct = cntrl$digits.pct)
+  if(!cntrl$dupLabels) tb <- fmtdups(tb, idx)
+  tb <- stats::setNames(tb, labs[names(tb)])
+  set_attr(set_attr(tb, "labels", NULL), "align", c("r", "l")[1 + idx])
 }
 
 #' @rdname summary.freqlist
 #' @export
-print.summary.freqlist <- function(x, ..., format = "markdown")
+as.data.frame.summary.freqlist <- function(x, ..., list.ok = FALSE)
 {
-  if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  f <- function(x, ...) print(knitr::kable(x, ...))
-  lapply(x$object, f, row.names = FALSE, caption = NULL, format = format, ...)
-  cat("\n")
-  invisible(x)
+  out <- Map(x$object, lapply(x$object, attr, "labels"), f = as_data_frame_summary_freqlist, MoreArgs = list(cntrl = x$control))
+
+  if(!list.ok)
+  {
+    if(length(out) == 1) out <- out[[1]] else warning("as.data.frame.summary.freqlist is returning a list of data.frames")
+  }
+  out
 }
+

@@ -5,10 +5,6 @@
 \alias{is.modelsum}
 \alias{is.summary.modelsum}
 \alias{na.modelsum}
-\alias{[.modelsum}
-\alias{labels.modelsum}
-\alias{labels<-.modelsum}
-\alias{merge.modelsum}
 \title{Helper functions for modelsum}
 \usage{
 is.modelsum(x)
@@ -16,29 +12,20 @@ is.modelsum(x)
 is.summary.modelsum(x)
 
 na.modelsum(object, ...)
-
-\method{[}{modelsum}(x, i)
-
-\method{labels}{modelsum}(object, ...)
-
-\method{labels}{modelsum}(x) <- value
-
-\method{merge}{modelsum}(x, y, ...)
 }
 \arguments{
-\item{x, y}{A \code{modelsum} object.}
+\item{x}{A \code{modelsum} object.}
 
 \item{object}{A \code{data.frame} resulting from evaluating a \code{modelsum} formula.}
 
 \item{...}{Other arguments, or a vector of indices for extracting.}
-
-\item{i}{A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.}
-
-\item{value}{A list of new labels.}
 }
 \value{
 \code{na.modelsum} returns a subsetted version of \code{object} (with attributes).
 }
 \description{
 A set of helper functions for \code{\link{modelsum}}.
+}
+\seealso{
+\code{\link{arsenal_table}}
 }

@@ -4,63 +4,55 @@
 \alias{tableby.internal}
 \alias{is.tableby}
 \alias{is.summary.tableby}
-\alias{merge.tableby}
 \alias{modpval.tableby}
-\alias{labels.tableby}
 \alias{tests}
 \alias{tests.tableby}
-\alias{labels<-.tableby}
-\alias{[.tableby}
 \alias{na.tableby}
 \alias{xtfrm.tableby}
+\alias{sort.tableby}
 \alias{Ops.tableby}
-\alias{length.tableby}
+\alias{head.tableby}
+\alias{tail.tableby}
 \title{Helper functions for tableby}
 \usage{
 is.tableby(x)
 
 is.summary.tableby(x)
 
-\method{merge}{tableby}(x, y, ...)
-
 modpval.tableby(x, pdata, use.pname = FALSE)
-
-\method{labels}{tableby}(object, ...)
 
 tests(x)
 
 \method{tests}{tableby}(x)
 
-\method{labels}{tableby}(x) <- value
-
-\method{[}{tableby}(x, i)
-
-na.tableby(object, ...)
+na.tableby(lhs = TRUE)
 
 \method{xtfrm}{tableby}(x)
 
+\method{sort}{tableby}(x, ...)
+
 \method{Ops}{tableby}(e1, e2)
 
-\method{length}{tableby}(x)
+\method{head}{tableby}(x, n = 6L, ...)
+
+\method{tail}{tableby}(x, n = 6L, ...)
 }
 \arguments{
-\item{x, y}{A \code{tableby} object.}
+\item{x}{A \code{tableby} object.}
 
-\item{...}{Other arguments, or a vector of indices for extracting.}
-
-\item{pdata}{A named data.frame where the first column is the x variable names matched by name, the second is the
-p-values (or some test stat), and the third column is the method name (optional)}
+\item{pdata}{A named data.frame where the first column is the by-variable names, the (optional) second is the strata value, the next is
+the x variable names, the next is p-values (or some test stat), and the (optional) next column is the method name.}
 
 \item{use.pname}{Logical, denoting whether the column name in \code{pdata} corresponding to the p-values should be used
 in the output of the object.}
 
-\item{object}{A \code{data.frame} resulting from evaluating a \code{tableby} formula.}
+\item{lhs}{Logical, denoting whether to remove \code{NA}s from the first column of the data.frame (the "left-hand side")}
 
-\item{value}{A list of new labels.}
-
-\item{i}{A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.}
+\item{...}{Other arguments, or a vector of indices for extracting.}
 
 \item{e1, e2}{\code{\link{tableby}} objects, or numbers to compare them to.}
+
+\item{n}{A single integer. See \code{\link[utils]{head}} or \code{\link[utils]{tail}} for more details}
 }
 \value{
 \code{na.tableby} returns a subsetted version of \code{object} (with attributes). \code{Ops.tableby} returns
@@ -71,8 +63,7 @@ A set of helper functions for \code{\link{tableby}}.
 }
 \details{
 Logical comparisons are implemented for \code{Ops.tableby}.
-
-\code{xtfrm.tableby} also allows the use of \code{\link{order}} and \code{\link{sort}}.
-
-\code{length.tableby} also allows for the use of \code{\link[utils]{head}} and \code{\link[utils]{tail}}.
+}
+\seealso{
+\code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}}
 }

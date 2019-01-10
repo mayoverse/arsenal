@@ -169,7 +169,7 @@ test_that("A basic two-sided tableby call--p-value, no total", {
 test_that("A basic two-sided tableby markdown output", {
   expect_identical(
     capture.kable(summary(tableby(Group ~ Age + Sex + notest(ethan) + dt, data = mdat,
-                                   numeric.stats = c("meansd", "q1q3", "range"), total = FALSE), pfootnote = TRUE)),
+                                  numeric.stats = c("meansd", "q1q3", "range"), total = FALSE), pfootnote = TRUE)),
     c("|                            |       High (N=30)       |       Low (N=30)        |       Med (N=30)        |  p value|",
       "|:---------------------------|:-----------------------:|:-----------------------:|:-----------------------:|--------:|",
       "|**Age in Years**            |                         |                         |                         | 0.906^1^|",
@@ -199,7 +199,8 @@ test_that("A basic two-sided tableby markdown output", {
 ###########################################################################################################
 
 test_that("A warning occurs using one-sided formula and na.tableby", {
-  expect_warning(tableby(~ ethan, data = mdat, na.action = na.tableby))
+  expect_error(tableby(~ ethan, data = mdat, na.action = na.tableby), "na.tableby now generates functions")
+  expect_warning(tableby(~ ethan, data = mdat, na.action = na.tableby(TRUE)))
 })
 
 test_that("The by-variable droplevels is working correctly", {
@@ -235,18 +236,12 @@ test_that("Using cat.simplify", {
 test_that("Reordering variables", {
   expect_identical(
     capture.kable(summary(tableby(Group ~ Sex + dt + Age, data = mdat)[c(3,1,2)], text = TRUE)),
-    c("|             |       High (N=30)       |       Low (N=30)        |       Med (N=30)        |      Total (N=90)       | p value|",
-      "|:------------|:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|-------:|",
-      "|Age in Years |                         |                         |                         |                         |   0.906|",
-      "|-  Mean (SD) |     40.033 (6.217)      |     39.633 (3.873)      |     39.433 (5.569)      |     39.700 (5.258)      |        |",
-      "|-  Range     |     29.000 - 53.000     |     32.000 - 48.000     |     30.000 - 52.000     |     29.000 - 53.000     |        |",
-      "|Sex          |                         |                         |                         |                         |   0.733|",
-      "|-  Female    |       15 (50.0%)        |       17 (56.7%)        |       14 (46.7%)        |       46 (51.1%)        |        |",
-      "|-  Male      |       15 (50.0%)        |       13 (43.3%)        |       16 (53.3%)        |       44 (48.9%)        |        |",
-      "|dt           |                         |                         |                         |                         |   0.391|",
-      "|-  Median    |       1950-01-07        |       1951-06-13        |       1948-09-13        |       1949-10-07        |        |",
-      "|-  Range     | 1935-08-15 - 1968-05-14 | 1937-02-08 - 1959-09-06 | 1939-04-01 - 1958-07-30 | 1935-08-15 - 1968-05-14 |        |"
-    )
+    capture.kable(summary(tableby(Group ~ Age + Sex + dt, data = mdat), text = TRUE))
+  )
+
+  expect_identical(
+    capture.kable(summary(sort(tableby(Group ~ Sex + dt + Age, data = mdat)))),
+    capture.kable(summary(tableby(Group ~ dt + Sex + Age, data = mdat)))
   )
 
   expect_identical(
@@ -271,18 +266,23 @@ test_that("Reordering variables", {
 
 
 test_that("Merging tableby objects", {
-  expect_error(merge(tableby(Group ~ Sex, data = mdat), tableby(Group.fac ~ Age, data = mdat)))
+  tb1 <- tableby(Group ~ Sex + Phase, data = mdat)
+  tb2 <- tableby(Group.fac ~ Age, data = mdat)
+  tb3 <- tableby(Group ~ Age + dt, data = mdat)
+  tb4 <- tableby(Group ~ chisq(Sex, "count"), data = mdat)
+  expect_error(merge(tb1, tb2), "No terms in common")
+  expect_error(merge(tb1, tableby(Group ~ Age, data = set_labels(mdat, list(Group = "Eek")))), "By-variables not identical")
   expect_identical(
-    capture.kable(summary(merge(tableby(Group ~ Sex, data = mdat), tableby(Group ~ Age, data = mdat)), text = TRUE)),
-    c("|             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value|",
-      "|:------------|:---------------:|:---------------:|:---------------:|:---------------:|-------:|",
-      "|Sex          |                 |                 |                 |                 |   0.733|",
-      "|-  Female    |   15 (50.0%)    |   17 (56.7%)    |   14 (46.7%)    |   46 (51.1%)    |        |",
-      "|-  Male      |   15 (50.0%)    |   13 (43.3%)    |   16 (53.3%)    |   44 (48.9%)    |        |",
-      "|Age in Years |                 |                 |                 |                 |   0.906|",
-      "|-  Mean (SD) | 40.033 (6.217)  | 39.633 (3.873)  | 39.433 (5.569)  | 39.700 (5.258)  |        |",
-      "|-  Range     | 29.000 - 53.000 | 32.000 - 48.000 | 30.000 - 52.000 | 29.000 - 53.000 |        |"
-    )
+    capture.kable(summary(merge(tb1, tb2, all = TRUE))),
+    c(capture.kable(summary(tb1)), "", "", capture.kable(summary(tb2)))
+  )
+  expect_identical(
+    capture.kable(summary(merge(tb1, tb3), text = TRUE)),
+    capture.kable(summary(tableby(Group ~ Sex + Phase + Age + dt, data = mdat), text = TRUE))
+  )
+  expect_identical(
+    capture.kable(summary(merge(tb1, tb4), text = TRUE)),
+    capture.kable(summary(tableby(Group ~ chisq(Sex, "count") + Phase, data = mdat), text = TRUE))
   )
 })
 
@@ -315,8 +315,8 @@ test_that("Changing tests", {
 
 test_that("Changing labels", {
   tb <- tableby(Group ~ Sex + Age, data = mdat)
-  expect_error(labels(tb) <- c("Sex", "Age"))
-  expect_warning(labels(tb) <- c(hi = "hi", Sex = "Sex", Age = "Age"))
+  expect_error(labels(tb) <- c("Group", "Sex", "Age"))
+  expect_warning(labels(tb) <- c(hi = "hi", Sex = "Sex", Age = "Age"), NA)
   expect_identical(
     capture.kable(summary(tb, text = TRUE)),
     c("|             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value|",
@@ -343,6 +343,7 @@ test_that("Changing labels", {
     )
   )
   labels(tb) <- list(Age = "Age (yrs)", Sex = "Gender")
+  expect_identical(labels(tb), c(Group = "Group", Sex = "Gender", Age = "Age (yrs)"))
   expect_identical(
     capture.kable(summary(tb, text = TRUE)),
     c("|             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value|",
@@ -369,7 +370,7 @@ set.seed(1000)
 test_that("05/25/2017: simulate.p.value option for chisq.test", {
   expect_true(identical(
     round.p(tests(tableby(Group ~ Sex + time + dt, data = mdat,  subset=Group != "High",simulate.p.value=TRUE))),
-    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.61169, 0.20595, 0.17144),
+    data.frame(Group = "Group", Variable = c("Sex", "time", "dt"), p.value = c(0.61169, 0.20595, 0.17144),
                Method = c("Pearson's Chi-squared test with simulated p-value\n\t (based on 2000 replicates)",
                           "Linear Model ANOVA", "Kruskal-Wallis rank sum test"), stringsAsFactors = FALSE)
   ))
@@ -378,7 +379,7 @@ test_that("05/25/2017: simulate.p.value option for chisq.test", {
 test_that("05/25/2017: chisq.correct=FALSE option for chisq.test", {
   expect_true(identical(
     round.p(tests(tableby(Group ~ Sex + time + dt, data = mdat, subset=Group != "High", chisq.correct=FALSE))),
-    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.43832, 0.20595, 0.17144),
+    data.frame(Group = "Group", Variable = c("Sex", "time", "dt"), p.value = c(0.43832, 0.20595, 0.17144),
                Method = c("Pearson's Chi-squared test", "Linear Model ANOVA", "Kruskal-Wallis rank sum test"),
                stringsAsFactors = FALSE)
   ))
@@ -389,7 +390,7 @@ set.seed(1000)
 test_that("05/25/2017: simulate.p.value=TRUE option for fisher.test", {
   expect_true(identical(
     round.p(tests(tableby(Group ~ fe(Sex) + time + dt, data = mdat, simulate.p.value=TRUE, B = 1999))),
-    data.frame(Variable = c("Sex", "time", "dt"), p.value = c(0.80000, 0.02480, 0.39127),
+    data.frame(Group = "Group", Variable = c("Sex", "time", "dt"), p.value = c(0.80000, 0.02480, 0.39127),
                Method = c("Fisher's Exact Test for Count Data with simulated p-value\n\t (based on 1999 replicates)",
                           "Linear Model ANOVA", "Kruskal-Wallis rank sum test"), stringsAsFactors = FALSE)
   ))
@@ -449,7 +450,7 @@ rm(dat)
 test_that("03/17/2017: Beth's medianq1q3 label", {
   expect_identical(
     capture.kable(summary(tableby(Group ~ ht_in + time, data = mdat,
-                                   control = tableby.control(numeric.stats = c("Nmiss2", "medianq1q3"))), text = TRUE)),
+                                  control = tableby.control(numeric.stats = c("Nmiss2", "medianq1q3"))), text = TRUE)),
     c("|                   |       High (N=30)       |       Low (N=30)        |       Med (N=30)        |      Total (N=90)       | p value|",
       "|:------------------|:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|-------:|",
       "|Height in Inches   |                         |                         |                         |                         |   0.785|",
@@ -515,7 +516,7 @@ test_that("08/02/2017: Chi-square warnings are suppressed", {
 
 test_that("08/26/2017: Richard Pendegraft and using formulize and tableby (#21)", {
   # tableby was having trouble identifying one-sided formulas when you use formulize
-  expect_warning(tableby(formulize(x = 11, data = mdat), data = mdat, na.action = na.tableby))
+  expect_warning(tableby(formulize(x = 11, data = mdat), data = mdat, na.action = na.tableby(TRUE)), "It appears you're using na.tableby")
 
   expect_identical(
     capture.kable(summary(tableby(Group ~ fe(Sex) + kwt(Age), data = mdat), text = TRUE)),
@@ -525,15 +526,14 @@ test_that("08/26/2017: Richard Pendegraft and using formulize and tableby (#21)"
 
 df <- data.frame(a = c("b", "b", "b", "a", "a"), d = NA_character_, e = c(1, 2, 2, 1, 2), stringsAsFactors = FALSE)
 test_that("08/30/2017: Brendan Broderick and zero-length levels (#22)", {
-  expect_warning(tableby(a ~ d + e, data = df), "Zero-length levels")
-  expect_error(suppressWarnings(tableby(a ~ d, data = df)), "No x-variables successfully")
+  expect_error(tableby(a ~ d + e, data = df), "Zero-length levels")
 })
 
 
 test_that("09/13/2017: Peter Martin and rounding to integers (#23)", {
   expect_identical(
     capture.kable(summary(tableby(Group ~ Sex + time + dt, data = mdat,
-                                   numeric.stats = c("meansd", "q1q3", "range"), digits = 0, digits.p = 3), text = TRUE)),
+                                  numeric.stats = c("meansd", "q1q3", "range"), digits = 0, digits.p = 3), text = TRUE)),
     c("|             |       High (N=30)       |       Low (N=30)        |       Med (N=30)        |      Total (N=90)       | p value|",
       "|:------------|:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|-------:|",
       "|Sex          |                         |                         |                         |                         |   0.733|",
@@ -616,7 +616,7 @@ test_that("01/30/2018: additional follow-up statistics (#32)", {
   {
     expect_identical(
       capture.kable(summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5,
-                                     surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime")), text = TRUE)),
+                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime")), text = TRUE)),
       c("|                              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
         "|:-----------------------------|:------------:|:--------------:|:--------------:|-------:|",
         "|Surv(fu.time/365.25, fu.stat) |              |                |                |   0.975|",
@@ -677,7 +677,7 @@ test_that("01/31/2018: include NAs in percents (#57, #62)", {
   attr(mdat2$ethan, "label") <- "Ethan"
   expect_identical(
     capture.kable(summary(tableby(Sex ~ includeNA(ethan, label = "N-Miss") + includeNA(ethan, first = TRUE, label = "N-Miss"),
-                                   data = mdat2, cat.stats = "countrowpct"), text = TRUE)),
+                                  data = mdat2, cat.stats = "countrowpct"), text = TRUE)),
     c("|           | Female (N=46) | Male (N=44) | Total (N=90) | p value|",
       "|:----------|:-------------:|:-----------:|:------------:|-------:|",
       "|Ethan      |               |             |              |   0.229|",
@@ -814,7 +814,7 @@ test_that("08/24/2018: latex (#123)", {
   expect_identical(
     capture.output(summary(tableby(Group ~ ethan, data = mdat), text = "latex")),
     c(""                                                                     ,
-      "\\begin{tabular}{lccccr|lccccr|lccccr|lccccr|lccccr|lccccr}"          ,
+      "\\begin{tabular}{l|c|c|c|c|r}"                                        ,
       "\\hline"                                                              ,
       " & High (N=30) & Low (N=30) & Med (N=30) & Total (N=90) & p value\\\\",
       "\\hline"                                                              ,

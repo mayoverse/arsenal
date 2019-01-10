@@ -2,36 +2,31 @@
 % Please edit documentation in R/summary.freqlist.R
 \name{summary.freqlist}
 \alias{summary.freqlist}
-\alias{print.summary.freqlist}
+\alias{as.data.frame.summary.freqlist}
 \title{summary.freqlist}
 \usage{
-\method{summary}{freqlist}(object, single = FALSE,
-  labelTranslations = NULL, dupLabels = FALSE, title = NULL, ...,
-  format = "markdown")
+\method{summary}{freqlist}(object, ..., labelTranslations = NULL,
+  title = NULL)
 
-\method{print}{summary.freqlist}(x, ..., format = "markdown")
+\method{as.data.frame}{summary.freqlist}(x, ..., list.ok = FALSE)
 }
 \arguments{
 \item{object}{an object of class \code{\link{freqlist}}}
 
-\item{single}{a logical value indicating whether to collapse results created using a groupBy variable into a single table for printing}
-
-\item{labelTranslations}{A named list (or vector) where the name is the label in the output to
-be replaced in the pretty rendering of freqlist by the character string value for the named
-element of the list, e.g., list(age="Age(years)", bmi="Body Mass Index").}
-
-\item{dupLabels}{Should labels which are the same as the row above be printed? The default (\code{FALSE}) more
-closely approximates \code{PROC FREQ} output from SAS, where a label carried down from the row above is left blank.}
-
-\item{title}{Title for the table, defaults to \code{NULL} (no title)}
-
-\item{...}{For \code{summary.freqlist}, these are not used. For the print method, these are
+\item{...}{For \code{summary.freqlist}, these are passed to \code{\link{as.data.frame.freqlist}} (and hence to
+\code{\link{freq.control}}). For the print method, these are
 additional arguments passed to the \code{\link[knitr]{kable}} function.}
 
-\item{format}{Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
-To use the default in \code{kable}, pass \code{NULL}.}
+\item{labelTranslations}{A named list (or vector) where the name is the label in the
+output to be replaced in the pretty rendering by the character string
+value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.}
+
+\item{title}{Title for the table, defaulting to \code{NULL} (no title)}
 
 \item{x}{An object of class \code{summary.freqlist}.}
+
+\item{list.ok}{If the object has multiple by-variables, is it okay to return a list of data.frames instead of a single data.frame?
+If \code{FALSE} but there are multiple by-variables, a warning is issued.}
 }
 \value{
 An object of class \code{"summary.freqlist"} (invisibly for the print method).
@@ -42,10 +37,10 @@ Summarize the \code{freqlist} object.
 \examples{
 # load mockstudy data
 data(mockstudy)
-tab.ex <- table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany")
+tab.ex <- table(mockstudy[c("arm", "sex", "mdquality.s")], useNA = "ifany")
 noby <- freqlist(tab.ex, na.options = "include")
 summary(noby)
-withby <- freqlist(tab.ex, groupBy = c("arm","sex"), na.options = "showexclude")
+withby <- freqlist(tab.ex, strata = c("arm","sex"), na.options = "showexclude")
 summary(withby)
 summary(withby, dupLabels = TRUE)
 }

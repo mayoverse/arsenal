@@ -1,28 +1,39 @@
 
-get_the_estimate <- function(fitList, cntrl)
+get_ms_strata_part <- function(msList, sValue, xList, ...)
 {
-  # even if the model doesn't have an intercept, that's okay
-  labs <- c("(Intercept)", fitList$label, fitList$adjlabels)
-  names(labs) <- c("(Intercept)", fitList$xterms, fitList$adjterms)
-  trms <- fitList$coeff$term
+  Map(get_ms_part, msList, seq_along(msList), xList, MoreArgs = list(sValue = sValue, ...))
+}
 
+get_ms_part <- function(msList, modelnum, xList, yList, aList, sList, sValue, fam, cntrl)
+{
+  get_labs <- function(x) stats::setNames(x$label, x$term)
+  # even if the model doesn't have an intercept, that's okay
+  labs <- c("(Intercept)" = "(Intercept)", get_labs(xList), adj <- unlist(unname(lapply(aList, get_labs))))
+  trms <- msList$coeff$term
   out <- data.frame(
+    y.term = yList$term,
+    y.label = yList$label,
+    strata.term = if(!sList$hasStrata) "" else paste0("(", sList$term, ") == ", sValue),
+    strata.value = if(!sList$hasStrata) "" else sValue,
+    model = modelnum,
     term = trms,
     label = ifelse(trms %in% names(labs), labs[trms], trms),
-    term.type = ifelse(trms %in% fitList$adjterms, "Adjuster",
-                       ifelse(trms %in% fitList$xterms, "Term", "Intercept")),
+    term.type = ifelse(trms %in% names(adj), "Adjuster",
+                       ifelse(trms %in% xList$term, "Term", "Intercept")),
     stringsAsFactors = FALSE
   )
+  if(!sList$hasStrata) out$strata.value <- NULL else names(out)[4] <- sList$label
 
-  statFields <- switch(fitList$family,
-                       quasibinomial = cntrl$binomial.stats, binomial = cntrl$binomial.stats,
-                       quasipoisson = cntrl$poisson.stats, poisson = cntrl$poisson.stats,
-                       negbin = cntrl$negbin.stats,
-                       survival = cntrl$survival.stats, ordinal = cntrl$ordinal.stats,
-                       cntrl$gaussian.stats)
+  statFields <- switch(
+    fam,
+    quasibinomial = cntrl$binomial.stats, binomial = cntrl$binomial.stats,
+    quasipoisson = cntrl$poisson.stats, poisson = cntrl$poisson.stats,
+    negbin = cntrl$negbin.stats, survival = cntrl$survival.stats,
+    ordinal = cntrl$ordinal.stats, gaussian = cntrl$gaussian.stats
+  )
+  if(any(names(msList$coeff) %in% statFields)) out <- cbind(out, msList$coeff[intersect(statFields, names(msList$coeff))])
+  if(any(names(msList$glance) %in% statFields)) out <- cbind(out, msList$glance[intersect(statFields, names(msList$glance))])
 
-  if(any(names(fitList$coeff) %in% statFields)) out <- cbind(out, fitList$coeff[, intersect(statFields, names(fitList$coeff)), drop = FALSE])
-  if(any(names(fitList$glance) %in% statFields)) out <- cbind(out, fitList$glance[intersect(statFields, names(fitList$glance))])
   out
 }
 
@@ -37,23 +48,35 @@ get_the_estimate <- function(fitList, cntrl)
 #' @return A \code{data.frame}.
 #' @author Ethan Heinzen, based on code originally by Greg Dougherty
 #' @export
-as.data.frame.modelsum <- function(x, ..., labelTranslations = NULL)
+as.data.frame.modelsum <- function(x, ..., labelTranslations = NULL, list.ok = FALSE)
 {
   if(!is.null(labelTranslations)) labels(x) <- labelTranslations
 
   control <- c(list(...), x$control)
   control <- do.call("modelsum.control", control[!duplicated(names(control))])
 
-  out <- do.call(rbind, c(Map(cbind, model = seq_along(x$fits), lapply(x$fits, get_the_estimate, cntrl = control)),
-                          make.row.names = FALSE)) # this step is almost magic
-  out <- out[out$term.type %in% c("Term", if(control$show.intercept) "Intercept", if(control$show.adjust) "Adjuster"), , drop = FALSE]
-  row.names(out) <- NULL # in case we dropped some terms
+  out <- lapply(x$tables, as_data_frame_modelsum, control = control)
 
-  idx <- vapply(out, is.factor, NA)
-  if(any(idx)) out[idx] <- lapply(out[idx], as.character) ## this is for R 3.2.3, whose rbind() doesn't have 'stringsAsFactors='
-
-  # Get rid of Nmiss if none missing
-  if("Nmiss" %in% colnames(out) && all(out$Nmiss == 0)) out$Nmiss <- NULL
+  if(!list.ok)
+  {
+    if(length(out) == 1) out <- out[[1]] else warning("as.data.frame.modelsum is returning a list of data.frames")
+  }
 
   set_attr(out, "control", control)
+}
+
+as_data_frame_modelsum <- function(lhsList, control)
+{
+  stopifnot(length(lhsList$tables) == length(lhsList$strata$values))
+  tabs <- Map(get_ms_strata_part, msList = lhsList$tables, sValue = lhsList$strata$values,
+              MoreArgs = list(yList = lhsList$y, sList = lhsList$strata, xList = lhsList$x, aList = lhsList$adjust,
+                              fam = lhsList$family, cntrl = control))
+  out <- do.call(rbind_chr, unlist(tabs, recursive = FALSE, use.names = FALSE))
+
+  out <- out[out$term.type %in% c("Term", if(control$show.intercept) "Intercept", if(control$show.adjust) "Adjuster"), , drop = FALSE]
+  row.names(out) <- NULL
+
+  # Get rid of Nmiss if none missing
+  if("Nmiss" %in% names(out) && all(out$Nmiss == 0)) out$Nmiss <- NULL
+  set_attr(out, "ylabel", lhsList$y$label)
 }

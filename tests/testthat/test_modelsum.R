@@ -330,7 +330,8 @@ test_that("07/27/2017: Too many adjustment vars in as.data.frame.modelsum (#12)"
 
 test_that("07/27/2017: modelsum labels (#13)", {
   expect_identical(
-    capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = list(sexFemale = "Female", age = "Age, yrs"), text = TRUE)),
+    capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy),
+                          labelTranslations = list(sexFemale = "Female", age = "Age, yrs"), text = TRUE)),
     c("|            |estimate |std.error |p.value |adj.r.squared |",
       "|:-----------|:--------|:---------|:-------|:-------------|",
       "|(Intercept) |26.793   |0.766     |< 0.001 |0.004         |",
@@ -342,7 +343,7 @@ test_that("07/27/2017: modelsum labels (#13)", {
     capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = list(sexFemale = "Female", age = "Age, yrs"), text = TRUE)),
     capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = c(sexFemale = "Female", age = "Age, yrs"), text = TRUE))
   )
-  expect_warning(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = c(badvar = "Eek")), "badvar")
+  expect_warning(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy), labelTranslations = c(badvar = "Eek")), NA)
 })
 
 

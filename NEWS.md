@@ -1,3 +1,86 @@
+# arsenal v1.5.0.9000
+
+There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `modelsum()`, and `freqlist()`.
+
+* `arsenal` now imports and re-exports `utils::head()` and `utils::tail()`.
+
+* `arsenal_table`:
+
+    - Implemented a new class (without a constructor).
+    
+    - `labels<-.arsenal_table()` doesn't support unnamed labels, as it's unclear how to assign them to multiple by-variables and strata.
+      It also doesn't give warnings if your labels are not used.
+      
+    - `[.arsenal_table()` has an argument `j=` to select the by-variables.
+    
+    - `merge.arsenal_table()` has arguments to select which by-variables to keep if not all are in common. It also checks to make sure
+      that strata, weights, and by-variables are all identical.
+      
+    - `print.arsenal_table()` shows y- and x-variables, plus any strata.
+
+* `tableby()` and `paired()`:
+
+    - Added functionality for multiple by-variables and strata terms. This required completely reworking the innards of the `tableby` object.
+
+    - Removed `length.tableby()` (because it was messing up `str()` and R Studio) and replaced with `head.tableby()` and `tail.tableby()` (the original
+      purpose to having `length()` defined).
+    
+    - Implemented `sort.tableby()`, which errors out if the object has strata or multiple by-variables, and then runs the default method.
+    
+    - `modpval.tableby()` now requires the first column to be the by-variable, and if the object has a strata, the second column is required
+      to be the corresponding strata value.
+      
+    - `tests.tableby()` now returns a data.frame with a by-variable column and (if applicable) a strata column.
+    
+    - `na.tableby()` now generates functions. The "lhs=" argument determines whether to remove NAs from the first column of the data.
+      If `tableby()` detects a one-sided formula, it sets this to FALSE. Both versions now remove rows with NAs in the strata column (when applicable).
+      
+    - `na.paired()` now removes rows with NAs in the strata column (when applicable).
+      
+    - `padjust.tableby()` and `padjust.summary.tableby()` will error if fed an object with strata or multiple by-variables.
+    
+    - `as.data.frame.tableby()` and `as.data.frame.summary.tableby()` gain the `list.ok=` argument, for when there are multiple left-hand-sides.
+    
+    - Added logic to statistical tests to detect missing levels of the by-variable.
+    
+    - Fixed a bug with LaTeX formatting involving the `align=` argument to `knitr::kable()`.
+    
+    - Passing `term.name=TRUE` to `summary.tableby()` or `as.data.frame.summary.tableby()` will now put the term name in the top left corner
+      of each table.
+
+* `modelsum()`:
+
+    - Added functionality for multiple by-variables and strata terms. This required completely reworking the innards of the `modelsum` object.
+    
+    - `na.modelsum()` now removes rows with NAs in the strata column (when applicable).
+    
+    - `as.data.frame.modelsum()` and `as.data.frame.summary.modelsum()` gain the `list.ok=` argument, for when there are multiple left-hand-sides.
+    
+    - Passing `term.name=TRUE` to `summary.modelsum()` or `as.data.frame.summary.modelsum()` will now put the term name in the top left corner
+      of each table.
+      
+* `freqlist()`:
+
+    - Added functionality for multiple by-variables. This required completely reworking the innards of the `freqlist` object.
+    
+    - Changed the argument `groupBy=` to `strata=` to match `tableby()` and `modelsum()`.
+    
+    - Added `merge.freqlist()` and `as.data.frame.summary.freqlist()`. Note that `[.arsenal_table()` now allows you to
+      remove the cumulative and percent columns.
+    
+    - Note that `labels<-.arsenal_table()` no longer supports unnamed labels, but now accepts labels for the frequency,
+      cumulative, and percent columns for `freqlist` objects.
+    
+    - Removed the `digits=`, `sparse=`, `single=`, and `dupLabels=` arguments from `freqlist()` and `summary.freqlist()`. These are now
+      arguments to the new `freq.control()`, and are passed through the dots (for backwards compatibility). `freqlist()` also gained
+      the `control=` argument for objects from `freq.control()`.
+      
+    - `as.data.frame.freqlist()` no longer rounds its digits, nor does it label its columns. Use `as.data.frame.summary.freqlist()` for that instead.
+      It also gained the `list.ok=` argument, for when there are multiple left-hand-sides.
+      
+- `includeNA()`: removed the "character" and "numeric" methods, replacing them with a default. In particular, this changes the default label of
+  what used to be `includeNA.numeric()`.
+
 # arsenal v1.5.0
 
 * `tableby()` and `paired()`:

@@ -1,4 +1,17 @@
 
+## allow stat functions to be passed as single arguments that are strings of function names
+## Store this as attribute in the modeldf column, along with the actual name of the variable,
+## rather than anova(age) showing up in the result (though anova(age) will be the column name in modeldf
+## but we pull these attributes off later.
+inline_tableby_stat_test <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL, cat.simplify = NULL, numeric.simplify = NULL)
+{
+  attr(x, "name") <- deparse(substitute(x))
+  attr(x, "stats") <- if(missing(...)) NULL else list(...)
+  attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
+                                  cat.simplify = cat.simplify, numeric.simplify = numeric.simplify)
+  x
+}
+
 get_attr <- function(x, which, default)
 {
   x <- attr(x, which, exact = TRUE)
@@ -115,24 +128,20 @@ extract2_tbstat <- function(x, ...)
 #'
 #' A set of helper functions for \code{\link{tableby}}.
 #'
-#' @param object A \code{data.frame} resulting from evaluating a \code{tableby} formula.
 #' @param ... Other arguments, or a vector of indices for extracting.
-#' @param x,y A \code{tableby} object.
-#' @param i A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.
-#' @param value A list of new labels.
-#' @param pdata A named data.frame where the first column is the x variable names matched by name, the second is the
-#'   p-values (or some test stat), and the third column is the method name (optional)
+#' @param x A \code{tableby} object.
+#' @param pdata A named data.frame where the first column is the by-variable names, the (optional) second is the strata value, the next is
+#'   the x variable names, the next is p-values (or some test stat), and the (optional) next column is the method name.
 #' @param e1,e2 \code{\link{tableby}} objects, or numbers to compare them to.
 #' @param use.pname Logical, denoting whether the column name in \code{pdata} corresponding to the p-values should be used
 #'   in the output of the object.
+#' @param n A single integer. See \code{\link[utils]{head}} or \code{\link[utils]{tail}} for more details
+#' @param lhs Logical, denoting whether to remove \code{NA}s from the first column of the data.frame (the "left-hand side")
 #' @return \code{na.tableby} returns a subsetted version of \code{object} (with attributes). \code{Ops.tableby} returns
 #'   a logical vector. \code{xtfrm.tableby} returns the p-values (which are ordered by \code{\link{order}} to \code{\link{sort}}).
 #' @details
 #' Logical comparisons are implemented for \code{Ops.tableby}.
-#'
-#' \code{xtfrm.tableby} also allows the use of \code{\link{order}} and \code{\link{sort}}.
-#'
-#' \code{length.tableby} also allows for the use of \code{\link[utils]{head}} and \code{\link[utils]{tail}}.
+#' @seealso \code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}}
 #' @name tableby.internal
 NULL
 #> NULL
@@ -145,36 +154,6 @@ is.tableby <- function(x) inherits(x, "tableby")
 #' @export
 is.summary.tableby <- function(x) inherits(x, "summary.tableby")
 
-#' @rdname tableby.internal
-#' @export
-merge.tableby <- function(x, y, ...) {
-
-  if(names(x$y) != names(y$y)) {
-    stop("tableby objects cannot be merged unless same 'by' variable name).\n")
-  }
-  if(!all(names(x$y[[1]]$stats) == names(y$y[[1]]$stats))){
-    stop("tableby objects cannot be merged unless same 'by' variable categories.\n")
-  }
-  newobj <- x
-  y$y[[1]]$label <- paste0(y$y[[1]]$label, ".2")
-  newobj$y[[paste0(names(y$y)[[1]],".2")]] <- y$y[[1]]
-  for(xname in names(y$x)) {
-    thisname <- xname
-    ## if name already present, add "2" to name and add on
-    if(xname %in% names(newobj$x)) {
-      thisname <- paste0(xname, ".2")
-      y$x[[xname]]$label <- paste0(y$x[[xname]]$label, ".2")
-    }
-    newobj$x[[thisname]] <- y$x[[xname]]
-  }
-
-  ## add on call and control from y
-  newobj$Call2 <- y$Call
-  newobj$control2 <- y$control
-
-  return(newobj)
-}
-
 ## pdata is a named data.frame where the first column is the x variable names matched by name,
 ## p-values (or some test stat) are numbers and the name is matched
 ## method name is the third column (optional)
@@ -184,27 +163,33 @@ merge.tableby <- function(x, y, ...) {
 #' @export
 modpval.tableby <- function(x, pdata, use.pname=FALSE) {
   ## set control$test to TRUE
-  if(any(pdata[,1] %in% names(x$x))) {
+  if(any(pdata[[1]] %in% names(x$tables))) {
     x$control$test <- TRUE
 
     ## change test results
     for(k in seq_len(nrow(pdata))) {
-      xname <- pdata[k,1]
-      idx <- which(names(x$x)==xname)
-      if(length(idx)==1) {
-        x$x[[idx]]$test$p.value <- pdata[k,2]
-        if(ncol(pdata)>2) {
-          x$x[[idx]]$test$method <- pdata[k,3]
-        } else {
-          x$x[[idx]]$test$method <- "modified by user"
-        }
+      yname <- pdata[[1]][k]
+
+      hasStrata <- x$tables[[yname]]$strata$hasStrata
+      strat <- if(hasStrata) pdata[[2]][k] else ""
+      xname <- pdata[[2 + hasStrata]][k]
+      p <- pdata[[3 + hasStrata]][k]
+      method <- if(ncol(pdata) > 3 + hasStrata) pdata[[4 + hasStrata]][k] else "modified by user"
+
+      if(xname %in% names(x$tables[[yname]]$x) && strat %in% x$tables[[yname]]$strata$values)
+      {
+        idx <- which(x$tables[[yname]]$strata$values == strat)
+        stopifnot(length(idx) == 1)
+
+        x$tables[[yname]]$tables[[idx]][[xname]]$test$p.value <- p
+        x$tables[[yname]]$tables[[idx]][[xname]]$test$method <- method
       }
     }
     if(use.pname & nchar(names(pdata)[2])>0) {
       ## put different test column name in control
       x$control$test.pname <- names(pdata)[2]
     }
-  }
+  } else warning("Couldn't match any by-variables to the first column of 'x'.")
   return(x)
 }
 
@@ -216,156 +201,72 @@ modpval.tableby <- function(x, pdata, use.pname=FALSE) {
 
 ## retrieve variable labels (y, x-vec) from tableby object
 
-#' @rdname tableby.internal
-#' @export
-labels.tableby <- function(object, ...) {
-  ##  get the formal labels from a tableby object's data variables
-  allLabels <- c(vapply(object$y, function(obj) obj$label, NA_character_),
-                 vapply(object$x, function(obj) obj$label, NA_character_))
-  names(allLabels) <- c(names(object$y), names(object$x))
-  return(allLabels)
-}
 
 ## define generic function for tests, so tests(tbObj) will work
 
 #' @rdname tableby.internal
 #' @export
-tests <- function(x) {
-  UseMethod("tests")
-}
+tests <- function(x) UseMethod("tests")
 
 ## retrieve the names of the tests performed per variable
-
 #' @rdname tableby.internal
 #' @export
 tests.tableby <- function(x) {
   if(x$control$test) {
-    testdf <- data.frame(
-      Variable = labels(x)[-1],
-      p.value = vapply(x$x, function(z) z$test$p.value, NA_real_),
-      Method = vapply(x$x, function(z) z$test$method, NA_character_),
-      stringsAsFactors = FALSE
-    )
-    if(!is.null(x$control$test.pname)) {
-      names(testdf)[2] <- x$control$test.pname
-    }
+    df <- as.data.frame(x, list.ok = TRUE)
+    hasStrata <- has_strata(x)
+    if(any(hasStrata) != all(hasStrata)) stop("Some tables in 'x' have strata, but others don't")
+    testdf <- do.call(rbind_chr, Map(df, hasStrata, f = function(i, s) i[c("group.label", if(s) names(i)[4], "variable", "p.value", "test")]))
+
+    testdf <- unique(testdf)
+    row.names(testdf) <- NULL
+    names(testdf)[c(1, any(hasStrata) + (2:4))] <- c("Group", "Variable",
+                                                     if(!is.null(x$control$test.pname)) x$control$test.pname else "p.value", "Method")
   } else {
-    testdf <- cat("No tests run on tableby object\n")
+    cat("No tests run on tableby object\n")
+    testdf <- NULL
   }
-  return(testdf)
+  testdf
 }
-
-
-## assign labels to tableby object
-
-#' @rdname tableby.internal
-#' @export
-'labels<-.tableby' <- function(x, value) {
-  ## if the value vector is named, then assign the labels to
-  ## those names that match those in x and y
-  if(is.list(value)) value <- unlist(value)
-  if(is.null(value))
-  {
-    x$y[[1]]$label <- x$y[[1]]$term
-    for(k in seq_along(x$x)) x$x[[k]]$label <- x$x[[k]]$term
-  } else if(!is.null(names(value))) {
-    vNames <- names(value)
-    objNames <- c(names(x$y), names(x$x))
-    v2objIndex <- match(vNames, objNames)
-    if(anyNA(v2objIndex))
-    {
-      idx <- is.na(v2objIndex)
-      warning("Named value(s) not matched in x: ", paste(vNames[idx],collapse=","), "\n")
-      value <- value[!idx]
-      v2objIndex <- v2objIndex[!idx]
-    }
-
-    ## handle y label first, then remove it
-    if(any(v2objIndex == 1)) {
-      x$y[[1]]$label <- value[v2objIndex == 1]
-      value <- value[v2objIndex != 1]
-      v2objIndex <- v2objIndex[v2objIndex != 1]
-    }
-    if(length(v2objIndex) > 0) {
-      ## prepare to iterate over the rest for x, if there are any
-      v2objIndex <- v2objIndex - 1
-      for(k in seq_along(v2objIndex)) x$x[[v2objIndex[k]]]$label <- value[k]
-    }
-  } else  {
-
-    ## Otherwise, assign in the order of how variables appear in formula, starting with y
-    ## check that length of value matches what is expected for x
-    ## for each of the RHS vars of x (1:length(x)-3),
-    ##assign strings in value to the 'label' element of the list for each RHS variable
-
-    if(length(value) != length(x$y) + length(x$x)) {
-      stop("Length of new labels is not the same length as there are variables in the formula.\n")
-    }
-    x$y[[1]]$label <- value[1]
-    for(k in seq_along(x$x)) {
-      x$x[[k]]$label <- value[k+1]
-    }
-  }
-  return(x)
-}
-
-## subset a tableby object;
-## syntax of usage: newtb <- tbObj[1:2]
-## x here is the tableby object
-## index is in '...', and allows only 1 vector of integer indices
-## in future, maybe allow subsetting by names
-
-#' @rdname tableby.internal
-#' @export
-"[.tableby" <- function(x, i) {
-  if(missing(i)) return(x)
-  newx <- x
-
-  if(is.character(i) && any(i %nin% names(x$x)))
-  {
-    tmp <- paste0(i[i %nin% names(x$x)], collapse = ", ")
-    warning(paste0("Some indices not found in tableby object: ", tmp))
-    i <- i[i %in% names(x$x)]
-  } else if(is.numeric(i) && any(i %nin% seq_along(x$x)))
-  {
-    tmp <- paste0(i[i %nin% seq_along(x$x)], collapse = ", ")
-    warning(paste0("Some indices not found in tableby object: ", tmp))
-    i <- i[i %in% seq_along(x$x)]
-  } else if(is.logical(i) && length(i) != length(x$x))
-  {
-    stop("Logical vector index not the right length.")
-  }
-
-  if(length(i) == 0 || anyNA(i)) stop("Indices must have nonzero length and no NAs.")
-
-  newx$x <- x$x[i]
-  return(newx)
-}
-
-
 
 ## function to handle na.action for tableby formula, data.frame
 
 #' @rdname tableby.internal
 #' @export
-na.tableby <- function(object, ...) {
-    omit <- is.na(object[[1]])
+na.tableby <- function(lhs = TRUE)
+{
+  if(is.data.frame(lhs)) stop("na.tableby now generates functions (and no longer accepts data.frames). ",
+                              "Use 'na.tableby()' to generate the function that used to be 'na.tableby'.")
+  if(lhs) return(na_lhs_strata)
+
+  function(object, ...) {
+    omit <- if("(strata)" %in% names(object)) is.na(object[["(strata)"]]) else rep(FALSE, nrow(object))
+
     xx <- object[!omit, , drop = FALSE]
     if(any(omit)) {
-        temp <- stats::setNames(seq_along(omit)[omit], attr(object, "row.names")[omit])
-        attr(temp, "class") <- "omit"
-        attr(xx, "na.action") <- temp
+      temp <- stats::setNames(seq_along(omit)[omit], attr(object, "row.names")[omit])
+      attr(temp, "class") <- "omit"
+      attr(xx, "na.action") <- temp
     }
     xx
+  }
 }
-
 
 #' @rdname tableby.internal
 #' @export
 xtfrm.tableby <- function(x)
 {
   if(!x$control$test) stop("Can't extract p-values from a tableby object created with test=FALSE.")
-  vapply(x$x, function(lst) lst$test$p.value, NA_real_)
+  unlist(lapply(x$tables, function(lst) lapply(lst$tables, function(strat) lapply(strat, function(i) i$test$p.value))), use.names = FALSE)
+}
+
+#' @rdname tableby.internal
+#' @export
+sort.tableby <- function(x, ...)
+{
+  if(!x$control$test) stop("Can't sort a tableby object created with test=FALSE.")
+  if(any(has_strata(x)) || length(x$tables) > 1) stop("Can't sort a tableby object with strata or multiple by variables")
+  NextMethod()
 }
 
 #' @rdname tableby.internal
@@ -382,4 +283,22 @@ Ops.tableby <- function(e1, e2)
 
 #' @rdname tableby.internal
 #' @export
-length.tableby <- function(x) length(x$x)
+head.tableby <- function(x, n = 6L, ...)
+{
+  stopifnot(length(n) == 1L)
+  xlen <- unique(vapply(x$tables, function(obj) length(obj$x), NA_integer_))
+  if(length(xlen) != 1) stop("length isn't defined for tableby objects with differing x-variables per by-variable")
+  n <- if(n < 0L) max(xlen + n, 0L) else min(n, xlen)
+  x[seq_len(n)]
+}
+
+#' @rdname tableby.internal
+#' @export
+tail.tableby <- function(x, n = 6L, ...)
+{
+  stopifnot(length(n) == 1L)
+  xlen <- unique(vapply(x$tables, function(obj) length(obj$x), NA_integer_))
+  if(length(xlen) != 1) stop("length isn't defined for tableby objects with differing x-variables per by-variable")
+  n <- if(n < 0L) max(xlen + n, 0L) else min(n, xlen)
+  x[seq.int(to = xlen, length.out = n)]
+}

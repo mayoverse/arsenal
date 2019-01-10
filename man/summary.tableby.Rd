@@ -3,7 +3,6 @@
 \name{summary.tableby}
 \alias{summary.tableby}
 \alias{as.data.frame.summary.tableby}
-\alias{print.summary.tableby}
 \title{The summary method for a \code{tableby} object}
 \usage{
 \method{summary}{tableby}(object, ..., labelTranslations = NULL,
@@ -11,12 +10,7 @@
 
 \method{as.data.frame}{summary.tableby}(x, ..., text = x$text,
   pfootnote = x$pfootnote, term.name = x$term.name, width = NULL,
-  min.split = NULL)
-
-\method{print}{summary.tableby}(x, ..., format = if (!is.null(x$text) &&
-  x$text \%in\% c("html", "latex")) x$text else "markdown",
-  escape = x$text \%nin\% c("html", "latex"), width = NULL,
-  min.split = NULL)
+  min.split = NULL, list.ok = FALSE)
 }
 \arguments{
 \item{object}{An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.}
@@ -26,7 +20,7 @@ For \code{print}ing the summary object, these are passed to both \code{as.data.f
 \code{\link[knitr]{kable}}.}
 
 \item{labelTranslations}{A named list (or vector) where the name is the label in the
-output to be replaced in the pretty rendering of tableby by the character string
+output to be replaced in the pretty rendering by the character string
 value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.}
 
 \item{text}{An argument denoting how to print the summary to the screen.
@@ -39,17 +33,18 @@ the LaTeX command \code{\\textbf}.}
 
 \item{pfootnote}{Logical, denoting whether to put footnotes describing the tests used to generate the p-values.}
 
-\item{term.name}{A character string denoting the column name for the first column.}
+\item{term.name}{A character vector denoting the column name for the "terms" column. It should be the same length
+as the number of tables or less (it will get recycled if needed). The special value \code{TRUE} will
+use the y-variable's label for each table.}
 
 \item{x}{An object of class \code{"summary.tableby"}.}
 
-\item{width, min.split}{Passed to \code{\link{smart.split}} for formatting of the "term" column.}
+\item{width}{Passed to \code{\link{smart.split}} for formatting of the "term" column.}
 
-\item{format}{Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
-To use the default in \code{kable}, pass \code{NULL}. If \code{x$text} specifies LaTeX or HTML formatting,
-that format is used in the table.}
+\item{min.split}{Passed to \code{\link{smart.split}} for formatting of the "term" column.}
 
-\item{escape}{Passed to \code{\link[knitr]{kable}}: should special characters be escaped when printed?}
+\item{list.ok}{If the object has multiple by-variables, is it okay to return a list of data.frames instead of a single data.frame?
+If \code{FALSE} but there are multiple by-variables, a warning is issued.}
 }
 \value{
 An object of class \code{summary.tableby}

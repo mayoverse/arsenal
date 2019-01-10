@@ -1,7 +1,7 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical Summaries
-Version: 1.5.0
-Date: 2018-11-09
+Version: 1.5.0.9002
+Date: 2018-01-10
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
     person("Jason", "Sinnwell", role="aut"),
@@ -19,10 +19,10 @@ Description: An Arsenal of 'R' functions for large-scale statistical summaries,
   which are streamlined to work within the latest reporting tools in 'R' and
   'RStudio' and which use formulas and versatile summary statistics for summary
   tables and models. The primary functions include tableby(), a Table-1-like
-  summary of multiple variable types 'by' the levels of a categorical
-  variable; paired(), a Table-1-like summary of multiple variable types paired across
-  two time points; modelsum(), which performs simple model fits on the same endpoint
-  for many variables (univariate or adjusted for standard covariates);
+  summary of multiple variable types 'by' the levels of one or more categorical
+  variables; paired(), a Table-1-like summary of multiple variable types paired across
+  two time points; modelsum(), which performs simple model fits on one or more endpoints
+  for many variables (univariate or adjusted for covariates);
   freqlist(), a powerful frequency table across many categorical variables;
   compare.data.frame(), the S3 method for comparing data.frames; and
   write2(), a function to output tables to a document.
@@ -45,11 +45,12 @@ Depends:
     R (>= 3.2.0),
     stats (>= 3.2.0)
 Imports:
-    testthat
+    testthat,
+    utils (>= 3.2.0)
 URL: https://github.com/eheinzen/arsenal, https://cran.r-project.org/package=arsenal
 BugReports: https://github.com/eheinzen/arsenal/issues
 VignetteBuilder: knitr
 License: GPL (>= 2)
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 LazyData: true
 Encoding: UTF-8

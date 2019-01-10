@@ -46,16 +46,7 @@ includeNA.factor <- function(x, label = "(Missing)", first = FALSE, ...)
 
 #' @rdname NA.operations
 #' @export
-includeNA.character <- function(x, label = "(Missing)", ...)
-{
-  if(label %in% x) warning('"', label, '" already appears in x.')
-  x[is.na(x)] <- label
-  x
-}
-
-#' @rdname NA.operations
-#' @export
-includeNA.numeric <- function(x, label, ...)
+includeNA.default <- function(x, label = "(Missing)", ...)
 {
   if(label %in% x) warning('"', label, '" already appears in x.')
   x[is.na(x)] <- label

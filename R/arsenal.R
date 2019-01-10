@@ -60,6 +60,16 @@ NULL
 #' @export
 testthat::compare
 
+#' @importFrom utils head
+#' @seealso \code{\link[utils]{head}}
+#' @export
+utils::head
+
+#' @importFrom utils tail
+#' @seealso \code{\link[utils]{tail}}
+#' @export
+utils::tail
+
 #### commands to build the package using devtools
 # devtools::check_man()
 # devtools::test()

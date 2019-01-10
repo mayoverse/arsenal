@@ -34,14 +34,16 @@ test_that("write2.modelsum -> HTML", {
                        title = "My test table", show.intercept = FALSE, digits = 5)
 })
 
+old.labs <- c(cumFreq = "cumFreq", freqPercent = "freqPercent", cumPercent = "cumPercent")
+
 test_that("write2.freqlist -> HTML", {
-  expect_write2_worked(write2html, freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
-                       reference = "write2.freqlist.html.md", single = TRUE)
+  expect_write2_worked(write2html, freqlist(table(mockstudy[c("arm", "sex", "mdquality.s")], useNA = "ifany"), strata = c("arm", "sex")),
+                       reference = "write2.freqlist.html.md", single = TRUE, labelTranslations = old.labs)
 })
 
 test_that("write2.freqlist -> doc", {
-  expect_write2_worked(write2word, freqlist(table(mockstudy[, c("arm", "sex", "mdquality.s")], useNA = "ifany"), groupBy = c("arm", "sex")),
-                       reference = "write2.freqlist.doc.md", single = TRUE, title = "My cool title")
+  expect_write2_worked(write2word, freqlist(table(mockstudy[c("arm", "sex", "mdquality.s")], useNA = "ifany"), strata = c("arm", "sex")),
+                       reference = "write2.freqlist.doc.md", single = TRUE, title = "My cool title", labelTranslations = old.labs)
 })
 
 ## From the vignette
@@ -50,7 +52,7 @@ test_that("write2.list (summary objects) -> PDF", {
   mylist6 <- list(
     summary(tableby(sex ~ age, data = mockstudy), title = "A Title for tableby"),
     summary(modelsum(age ~ sex, data = mockstudy), title = "A Title for modelsum"),
-    summary(freqlist(~ sex, data = mockstudy), title = "A Title for freqlist")
+    summary(freqlist(~ sex, data = mockstudy, labelTranslations = old.labs), title = "A Title for freqlist")
   )
   expect_write2_worked(write2pdf, mylist6, reference = "write2.multititles.pdf.md")
 })
@@ -87,8 +89,8 @@ test_that("write2.list (summary objects) -> PDF", {
 
 
 mylist <- list(tableby(sex ~ age, data = mockstudy, numeric.stats = c("meansd", "q1q3", "range")),
-               freqlist(table(mockstudy[, c("sex", "arm")])),
-               knitr::kable(head(mockstudy)))
+               freqlist(table(mockstudy[, c("sex", "arm")]), labelTranslations = old.labs),
+               knitr::kable(utils::head(mockstudy)))
 mylist2 <- list("# Header 1",
                 "This is a small paragraph.",
                 tableby(sex ~ age, data = mockstudy, numeric.stats = c("meansd", "q1q3", "range")))

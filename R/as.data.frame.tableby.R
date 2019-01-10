@@ -1,5 +1,10 @@
+get_tb_strata_part <- function(tbList, sValue, xList, ...)
+{
+  Map(get_tb_part, tbList, xList, MoreArgs = list(sValue = sValue, ...))
+}
 
-get_tb_part <- function(tbList, byLvls, statLabs)
+
+get_tb_part <- function(tbList, xList, yList, sList, sValue, statLabs)
 {
   f <- function(x, nm, lab = FALSE)
   {
@@ -8,17 +13,23 @@ get_tb_part <- function(tbList, byLvls, statLabs)
   }
 
   out <- data.frame(
-    variable = tbList$variable,
-    term = c(tbList$term, unlist(Map(f, tbList$stats, names(tbList$stats)), use.names = FALSE)),
-    label = c(tbList$label, unlist(Map(f, tbList$stats, names(tbList$stats), lab = TRUE), use.names = FALSE)),
-    variable.type = tbList$type
+    group.term = yList$term,
+    group.label = yList$label,
+    strata.term = if(!sList$hasStrata) "" else paste0("(", sList$term, ") == ", sValue),
+    strata.value = if(!sList$hasStrata) "" else sValue,
+    variable = xList$variable,
+    term = c(xList$term, unlist(Map(f, tbList$stats, names(tbList$stats)), use.names = FALSE)),
+    label = c(xList$label, unlist(Map(f, tbList$stats, names(tbList$stats), lab = TRUE), use.names = FALSE)),
+    variable.type = tbList$type,
+    stringsAsFactors = FALSE
   )
+  if(!sList$hasStrata) out$strata.value <- NULL else names(out)[4] <- sList$label
 
   f2 <- function(x, lv)
   {
     if(inherits(x[[1]], "tbstat_multirow")) x[[lv]] else x[lv]
   }
-  for(lvl in byLvls)
+  for(lvl in names(yList$stats))
   {
     out[[lvl]] <- c("", unlist(lapply(tbList$stats, f2, lv = lvl), recursive = FALSE, use.names = FALSE))
   }
@@ -32,24 +43,40 @@ get_tb_part <- function(tbList, byLvls, statLabs)
 #' Coerce a \code{\link{tableby}} object to a \code{data.frame}.
 #'
 #' @param x A \code{\link{tableby}} object.
-#' @param ... Arguments to pass to \code{\link{tableby}}.
+#' @param ... Arguments to pass to \code{\link{tableby.control}}.
 #' @inheritParams summary.tableby
 #' @seealso \code{\link{tableby}}, \code{\link{tableby}}
 #' @return A \code{data.frame}.
 #' @author Ethan Heinzen, based on code originally by Greg Dougherty
 #' @export
-as.data.frame.tableby <- function(x, ..., labelTranslations = NULL)
+as.data.frame.tableby <- function(x, ..., labelTranslations = NULL, list.ok = FALSE)
 {
   if(!is.null(labelTranslations)) labels(x) <- labelTranslations
 
   control <- c(list(...), x$control)
   control <- do.call("tableby.control", control[!duplicated(names(control))])
 
-  out <- do.call(rbind, c(lapply(x$x, get_tb_part, byLvls = names(x$y[[1]]$stats), statLabs = control$stats.labels), make.row.names = FALSE))
+  out <- lapply(x$tables, as_data_frame_tableby, control = control)
 
-  f <- function(elt, whch = "cat.simplify") if(is.null(elt$control.list[[whch]])) control[[whch]] else elt$control.list[[whch]]
-  simp.cat <- vapply(x$x, f, NA)
-  simp.num <- vapply(x$x, f, NA, "numeric.simplify")
+  if(!list.ok)
+  {
+    if(length(out) == 1) out <- out[[1]] else warning("as.data.frame.tableby is returning a list of data.frames")
+  }
+
+  set_attr(out, "control", control)
+}
+
+
+as_data_frame_tableby <- function(byList, control)
+{
+  stopifnot(length(byList$tables) == length(byList$strata$values))
+  tabs <- Map(get_tb_strata_part, tbList = byList$tables, sValue = byList$strata$values,
+              MoreArgs = list(yList = byList$y, sList = byList$strata, xList = byList$x, statLabs = control$stats.labels))
+  out <- do.call(rbind_chr, unlist(tabs, recursive = FALSE, use.names = FALSE))
+
+  f <- function(elt, whch = "cat.simplify") if(is.null(elt[[whch]])) control[[whch]] else elt[[whch]]
+  simp.cat <- vapply(byList$control.list, f, NA)
+  simp.num <- vapply(byList$control.list, f, NA, "numeric.simplify")
 
   if(any(simp.cat) || any(simp.num))
   {
@@ -69,11 +96,9 @@ as.data.frame.tableby <- function(x, ..., labelTranslations = NULL)
       } else y <- x
       y
     }
-    out <- do.call(rbind, c(by(out, factor(out$variable, levels = unique(out$variable)),
-                               simplify, simplify = FALSE), make.row.names = FALSE))
+    bylst <- list(factor(out$variable, levels = unique(out$variable)))
+    if(byList$strata$hasStrata) bylst[[2]] <- factor(out[[4]], levels = unique(out[[4]]))
+    out <- do.call(rbind_chr, by(out, bylst, simplify, simplify = FALSE))
   }
-  idx <- vapply(out, is.factor, NA)
-  if(any(idx)) out[idx] <- lapply(out[idx], as.character) ## this is for R 3.2.3, whose rbind() doesn't have 'stringsAsFactors='
-
-  set_attr(set_attr(out, "control", control), "control.list", lapply(x$x, function(x) x$control.list))
+  set_attr(set_attr(out, "control.list", byList$control.list), "ylabel", byList$y$label)
 }

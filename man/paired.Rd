@@ -2,13 +2,10 @@
 % Please edit documentation in R/paired.R
 \name{paired}
 \alias{paired}
-\alias{print.paired}
 \title{Summary Statistics of a Set of Independent Variables Paired Across Two Timepoints}
 \usage{
-paired(formula, data, id, na.action, subset = NULL, control = NULL,
-  ...)
-
-\method{print}{paired}(x, ...)
+paired(formula, data, id, na.action, subset = NULL, strata,
+  control = NULL, ...)
 }
 \arguments{
 \item{formula}{an object of class \code{\link{formula}} of the form \code{time ~ var1 + ...}.
@@ -26,6 +23,8 @@ The default is \code{na.paired("in.both")}. See \code{\link{na.paired}} for more
 \item{subset}{an optional vector specifying a subset of observations (rows of data) to be used in the results.
 Works as vector of logicals or an index.}
 
+\item{strata}{a vector of strata to separate summaries by an additional group.}
+
 \item{control}{control parameters to handle optional settings within \code{paired}.
 Two aspects of \code{paired} are controlled with these: test options of RHS variables and x variable summaries.
 Arguments for \code{paired.control} can be passed to \code{paired} via the \code{...} argument,
@@ -33,11 +32,9 @@ but if a control object and \code{...} arguments are both supplied,
 the latter are used. See \code{\link{paired.control}} for more details.}
 
 \item{...}{additional arguments to be passed to internal \code{paired} functions or \code{\link{paired.control}}.}
-
-\item{x}{an object of class \code{tableby}.}
 }
 \value{
-An object with class \code{c("paired", "tableby")}
+An object with class \code{c("paired", "tableby", "arsenal_table")}
 }
 \description{
 Summarize one or more variables (x) by a paired time variable (y). Variables
@@ -69,7 +66,7 @@ These tests are accepted:
 }
 }
 \seealso{
-\code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}
+\code{\link{arsenal_table}}, \code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}
 }
 \author{
 Jason Sinnwell, Beth Atkinson, Ryan Lennon, and Ethan Heinzen
