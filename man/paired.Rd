@@ -2,13 +2,10 @@
 % Please edit documentation in R/paired.R
 \name{paired}
 \alias{paired}
-\alias{print.paired}
 \title{Summary Statistics of a Set of Independent Variables Paired Across Two Timepoints}
 \usage{
 paired(formula, data, id, na.action, subset = NULL, strata,
   control = NULL, ...)
-
-\method{print}{paired}(x, ...)
 }
 \arguments{
 \item{formula}{an object of class \code{\link{formula}} of the form \code{time ~ var1 + ...}.
@@ -35,11 +32,9 @@ but if a control object and \code{...} arguments are both supplied,
 the latter are used. See \code{\link{paired.control}} for more details.}
 
 \item{...}{additional arguments to be passed to internal \code{paired} functions or \code{\link{paired.control}}.}
-
-\item{x}{an object of class \code{tableby}.}
 }
 \value{
-An object with class \code{c("paired", "tableby")}
+An object with class \code{c("paired", "tableby", "arsenal_table")}
 }
 \description{
 Summarize one or more variables (x) by a paired time variable (y). Variables
@@ -71,7 +66,7 @@ These tests are accepted:
 }
 }
 \seealso{
-\code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}
+\code{\link{arsenal_table}}, \code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}
 }
 \author{
 Jason Sinnwell, Beth Atkinson, Ryan Lennon, and Ethan Heinzen
