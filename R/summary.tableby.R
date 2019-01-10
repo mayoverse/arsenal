@@ -19,7 +19,9 @@
 #'		\code{"html"} uses the HTML tag \code{<strong>} instead of the markdown formatting, and \code{"latex"} uses
 #'		the LaTeX command \code{\\textbf}.
 #' @param pfootnote Logical, denoting whether to put footnotes describing the tests used to generate the p-values.
-#' @param term.name A character string denoting the column name for the first column.
+#' @param term.name A character vector denoting the column name for the "terms" column. It should be the same length
+#'   as the number of tables or less (it will get recycled if needed). The special value \code{TRUE} will
+#'   use the y-variable's label for each table.
 #' @param list.ok If the object has multiple by-variables, is it okay to return a list of data.frames instead of a single data.frame?
 #'   If \code{FALSE} but there are multiple by-variables, a warning is issued.
 #' @inheritParams arsenal_table
@@ -65,7 +67,7 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
   ), class = c("summary.tableby", "summary.arsenal_table"))
 }
 
-as_data_frame_summary_tableby <- function(df, totals, hasStrata, control, text, pfootnote, term.name, width, min.split)
+as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, control, text, pfootnote, width, min.split)
 {
   df.orig <- df
   idx <- names(df)[names(df) %nin% c("group.term", "group.label", "strata.term", "strata.label", "variable",
@@ -165,9 +167,14 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, control, text, 
 as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$pfootnote, term.name = x$term.name,
                                           width = NULL, min.split = NULL, list.ok = FALSE)
 {
-  out <- Map(as_data_frame_summary_tableby, x$object, x$totals, x$hasStrata,
+  if(is.null(term.name) || identical(term.name, TRUE))
+  {
+    term.name <- vapply(x$object, attr, NA_character_, "ylabel")
+  }
+  stopifnot(length(term.name) <= length(x$object))
+  out <- Map(as_data_frame_summary_tableby, x$object, x$totals, x$hasStrata, term.name,
              MoreArgs = list(control = x$control, text = text, pfootnote = pfootnote,
-                             term.name = term.name, width = width, min.split = min.split))
+                             width = width, min.split = min.split))
   if(!list.ok)
   {
     if(length(out) == 1) out <- out[[1]] else warning("as.data.frame.summary.tableby is returning a list of data.frames")

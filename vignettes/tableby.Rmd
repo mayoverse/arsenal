@@ -767,6 +767,13 @@ You can now use `list()` on the left-hand side of `tableby()` to give multiple e
 summary(tableby(list(sex, mdquality.s, ps) ~ age + bmi, data = mockstudy))
 ```
 
+To avoid confusion about which table is which endpoint, you can set `term.name=TRUE` in `summary()`. This takes the labels
+for each by-variable and puts them in the top-left of the table.
+
+```{r results='asis'}
+summary(tableby(list(sex, mdquality.s, ps) ~ age + bmi, data = mockstudy), term.name = TRUE)
+```
+
 ## 26. Tabulate data by a non-test group (strata)
 
 You can also specify a second grouping variable that doesn't get tested (but instead separates results): a *strata* variable.

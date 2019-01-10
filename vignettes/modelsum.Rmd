@@ -784,6 +784,13 @@ Note that only one "family" can be specified this way (use `merge()` instead if 
 summary(modelsum(list(age, hgb) ~ bmi + sex, adjust = ~ arm, data = mockstudy))
 ```
 
+To avoid confusion about which table is which endpoint, you can set `term.name=TRUE` in `summary()`. This takes the labels
+for each endpoint and puts them in the top-left of the table.
+
+```{r results='asis'}
+summary(modelsum(list(age, hgb) ~ bmi + sex, adjust = ~ arm, data = mockstudy), term.name = TRUE)
+```
+
 ## 25. Model data by a non-test group (strata)
 
 You can also specify a grouping variable that doesn't get tested (but instead separates results): a *strata* variable.

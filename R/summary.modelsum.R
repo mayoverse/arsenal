@@ -36,7 +36,7 @@ summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE
   ), class = c("summary.modelsum", "summary.arsenal_table"))
 }
 
-as_data_frame_summary_modelsum <- function(df, control, hasStrata, text, term.name, width, min.split)
+as_data_frame_summary_modelsum <- function(df, control, hasStrata, term.name, text, width, min.split)
 {
   df.orig <- df
 
@@ -136,8 +136,13 @@ as_data_frame_summary_modelsum <- function(df, control, hasStrata, text, term.na
 #' @export
 as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$term.name, width = NULL, min.split = NULL, list.ok = FALSE)
 {
-  out <- Map(as_data_frame_summary_modelsum, x$object, x$hasStrata,
-             MoreArgs = list(control = x$control, text = text, term.name = term.name, width = width, min.split = min.split))
+  if(is.null(term.name) || identical(term.name, TRUE))
+  {
+    term.name <- vapply(x$object, attr, NA_character_, "ylabel")
+  }
+  stopifnot(length(term.name) <= length(x$object))
+  out <- Map(as_data_frame_summary_modelsum, x$object, x$hasStrata, term.name,
+             MoreArgs = list(control = x$control, text = text, width = width, min.split = min.split))
   if(!list.ok)
   {
     if(length(out) == 1) out <- out[[1]] else warning("as.data.frame.summary.modelsum is returning a list of data.frames")

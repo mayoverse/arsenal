@@ -33,7 +33,9 @@ the LaTeX command \code{\\textbf}.}
 
 \item{pfootnote}{Logical, denoting whether to put footnotes describing the tests used to generate the p-values.}
 
-\item{term.name}{A character string denoting the column name for the first column.}
+\item{term.name}{A character vector denoting the column name for the "terms" column. It should be the same length
+as the number of tables or less (it will get recycled if needed). The special value \code{TRUE} will
+use the y-variable's label for each table.}
 
 \item{x}{An object of class \code{"summary.tableby"}.}
 

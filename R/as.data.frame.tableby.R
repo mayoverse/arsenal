@@ -100,5 +100,5 @@ as_data_frame_tableby <- function(byList, control)
     if(byList$strata$hasStrata) bylst[[2]] <- factor(out[[4]], levels = unique(out[[4]]))
     out <- do.call(rbind_chr, by(out, bylst, simplify, simplify = FALSE))
   }
-  set_attr(out, "control.list", byList$control.list)
+  set_attr(set_attr(out, "control.list", byList$control.list), "ylabel", byList$y$label)
 }

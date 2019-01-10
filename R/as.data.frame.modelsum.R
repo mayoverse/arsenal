@@ -78,5 +78,5 @@ as_data_frame_modelsum <- function(lhsList, control)
 
   # Get rid of Nmiss if none missing
   if("Nmiss" %in% names(out) && all(out$Nmiss == 0)) out$Nmiss <- NULL
-  out
+  set_attr(out, "ylabel", lhsList$y$label)
 }

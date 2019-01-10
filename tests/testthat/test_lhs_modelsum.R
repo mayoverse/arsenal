@@ -136,12 +136,12 @@ test_that("Changing labels", {
   mdat.tmp$`1x` <- 1:nrow(mdat.tmp)
   mdat.tmp$`2x` <- rep(c("A", "B"), each = nrow(mdat.tmp)/2)
   tab <- modelsum(list(Age, time) ~ Sex + `1x` + `2x`, adjust = ~ Group, strata = trt, data = mdat.tmp)
-  tmp <- capture.kable(summary(tab, text = TRUE))
-  expect_warning(labels(tab) <- c(hi = "hi", SexMale = "Male", Age = "Age at event", trt = "Trt Arm",
+  tmp <- capture.kable(summary(tab, text = TRUE, term.name = TRUE))
+  expect_warning(labels(tab) <- c(hi = "hi", SexMale = "Male", Age = "Age 1", time = "Time", trt = "Trt Arm",
                                   GroupLow = "Low", "`1x`" = "onex", "`2x`B" = "B"), NA)
   expect_identical(
-    capture.kable(summary(tab, text = TRUE)),
-    c("|Trt Arm |            |estimate |std.error |p.value |adj.r.squared |",
+    capture.kable(summary(tab, text = TRUE, term.name = TRUE)),
+    c("|Trt Arm |Age 1       |estimate |std.error |p.value |adj.r.squared |",
       "|:-------|:-----------|:--------|:---------|:-------|:-------------|",
       "|A       |(Intercept) |42.000   |1.795     |< 0.001 |-0.052        |",
       "|        |Male        |-2.000   |1.918     |0.305   |              |",
@@ -169,7 +169,7 @@ test_that("Changing labels", {
       "|        |Group Med   |-0.299   |2.161     |0.891   |              |",
       ""                                                                    ,
       ""                                                                    ,
-      "|Trt Arm |            |estimate |std.error |p.value |adj.r.squared |",
+      "|Trt Arm |Time        |estimate |std.error |p.value |adj.r.squared |",
       "|:-------|:-----------|:--------|:---------|:-------|:-------------|",
       "|A       |(Intercept) |4.469    |0.568     |< 0.001 |-0.016        |",
       "|        |Male        |-0.223   |0.606     |0.716   |              |",
@@ -199,12 +199,12 @@ test_that("Changing labels", {
   )
   labels(tab) <- NULL
   expect_identical(
-    capture.kable(summary(tab, text = TRUE)),
+    capture.kable(summary(tab, text = TRUE, term.name = TRUE)),
     tmp
   )
   expect_identical(
-    capture.kable(summary(tab, text = TRUE)),
-    c("|trt |            |estimate |std.error |p.value |adj.r.squared |",
+    tmp,
+    c("|trt |Age         |estimate |std.error |p.value |adj.r.squared |",
       "|:---|:-----------|:--------|:---------|:-------|:-------------|",
       "|A   |(Intercept) |42.000   |1.795     |< 0.001 |-0.052        |",
       "|    |Sex Male    |-2.000   |1.918     |0.305   |              |",
@@ -232,7 +232,7 @@ test_that("Changing labels", {
       "|    |Group Med   |-0.299   |2.161     |0.891   |              |",
       ""                                                                ,
       ""                                                                ,
-      "|trt |            |estimate |std.error |p.value |adj.r.squared |",
+      "|trt |time        |estimate |std.error |p.value |adj.r.squared |",
       "|:---|:-----------|:--------|:---------|:-------|:-------------|",
       "|A   |(Intercept) |4.469    |0.568     |< 0.001 |-0.016        |",
       "|    |Sex Male    |-0.223   |0.606     |0.716   |              |",

@@ -196,10 +196,10 @@ test_that("Merging tableby objects", {
 
 test_that("Changing labels", {
   tb <- tableby(list(Group, ethan) ~ Sex + Age, strata = trt, data = mdat)
-  expect_warning(labels(tb) <- c(hi = "hi", Sex = "Sex label", Age = "Age at event", trt = "Trt Arm", ethan = "EthanH"), NA)
+  expect_warning(labels(tb) <- c(hi = "hi", Sex = "Sex label", Age = "Age at event", trt = "Trt Arm", ethan = "EthanH", Group = "Grp"), NA)
   expect_identical(
-    capture.kable(summary(tb, text = TRUE)),
-    c("|Trt Arm |             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value |",
+    capture.kable(summary(tb, text = TRUE, term.name = TRUE)),
+    c("|Trt Arm |Grp          |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value |",
       "|:-------|:------------|:---------------:|:---------------:|:---------------:|:---------------:|:-------:|",
       "|A       |Sex label    |                 |                 |                 |                 |  0.670  |",
       "|        |-  Female    |    7 (50.0%)    |    7 (63.6%)    |    5 (45.5%)    |   19 (52.8%)    |         |",
@@ -215,7 +215,7 @@ test_that("Changing labels", {
       "|        |-  Range     | 30.000 - 49.000 | 32.000 - 47.000 | 30.000 - 52.000 | 30.000 - 52.000 |         |",
       ""                                                                                                          ,
       ""                                                                                                                ,
-      "|Trt Arm |             |  Ethan (N=42)   | Heinzen (N=45)  |  Total (N=87)   | p value |"                  ,
+      "|Trt Arm |EthanH       |  Ethan (N=42)   | Heinzen (N=45)  |  Total (N=87)   | p value |"                  ,
       "|:-------|:------------|:---------------:|:---------------:|:---------------:|:-------:|"                  ,
       "|A       |Sex label    |                 |                 |                 |  0.112  |"                  ,
       "|        |-  Female    |    7 (41.2%)    |   11 (68.8%)    |   18 (54.5%)    |         |"                  ,
@@ -233,8 +233,8 @@ test_that("Changing labels", {
   )
   labels(tb) <- NULL
   expect_identical(
-    capture.kable(summary(tb, text = TRUE)),
-    c("|trt |             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value |",
+    capture.kable(summary(tb, text = TRUE, term.name = TRUE)),
+    c("|trt |Group        |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value |",
       "|:---|:------------|:---------------:|:---------------:|:---------------:|:---------------:|:-------:|",
       "|A   |Sex          |                 |                 |                 |                 |  0.670  |",
       "|    |-  Female    |    7 (50.0%)    |    7 (63.6%)    |    5 (45.5%)    |   19 (52.8%)    |         |",
@@ -250,7 +250,7 @@ test_that("Changing labels", {
       "|    |-  Range     | 30.000 - 49.000 | 32.000 - 47.000 | 30.000 - 52.000 | 30.000 - 52.000 |         |",
       ""                                                                                                      ,
       ""                                                                                                      ,
-      "|trt |             |  Ethan (N=42)   | Heinzen (N=45)  |  Total (N=87)   | p value |"                  ,
+      "|trt |ethan        |  Ethan (N=42)   | Heinzen (N=45)  |  Total (N=87)   | p value |"                  ,
       "|:---|:------------|:---------------:|:---------------:|:---------------:|:-------:|"                  ,
       "|A   |Sex          |                 |                 |                 |  0.112  |"                  ,
       "|    |-  Female    |    7 (41.2%)    |   11 (68.8%)    |   18 (54.5%)    |         |"                  ,
