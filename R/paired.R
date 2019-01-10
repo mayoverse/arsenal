@@ -17,7 +17,7 @@
 #'   but if a control object and \code{...} arguments are both supplied,
 #'   the latter are used. See \code{\link{paired.control}} for more details.
 #' @param ... additional arguments to be passed to internal \code{paired} functions or \code{\link{paired.control}}.
-#' @return An object with class \code{c("paired", "tableby")}
+#' @return An object with class \code{c("paired", "tableby", "arsenal_table")}
 #' @details
 #' Do note that this function piggybacks off of \code{\link{tableby}} quite heavily, so there is no
 #' \code{summary.paired} function (for instance).
@@ -40,7 +40,7 @@
 #'     \code{notest}: no test is performed.
 #'   }
 #' }
-#' @seealso \code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}
+#' @seealso \code{\link{arsenal_table}}, \code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}
 #' @author Jason Sinnwell, Beth Atkinson, Ryan Lennon, and Ethan Heinzen
 #' @name paired
 NULL
@@ -332,15 +332,5 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
     out.tables[[termBy]] <- list(formula = FORM, y = yList, strata = list(term = strataTerm, values = strata.levels, label = strataLabel, hasStrata = hasStrata),
                                  x = xTerms, tables = strataList, control.list = control.list, hasWeights = FALSE)
   }
-  structure(list(Call = Call, control = control, tables = out.tables), class = c("paired", "tableby"))
+  structure(list(Call = Call, control = control, tables = out.tables), class = c("paired", "tableby", "arsenal_table"))
 }
-
-#' @rdname paired
-#' @export
-print.paired <- function(x, ...)
-{
-  cat("Paired ")
-  NextMethod()
-  invisible(x)
-}
-

@@ -34,7 +34,7 @@ summary.freqlist <- function(object, ..., labelTranslations = NULL, title = NULL
     object = set_attr(dat, "control", NULL),
     control = attr(dat, "control"),
     title = title
-  ), class = "summary.freqlist")
+  ), class = c("summary.freqlist", "summary.arsenal_table"))
 }
 
 as_data_frame_summary_freqlist <- function(tb, labs, cntrl)

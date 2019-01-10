@@ -20,13 +20,9 @@
 #'		the LaTeX command \code{\\textbf}.
 #' @param pfootnote Logical, denoting whether to put footnotes describing the tests used to generate the p-values.
 #' @param term.name A character string denoting the column name for the first column.
-#' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "markdown".
-#'   To use the default in \code{kable}, pass \code{NULL}. If \code{x$text} specifies LaTeX or HTML formatting,
-#'   that format is used in the table.
-#' @param escape Passed to \code{\link[knitr]{kable}}: should special characters be escaped when printed?
-#' @param width,min.split Passed to \code{\link{smart.split}} for formatting of the "term" column.
 #' @param list.ok If the object has multiple by-variables, is it okay to return a list of data.frames instead of a single data.frame?
 #'   If \code{FALSE} but there are multiple by-variables, a warning is issued.
+#' @inheritParams arsenal_table
 #' @return An object of class \code{summary.tableby}
 #' @seealso \code{\link{tableby.control}}, \code{\link{tableby}}
 #' @author Ethan Heinzen, based on code by Gregory Dougherty, Jason Sinnwell, Beth Atkinson,
@@ -66,7 +62,7 @@ summary.tableby <- function(object, ..., labelTranslations = NULL, text = FALSE,
     title = title,
     pfootnote = pfootnote,
     term.name = term.name
-  ), class = "summary.tableby")
+  ), class = c("summary.tableby", "summary.arsenal_table"))
 }
 
 as_data_frame_summary_tableby <- function(df, totals, hasStrata, control, text, pfootnote, term.name, width, min.split)

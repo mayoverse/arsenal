@@ -128,16 +128,11 @@ extract2_tbstat <- function(x, ...)
 #'
 #' A set of helper functions for \code{\link{tableby}}.
 #'
-#' @param object An object
 #' @param ... Other arguments, or a vector of indices for extracting.
-#' @param x,y A \code{tableby} object.
-#' @param i,j A vector to index \code{x} with: either names of variables, a numeric vector, or a logical vector of appropriate length.
-#'   \code{i} indexes the x-variables, and \code{j} indexes the by-variables.
-#' @param value A list of new labels.
+#' @param x A \code{tableby} object.
 #' @param pdata A named data.frame where the first column is the by-variable names, the (optional) second is the strata value, the next is
 #'   the x variable names, the next is p-values (or some test stat), and the (optional) next column is the method name.
 #' @param e1,e2 \code{\link{tableby}} objects, or numbers to compare them to.
-#' @param all,all.x,all.y Logicals, denoting which terms to keep if not all are in common.
 #' @param use.pname Logical, denoting whether the column name in \code{pdata} corresponding to the p-values should be used
 #'   in the output of the object.
 #' @param n A single integer. See \code{\link[utils]{head}} or \code{\link[utils]{tail}} for more details
@@ -146,7 +141,7 @@ extract2_tbstat <- function(x, ...)
 #'   a logical vector. \code{xtfrm.tableby} returns the p-values (which are ordered by \code{\link{order}} to \code{\link{sort}}).
 #' @details
 #' Logical comparisons are implemented for \code{Ops.tableby}.
-#' @seealso \code{\link{merge}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}}, \code{\link{labels}}
+#' @seealso \code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}}
 #' @name tableby.internal
 NULL
 #> NULL

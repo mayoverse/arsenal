@@ -14,7 +14,7 @@
 #'   \code{\link[knitr]{kable}}.
 #' @inheritParams summary.tableby
 #' @param x An object of class \code{"summary.modelsum"}.
-#' @seealso \code{\link{modelsum}}, \code{\link{print.modelsum}}, \code{\link{as.data.frame.modelsum}}
+#' @seealso \code{\link{modelsum}}, \code{\link{as.data.frame.modelsum}}
 #' @return An object of class \code{"summary.modelsum"}
 #' @author Ethan Heinzen, based on code originally by Greg Dougherty
 #' @name summary.modelsum
@@ -33,7 +33,7 @@ summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE
     text = text,
     title = title,
     term.name = term.name
-  ), class = "summary.modelsum")
+  ), class = c("summary.modelsum", "summary.arsenal_table"))
 }
 
 as_data_frame_summary_modelsum <- function(df, control, hasStrata, text, term.name, width, min.split)

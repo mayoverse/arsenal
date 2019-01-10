@@ -24,10 +24,9 @@
 #'   can be passed to \code{modelsum} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,
 #'   the latter are used. See \code{\link{modelsum.control}} for other details.
 #' @param ... additional arguments to be passed to internal \code{modelsum} functions.
-#' @param x An object of class \code{'modelsum'}, or a list of such objects.
-#' @return An object with class \code{'modelsum'}
+#' @return An object with class \code{c("modelsum", "arsenal_table")}
 #' @author Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, and Ethan Heinzen, adapted from SAS Macro of the same name
-#' @seealso \code{\link{modelsum.control}}, \code{\link{summary.modelsum}}, \code{\link{formulize}}
+#' @seealso \code{\link{arsenal_table}}, \code{\link{modelsum.control}}, \code{\link{summary.modelsum}}, \code{\link{formulize}}
 #' @examples
 #'
 #' data(mockstudy)
@@ -340,5 +339,5 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
                                 tables = strataList, family = family, hasWeights = hasWeights)
   }
 
-  structure(list(Call = Call, control = control, tables = out.tables), class = "modelsum")
+  structure(list(Call = Call, control = control, tables = out.tables), class = c("modelsum", "arsenal_table"))
 }

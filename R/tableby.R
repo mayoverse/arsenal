@@ -26,8 +26,6 @@
 #'   can be passed to \code{tableby} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,
 #'   the latter are used. See \code{\link{tableby.control}} for more details.
 #' @param ... additional arguments to be passed to internal \code{tableby} functions or \code{\link{tableby.control}}.
-#' @param x an object of class \code{tableby}.
-#'
 #' @details
 #' The group variable (if any) is categorical, which could be an integer, character,
 #' factor, or ordered factor. \code{tableby} makes a simple summary of
@@ -86,8 +84,8 @@
 #'
 #' Finally, multiple by-variables can be set using \code{list()}. See the examples for more details.
 #'
-#' @return An object with class \code{'tableby'}
-#' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}},
+#' @return An object with class \code{c("tableby", "arsenal_table")}
+#' @seealso \code{\link{arsenal_table}}, \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}},
 #'   \code{\link{summary.tableby}}, \code{\link{formulize}}
 #'
 #' @examples
@@ -373,5 +371,5 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
     out.tables[[termBy]] <- list(y = yList, strata = list(term = strataTerm, values = strata.levels, label = strataLabel, hasStrata = hasStrata),
                                  x = xTerms, tables = strataList, control.list = control.list, hasWeights = hasWeights)
   }
-  structure(list(Call = Call, control = control, tables = out.tables), class = "tableby")
+  structure(list(Call = Call, control = control, tables = out.tables), class = c("tableby", "arsenal_table"))
 }

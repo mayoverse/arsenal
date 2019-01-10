@@ -10,9 +10,10 @@
 #'
 #' @param object A \code{data.frame} resulting from evaluating a \code{modelsum} formula.
 #' @param ... Other arguments, or a vector of indices for extracting.
-#' @param x,y A \code{modelsum} object.
+#' @param x A \code{modelsum} object.
 #' @inheritParams tableby.internal
 #' @return \code{na.modelsum} returns a subsetted version of \code{object} (with attributes).
+#' @seealso \code{\link{arsenal_table}}
 #' @name modelsum.internal
 NULL
 #> NULL

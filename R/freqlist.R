@@ -17,9 +17,8 @@
 #'   \code{\link{freq.control}}
 #' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}. Note
 #'   that \code{addNA=} only works in R >= 3.4.0.
-#' @param x an object of class \code{"freqlist"}
-#' @return An object of class \code{"freqlist"} (invisibly for \code{print.freqlist})
-#' @seealso \code{\link{summary.freqlist}}, \code{\link{freq.control}},
+#' @return An object of class \code{c("freqlist", "arsenal_table")}
+#' @seealso \code{\link{arsenal_table}}, \code{\link{summary.freqlist}}, \code{\link{freq.control}},
 #'   \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
 #'
 #' @examples
@@ -112,7 +111,7 @@ freqlist.table <- function(object, na.options = c("include", "showexclude", "rem
     )
   )
 
-  out <- structure(list(Call = Call, control = control, tables = out.tables), class = "freqlist")
+  out <- structure(list(Call = Call, control = control, tables = out.tables), class = c("freqlist", "arsenal_table"))
   if(!is.null(labelTranslations)) labels(out) <- labelTranslations
   out
 }
@@ -190,7 +189,7 @@ freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, la
     out.tables[[yList$term]] <- tab
   }
 
-  out <- structure(list(Call = Call, control = control, tables = out.tables), class = "freqlist")
+  out <- structure(list(Call = Call, control = control, tables = out.tables), class = c("freqlist", "arsenal_table"))
   if(!is.null(labelTranslations)) labels(out) <- labelTranslations
   out
 }

@@ -51,8 +51,9 @@ add_freqlist_xterms <- function(xTerms)
 #'
 #' A set of helper functions for \code{\link{freqlist}}.
 #'
-#' @param x,y A \code{freqlist} object.
+#' @param x A \code{freqlist} object.
 #' @inheritParams tableby.internal
+#' @seealso \code{\link{merge.freqlist}}, \code{\link{arsenal_table}}
 #' @name freqlist.internal
 NULL
 #> NULL
