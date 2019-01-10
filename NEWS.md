@@ -29,6 +29,8 @@
     - `as.data.frame.tableby()` and `as.data.frame.summary.tableby()` gain the `list.ok=` argument, for when there are multiple left-hand-sides.
     
     - Added logic to statistical tests to detect missing levels of the by-variable.
+    
+    - Fixed a bug with LaTeX formatting involving the `align=` argument to `knitr::kable()`.
 
 * `modelsum()`:
 

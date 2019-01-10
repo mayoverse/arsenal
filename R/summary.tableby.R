@@ -154,7 +154,7 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, control, text, 
 
   #### tweak column names according to specifications ####
   cn <- stats::setNames(colnames(df), colnames(df))
-  align <- paste0(c(if(hasStrata) "l", "l", rep("c", times = sum(cn != "p.value")-1), if("p.value" %in% cn) "r"), collapse = "")
+  align <- c(if(hasStrata) "l", "l", rep("c", times = sum(cn != "p.value")-1), if("p.value" %in% cn) "r")
   nm <- intersect(cn, names(totals))
   if(length(nm)) cn[nm] <- paste0(cn[nm], " (N=", totals[nm], ")")
   cn["label"] <- term.name
@@ -177,22 +177,4 @@ as.data.frame.summary.tableby <- function(x, ..., text = x$text, pfootnote = x$p
     if(length(out) == 1) out <- out[[1]] else warning("as.data.frame.summary.tableby is returning a list of data.frames")
   }
   out
-}
-
-#' @rdname summary.tableby
-#' @export
-print.summary.tableby <- function(x, ..., format = if(!is.null(x$text) && x$text %in% c("html", "latex")) x$text else "markdown",
-                                  escape = x$text %nin% c("html", "latex"), width = NULL, min.split = NULL)
-{
-  df <- as.data.frame(x, ..., width = width, min.split = min.split, list.ok = TRUE)
-
-  if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  for(i in seq_along(df))
-  {
-    print(knitr::kable(df[[i]], caption = NULL, align = attr(df[[i]], "align"), format = format, row.names = FALSE, escape = escape, ...))
-    if(!is.null(attr(df[[i]], "tests"))) cat(paste0(attr(df[[i]], "tests"), "\n", collapse = ""))
-  }
-  cat("\n")
-
-  invisible(x)
 }

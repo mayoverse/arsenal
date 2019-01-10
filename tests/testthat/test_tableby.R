@@ -814,7 +814,7 @@ test_that("08/24/2018: latex (#123)", {
   expect_identical(
     capture.output(summary(tableby(Group ~ ethan, data = mdat), text = "latex")),
     c(""                                                                     ,
-      "\\begin{tabular}{lccccr|lccccr|lccccr|lccccr|lccccr|lccccr}"          ,
+      "\\begin{tabular}{l|c|c|c|c|r}"                                        ,
       "\\hline"                                                              ,
       " & High (N=30) & Low (N=30) & Med (N=30) & Total (N=90) & p value\\\\",
       "\\hline"                                                              ,

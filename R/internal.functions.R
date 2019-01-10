@@ -336,3 +336,38 @@ merge.freqlist <- function(x, y, all = TRUE, ...)
   if(any(nms.x %in% nms.y)) stop("Can only merge freqlist objects with different left-hand sides")
   merge_lhs_strata(x, y, all = TRUE, ...)
 }
+
+
+
+
+print_summary_lhs_strata <- function(x, ..., format = if(!is.null(x$text) && x$text %in% c("html", "latex")) x$text else "markdown",
+                                   escape = x$text %nin% c("html", "latex"), width = NULL, min.split = NULL)
+{
+  df <- as.data.frame(x, ..., width = width, min.split = min.split, list.ok = TRUE)
+
+  #### finally print it out ####
+  if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
+  for(i in seq_along(df))
+  {
+    print(knitr::kable(df[[i]], caption = NULL, align = attr(df[[i]], "align"), format = format, row.names = FALSE, escape = escape, ...))
+    if(!is.null(attr(df[[i]], "tests"))) cat(paste0(attr(df[[i]], "tests"), "\n", collapse = ""))
+  }
+  cat("\n")
+
+  invisible(x)
+}
+
+
+#' @rdname summary.tableby
+#' @export
+print.summary.tableby <- print_summary_lhs_strata
+
+#' @rdname summary.modelsum
+#' @export
+print.summary.modelsum <- print_summary_lhs_strata
+
+
+#' @rdname summary.freqlist
+#' @export
+print.summary.freqlist <- print_summary_lhs_strata
+

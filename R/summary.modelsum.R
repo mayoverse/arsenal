@@ -130,7 +130,7 @@ as_data_frame_summary_modelsum <- function(df, control, hasStrata, text, term.na
   cn["label"] <- term.name
   colnames(df) <- cn
 
-  df
+  set_attr(df, "align", rep("l", ncol(df)))
 }
 #' @rdname summary.modelsum
 #' @export
@@ -143,24 +143,6 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
     if(length(out) == 1) out <- out[[1]] else warning("as.data.frame.summary.modelsum is returning a list of data.frames")
   }
   out
-}
-
-#' @rdname summary.modelsum
-#' @export
-print.summary.modelsum <- function(x, ..., format = if(!is.null(x$text) && x$text %in% c("html", "latex")) x$text else "markdown",
-                                   escape = x$text %nin% c("html", "latex"), width = NULL, min.split = NULL)
-{
-  df <- as.data.frame(x, ..., width = width, min.split = min.split, list.ok = TRUE)
-
-  #### finally print it out ####
-  if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  for(i in seq_along(df))
-  {
-    print(knitr::kable(df[[i]], caption = NULL, format = format, row.names = FALSE, escape = escape, ...))
-  }
-  cat("\n")
-
-  invisible(x)
 }
 
 

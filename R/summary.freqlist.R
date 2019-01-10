@@ -66,7 +66,7 @@ as_data_frame_summary_freqlist <- function(tb, labs, cntrl)
   tb <- fmtdigits(tb, digits.count = cntrl$digits.count, digits.pct = cntrl$digits.pct)
   if(!cntrl$dupLabels) tb <- fmtdups(tb, idx)
   tb <- stats::setNames(tb, labs[names(tb)])
-  set_attr(set_attr(tb, "labels", NULL), "align", paste0(c("r", "l")[1 + idx], collapse = ""))
+  set_attr(set_attr(tb, "labels", NULL), "align", c("r", "l")[1 + idx])
 }
 
 #' @rdname summary.freqlist
@@ -81,24 +81,4 @@ as.data.frame.summary.freqlist <- function(x, ..., list.ok = FALSE)
   }
   out
 }
-
-
-#' @rdname summary.freqlist
-#' @export
-print.summary.freqlist <- function(x, ..., format = "markdown")
-{
-  df <- as.data.frame(x, ..., list.ok = TRUE)
-
-  #### finally print it out ####
-  if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
-  for(i in seq_along(df))
-  {
-    print(knitr::kable(df[[i]], caption = NULL, align = attr(df[[i]], "align"), format = format, row.names = FALSE, ...))
-  }
-  cat("\n")
-  invisible(x)
-}
-
-
-
 
