@@ -54,7 +54,7 @@ tweakcolnames <- function(by.x, by.y, cn.x, cn.y, control)
   return(list(by = by, cn.x = cn.x, cn.y = cn.y))
 }
 
-cleanup.null.na <- function(x) if(is.null(x) || is.na(x)) NA_character_ else x
+cleanup.null.na <- function(x) if(is.null(x) || allNA(x)) NA_character_ else x
 
 compare_values <- function(i, v, df, byvars, contr)
 {
