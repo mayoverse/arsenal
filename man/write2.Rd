@@ -99,12 +99,20 @@ Functions to output tables to a single document. (Also the S3 backbone behind th
 data(mockstudy)
 # tableby example
 tab1 <- tableby(arm ~ sex + age, data=mockstudy)
-write2(tab1, "~/trash.rtf",
+write2(tab1, tempfile(fileext = ".rtf"),
   toc = TRUE, # passed to rmarkdown::rtf_document, though in this case it's not practical
   quiet = TRUE, # passed to rmarkdown::render
   title = "My cool new title", # passed to summary.tableby
   output_format = rmarkdown::rtf_document)
 }
+
+write2html(list(
+  "# Header 1", # a header
+  code.chunk(a <- 1, b <- 2, a + b), # a code chunk
+  verbatim("hi there") # verbatim output
+),
+  tempfile(fileext = ".html"),
+  quite = TRUE)
 }
 \seealso{
 \code{\link{write2word}}, \code{\link{write2pdf}}, \code{\link{write2html}},
