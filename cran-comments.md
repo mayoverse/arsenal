@@ -5,6 +5,9 @@ This is a new version. In this version:
 * Made major structural revisions to the three main functions (`tableby()`, `modelsum()`,
   and `freqlist()`). This includes changes to S3 class structure.
   Backwards compatibility was maintained in most cases.
+  
+* Made a major (but hopefully completely backwards-compatible) update to `write2()`, which now writes
+  `.Rmd` files instead of `.md`.
 
 * Closed several bugs/feature requests.
 
