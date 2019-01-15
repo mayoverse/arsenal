@@ -1,11 +1,11 @@
 #' @rdname write2
 #' @export
-write2.default <- function(object, file, FUN = NULL, ..., append. = FALSE, render. = TRUE, keep.md = !render., output_format = NULL)
+write2.default <- function(object, file, FUN = NULL, ..., append. = FALSE, render. = TRUE, keep.rmd = !render., output_format = NULL)
 {
   if(!is.character(file) || length(file) > 1) stop("'file' argument must be a single character string.")
   if(!is.logical(append.) || length(append.) > 1) stop("'append.' argument must be a single logical value.")
   if(!is.logical(render.) || length(render.) > 1) stop("'render.' argument must be a single logical value.")
-  if(!is.logical(keep.md) || length(keep.md) > 1) stop("'keep.md' argument must be a single logical value.")
+  if(!is.logical(keep.rmd) || length(keep.rmd) > 1) stop("'keep.rmd' argument must be a single logical value.")
 
   if(is.null(FUN))
   {
@@ -32,7 +32,7 @@ write2.default <- function(object, file, FUN = NULL, ..., append. = FALSE, rende
     rmarkdown::word_document
   } else output_format
 
-  filename <- paste0(file, ".md")
+  filename <- paste0(file, ".Rmd")
   if(!append. || !file.exists(filename)) file.create(filename) # this will create a blank document when needed but allows the append. = TRUE case to work, too
   dots <- list(...)
   if(names(formals(FUN))[1] == "...") # this is when the FUN is, e.g., cat(). Any named arguments would still get cat'd, which we don't want
@@ -64,8 +64,8 @@ write2.default <- function(object, file, FUN = NULL, ..., append. = FALSE, rende
     do.call(rmarkdown::render, render.args)
   }
 
-  # This short-circuits if they want to keep the .md file. Otherwise, file.remove() returns a logical about successful file removal
-  if(!keep.md && !file.remove(filename)) warning("Something went wrong removing the temporary .md file.")
+  # This short-circuits if they want to keep the intermediate files. Otherwise, file.remove() returns a logical about successful file removal
+  if(!keep.rmd && !file.remove(filename)) warning("Something went wrong removing the temporary .Rmd file.")
 
   invisible(object)
 }

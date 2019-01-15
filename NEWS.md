@@ -80,8 +80,14 @@ There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `mode
     - `as.data.frame.freqlist()` no longer rounds its digits, nor does it label its columns. Use `as.data.frame.summary.freqlist()` for that instead.
       It also gained the `list.ok=` argument, for when there are multiple left-hand-sides.
       
-- `includeNA()`: removed the "character" and "numeric" methods, replacing them with a default. In particular, this changes the default label of
+* `includeNA()`: removed the "character" and "numeric" methods, replacing them with a default. In particular, this changes the default label of
   what used to be `includeNA.numeric()`.
+  
+* `write2()`:
+
+    - Changed the output to an `.Rmd` file instead of a `.md`. This shouldn't break anything, unless you're relying on the intermediate file.
+    
+    - Replaced the `keep.md=` argument with `keep.rmd=` (since we're not using `.md` files directly anymore).
 
 # arsenal v1.5.0
 
