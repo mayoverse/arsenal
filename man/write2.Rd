@@ -2,12 +2,8 @@
 % Please edit documentation in R/write2.R, R/write2.default.R
 \name{write2}
 \alias{write2}
-\alias{write2.tableby}
-\alias{write2.summary.tableby}
-\alias{write2.modelsum}
-\alias{write2.summary.modelsum}
-\alias{write2.freqlist}
-\alias{write2.summary.freqlist}
+\alias{write2.arsenal_table}
+\alias{write2.summary.arsenal_table}
 \alias{write2.compare.data.frame}
 \alias{write2.summary.compare.data.frame}
 \alias{write2.verbatim}
@@ -21,18 +17,9 @@
 \usage{
 write2(object, file, ..., output_format)
 
-\method{write2}{tableby}(object, file, ..., output_format = NULL)
+\method{write2}{arsenal_table}(object, file, ..., output_format = NULL)
 
-\method{write2}{summary.tableby}(object, file, ..., output_format = NULL)
-
-\method{write2}{modelsum}(object, file, ..., output_format = NULL)
-
-\method{write2}{summary.modelsum}(object, file, ...,
-  output_format = NULL)
-
-\method{write2}{freqlist}(object, file, ..., output_format = NULL)
-
-\method{write2}{summary.freqlist}(object, file, ...,
+\method{write2}{summary.arsenal_table}(object, file, ...,
   output_format = NULL)
 
 \method{write2}{compare.data.frame}(object, file, ...,
