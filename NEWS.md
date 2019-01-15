@@ -88,6 +88,8 @@ There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `mode
     - Changed the output to an `.Rmd` file instead of a `.md`. This shouldn't break anything, unless you're relying on the intermediate file.
     
     - Replaced the `keep.md=` argument with `keep.rmd=` (since we're not using `.md` files directly anymore).
+    
+    - Added the function `code.chunk()` to write executable code chunks to the `.Rmd`.
 
 # arsenal v1.5.0
 

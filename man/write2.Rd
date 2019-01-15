@@ -8,6 +8,7 @@
 \alias{write2.summary.compare.data.frame}
 \alias{write2.verbatim}
 \alias{write2.yaml}
+\alias{write2.code.chunk}
 \alias{write2.knitr_kable}
 \alias{write2.xtable}
 \alias{write2.character}
@@ -32,6 +33,8 @@ write2(object, file, ..., output_format)
 
 \method{write2}{yaml}(object, file, ..., output_format = NULL)
 
+\method{write2}{code.chunk}(object, file, ..., output_format = NULL)
+
 \method{write2}{knitr_kable}(object, file, ..., output_format = NULL)
 
 \method{write2}{xtable}(object, file, ..., output_format = NULL)
@@ -39,10 +42,10 @@ write2(object, file, ..., output_format)
 \method{write2}{character}(object, file, ..., output_format = NULL)
 
 \method{write2}{list}(object, file, ..., append. = FALSE,
-  render. = TRUE, clean = render., output_format = NULL)
+  render. = TRUE, keep.rmd = !render., output_format = NULL)
 
 \method{write2}{default}(object, file, FUN = NULL, ...,
-  append. = FALSE, render. = TRUE, clean = render.,
+  append. = FALSE, render. = TRUE, keep.rmd = !render.,
   output_format = NULL)
 }
 \arguments{
@@ -68,7 +71,7 @@ to append on. Used mostly for \code{write2.list}.}
 
 \item{render.}{Logical, denoting whether to render the temporary \code{.Rmd} file. Used mostly for \code{write2.list}.}
 
-\item{clean}{Logical, denoting whether to remove the intermediate files. Used mostly for \code{write2.list}. See \code{\link[rmarkdown]{render}}.}
+\item{keep.rmd}{Logical, denoting whether to keep the intermediate \code{.Rmd} file. Used mostly for \code{write2.list}.}
 
 \item{FUN}{The summary-like or print-like function to use to generate the markdown content. Can be passed as a function or a
 character string. It's expected that \code{FUN(object, ...)} looks "good" when put directly in a \code{.Rmd} file.}

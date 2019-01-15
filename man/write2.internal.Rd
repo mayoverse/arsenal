@@ -4,16 +4,25 @@
 \alias{write2.internal}
 \alias{print.verbatim}
 \alias{verbatim}
+\alias{code.chunk}
+\alias{print.code.chunk}
 \title{Helper functions for \code{write2}}
 \usage{
 \method{print}{verbatim}(x, ...)
 
 verbatim(x)
+
+code.chunk(..., chunk.opts = "r")
+
+\method{print}{code.chunk}(x, ...)
 }
 \arguments{
 \item{x}{An R object to coerce to class \code{"verbatim"} or such an object to print.}
 
-\item{...}{Other arguments passed to \code{print}.}
+\item{...}{For \code{print.verbatim}, other arguments passed to \code{print}. For \code{code.chunk},
+either expressions or single character strings to paste into the code chunk. Not used for \code{print.code.chunk}.}
+
+\item{chunk.opts}{A single character string giving the code chunk options. Make sure to specify the engine!}
 }
 \description{
 Helper functions for \code{\link{write2}}.
@@ -21,4 +30,7 @@ Helper functions for \code{\link{write2}}.
 \details{
 The \code{"verbatim"} class is to tell \code{\link{write2}} to print the object inside
   a section surrounded by three back ticks. The results will look like it would in the terminal (monospaced).
+
+\code{code.chunk()} is to write explicit code chunks in the \code{.Rmd} file; it captures the call and writes it to the
+  file, to execute upon knitting.
 }
