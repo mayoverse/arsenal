@@ -273,22 +273,22 @@ write2html(
 )
 ```
 
-## How do I look at the temporary `.md` file?
+## How do I look at the temporary `.Rmd` file?
 
-This is easily accomplished by using the option `keep.md = TRUE`.
+This is easily accomplished by using the option `keep.rmd = TRUE`.
 
 ```{r}
 write2html(
-  knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.keep.md.html"),
+  knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.keep.rmd.html"),
   quiet = TRUE, # passed to rmarkdown::render
-  keep.md = TRUE
+  keep.rmd = TRUE
 )
 ```
 
 
 ## How do I prevent my document from being rendered?
 
-This is easily accomplished by using the option `render. = FALSE`. Note that this will then default to `keep.md = TRUE`.
+This is easily accomplished by using the option `render. = FALSE`. Note that this will then default to `keep.rmd = TRUE`.
 
 ```{r}
 write2html(

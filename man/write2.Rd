@@ -2,12 +2,8 @@
 % Please edit documentation in R/write2.R, R/write2.default.R
 \name{write2}
 \alias{write2}
-\alias{write2.tableby}
-\alias{write2.summary.tableby}
-\alias{write2.modelsum}
-\alias{write2.summary.modelsum}
-\alias{write2.freqlist}
-\alias{write2.summary.freqlist}
+\alias{write2.arsenal_table}
+\alias{write2.summary.arsenal_table}
 \alias{write2.compare.data.frame}
 \alias{write2.summary.compare.data.frame}
 \alias{write2.verbatim}
@@ -21,18 +17,9 @@
 \usage{
 write2(object, file, ..., output_format)
 
-\method{write2}{tableby}(object, file, ..., output_format = NULL)
+\method{write2}{arsenal_table}(object, file, ..., output_format = NULL)
 
-\method{write2}{summary.tableby}(object, file, ..., output_format = NULL)
-
-\method{write2}{modelsum}(object, file, ..., output_format = NULL)
-
-\method{write2}{summary.modelsum}(object, file, ...,
-  output_format = NULL)
-
-\method{write2}{freqlist}(object, file, ..., output_format = NULL)
-
-\method{write2}{summary.freqlist}(object, file, ...,
+\method{write2}{summary.arsenal_table}(object, file, ...,
   output_format = NULL)
 
 \method{write2}{compare.data.frame}(object, file, ...,
@@ -52,10 +39,10 @@ write2(object, file, ..., output_format)
 \method{write2}{character}(object, file, ..., output_format = NULL)
 
 \method{write2}{list}(object, file, ..., append. = FALSE,
-  render. = TRUE, keep.md = !render., output_format = NULL)
+  render. = TRUE, clean = render., output_format = NULL)
 
 \method{write2}{default}(object, file, FUN = NULL, ...,
-  append. = FALSE, render. = TRUE, keep.md = !render.,
+  append. = FALSE, render. = TRUE, clean = render.,
   output_format = NULL)
 }
 \arguments{
@@ -76,15 +63,15 @@ One popular option is to use \code{quiet = TRUE} to suppress the command line ou
 }
 See \code{rmarkdown::\link[rmarkdown]{render}} for details.}
 
-\item{append.}{Logical, denoting whether (if a temporary \code{.md} file of the same name already exists)
+\item{append.}{Logical, denoting whether (if a temporary \code{.Rmd} file of the same name already exists)
 to append on. Used mostly for \code{write2.list}.}
 
-\item{render.}{Logical, denoting whether to render the temporary \code{.md} file. Used mostly for \code{write2.list}.}
+\item{render.}{Logical, denoting whether to render the temporary \code{.Rmd} file. Used mostly for \code{write2.list}.}
 
-\item{keep.md}{Logical, denoting whether to keep the intermediate \code{.md} file. Used mostly for \code{write2.list}.}
+\item{clean}{Logical, denoting whether to remove the intermediate files. Used mostly for \code{write2.list}. See \code{\link[rmarkdown]{render}}.}
 
 \item{FUN}{The summary-like or print-like function to use to generate the markdown content. Can be passed as a function or a
-character string. It's expected that \code{FUN(object, ...)} looks "good" when put directly in a \code{.md} file.}
+character string. It's expected that \code{FUN(object, ...)} looks "good" when put directly in a \code{.Rmd} file.}
 }
 \value{
 \code{object} is returned invisibly, and \code{file} is written.
