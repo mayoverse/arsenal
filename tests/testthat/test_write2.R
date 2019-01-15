@@ -5,17 +5,17 @@ context("Testing the write2 output")
 
 data(mockstudy)
 
-expect_write2_worked <- function(FUN, object, reference, ..., render. = TRUE)
+expect_write2_worked <- function(FUN, object, reference, ...)
 {
   FUN <- match.fun(FUN)
   filename <- tempfile()
   on.exit(expect_true(file.remove(paste0(filename, ".Rmd"))))
-  if(render.) on.exit(expect_true(file.remove(filename)), add = TRUE)
   if(!file.exists(reference)) skip("Couldn't find the reference file.")
   if(!file.create(paste0(filename, ".Rmd"))) skip("Couldn't create the temporary file.")
-  if(!grepl("arsenal/", getwd(), fixed = TRUE)) skip("These tests only run in Ethan's space.")
 
-  expect_error(FUN(object, file = filename, ..., render. = render., keep.rmd = TRUE, append. = FALSE, quiet = TRUE), NA)
+  expect_error(FUN(object, file = filename, ..., render. = TRUE, keep.rmd = TRUE, append. = FALSE, quiet = TRUE), NA)
+  if(render.) on.exit(expect_true(file.remove(filename)), add = TRUE)
+
   generated <- readLines(paste0(filename, ".Rmd"))
   expect_output_file(cat(generated, sep = "\n"), reference)
 }
