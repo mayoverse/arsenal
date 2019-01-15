@@ -1,5 +1,5 @@
 
-# The `arsenal` Package
+# The `arsenal` Package <img src="man/figures/arsenal.png" alt="Arsenal logo" style="float:right;height:232.25px">
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/arsenal)](https://CRAN.R-project.org/package=arsenal)
 [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/arsenal)](https://CRAN.R-project.org/package=arsenal)

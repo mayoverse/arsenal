@@ -4,6 +4,8 @@ There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `mode
 
 * `arsenal` now imports and re-exports `utils::head()` and `utils::tail()`.
 
+* `arsenal` now has a sticker!
+
 * `arsenal_table`:
 
     - Implemented a new class (without a constructor).

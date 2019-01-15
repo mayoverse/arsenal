@@ -10,6 +10,8 @@ This is a new version. In this version:
 
 * We updated and clarified documentation where appropriate.
 
+* Added an image and corresponding artist.
+
 ## Test environments
 
 * local Linux install: R 3.4.2
