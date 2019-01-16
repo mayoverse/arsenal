@@ -1,4 +1,4 @@
-# arsenal v1.5.0.9000
+# arsenal v2.0.0
 
 There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `modelsum()`, and `freqlist()`.
 

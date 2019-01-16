@@ -6,7 +6,7 @@ This is a new version. In this version:
   and `freqlist()`). This includes changes to S3 class structure.
   Backwards compatibility was maintained in most cases.
   
-* Made a major (but hopefully completely backwards-compatible) update to `write2()`, which now writes
+* Made a major (but almost completely backwards-compatible) update to `write2()`, which now writes
   `.Rmd` files instead of `.md`.
 
 * Closed several bugs/feature requests.
