@@ -7,11 +7,11 @@
 #' @param ... Additional arguments to be passed to \code{FUN}, \code{rmarkdown::render}, etc.
 #'   One popular option is to use \code{quiet = TRUE} to suppress the command line output.
 #' @param FUN The summary-like or print-like function to use to generate the markdown content. Can be passed as a function or a
-#'   character string. It's expected that \code{FUN(object, ...)} looks "good" when put directly in a \code{.md} file.
-#' @param append. Logical, denoting whether (if a temporary \code{.md} file of the same name already exists)
+#'   character string. It's expected that \code{FUN(object, ...)} looks "good" when put directly in a \code{.Rmd} file.
+#' @param append. Logical, denoting whether (if a temporary \code{.Rmd} file of the same name already exists)
 #'   to append on. Used mostly for \code{write2.list}.
-#' @param render. Logical, denoting whether to render the temporary \code{.md} file. Used mostly for \code{write2.list}.
-#' @param keep.md Logical, denoting whether to keep the intermediate \code{.md} file. Used mostly for \code{write2.list}.
+#' @param render. Logical, denoting whether to render the temporary \code{.Rmd} file. Used mostly for \code{write2.list}.
+#' @param keep.rmd Logical, denoting whether to keep the intermediate \code{.Rmd} file. Used mostly for \code{write2.list}.
 #' @param output_format One of the following:
 #'  \enumerate{
 #'    \item{An output format object, e.g. \code{rmarkdown::\link[rmarkdown]{html_document}(...)}.}
@@ -40,12 +40,20 @@
 #' data(mockstudy)
 #' # tableby example
 #' tab1 <- tableby(arm ~ sex + age, data=mockstudy)
-#' write2(tab1, "~/trash.rtf",
+#' write2(tab1, tempfile(fileext = ".rtf"),
 #'   toc = TRUE, # passed to rmarkdown::rtf_document, though in this case it's not practical
 #'   quiet = TRUE, # passed to rmarkdown::render
 #'   title = "My cool new title", # passed to summary.tableby
 #'   output_format = rmarkdown::rtf_document)
 #' }
+#'
+#' write2html(list(
+#'   "# Header 1", # a header
+#'   code.chunk(a <- 1, b <- 2, a + b), # a code chunk
+#'   verbatim("hi there") # verbatim output
+#' ),
+#'   tempfile(fileext = ".html"),
+#'   quite = TRUE)
 #' @author Ethan Heinzen, adapted from code from Krista Goergen
 #' @name write2
 NULL
@@ -95,6 +103,10 @@ write2.verbatim <- write2_using_print
 #' @export
 write2.yaml <- write2_using_print
 
+#' @rdname write2
+#' @export
+write2.code.chunk <- write2_using_print
+
 ############################ write2 for external objects ############################
 
 #' @rdname write2
@@ -117,29 +129,29 @@ write2.character <- function(object, file, ..., output_format = NULL)
 
 #' @rdname write2
 #' @export
-write2.list <- function(object, file, ..., append. = FALSE, render. = TRUE, keep.md = !render., output_format = NULL)
+write2.list <- function(object, file, ..., append. = FALSE, render. = TRUE, keep.rmd = !render., output_format = NULL)
 {
   if(!is.character(file) || length(file) > 1) stop("'file' argument must be a single character string.")
   if(!is.logical(append.) || length(append.) > 1) stop("'append.' argument must be a single logical value.")
 
-  filename <- paste0(file, ".md")
+  filename <- paste0(file, ".Rmd")
   if(!append. || !file.exists(filename)) file.create(filename)
 
   # find any YAML specifications
   idx <- vapply(object, is.yaml, NA)
-  if(sum(idx) > 0)
+  if(any(idx))
   {
     yamls <- Reduce(c, object[idx])
     object <- object[!idx]
-    write2(yamls, file = file, ..., keep.md = TRUE, append = TRUE, render. = FALSE, output_format = output_format)
+    write2(yamls, file = file, ..., keep.rmd = TRUE, append. = TRUE, render. = FALSE, output_format = output_format)
   }
 
   # separate the tables with a few blank lines, leading with the blank lines
   object2 <- c(object, as.list(rep("\n\n", times = length(object))))[order(c(seq_along(object), seq_along(object) - 0.5))]
 
-  lapply(object2, write2, file = file, ..., keep.md = TRUE, append. = TRUE, render. = FALSE, output_format = output_format)
+  lapply(object2, write2, file = file, ..., keep.rmd = TRUE, append. = TRUE, render. = FALSE, output_format = output_format)
 
-  write2("\n", file = file, ..., render. = render., append. = TRUE, keep.md = keep.md, output_format = output_format)
+  write2("\n", file = file, ..., render. = render., append. = TRUE, keep.rmd = keep.rmd, output_format = output_format)
 
   invisible(object)
 }

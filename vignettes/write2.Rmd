@@ -257,8 +257,23 @@ mylist4 <- list(
   tableby(sex ~ age, data = mockstudy),
   yaml(author = "My cool author name")
 )
-write2html(mylist3, paste0(tmpdir, "/test.yaml2.html"), quiet = TRUE)
+write2html(mylist4, paste0(tmpdir, "/test.yaml2.html"), quiet = TRUE)
 ```
+
+# Add a Code Chunk to the Output
+
+It is now possible to add code chunks to the output `.Rmd`:
+
+```{r}
+mylist5 <- list(
+  "# What is 1 + 2?",
+  code.chunk(a <- 1, b <- 2),
+  code.chunk(a + b, chunk.opts = "r echo=FALSE, eval=TRUE")
+)
+write2html(mylist5, paste0(tmpdir, "/test.code.chunk.html"), quiet = TRUE)
+```
+
+This allow flexibility to create objects on-the-fly, to read in saved objects to the temporary `.Rmd`, etc. The possibilities are endless!
 
 # FAQs
 
@@ -273,22 +288,22 @@ write2html(
 )
 ```
 
-## How do I look at the temporary `.md` file?
+## How do I look at the temporary `.Rmd` file?
 
-This is easily accomplished by using the option `keep.md = TRUE`.
+This is easily accomplished by using the option `keep.rmd = TRUE`.
 
 ```{r}
 write2html(
-  knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.keep.md.html"),
+  knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.keep.rmd.html"),
   quiet = TRUE, # passed to rmarkdown::render
-  keep.md = TRUE
+  keep.rmd = TRUE
 )
 ```
 
 
 ## How do I prevent my document from being rendered?
 
-This is easily accomplished by using the option `render. = FALSE`. Note that this will then default to `keep.md = TRUE`.
+This is easily accomplished by using the option `render. = FALSE`. Note that this will then default to `keep.rmd = TRUE`.
 
 ```{r}
 write2html(

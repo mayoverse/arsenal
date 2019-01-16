@@ -1,0 +1,13 @@
+
+
+
+hi there
+
+
+
+```{r}
+arsenal::write2html("hi there", "hi_there.html", clean = TRUE)
+```
+
+
+

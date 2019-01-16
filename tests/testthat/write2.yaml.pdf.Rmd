@@ -52,3 +52,13 @@ F-statistic: 3.927 on 1 and 1497 DF,  p-value: 0.04769
 
 
 
+
+```{r echo = FALSE, eval = TRUE}
+a <- 1
+b <- 2
+a + b
+a - b
+```
+
+
+

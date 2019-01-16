@@ -8,6 +8,7 @@
 \alias{write2.summary.compare.data.frame}
 \alias{write2.verbatim}
 \alias{write2.yaml}
+\alias{write2.code.chunk}
 \alias{write2.knitr_kable}
 \alias{write2.xtable}
 \alias{write2.character}
@@ -32,6 +33,8 @@ write2(object, file, ..., output_format)
 
 \method{write2}{yaml}(object, file, ..., output_format = NULL)
 
+\method{write2}{code.chunk}(object, file, ..., output_format = NULL)
+
 \method{write2}{knitr_kable}(object, file, ..., output_format = NULL)
 
 \method{write2}{xtable}(object, file, ..., output_format = NULL)
@@ -39,10 +42,10 @@ write2(object, file, ..., output_format)
 \method{write2}{character}(object, file, ..., output_format = NULL)
 
 \method{write2}{list}(object, file, ..., append. = FALSE,
-  render. = TRUE, keep.md = !render., output_format = NULL)
+  render. = TRUE, keep.rmd = !render., output_format = NULL)
 
 \method{write2}{default}(object, file, FUN = NULL, ...,
-  append. = FALSE, render. = TRUE, keep.md = !render.,
+  append. = FALSE, render. = TRUE, keep.rmd = !render.,
   output_format = NULL)
 }
 \arguments{
@@ -63,15 +66,15 @@ One popular option is to use \code{quiet = TRUE} to suppress the command line ou
 }
 See \code{rmarkdown::\link[rmarkdown]{render}} for details.}
 
-\item{append.}{Logical, denoting whether (if a temporary \code{.md} file of the same name already exists)
+\item{append.}{Logical, denoting whether (if a temporary \code{.Rmd} file of the same name already exists)
 to append on. Used mostly for \code{write2.list}.}
 
-\item{render.}{Logical, denoting whether to render the temporary \code{.md} file. Used mostly for \code{write2.list}.}
+\item{render.}{Logical, denoting whether to render the temporary \code{.Rmd} file. Used mostly for \code{write2.list}.}
 
-\item{keep.md}{Logical, denoting whether to keep the intermediate \code{.md} file. Used mostly for \code{write2.list}.}
+\item{keep.rmd}{Logical, denoting whether to keep the intermediate \code{.Rmd} file. Used mostly for \code{write2.list}.}
 
 \item{FUN}{The summary-like or print-like function to use to generate the markdown content. Can be passed as a function or a
-character string. It's expected that \code{FUN(object, ...)} looks "good" when put directly in a \code{.md} file.}
+character string. It's expected that \code{FUN(object, ...)} looks "good" when put directly in a \code{.Rmd} file.}
 }
 \value{
 \code{object} is returned invisibly, and \code{file} is written.
@@ -96,12 +99,20 @@ Functions to output tables to a single document. (Also the S3 backbone behind th
 data(mockstudy)
 # tableby example
 tab1 <- tableby(arm ~ sex + age, data=mockstudy)
-write2(tab1, "~/trash.rtf",
+write2(tab1, tempfile(fileext = ".rtf"),
   toc = TRUE, # passed to rmarkdown::rtf_document, though in this case it's not practical
   quiet = TRUE, # passed to rmarkdown::render
   title = "My cool new title", # passed to summary.tableby
   output_format = rmarkdown::rtf_document)
 }
+
+write2html(list(
+  "# Header 1", # a header
+  code.chunk(a <- 1, b <- 2, a + b), # a code chunk
+  verbatim("hi there") # verbatim output
+),
+  tempfile(fileext = ".html"),
+  quite = TRUE)
 }
 \seealso{
 \code{\link{write2word}}, \code{\link{write2pdf}}, \code{\link{write2html}},
