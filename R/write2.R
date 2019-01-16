@@ -29,7 +29,7 @@
 #'    \code{summary} function. There are also methods compatible with \code{\link[knitr]{kable}}, \code{\link[xtable]{xtable}},
 #'    and \code{\link[pander]{pander_return}}. Another option is to coerce an object using \code{\link{verbatim}()} to print out the
 #'    results monospaced (as if they were in the terminal). To output multiple tables into a document, simply make a list of them
-#'    and call the same function as before.
+#'    and call the same function as before. Finally, to output code chunks to be evaluated, use \code{\link{code.chunk}}.
 #'
 #'    For more information, see \code{vignette("write2")}.
 #' @seealso \code{\link{write2word}}, \code{\link{write2pdf}}, \code{\link{write2html}},
