@@ -348,3 +348,26 @@ test_that("strata with includeNA()", {
     )
   )
 })
+
+
+####################################################
+
+
+test_that("01/31/2019: modpval.tableby (#174, #175)", {
+  tmp <- tableby(sex ~ age, data = mockstudy, strata = fu.stat, test = FALSE)
+  expect_true(!any(c("test", "p.value") %in% names(as.data.frame(tmp))))
+  tmp <- modpval.tableby(tmp, data.frame(y = "sex", strata = "1", x = "age", p = 1), use.pname = TRUE)
+  expect_identical(
+    capture.kable(summary(tmp, pfootnote = TRUE, text = TRUE)),
+    c("|fu.stat |             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  |    p     |",
+      "|:-------|:------------|:---------------:|:---------------:|:---------------:|:--------:|",
+      "|1       |Age in Years |                 |                 |                 | 1.000^1^ |",
+      "|        |-  Mean (SD) | 58.253 (12.048) | 61.018 (10.649) | 59.336 (11.561) |          |",
+      "|        |-  Range     | 32.000 - 85.000 | 35.000 - 80.000 | 32.000 - 85.000 |          |",
+      "|2       |Age in Years |                 |                 |                 |          |",
+      "|        |-  Mean (SD) | 60.686 (11.278) | 59.059 (11.824) | 60.054 (11.516) |          |",
+      "|        |-  Range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |          |",
+      "1. Modified by user"
+    )
+  )
+})

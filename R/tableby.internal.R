@@ -174,7 +174,7 @@ modpval.tableby <- function(x, pdata, use.pname=FALSE) {
       strat <- if(hasStrata) pdata[[2]][k] else ""
       xname <- pdata[[2 + hasStrata]][k]
       p <- pdata[[3 + hasStrata]][k]
-      method <- if(ncol(pdata) > 3 + hasStrata) pdata[[4 + hasStrata]][k] else "modified by user"
+      method <- if(ncol(pdata) > 3 + hasStrata) pdata[[4 + hasStrata]][k] else "Modified by user"
 
       if(xname %in% names(x$tables[[yname]]$x) && strat %in% x$tables[[yname]]$strata$values)
       {
@@ -185,9 +185,9 @@ modpval.tableby <- function(x, pdata, use.pname=FALSE) {
         x$tables[[yname]]$tables[[idx]][[xname]]$test$method <- method
       }
     }
-    if(use.pname & nchar(names(pdata)[2])>0) {
+    if(use.pname & nchar(names(pdata)[3 + hasStrata]) > 0) {
       ## put different test column name in control
-      x$control$test.pname <- names(pdata)[2]
+      x$control$test.pname <- names(pdata)[3 + hasStrata]
     }
   } else warning("Couldn't match any by-variables to the first column of 'x'.")
   return(x)
