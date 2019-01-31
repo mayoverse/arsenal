@@ -328,6 +328,13 @@ test_that("Formula method works", {
     capture.kable(summary(freqlist(TAB.na, options = "include"), labelTranslations = c(trt = "Trt", ethan = "Ethan"))),
     capture.kable(summary(freqlist(~ trt + addNA(ethan), data = mdat), labelTranslations = c("addNA(ethan)" = "Ethan", trt = "Trt")))
   )
+  if(getRversion() >= "3.4.0")
+  {
+    expect_identical(
+      capture.kable(summary(freqlist(~ trt + ethan, data = mdat, addNA = TRUE), labelTranslations = c(trt = "Trt", ethan = "Ethan"))),
+      capture.kable(summary(freqlist(~ trt + addNA(ethan), data = mdat), labelTranslations = c("addNA(ethan)" = "Ethan", trt = "Trt")))
+    )
+  } else skip("R version isn't right to use 'addNA=TRUE'")
 })
 
 

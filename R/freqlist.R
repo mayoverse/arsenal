@@ -178,7 +178,9 @@ freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, la
 
     ####
 
+    temp.call <- Call[c(1, indx)]
     temp.call[[1L]] <- quote(stats::xtabs)
+    temp.call$formula <- FORM
     tab <- freqlist(eval(temp.call, parent.frame()), strata = strata, ...)$tables[[1]]
     tab$hasWeights <- hasWeights
     tab$y <- yList
