@@ -268,7 +268,7 @@ summary(tab.noby)
 ## 2. Display footnotes indicating which "test" was used
 
 ```{r, results="asis"}
-summary(tab.test) #, pfootnote=TRUE)
+summary(tab.test, pfootnote=TRUE)
 ```
 
 ## 3. Summarize an ordered factor
@@ -285,8 +285,8 @@ class(mockstudy$age.ord)
 ```
 
 ```{r, results="asis"}
-summary(tableby(sex ~ age.ordnew, data = mockstudy)) #, pfootnote = TRUE)
-summary(tableby(sex ~ kwt(age.ord), data = mockstudy)) #) #, pfootnote = TRUE)
+summary(tableby(sex ~ age.ordnew, data = mockstudy), pfootnote = TRUE)
+summary(tableby(sex ~ kwt(age.ord), data = mockstudy), pfootnote = TRUE)
 ```
 
 ## 4. Summarize a survival variable
@@ -613,18 +613,22 @@ When using weighted summary statistics, it is often desirable to then show a p-v
 It is possible to add your own p-value and modify the column title for that new p-value.  Another use for this would be to add standardized 
 differences or confidence intervals instead of a p-value.
 
-To add the p-value you simply need to create a data frame and use the function `modpval.tableby`.
-The first 2 columns in the dataframe are required and are the variable name and the new p-value.
-The third column can be used to indicate what method was used to calculate the p-value.
+To add the p-value, you simply need to create a data frame and use the function `modpval.tableby()`.
+The first few columns in the data.frame are required: (1) the by-variable, (2) the strata value (if
+the table has a strata term), (3) the x-variable, and (4) the new p-value (or test statistic).
+Another optional column can be used to indicate what method was used to calculate the p-value.
 If you specify `use.pname=TRUE` then the column name indicating the p-value will be also be used in the tableby summary.
 
 
 ```{r, results='asis'}
-mypval <- data.frame(variable=c('age','sex','Surv(fu.time/365, fu.stat)'), 
-                     adj.pvalue=c(.953,.811,.01), 
-                     method=c('Age/Sex adjusted model results'))
+mypval <- data.frame(
+  byvar = "fake_arm",
+  variable = c('age','sex','Surv(fu.time/365, fu.stat)'), 
+  adj.pvalue = c(.953,.811,.01), 
+  method = c('Age/Sex adjusted model results')
+)
 tab2 <- modpval.tableby(tab1, mypval, use.pname=TRUE)
-summary(tab2, title='Case Weights used, p-values added') #, pfootnote=TRUE)
+summary(tab2, title='Case Weights used, p-values added', pfootnote=TRUE)
 ```
 
 ## 18. For two-level categorical variables or one-line numeric variables, simplify the output.

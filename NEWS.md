@@ -4,6 +4,9 @@
   properly assign the p-value name (#174), and one which broke `as.data.frame()` when
   assigning custom p-values for only one strata (#175).
 
+* `tableby()`: Fixed two bugs in the vignette: `modpval.tableby()` wasn't working properly (#170), and
+  `pfootnote=TRUE` was commented out (#169).
+
 # arsenal v2.0.0
 
 There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `modelsum()`, and `freqlist()`.
