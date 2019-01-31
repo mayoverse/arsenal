@@ -322,7 +322,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
         testout <- if(control$test) {
           eval(call(currtest, TP1.eff, TP2.eff, mcnemar.correct=control$mcnemar.correct,
                     signed.rank.exact = control$signed.rank.exact, signed.rank.correct = control$signed.rank.correct))
-        } else NULL
+        } else notest()
 
         xList[[eff]] <- list(stats=statList, test=testout, type=vartype)
       }

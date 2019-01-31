@@ -4,8 +4,9 @@ get_tb_strata_part <- function(tbList, sValue, xList, ...)
 }
 
 
-get_tb_part <- function(tbList, xList, yList, sList, sValue, statLabs)
+get_tb_part <- function(tbList, xList, yList, sList, sValue, cntrl)
 {
+  statLabs <- cntrl$stats.labels
   f <- function(x, nm, lab = FALSE)
   {
     if(inherits(x[[1]], "tbstat_multirow")) return(if(lab) names(x[[1]]) else rep(nm, length(x[[1]])))
@@ -33,8 +34,11 @@ get_tb_part <- function(tbList, xList, yList, sList, sValue, statLabs)
   {
     out[[lvl]] <- c("", unlist(lapply(tbList$stats, f2, lv = lvl), recursive = FALSE, use.names = FALSE))
   }
-  out$test <- tbList$test$method
-  out$p.value <- tbList$test$p.value
+  if(cntrl$test)
+  {
+    out$test <- tbList$test$method
+    out$p.value <- tbList$test$p.value
+  }
   out
 }
 
@@ -71,7 +75,7 @@ as_data_frame_tableby <- function(byList, control)
 {
   stopifnot(length(byList$tables) == length(byList$strata$values))
   tabs <- Map(get_tb_strata_part, tbList = byList$tables, sValue = byList$strata$values,
-              MoreArgs = list(yList = byList$y, sList = byList$strata, xList = byList$x, statLabs = control$stats.labels))
+              MoreArgs = list(yList = byList$y, sList = byList$strata, xList = byList$x, cntrl = control))
   out <- do.call(rbind_chr, unlist(tabs, recursive = FALSE, use.names = FALSE))
 
   f <- function(elt, whch = "cat.simplify") if(is.null(elt[[whch]])) control[[whch]] else elt[[whch]]
