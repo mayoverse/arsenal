@@ -270,7 +270,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           currstats <- control$numeric.stats
           currtest <- control$numeric.test
           vartype <- "numeric"
-        }
+        } else stop("Variable ", names(xTerms), " has unknown class(es): ", paste0(class(currcol)[-1], collapse = ", "))
         ############################################################
 
         ## if no missings, and control says not to show missings,

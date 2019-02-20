@@ -328,7 +328,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           currstats <- control$numeric.stats
           currtest <- control$numeric.test
           vartype <- "numeric"
-        }
+        } else stop("Variable ", names(xTerms), " has unknown class(es): ", paste0(class(currcol)[-1], collapse = ", "))
         ############################################################
 
         ## if no missings, and control says not to show missings,

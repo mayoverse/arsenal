@@ -1,4 +1,4 @@
-# arsenal v2.0.0.9000
+# arsenal v2.0.2.9000
 
 * `tableby()` / `paired()`: Fixed two bugs relating to `modpval.tableby()`: one which didn't
   properly assign the p-value name (#174), and one which broke `as.data.frame()` when
@@ -6,6 +6,8 @@
 
 * `tableby()`: Fixed two bugs in the vignette: `modpval.tableby()` wasn't working properly (#170), and
   `pfootnote=TRUE` was commented out (#169).
+  
+* `tableby()` / `paired()`: issue informative error when class isn't recognized. (#180)
 
 # arsenal v2.0.0
 
