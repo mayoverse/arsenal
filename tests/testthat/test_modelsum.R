@@ -150,6 +150,61 @@ test_that("'weights=' works", {
   )
 })
 
+test_that("interactions work", {
+  expect_identical(
+    capture.kable(summary(modelsum(age ~ bmi, adjust = ~ sex*arm, data=mockstudy))),
+    c("|                                       |estimate |std.error |p.value |adj.r.squared |Nmiss |",
+      "|:--------------------------------------|:--------|:---------|:-------|:-------------|:-----|",
+      "|(Intercept)                            |58.401   |1.691     |< 0.001 |0.001         |33    |",
+      "|**Body Mass Index (kg/m^2)**           |0.051    |0.056     |0.362   |              |      |",
+      "|**sex Female**                         |-0.351   |1.177     |0.765   |              |      |",
+      "|**Treatment Arm F: FOLFOX**            |0.852    |0.908     |0.348   |              |      |",
+      "|**Treatment Arm G: IROX**              |0.979    |1.040     |0.347   |              |      |",
+      "|**sex Female:Treatment Arm F: FOLFOX** |-0.596   |1.485     |0.688   |              |      |",
+      "|**sex Female:Treatment Arm G: IROX**   |-1.975   |1.688     |0.242   |              |      |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(modelsum(age ~ bmi, adjust = ~ hgb*arm, data=mockstudy))),
+    c("|                                |estimate |std.error |p.value |adj.r.squared |Nmiss |",
+      "|:-------------------------------|:--------|:---------|:-------|:-------------|:-----|",
+      "|(Intercept)                     |54.324   |4.747     |< 0.001 |0.004         |33    |",
+      "|**Body Mass Index (kg/m^2)**    |0.029    |0.062     |0.643   |              |      |",
+      "|**hgb**                         |0.404    |0.366     |0.271   |              |      |",
+      "|**Treatment Arm F: FOLFOX**     |-1.386   |5.748     |0.809   |              |      |",
+      "|**Treatment Arm G: IROX**       |-1.228   |6.589     |0.852   |              |      |",
+      "|**hgb:Treatment Arm F: FOLFOX** |0.176    |0.462     |0.703   |              |      |",
+      "|**hgb:Treatment Arm G: IROX**   |0.052    |0.529     |0.922   |              |      |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(modelsum(age ~ bmi:arm, adjust = ~ hgb, data=mockstudy))),
+    c("|                                                     |estimate |std.error |p.value |adj.r.squared |Nmiss |",
+      "|:----------------------------------------------------|:--------|:---------|:-------|:-------------|:-----|",
+      "|(Intercept)                                          |53.303   |2.822     |< 0.001 |0.005         |33    |",
+      "|**hgb**                                              |0.499    |0.193     |0.010   |              |      |",
+      "|**Body Mass Index (kg/m^2):Treatment Arm A: IFL**    |0.023    |0.065     |0.721   |              |      |",
+      "|**Body Mass Index (kg/m^2):Treatment Arm F: FOLFOX** |0.052    |0.063     |0.416   |              |      |",
+      "|**Body Mass Index (kg/m^2):Treatment Arm G: IROX**   |0.002    |0.065     |0.973   |              |      |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(modelsum(age ~ bmi:arm, adjust = ~ hgb, data=mockstudy))),
+    c("|                                                     |estimate |std.error |p.value |adj.r.squared |Nmiss |",
+      "|:----------------------------------------------------|:--------|:---------|:-------|:-------------|:-----|",
+      "|(Intercept)                                          |53.303   |2.822     |< 0.001 |0.005         |33    |",
+      "|**hgb**                                              |0.499    |0.193     |0.010   |              |      |",
+      "|**Body Mass Index (kg/m^2):Treatment Arm A: IFL**    |0.023    |0.065     |0.721   |              |      |",
+      "|**Body Mass Index (kg/m^2):Treatment Arm F: FOLFOX** |0.052    |0.063     |0.416   |              |      |",
+      "|**Body Mass Index (kg/m^2):Treatment Arm G: IROX**   |0.002    |0.065     |0.973   |              |      |"
+    )
+  )
+  expect_identical(
+    as.data.frame(modelsum(age ~ bmi:arm, adjust = ~ hgb, data=mockstudy))$term.type,
+    c("Intercept", "Adjuster", "Term", "Term", "Term")
+  )
+})
+
 
 test_that("ordinal works", {
   if(require(MASS))

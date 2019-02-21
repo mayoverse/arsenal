@@ -90,23 +90,29 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
   is.numericish <- function(x) is.numeric(x) || is.Date(x)
 
-  get_terms_with_contrasts <- function(trms, col, coeff, contrs)
+  make_term_labels <- function(mf, trms)
   {
-    if(!is.numeric(col) && !is.Date(col))
-    {
-      lvls <- unique(col)
-      findlvls <- if(identical(contrs[[trms$variable]], "contr.treatment"))
-      {
-        paste0(trms$variable2, lvls)
-      } else if(identical(contrs[[trms$variable]], "contr.poly"))
-      {
-        paste0(trms$variable2, c(".L", ".Q", ".C", paste0("^", seq_along(lvls))))
-      } else paste0(trms$variable2, seq_along(lvls))
+    factors <- attr(trms, "factors")
+    mm <- stats::model.matrix(trms, mf)
+    assign <- attr(mm, "assign")
+    mm <- mm[, assign > 0, drop = FALSE]
+    assign <- assign[assign > 0]
+    lvls <- colnames(factors)[assign]
+    names(lvls) <- colnames(mm)
 
-      trms$term <- union(trms$term, coeff$term[coeff$term %in% findlvls])
-    } else trms$term <- union(trms$term, trms$variable2)
-
-    trms
+    out <- lapply(colnames(factors), function(nm2) {
+      idx <- factors[, nm2] > 0
+      nm <- names(mf)[idx]
+      labelEff <- vapply(nm, function(nam) {
+        if(is.null(lab <- attr(mf[[nam]], "label"))) lab <- nam
+        lab
+      }, NA_character_)
+      list(variable = paste(nm, collapse = ":"), variable2 = nm2,
+           varterm = nm, varterm2 = row.names(factors)[idx], varlabel = unname(labelEff),
+           term = names(lvls)[lvls == nm2])
+    })
+    names(out) <- vapply(out, "[[", NA_character_, "variable")
+    out
   }
 
   out.tables <- list()
@@ -162,16 +168,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       adjustdf <- eval(adj.call, parent.frame())
 
       Terms.a <- stats::terms(adjustdf)
-      if(!is.null(attr(Terms.a, "offset")))
-      {
-        adjustdf[attr(Terms.a, "offset")] <- NULL
-      }
-
-      adjTerms <- Map(adjustdf, names(adjustdf), attr(stats::terms(adjustdf), "term.labels"), f = function(col, nm, nm2) {
-        if(is.null(labelEff <- attr(col, "label"))) labelEff <- nm
-        list(variable=nm, variable2=nm2, varlabel=labelEff)
-      })
-      names(adjTerms) <- vapply(adjTerms, "[[", NA_character_, "variable")
+      adjTerms <- make_term_labels(adjustdf, Terms.a)
     }
 
     #### Get info on y-variable ####
@@ -180,19 +177,11 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
     if(is.null(yLabel <- attr(yCol, "label"))) yLabel <- yTerm
     yList <- list(label = yLabel, term = yTerm)
     maindf[[1]] <- NULL
-
+    Terms.x <- stats::delete.response(Terms)
 
     #### Now finish the x-variables ####
-    effCols <- seq_along(maindf)
-
-    xTerms <- Map(maindf, names(maindf), attr(Terms, "term.labels"), f = function(col, nm, nm2) {
-      if(is.null(labelEff <- attr(col, "label"))) labelEff <- nm
-      list(variable=nm, variable2=nm2, varlabel=labelEff)
-    })
-    names(xTerms) <- vapply(xTerms, "[[", NA_character_, "variable")
-
-
-
+    effCols <- seq_len(ncol(attr(Terms, "factors")))
+    xTerms <- make_term_labels(maindf, stats::delete.response(Terms.x))
 
     strataList <- vector("list", length(strata.levels))
     if(hasStrata) names(strataList) <- paste0("(", strataTerm, ") == ", strata.levels)
@@ -205,7 +194,6 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
       for(eff in effCols)
       {
-        currCol <- maindf[[eff]]
         adj.formula <- join_formula(stats::drop.terms(Terms, if(length(effCols) > 1) setdiff(effCols, eff) else NULL, keep.response = TRUE), adjust)
 
         temp.call <- Call[c(1, match(c("data", "subset", "na.action", "weights"), names(Call), 0L))]
@@ -310,19 +298,15 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
         names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
         names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
 
-        xTerms[[eff]] <- get_terms_with_contrasts(xTerms[[eff]], currCol, coeffTidy, fit$contrasts)
-
-        for(adj in seq_along(adjustdf)) { ## manage adj terms and labels
-          adjTerms[[adj]] <- get_terms_with_contrasts(adjTerms[[adj]], adjustdf[[adj]], coeffTidy, fit$contrasts)
-        }
-
+        currCols <- maindf[attr(Terms.x, "factors")[, eff] > 0]
+        nmiss <- sum(rowSums(is.na(currCols)) > 0)
         xList[[eff]] <- list(
           coeff=coeffTidy,
           glance = c(
             modelGlance,
-            N = sum(!is.na(currCol)),
-            Nmiss = sum(is.na(currCol)),
-            Nmiss2 = sum(is.na(currCol)),
+            N = nrow(maindf) - nmiss,
+            Nmiss = nmiss,
+            Nmiss2 = nmiss,
             endpoint=yTerm,
             endlabel=yLabel,
             x=xTerms[[eff]]$variable,

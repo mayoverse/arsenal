@@ -9,6 +9,8 @@
   
 * `tableby()` / `paired()`: issue informative error when class isn't recognized. (#180)
 
+* `modelsum()`: Fixed bug(s) with interaction terms. (#173, #177)
+
 # arsenal v2.0.0
 
 There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `modelsum()`, and `freqlist()`.
