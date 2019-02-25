@@ -42,9 +42,6 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
   if(!is.data.frame(x) || !is.data.frame(y))
   {
     stop("Both 'x' and 'y' must be data.frames")
-  } else if(nrow(x) == 0 || nrow(y) == 0)
-  {
-    stop("Both 'x' and 'y' must have at least one row!")
   }
 
   if(any(c("..row.x..", "..row.y..", "..row.names..") %in% c(colnames(x), colnames(y))))
@@ -127,6 +124,7 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
   vars.summary <- merge(mkdf(x, tcn$cn.x), mkdf(y, tcn$cn.y), by = "tmp", all = TRUE)
   ord <- order(is.na(vars.summary$var.x), is.na(vars.summary$var.y), vars.summary$pos.x, vars.summary$pos.y, na.last = TRUE)
   vars.summary <- vars.summary[ord, , drop = FALSE]
+  row.names(vars.summary) <- NULL
 
   vars.summary$class.x <- lapply(vars.summary$class.x, cleanup.null.na)
   vars.summary$class.y <- lapply(vars.summary$class.y, cleanup.null.na)

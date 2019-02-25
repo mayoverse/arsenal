@@ -148,6 +148,62 @@ test_that("Basic mockstudy comparison works: by id", {
   )
 })
 
+
+test_that("Comparison with empty data.frames works", {
+  mck1 <- mockstudy[0, , drop = FALSE]
+  mck2 <- mockstudy2[0, , drop = FALSE]
+  expect_identical(
+    capture.output(compare(mockstudy, mck2, by = 'case')),
+    c("Compare Object"                                            ,
+      ""                                                          ,
+      "Function Call: "                                           ,
+      "compare.data.frame(x = mockstudy, y = mck2, by = \"case\")",
+      ""                                                          ,
+      "Shared: 10 variables and 0 observations."                  ,
+      "Not shared: 7 variables and 1499 observations."            ,
+      ""                                                          ,
+      "Differences found in 0/7 variables compared."              ,
+      "3 variables compared have non-identical attributes."
+    )
+  )
+  expect_true(n.diff.obs(compare(mockstudy, mck2, by = "case")) == 1499)
+  expect_true(n.diffs(compare(mockstudy, mck2, by = "case")) == 0)
+
+  expect_identical(
+    capture.output(compare(mockstudy, mck2, by = 'row.names')),
+    c("Compare Object"                                                 ,
+      ""                                                               ,
+      "Function Call: "                                                ,
+      "compare.data.frame(x = mockstudy, y = mck2, by = \"row.names\")",
+      ""                                                               ,
+      "Shared: 11 variables and 0 observations."                       ,
+      "Not shared: 7 variables and 1499 observations."                 ,
+      ""                                                               ,
+      "Differences found in 0/8 variables compared."                   ,
+      "3 variables compared have non-identical attributes."
+    )
+  )
+  expect_true(n.diff.obs(compare(mockstudy, mck2, by = "row.names")) == 1499)
+  expect_true(n.diffs(compare(mockstudy, mck2, by = "row.names")) == 0)
+
+  expect_identical(
+    capture.output(compare(mck1, mck2, by = "case")),
+    c("Compare Object"                                       ,
+      ""                                                     ,
+      "Function Call: "                                      ,
+      "compare.data.frame(x = mck1, y = mck2, by = \"case\")",
+      ""                                                     ,
+      "Shared: 10 variables and 0 observations."             ,
+      "Not shared: 7 variables and 0 observations."          ,
+      ""                                                     ,
+      "Differences found in 0/7 variables compared."         ,
+      "2 variables compared have non-identical attributes."
+    )
+  )
+  expect_true(n.diff.obs(compare(mck1, mck2, by = "case")) == 0)
+  expect_true(n.diffs(compare(mck1, mck2, by = "case")) == 0)
+})
+
 ###########################################################################################################
 #### Check for certain errors
 ###########################################################################################################
@@ -197,6 +253,16 @@ test_that("tol.vars is working correctly", {
       "4 variables compared have non-identical attributes."
     )
   )
+
+  tolvars <- c(arm = "Arm", fu.time = "fu_time", fu.stat = "fu stat")
+  expect_identical(
+    compare(mockstudy, mockstudy2, by = 'case', tol.vars = tolvars)[1:2],
+    compare(mockstudy, mockstudy2, by = 'case', tol.vars = c("._ ", "case"))[1:2]
+  )
+  expect_warning(compare(mockstudy, mockstudy2, by = 'case', tol.vars = c("hi" = "Arm")),
+                 "'hi' not found in colnames of x")
+  expect_warning(compare(mockstudy, mockstudy2, by = 'case', tol.vars = c(arm = "hi")),
+                 "'hi' not found in colnames of y")
 })
 
 

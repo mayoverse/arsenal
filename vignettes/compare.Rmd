@@ -125,6 +125,20 @@ summary(compare(mockstudy, mockstudy2, by = "case",
 ))
 ```
 
+## Manually specifying columns to match together
+
+If you pass a named vector to the `tol.vars=` argument, `compare()` will line up the names of that
+vector to the column names of `x` and the values of that vector to the column names of `y`. In this
+way, you can manually specify which non-identically-named columns to compare.
+
+For mockstudy, let's specify our variables manually in this way:
+
+```{r}
+summary(compare(mockstudy, mockstudy2, by = "case",
+                tol.vars = c(arm = "Arm", fu.stat = "fu stat", fu.time = "fu_time")
+))
+```
+
 # Column comparison options
 
 ## Logical tolerance
