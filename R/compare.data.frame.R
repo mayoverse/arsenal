@@ -42,9 +42,6 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
   if(!is.data.frame(x) || !is.data.frame(y))
   {
     stop("Both 'x' and 'y' must be data.frames")
-  } else if(nrow(x) == 0 || nrow(y) == 0)
-  {
-    stop("Both 'x' and 'y' must have at least one row!")
   }
 
   if(any(c("..row.x..", "..row.y..", "..row.names..") %in% c(colnames(x), colnames(y))))
