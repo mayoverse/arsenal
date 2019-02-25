@@ -23,7 +23,9 @@ denoting the tolerance function to use for a given data type. See "details", bel
 
 \item{tol.date.val}{Numeric; maximum value of differences allowed in dates (fed to the function given in \code{tol.date}).}
 
-\item{tol.vars}{Either \code{"none"} (the default), denoting that variable names are to be matched as-is, or a
+\item{tol.vars}{Either \code{"none"} (the default), denoting that variable names are to be matched as-is,
+a named vector manually specifying variable names to compare (where the names correspond to columns of
+\code{x} and the values correspond to columns of \code{y}), or a
 character vector denoting equivalence classes for characters in the variable names. See "details", below.}
 
 \item{...}{Other arguments (not in use at this time).}
@@ -51,7 +53,8 @@ The following character strings are accepted:
   \item{\code{tol.other = "none"}: expect objects of other classes to be exactly identical.}
 }
 
-\code{tol.vars}: If not set to \code{"none"} (the default), the \code{tol.vars} argument is a character vector denoting equivalence classes
+\code{tol.vars}: If not set to \code{"none"} (the default) or a named vector,
+  the \code{tol.vars} argument is a character vector denoting equivalence classes
   for the characters in the variable names. A single character in this vector means to replace that character
   with \code{""}. All other strings in this vector are split by character and replaced by the first character in the string.
 

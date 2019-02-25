@@ -9,7 +9,9 @@
 #' @param int.as.num Logical; should integers be coerced to numeric before comparison? Default FALSE.
 #' @param factor.as.char Logical; should factors be coerced to character before comparison? Default FALSE.
 #' @param tol.date.val Numeric; maximum value of differences allowed in dates (fed to the function given in \code{tol.date}).
-#' @param tol.vars Either \code{"none"} (the default), denoting that variable names are to be matched as-is, or a
+#' @param tol.vars Either \code{"none"} (the default), denoting that variable names are to be matched as-is,
+#'   a named vector manually specifying variable names to compare (where the names correspond to columns of
+#'   \code{x} and the values correspond to columns of \code{y}), or a
 #'   character vector denoting equivalence classes for characters in the variable names. See "details", below.
 #' @param ... Other arguments (not in use at this time).
 #' @return A list containing the necessary parameters for the \code{\link{compare.data.frame}} function.
@@ -30,7 +32,8 @@
 #'   \item{\code{tol.other = "none"}: expect objects of other classes to be exactly identical.}
 #' }
 #'
-#' \code{tol.vars}: If not set to \code{"none"} (the default), the \code{tol.vars} argument is a character vector denoting equivalence classes
+#' \code{tol.vars}: If not set to \code{"none"} (the default) or a named vector,
+#'   the \code{tol.vars} argument is a character vector denoting equivalence classes
 #'   for the characters in the variable names. A single character in this vector means to replace that character
 #'   with \code{""}. All other strings in this vector are split by character and replaced by the first character in the string.
 #'
@@ -83,11 +86,14 @@ comparison.control <- function(
   if(!is.function(tol.other)) tol.other <- match.fun(paste0("tol.other.", match.arg(tol.other, several.ok = FALSE)))
 
   #### Variable names ####
-  if(!is.character(tol.vars)){stop("'tol.vars' must be a character string or vector.")}
-  if("none" %in% tol.vars || length(tol.vars) == 0) tol.vars <- "none"
-  if("case" %in% tol.vars) tol.vars <- c(paste0(letters, LETTERS), tol.vars[tol.vars != "case"])
+  if(!is.character(tol.vars)) stop("'tol.vars' must be a character string or vector.")
+  if(is.null(names(tol.vars)))
+  {
+    if("none" %in% tol.vars || length(tol.vars) == 0) tol.vars <- "none"
+    if("case" %in% tol.vars) tol.vars <- c(paste0(letters, LETTERS), tol.vars[tol.vars != "case"])
+  }
 
-  return(list(tol.logical = tol.logical, tol.num = tol.num, tol.num.val = tol.num.val, int.as.num = int.as.num, tol.char = tol.char,
-              tol.factor = tol.factor, factor.as.char = factor.as.char, tol.date = tol.date, tol.date.val = tol.date.val,
-              tol.other = tol.other, tol.vars = tol.vars))
+  list(tol.logical = tol.logical, tol.num = tol.num, tol.num.val = tol.num.val, int.as.num = int.as.num, tol.char = tol.char,
+       tol.factor = tol.factor, factor.as.char = factor.as.char, tol.date = tol.date, tol.date.val = tol.date.val,
+       tol.other = tol.other, tol.vars = tol.vars)
 }

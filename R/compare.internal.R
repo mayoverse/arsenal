@@ -22,9 +22,21 @@ tweakcolnames <- function(by.x, by.y, cn.x, cn.y, control)
     cn.y <- cn.y[- length(cn.y)]
   }
 
-  if("none" %nin% control$tol.vars)
+  tv <- control$tol.vars
+  if(!is.null(names(tv)))
   {
-    for(elt in strsplit(control$tol.vars, "", fixed = TRUE))
+    for(i in seq_along(tv))
+    {
+      if(bad1 <- names(tv)[i] %nin% cn.x)
+        warning("Variable tolerance '", names(tv)[i], "' not found in colnames of x")
+      if(bad2 <- tv[i] %nin% cn.y)
+        warning("Variable tolerance '", tv[i], "' not found in colnames of y")
+      if(!bad1 && !bad2) cn.y[cn.y == tv[i]] <- names(tv)[i]
+    }
+    # no need to do anything with the by-variables, since we've already set those to x
+  } else if("none" %nin% tv)
+  {
+    for(elt in strsplit(tv, "", fixed = TRUE))
     {
       if(length(elt) == 1)
       {

@@ -11,7 +11,9 @@
 
 * `modelsum()`: Fixed bug(s) with interaction terms. (#173, #177)
 
-* `compare()`: allow for zero-row data.frames.
+* `compare()`: allow for zero-row data.frames. (#166)
+
+* `comparison.control()`: allow for named `tol.vars=` argument to manually match column names. (#165)
 
 # arsenal v2.0.0
 

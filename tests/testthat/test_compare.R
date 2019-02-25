@@ -253,6 +253,16 @@ test_that("tol.vars is working correctly", {
       "4 variables compared have non-identical attributes."
     )
   )
+
+  tolvars <- c(arm = "Arm", fu.time = "fu_time", fu.stat = "fu stat")
+  expect_identical(
+    compare(mockstudy, mockstudy2, by = 'case', tol.vars = tolvars)[1:2],
+    compare(mockstudy, mockstudy2, by = 'case', tol.vars = c("._ ", "case"))[1:2]
+  )
+  expect_warning(compare(mockstudy, mockstudy2, by = 'case', tol.vars = c("hi" = "Arm")),
+                 "'hi' not found in colnames of x")
+  expect_warning(compare(mockstudy, mockstudy2, by = 'case', tol.vars = c(arm = "hi")),
+                 "'hi' not found in colnames of y")
 })
 
 
