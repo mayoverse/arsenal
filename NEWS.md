@@ -11,6 +11,8 @@
 
 * `modelsum()`: Fixed bug(s) with interaction terms. (#173, #177)
 
+* `compare()`: allow for zero-row data.frames.
+
 # arsenal v2.0.0
 
 There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `modelsum()`, and `freqlist()`.
