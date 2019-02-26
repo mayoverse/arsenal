@@ -15,6 +15,8 @@
 
 * `comparison.control()`: allow for named `tol.vars=` argument to manually match column names. (#165)
 
+* `freqlist()`: fixed a bug where labels would get dropped when using the `subset=` argument. (#184)
+
 # arsenal v2.0.0
 
 There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `modelsum()`, and `freqlist()`.
