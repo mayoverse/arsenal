@@ -18,7 +18,7 @@
 * `freqlist()`: fixed a bug where labels would get dropped when using the `subset=` argument. (#184)
 
 * Added a new function `loosen.labels()` which removes the classes added by `keep.labels()` and thereby speeds up subsetting when
-  labels are no longer needed.
+  labels are no longer needed. This is now used in `tableby()`, `modelsum()`, `freqlist()`, and `paired()`.
 
 # arsenal v2.0.0
 

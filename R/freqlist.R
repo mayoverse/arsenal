@@ -145,7 +145,7 @@ freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, la
     temp.call[[1L]] <- quote(stats::model.frame)
     temp.call$formula <- FORM
     if(!missing(data)) temp.call$data <- as.call(list(keep.labels, temp.call$data))
-    modeldf <- eval(temp.call, parent.frame())
+    modeldf <- loosen.labels(eval(temp.call, parent.frame()))
     Terms <- stats::terms(modeldf)
     hasStrata <- !is.null(strata)
     if(hasStrata && any(strata %nin% names(modeldf))) stop("strata variable not found in table names")
