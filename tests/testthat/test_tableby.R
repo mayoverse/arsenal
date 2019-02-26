@@ -935,4 +935,20 @@ test_that("10/19/2018: padjust works on tableby objects (#146)", {
   )
 })
 
-
+test_that("02/26/2019: digits and stats are maintained when subsetting (#182, #183)", {
+  mck <- mockstudy
+  attr(mck$arm, "name") <- "armm"
+  tmp <- tableby(sex ~ kwt(age, digits = 1, "meansd") + chisq(arm, "count", digits.count = 1), data = mck, subset = age < 65)
+  expect_identical(
+    capture.kable(summary(tmp)),
+    c("|                            | Male (N=552) | Female (N=375) | Total (N=927) | p value|",
+      "|:---------------------------|:------------:|:--------------:|:-------------:|-------:|",
+      "|**Age in Years**            |              |                |               |   0.143|",
+      "|&nbsp;&nbsp;&nbsp;Mean (SD) |  53.3 (8.4)  |   52.5 (8.6)   |  53.0 (8.5)   |        |",
+      "|**Treatment Arm**           |              |                |               |   0.404|",
+      "|&nbsp;&nbsp;&nbsp;A: IFL    |    169.0     |     100.0      |     269.0     |        |",
+      "|&nbsp;&nbsp;&nbsp;F: FOLFOX |    246.0     |     173.0      |     419.0     |        |",
+      "|&nbsp;&nbsp;&nbsp;G: IROX   |    137.0     |     102.0      |     239.0     |        |"
+    )
+  )
+})

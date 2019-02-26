@@ -19,6 +19,8 @@
 
 * Added a new function `loosen.labels()` which removes the classes added by `keep.labels()` and thereby speeds up subsetting when
   labels are no longer needed. This is now used in `tableby()`, `modelsum()`, `freqlist()`, and `paired()`.
+  
+* `tableby()` / `paired()`: fixed a bug with per-variable stats and digit specifications being lost when using the `subset=` argument. (#182, #183)
 
 # arsenal v2.0.0
 

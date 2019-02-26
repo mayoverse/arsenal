@@ -9,7 +9,19 @@ inline_tableby_stat_test <- function(x, ..., digits = NULL, digits.count = NULL,
   attr(x, "stats") <- if(missing(...)) NULL else list(...)
   attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
                                   cat.simplify = cat.simplify, numeric.simplify = numeric.simplify)
+  class(x) <- c("keep_tableby_attrs", class(x)[class(x) != "keep_tableby_attrs"])
   x
+}
+
+#' @export
+`[.keep_tableby_attrs` <- function(x, ...)
+{
+  y <- NextMethod()
+  attr(y, "name") <- attr(x, "name")
+  attr(y, "stats") <- attr(x, "stats")
+  attr(y, "control.list") <- attr(x, "control.list")
+  class(y) <- class(y)[class(y) != "keep_tableby_attrs"] # purposely drop the class
+  y
 }
 
 get_attr <- function(x, which, default)

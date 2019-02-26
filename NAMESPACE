@@ -2,6 +2,7 @@
 
 S3method("[",arsenal_table)
 S3method("[",keep_labels)
+S3method("[",keep_tableby_attrs)
 S3method("[",tbstat)
 S3method("[",tbstat_countpct)
 S3method("[",tbstat_multirow)
