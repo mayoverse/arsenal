@@ -5,8 +5,11 @@
 #'   attribute to be lost again.
 #'
 #' @param x An R object
+#' @param i,value See \code{\link{[<-}}.
 #' @param ... Other arguments (not in use at this time).
-#' @return A copy of \code{x} with a "keep labels" class appended on or removed.
+#' @return A copy of \code{x} with a "keep_labels" class appended on or removed. Note that for the \code{data.frame} method,
+#'   only classes on the columns are changed; the \code{data.frame} won't have an extra class appended. This is different from previous
+#'   versions of \code{arsenal}.
 #' @author Ethan Heinzen
 #' @seealso \code{\link{labels}}
 #' @name keep.labels
@@ -25,7 +28,6 @@ keep.labels <- function(x, ...)
 keep.labels.data.frame <- function(x, ...)
 {
   x[] <- lapply(x, keep.labels)
-  class(x) <- c("keep_labels_df", class(x)[class(x) != "keep_labels_df"])
   x
 }
 
@@ -47,6 +49,15 @@ keep.labels.default <- function(x, ...)
 
 #' @rdname keep.labels
 #' @export
+`[<-.keep_labels` <- function(x, i, value)
+{
+  x <- loosen.labels(x)
+  out <- NextMethod()
+  keep.labels(out)
+}
+
+#' @rdname keep.labels
+#' @export
 loosen.labels <- function(x, ...)
 {
   UseMethod("loosen.labels")
@@ -54,16 +65,11 @@ loosen.labels <- function(x, ...)
 
 #' @rdname keep.labels
 #' @export
-loosen.labels.keep_labels_df <- function(x, ...)
+loosen.labels.data.frame <- function(x, ...)
 {
   x[] <- lapply(x, loosen.labels)
-  class(x) <- class(x)[class(x) != "keep_labels_df"]
   x
 }
-
-#' @rdname keep.labels
-#' @export
-loosen.labels.data.frame <- loosen.labels.keep_labels_df
 
 #' @rdname keep.labels
 #' @export
