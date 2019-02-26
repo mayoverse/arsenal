@@ -12,7 +12,7 @@ attr(df$x, "label") <- "My var"
 attr(df$y, "label") <- "YYYY"
 attr(df, "label") <- "Data Frame Label"
 df.kl <- keep.labels(df)
-
+df.ll <- loosen.labels(df.kl)
 
 ###########################################################################################################
 #### Basic keep.labels stuff
@@ -27,6 +27,12 @@ test_that("keep.labels actually keeps labels on data.frame subsetting", {
   expect_identical(labels(df.kl[1:5, "y", drop = TRUE]), "YYYY")
   expect_identical(labels(df.kl[1:5, ]), list(z = NULL, x = "My var", y = "YYYY"))
 })
+
+test_that("loosen.labels actually drops labels", {
+  expect_identical(attr(df.ll[1:5, "y", drop = TRUE], "label"), NULL)
+  expect_identical(labels(df.ll[1:5, ]), list(z = NULL, x = NULL, y = NULL))
+})
+
 
 empty.df <- data.frame()
 
