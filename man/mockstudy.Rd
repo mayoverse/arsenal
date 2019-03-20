@@ -31,7 +31,7 @@ muck_up_mockstudy()
 }
 \description{
 Mock clinical study data for examples to test data manipulation and statistical functions.
-  The function \code{muck_up_mockstudy()} is used in examples for \code{\link{compare.data.frame}}.
+  The function \code{muck_up_mockstudy()} is used in examples for \code{\link{comparedf}}.
 }
 \examples{
 data(mockstudy)
