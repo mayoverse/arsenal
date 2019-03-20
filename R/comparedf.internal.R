@@ -177,15 +177,15 @@ idx_var_sum <- function(object, which = c("vars.not.shared", "vars.compared", "v
 
 #' Extract differences
 #'
-#' Extract differences, number of differences, or number of not-shared observations from a \code{compare} object.
+#' Extract differences, number of differences, or number of not-shared observations from a \code{comparedf} object.
 #'
-#' @param object An object of class \code{compare.data.frame} or \code{summary.compare.data.frame}.
+#' @param object An object of class \code{comparedf} or \code{summary.comparedf}.
 #' @param vars A character vector of variable names to subset the results to.
 #' @param ... Other arguments (not in use at this time).
 #' @param by.var Logical: should the number of differences by variable be reported, or should
 #'   all differences be reported (the default).
 #' @author Ethan Heinzen
-#' @seealso \code{\link{compare.data.frame}} \code{\link{summary.compare.data.frame}}
+#' @seealso \code{\link{comparedf}} \code{\link{summary.comparedf}}
 #' @name diffs
 NULL
 #> NULL
@@ -200,14 +200,14 @@ n.diff.obs <- function(object, ...)
 
 #' @rdname diffs
 #' @export
-n.diff.obs.compare.data.frame <- function(object, ...)
+n.diff.obs.comparedf <- function(object, ...)
 {
   nrow(object$frame.summary$unique[[1]]) + nrow(object$frame.summary$unique[[2]])
 }
 
 #' @rdname diffs
 #' @export
-n.diff.obs.summary.compare.data.frame <- function(object, ...)
+n.diff.obs.summary.comparedf <- function(object, ...)
 {
   nrow(object$obs.table)
 }
@@ -221,14 +221,14 @@ n.diffs <- function(object, ...)
 
 #' @rdname diffs
 #' @export
-n.diffs.compare.data.frame <- function(object, ...)
+n.diffs.comparedf <- function(object, ...)
 {
   sum(vapply(object$vars.summary$values, function(elt) if(is.data.frame(elt)) nrow(elt) else 0, numeric(1)))
 }
 
 #' @rdname diffs
 #' @export
-n.diffs.summary.compare.data.frame <- function(object, ...)
+n.diffs.summary.comparedf <- function(object, ...)
 {
   nrow(object$diffs.table)
 }
@@ -242,7 +242,7 @@ diffs <- function(object, ...)
 
 #' @rdname diffs
 #' @export
-diffs.compare.data.frame <- function(object, vars = NULL, ..., by.var = FALSE)
+diffs.comparedf <- function(object, vars = NULL, ..., by.var = FALSE)
 {
   if(!is.logical(by.var) || length(by.var) != 1) stop("'by.var' must be a single logical value.")
   diffs <- as.data.frame(object$vars.summary[idx_var_sum(object, "vars.compared"), c("var.x", "var.y", "values")])
@@ -275,7 +275,7 @@ diffs.compare.data.frame <- function(object, vars = NULL, ..., by.var = FALSE)
 
 #' @rdname diffs
 #' @export
-diffs.summary.compare.data.frame <- function(object, vars = NULL, ..., by.var = FALSE)
+diffs.summary.comparedf <- function(object, vars = NULL, ..., by.var = FALSE)
 {
   tmp <- if(by.var) object$diffs.byvar.table else object$diffs.table
 

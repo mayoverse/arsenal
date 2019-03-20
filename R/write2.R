@@ -89,11 +89,11 @@ write2.summary.arsenal_table <- write2_using_print
 
 #' @rdname write2
 #' @export
-write2.compare.data.frame <- write2_using_summary
+write2.comparedf <- write2_using_summary
 
 #' @rdname write2
 #' @export
-write2.summary.compare.data.frame <- write2_using_print
+write2.summary.comparedf <- write2_using_print
 
 #' @rdname write2
 #' @export

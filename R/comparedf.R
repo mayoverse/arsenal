@@ -10,8 +10,8 @@
 #' @param by,by.x,by.y Which variables are IDs to merge the two data.frames?
 #'   If set to \code{"row.names"}, merging will occur over the row.names.
 #'   If set to \code{NULL} (default), merging will occur row-by-row.
-#' @param control A list of control parameters from \code{\link{comparison.control}}.
-#' @param ... Other arguments, passed to \code{\link{comparison.control}} when appropriate.
+#' @param control A list of control parameters from \code{\link{comparedf.control}}.
+#' @param ... Other arguments, passed to \code{\link{comparedf.control}} when appropriate.
 #' @examples
 #'
 #' df1 <- data.frame(id = paste0("person", 1:3), a = c("a", "b", "c"),
@@ -20,21 +20,21 @@
 #' df2 <- data.frame(id = paste0("person", 3:1), a = c("c", "b", "a"),
 #'                   b = c(1, 3, 4), d = paste0("rn", 1:3),
 #'                   row.names = paste0("rn", c(1,3,2)), stringsAsFactors = FALSE)
-#' summary(compare(df1, df2))
-#' summary(compare(df1, df2, by = "id"))
-#' summary(compare(df1, df2, by = "row.names"))
+#' summary(comparedf(df1, df2))
+#' summary(comparedf(df1, df2, by = "id"))
+#' summary(comparedf(df1, df2, by = "row.names"))
 #' @author Ethan Heinzen, adapted from code from Andrew Hanson
-#' @seealso \code{\link{summary.compare.data.frame}}, \code{\link{n.diffs}}, \code{\link{n.diff.obs}}
-#' @name compare.data.frame
+#' @seealso \code{\link{summary.comparedf}}, \code{\link{n.diffs}}, \code{\link{n.diff.obs}}
+#' @name comparedf
 NULL
 #> NULL
 
-#' @rdname compare.data.frame
+#' @rdname comparedf
 #' @export
-compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = NULL, ...) {
+comparedf <- function(x, y, by = NULL, by.x = by, by.y = by, control = NULL, ...) {
 
   control <- c(list(...), control)
-  control <- do.call("comparison.control", control[!duplicated(names(control))])
+  control <- do.call("comparedf.control", control[!duplicated(names(control))])
 
   xname <- paste0(deparse(substitute(x)), collapse = "")
   yname <- paste0(deparse(substitute(y)), collapse = "")
@@ -133,14 +133,14 @@ compare.data.frame <- function(x, y, by = NULL, by.x = by, by.y = by, control = 
   vars.summary$attrs <- lapply(seq_len(nrow(vars.summary)), compare_attrs, v = vars.summary, x_ = x, y_ = y)
   vars.summary$tmp <- NULL
 
-  structure(list(frame.summary = structure(frame.summary, class = c("compare.data.frame.frame.summary", "data.frame")),
-                 vars.summary = structure(vars.summary, class = c("compare.data.frame.vars.summary", "data.frame")),
-                 control = control, Call = match.call()), class = "compare.data.frame")
+  structure(list(frame.summary = structure(frame.summary, class = c("comparedf.frame.summary", "data.frame")),
+                 vars.summary = structure(vars.summary, class = c("comparedf.vars.summary", "data.frame")),
+                 control = control, Call = match.call()), class = "comparedf")
 }
 
-#' @rdname compare.data.frame
+#' @rdname comparedf
 #' @export
-print.compare.data.frame <- function(x, ...)
+print.comparedf <- function(x, ...)
 {
   cat("Compare Object\n\n")
   cat("Function Call: \n")
@@ -156,7 +156,7 @@ print.compare.data.frame <- function(x, ...)
 }
 
 #' @export
-print.compare.data.frame.vars.summary <- function(x, ...)
+print.comparedf.vars.summary <- function(x, ...)
 {
   orig <- x
   f <- function(elt, txt1, txt2)
@@ -172,7 +172,7 @@ print.compare.data.frame.vars.summary <- function(x, ...)
 
 
 #' @export
-print.compare.data.frame.frame.summary <- function(x, ...)
+print.comparedf.frame.summary <- function(x, ...)
 {
   orig <- x
   f <- function(elt, txt1, txt2)

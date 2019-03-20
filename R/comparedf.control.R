@@ -1,7 +1,7 @@
 
-#' Control settings for `compare` function
+#' Control settings for \code{comparedf} function
 #'
-#' Control tolerance definitions for the \code{\link{compare.data.frame}} function.
+#' Control tolerance definitions for the \code{\link{comparedf}} function.
 #'
 #' @param tol.logical,tol.num,tol.char,tol.factor,tol.date,tol.other A function or one of the shortcut character strings,
 #'   denoting the tolerance function to use for a given data type. See "details", below.
@@ -14,7 +14,7 @@
 #'   \code{x} and the values correspond to columns of \code{y}), or a
 #'   character vector denoting equivalence classes for characters in the variable names. See "details", below.
 #' @param ... Other arguments (not in use at this time).
-#' @return A list containing the necessary parameters for the \code{\link{compare.data.frame}} function.
+#' @return A list containing the necessary parameters for the \code{\link{comparedf}} function.
 #' @details
 #' The following character strings are accepted:
 #' \itemize{
@@ -42,16 +42,16 @@
 #'
 #' The special character string \code{"case"} in this vector is the same as specifying \code{paste0(letters, LETTERS)}.
 #' @examples
-#' cntl <- comparison.control(
+#' cntl <- comparedf.control(
 #'   tol.num = "pct",     # calculate percent differences
 #'   tol.vars = c("case", # ignore case
 #'                "._",   # set all underscores to dots.
 #'                "e")    # remove all letter e's
 #' )
-#' @seealso \code{\link{compare.data.frame}}, \code{\link{comparison.tolerances}}
+#' @seealso \code{\link{comparedf}}, \code{\link{comparedf.tolerances}}
 #' @author Ethan Heinzen
 #' @export
-comparison.control <- function(
+comparedf.control <- function(
   tol.logical = "none",
   tol.num = c("absolute", "percent", "pct"),
   tol.num.val = sqrt(.Machine$double.eps),
