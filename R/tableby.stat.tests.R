@@ -50,6 +50,11 @@ fe <- function(x, x.by, ..., simulate.p.value=FALSE, B=2000) {
 
 ## trend test for ordinal data
 trend <- function(x, x.by, ...) {
+  if(!requireNamespace("coin", quietly = TRUE))
+  {
+    warning("The \"coin\" package is required to run a trend test.", call. = FALSE)
+    return(notest(x, x.by, ...))
+  }
   ## should be taken care of with coin::
   ## require(coin, quietly=TRUE, warn.conflicts=FALSE)
   indtest <- coin::independence_test(x~as.factor(x.by), teststat="quad")
