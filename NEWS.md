@@ -11,7 +11,7 @@
 
 * `modelsum()`: Fixed bug(s) with interaction terms. (#173, #177)
 
-* Renamed `compare()` -> `comparedf()` and `comparison.control()` -> `comparedf.control()`.
+* Renamed `compare()` -> `comparedf()` and `comparison.control()` -> `comparedf.control()`. (#179)
 
 * `comparedf()`: allow for zero-row data.frames. (#166)
 
