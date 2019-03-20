@@ -30,6 +30,8 @@
 
 * `tableby()` / `paired()`: Made all-NA summaries prettier. (#190)
 
+* `tableby()`: Issue a warning when `coin` isn't available for the trend test. (#193)
+
 # arsenal v2.0.0
 
 There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `modelsum()`, and `freqlist()`.

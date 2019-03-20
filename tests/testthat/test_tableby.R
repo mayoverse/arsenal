@@ -29,6 +29,7 @@ test_that("A basic two-sided tableby call--no labels, no missings", {
 })
 
 test_that("A basic two-sided tableby call--labels, no missings", {
+  p.coin <- if(requireNamespace("coin")) "0.008" else "     "
   expect_identical(
     capture.kable(summary(tableby(Group ~ Age + trt + Phase, data = mdat, numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
     c("|              |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value|",
@@ -40,7 +41,7 @@ test_that("A basic two-sided tableby call--labels, no missings", {
       "|Treatment Arm |                 |                 |                 |                 |   0.659|",
       "|-  A          |   14 (46.7%)    |   11 (36.7%)    |   11 (36.7%)    |   36 (40.0%)    |        |",
       "|-  B          |   16 (53.3%)    |   19 (63.3%)    |   19 (63.3%)    |   54 (60.0%)    |        |",
-      "|Phase         |                 |                 |                 |                 |   0.008|",
+      paste0("|Phase         |                 |                 |                 |                 |   ", p.coin, "|"),
       "|-  I          |   11 (36.7%)    |   12 (40.0%)    |    0 (0.0%)     |   23 (25.6%)    |        |",
       "|-  II         |   10 (33.3%)    |   12 (40.0%)    |   19 (63.3%)    |   41 (45.6%)    |        |",
       "|-  III        |    9 (30.0%)    |    6 (20.0%)    |   11 (36.7%)    |   26 (28.9%)    |        |"
