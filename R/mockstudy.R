@@ -1,7 +1,7 @@
 #' Mock study data for examples
 #'
 #' Mock clinical study data for examples to test data manipulation and statistical functions.
-#'   The function \code{muck_up_mockstudy()} is used in examples for \code{\link{compare.data.frame}}.
+#'   The function \code{muck_up_mockstudy()} is used in examples for \code{\link{comparedf}}.
 #'
 #' @format A data frame with 1499 observations on the following 15 variables:
 #'   \describe{

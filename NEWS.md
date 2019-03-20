@@ -11,9 +11,11 @@
 
 * `modelsum()`: Fixed bug(s) with interaction terms. (#173, #177)
 
-* `compare()`: allow for zero-row data.frames. (#166)
+* Renamed `compare()` -> `comparedf()` and `comparison.control()` -> `comparedf.control()`. (#179)
 
-* `comparison.control()`: allow for named `tol.vars=` argument to manually match column names. (#165)
+* `comparedf()`: allow for zero-row data.frames. (#166)
+
+* `comparedf.control()`: allow for named `tol.vars=` argument to manually match column names. (#165)
 
 * `freqlist()`: fixed a bug where labels would get dropped when using the `subset=` argument. (#184)
 

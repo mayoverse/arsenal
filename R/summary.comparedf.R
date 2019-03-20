@@ -1,26 +1,26 @@
 
-#' The summary method for a \code{compare.data.frame} object
+#' The summary method for a \code{comparedf} object
 #'
-#' Print a more detailed output of the \code{\link{compare.data.frame}} object.
+#' Print a more detailed output of the \code{\link{comparedf}} object.
 #'
-#' @param object An object of class \code{"compare.data.frame"}, as made by the \code{\link{compare.data.frame}} S3 method.
+#' @param object An object of class \code{"comparedf"}, as made by the \code{\link{comparedf}} S3 method.
 #' @param ... Other arguments. In \code{print}, these are passed to \code{\link[knitr]{kable}}.
 #' @param show.attrs Logical, denoting whether to show the actual attributes which are different. For (e.g.) factors with lots
 #'   of levels, this can make the tables quite wide, so this feature is \code{FALSE} by default.
 #' @param max.print.vars,max.print.obs,max.print.diff,max.print.attrs Integers denoting the maximum number of differences to report
 #'   for each of the three tables. Passing \code{NA} will print all differences.
-#' @param x An object returned by the \code{summary.compare.data.frame} function.
+#' @param x An object returned by the \code{summary.comparedf} function.
 #' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "pandoc".
 #'   To use the default in \code{kable}, pass \code{NULL}.
-#' @return An object of class \code{"summary.compare.data.frame"} is returned.
-#' @seealso compare.data.frame
+#' @return An object of class \code{"summary.comparedf"} is returned.
+#' @seealso comparedf
 #' @name summary.compare
 NULL
 #> NULL
 
 #' @rdname summary.compare
 #' @export
-summary.compare.data.frame <- function(object,  ..., show.attrs = FALSE,
+summary.comparedf <- function(object,  ..., show.attrs = FALSE,
                                        max.print.vars = NA, max.print.obs = NA, max.print.diff = 10, max.print.attrs = NA)
 {
   chk <- function(x) is.na(x) || (is.numeric(x) && x > 0)
@@ -77,12 +77,12 @@ summary.compare.data.frame <- function(object,  ..., show.attrs = FALSE,
     attrs.table = attrs.diffs,
     max.print.vars.ns = max.print.vars, max.print.vars.nc = max.print.vars,
     max.print.obs = max.print.obs, max.print.diff = max.print.diff, max.print.attrs = max.print.attrs
-  ), class = "summary.compare.data.frame")
+  ), class = "summary.comparedf")
 }
 
 #' @rdname summary.compare
 #' @export
-print.summary.compare.data.frame <- function(x, ..., format = "pandoc")
+print.summary.comparedf <- function(x, ..., format = "pandoc")
 {
   orig <- x
   sumdiffs <- sum(x$diffs.byvar.table$n)

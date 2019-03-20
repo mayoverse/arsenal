@@ -4,8 +4,8 @@
 \alias{write2}
 \alias{write2.arsenal_table}
 \alias{write2.summary.arsenal_table}
-\alias{write2.compare.data.frame}
-\alias{write2.summary.compare.data.frame}
+\alias{write2.comparedf}
+\alias{write2.summary.comparedf}
 \alias{write2.verbatim}
 \alias{write2.yaml}
 \alias{write2.code.chunk}
@@ -23,10 +23,9 @@ write2(object, file, ..., output_format)
 \method{write2}{summary.arsenal_table}(object, file, ...,
   output_format = NULL)
 
-\method{write2}{compare.data.frame}(object, file, ...,
-  output_format = NULL)
+\method{write2}{comparedf}(object, file, ..., output_format = NULL)
 
-\method{write2}{summary.compare.data.frame}(object, file, ...,
+\method{write2}{summary.comparedf}(object, file, ...,
   output_format = NULL)
 
 \method{write2}{verbatim}(object, file, ..., output_format = NULL)

@@ -22,7 +22,7 @@
 #' \code{\link{freqlist}}: Approximate the output from SAS's \code{PROC FREQ} procedure when using
 #'  the \code{/list} option of the \code{TABLE} statement.
 #'
-#' \code{\link{compare.data.frame}}: Compare two data.frames and report any differences between them,
+#' \code{\link{comparedf}}: Compare two data.frames and report any differences between them,
 #'  much like SAS's \code{PROC COMPARE} procedure.
 #'
 #' \code{\link{write2word}}, \code{\link{write2html}}, \code{\link{write2pdf}}: Functions to output
@@ -56,7 +56,7 @@
 NULL
 
 #' @importFrom testthat compare
-#' @seealso \code{\link{compare.data.frame}}
+#' @seealso \code{\link{comparedf}}
 #' @export
 testthat::compare
 

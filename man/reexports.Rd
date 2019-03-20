@@ -8,7 +8,7 @@
 \alias{tail}
 \title{Objects exported from other packages}
 \seealso{
-\code{\link{compare.data.frame}}
+\code{\link{comparedf}}
 
 \code{\link[utils]{head}}
 

@@ -27,7 +27,7 @@ Below are listed some of the most widely used functions available in \code{arsen
 \code{\link{freqlist}}: Approximate the output from SAS's \code{PROC FREQ} procedure when using
  the \code{/list} option of the \code{TABLE} statement.
 
-\code{\link{compare.data.frame}}: Compare two data.frames and report any differences between them,
+\code{\link{comparedf}}: Compare two data.frames and report any differences between them,
  much like SAS's \code{PROC COMPARE} procedure.
 
 \code{\link{write2word}}, \code{\link{write2html}}, \code{\link{write2pdf}}: Functions to output
