@@ -163,7 +163,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
     environment(temp.call$formula) <- tabenv
 
     ## evaluate the formula with env set for it
-    modeldf <- eval.parent(temp.call)
+    modeldf <- loosen.labels(eval.parent(temp.call))
     if(nrow(modeldf) == 0) stop("No (non-missing) observations")
 
     Terms <- stats::terms(modeldf)

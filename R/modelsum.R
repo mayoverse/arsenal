@@ -128,7 +128,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
       # instead of call("keep.labels", ...), which breaks when arsenal isn't loaded (Can't find "keep.labels")
       main.call$data <- as.call(list(keep.labels, main.call$data))
     }
-    maindf <- eval(main.call, parent.frame())
+    maindf <- loosen.labels(eval(main.call, parent.frame()))
     if(nrow(maindf) == 0) stop("No (non-missing) observations")
     Terms <- stats::terms(maindf)
 

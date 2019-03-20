@@ -399,4 +399,17 @@ test_that("04/17/18: using 'method' in freqlist (#95)", {
   )
 })
 
-
+test_that("02/26/19: don't drop labels with subset= argument (#184)", {
+  expect_identical(
+    capture.kable(summary(freqlist(~ age, data = mockstudy, subset = age > 80))),
+    c("|Age in Years | Freq| Cumulative Freq| Percent| Cumulative Percent|",
+      "|:------------|----:|---------------:|-------:|------------------:|",
+      "|81           |   12|              12|   41.38|              41.38|",
+      "|82           |    6|              18|   20.69|              62.07|",
+      "|83           |    6|              24|   20.69|              82.76|",
+      "|84           |    1|              25|    3.45|              86.21|",
+      "|85           |    2|              27|    6.90|              93.10|",
+      "|88           |    2|              29|    6.90|             100.00|"
+    )
+  )
+})

@@ -95,7 +95,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
     environment(temp.call$formula) <- tabenv
 
     ## evaluate the formula with env set for it
-    modeldf <- eval.parent(temp.call)
+    modeldf <- loosen.labels(eval.parent(temp.call))
     if(nrow(modeldf) == 0) stop("No (non-missing) observations")
 
     Terms <- stats::terms(modeldf)
