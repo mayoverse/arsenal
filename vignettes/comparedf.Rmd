@@ -19,16 +19,24 @@ options(width = 120)
 
 # Introduction
 
-The `compare()` function (or more precisely, the `compare.data.frame()` function) can be used to
+The `comparedf()` function can be used to
 determine and report differences between two data.frames. It was written in the spirit of replacing `PROC COMPARE`
 from SAS.
-
-We reexport the `compare()` generic from the `testthat` package to avoid namespace conflicts,
-and write a `data.frame` S3 method to compare data.frames.
 
 ```{r results = 'asis'}
 library(arsenal)
 ```
+
+Why "comparedf"? We originally called this function `compare.data.frame()`, using `testthat::compare()` as our S3 generic,
+but that ended up getting us in trouble because of conflicting object structures. Why this didn't occur to us at the time remains a mystery.
+To replace it, we brainstormed several ideas (`comparedf()`, `dfcompare()`, `collate()`, `comparison()`) but settled on the former for three
+reasons:
+
+1. There were no other objects with that generic or class (see `testthat::compare()` and `compare::compare()`).
+
+2. It is mnemonically easy to remember (we "compare data.frames", not "data.frames compare").
+
+3. It tab auto-completes from the original "compare".
 
 # Basic examples
 
@@ -49,22 +57,22 @@ df2 <- data.frame(id = paste0("person", 3:1),
                   stringsAsFactors = FALSE)
 ```
 
-To compare these datasets, simply pass them to the `compare()` function:
+To compare these datasets, simply pass them to the `comparedf()` function:
 
 ```{r results='markup'}
-compare(df1, df2)
+comparedf(df1, df2)
 ```
 
 Use `summary()` to get a more detailed summary
 
 ```{r}
-summary(compare(df1, df2))
+summary(comparedf(df1, df2))
 ```
 
 By default, the datasets are compared row-by-row. To change this, use the `by=` or `by.x=` and `by.y=` arguments:
 
 ```{r}
-summary(compare(df1, df2, by = "id"))
+summary(comparedf(df1, df2, by = "id"))
 ```
 
 # A larger example
@@ -79,7 +87,7 @@ mockstudy2 <- muck_up_mockstudy()
 We've changed row order, so let's compare by the case ID:
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case"))
+summary(comparedf(mockstudy, mockstudy2, by = "case"))
 ```
 
 # Column name comparison options
@@ -90,16 +98,16 @@ It is possible to change which column names are considered "the same variable".
 
 For example, to ignore case in variable names (so that `Arm` and `arm` are considered the same), pass `tol.vars = "case"`.
 
-You can do this using `comparison.control()`
+You can do this using `comparedf.control()`
 
 ```{r eval = FALSE}
-summary(compare(mockstudy, mockstudy2, by = "case", control = comparison.control(tol.vars = "case")))
+summary(comparedf(mockstudy, mockstudy2, by = "case", control = comparedf.control(tol.vars = "case")))
 ```
 
 or pass it through the `...` arguments.
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case", tol.vars = "case"))
+summary(comparedf(mockstudy, mockstudy2, by = "case", tol.vars = "case"))
 ```
 
 ## Treating dots and underscores the same (equivalence classes)
@@ -120,21 +128,21 @@ For example, passing c(" ", ".") would remove all spaces and dots from the colum
 For mockstudy, let's treat dots, underscores, and spaces as the same, and ignore case:
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case") # dots=underscores=spaces, ignore case
 ))
 ```
 
 ## Manually specifying columns to match together
 
-If you pass a named vector to the `tol.vars=` argument, `compare()` will line up the names of that
+If you pass a named vector to the `tol.vars=` argument, `comparedf()` will line up the names of that
 vector to the column names of `x` and the values of that vector to the column names of `y`. In this
 way, you can manually specify which non-identically-named columns to compare.
 
 For mockstudy, let's specify our variables manually in this way:
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c(arm = "Arm", fu.stat = "fu stat", fu.time = "fu_time")
 ))
 ```
@@ -156,7 +164,7 @@ their class difference. If `TRUE`, the integers are coerced to numeric.
 Note that `mockstudy$ast` is integer, while `mockstudy2$ast` is numeric:
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE            # compare integers and numerics
 ))
@@ -165,7 +173,7 @@ summary(compare(mockstudy, mockstudy2, by = "case",
 Suppose a tolerance of up to 10 is allowed for `ast`:
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE,           # compare integers and numerics
                 tol.num.val = 10             # allow absolute differences <= 10
@@ -179,7 +187,7 @@ numeric levels. Set `tol.factor="levels"` to match only the numeric levels, or s
 `tol.factor="labels"` to match only the labels.
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE,           # compare integers and numerics
                 tol.num.val = 10,            # allow absolute differences <= 10
@@ -192,7 +200,7 @@ their class difference. If `TRUE`, the factors are coerced to characters.
 Note that `mockstudy$race` is a character, while `mockstudy2$race` is a factor:
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE,           # compare integers and numerics
                 tol.num.val = 10,            # allow absolute differences <= 10
@@ -208,7 +216,7 @@ By default, they are compared as-is, but they can be compared after ignoring cas
 or trimming whitespace or both.
 
 ```{r}
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE,           # compare integers and numerics
                 tol.num.val = 10,            # allow absolute differences <= 10
@@ -231,7 +239,7 @@ they're expected to be `identical()`.
 
 ### Details
 
-The `comparison.control()` function accepts functions for any of the tolerance arguments in addition
+The `comparedf.control()` function accepts functions for any of the tolerance arguments in addition
 to the short-hand character strings. This allows the user to create custom tolerance functions to suit his/her needs.
 
 Any custom tolerance function must accept two vectors as arguments and return a logical vector of the same length. The `TRUE`s in
@@ -259,9 +267,9 @@ my.tol <- function(x, y, tol)
 
 date.df1 <- data.frame(dt = as.Date(c("2017-09-07", "2017-08-08", "2017-07-09", NA)))
 date.df2 <- data.frame(dt = as.Date(c("2017-10-01", "2017-08-08", "2017-07-10", "2017-01-01")))
-n.diffs(compare(date.df1, date.df2)) # default finds any differences
-n.diffs(compare(date.df1, date.df2, tol.date = my.tol)) # our function identifies only the NA as different...
-n.diffs(compare(date.df2, date.df1, tol.date = my.tol)) # ... until we change the argument order
+n.diffs(comparedf(date.df1, date.df2)) # default finds any differences
+n.diffs(comparedf(date.df1, date.df2, tol.date = my.tol)) # our function identifies only the NA as different...
+n.diffs(comparedf(date.df2, date.df1, tol.date = my.tol)) # ... until we change the argument order
 
 ```
 
@@ -279,7 +287,7 @@ tol.minus9 <- function(x, y, tol)
   return(!idx1 & idx2)
 }
 
-summary(compare(mockstudy, mockstudy2, by = "case",
+summary(comparedf(mockstudy, mockstudy2, by = "case",
                 tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
                 int.as.num = TRUE,           # compare integers and numerics
                 tol.num.val = 10,            # allow absolute differences <= 10
@@ -296,7 +304,7 @@ Differences can be easily extracted using the `diffs()` function. If you only wa
 were found, use the `n.diffs()` function.
 
 ```{r results = 'markup'}
-cmp <- compare(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"), int.as.num = TRUE)
+cmp <- comparedf(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"), int.as.num = TRUE)
 n.diffs(cmp)
 head(diffs(cmp))
 ```
@@ -321,10 +329,10 @@ diffs(cmp, vars = c("ps", "ast"))
 (This section is just as much for my use as for yours!)
 
 ```{r}
-obj <- compare(mockstudy, mockstudy2, by = "case")
+obj <- comparedf(mockstudy, mockstudy2, by = "case")
 ```
 
-There are two main objects in the `"compare.data.frame"` object, each with its own print method.
+There are two main objects in the `"comparedf"` object, each with its own print method.
 
 The `frame.summary` contains:
 
