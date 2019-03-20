@@ -109,10 +109,10 @@ mockstudy[, c("arm", "sex", "mdquality.s")] %>%
   )
 ```
 
-## `compare`
+## `comparedf`
 
-For `compare.data.frame` objects, the output function in `write2()` is `summary()`.
-For `summary.compare.data.frame` objects, the output function is `print()`.
+For `comparedf` objects, the output function in `write2()` is `summary()`.
+For `summary.comparedf` objects, the output function is `print()`.
 
 # Examples Using Other Objects
 

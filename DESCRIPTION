@@ -25,7 +25,7 @@ Description: An Arsenal of 'R' functions for large-scale statistical summaries,
   two time points; modelsum(), which performs simple model fits on one or more endpoints
   for many variables (univariate or adjusted for covariates);
   freqlist(), a powerful frequency table across many categorical variables;
-  compare.data.frame(), the S3 method for comparing data.frames; and
+  comparedf(), a function for comparing data.frames; and
   write2(), a function to output tables to a document.
 Suggests:
     broom,

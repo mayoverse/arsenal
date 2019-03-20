@@ -49,18 +49,18 @@ Options for this function are easily controlled using `freq.control()`.
 The `freqlist()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
 Other S3 methods are implemented for objects from `freqlist()`, including `print()`, `[`, `as.data.frame()`, and `merge()`.
 
-## The `compare.data.frame()` Function
+## The `comparedf()` Function
 
-`compare.data.frame()` is the S3 method for comparing two data.frames and reporting any differences between them,
+`compare.df()` compares two data.frames and reporting any differences between them,
 much like SAS's `PROC COMPARE` procedure.
 
-The `compare.data.frame()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
-Other S3 methods are implemented for objects of class `"compare.data.frame"`, including `print()` and `diffs()`.
+The `comparedf()` output is easily knitted in an Rmarkdown document or displayed in the command line using the `summary()` function.
+Other S3 methods are implemented for objects of class `"comparedf"`, including `print()` and `diffs()`.
 
 ## The `write2*()` Family of Functions
 
 `write2word()`, `write2pdf()`, and `write2html()` are functions to output a table into a document, much like SAS's `ODS` procedure.
-  The S3 method behind them is `write2()`. There are methods implemented for `tableby()`, `modelsum()`, `freqlist()`, and `compare()`, and
+  The S3 method behind them is `write2()`. There are methods implemented for `tableby()`, `modelsum()`, `freqlist()`, and `comparedf()`, and
   also methods for `knitr::kable()`, `xtable::xtable()`, and `pander::pander_return()`. Another option is to coerce an object using
   `verbatim()` to print out the results monospaced (as if they were in the terminal)--the default method does this automatically.
   To output multiple tables into a document, simply make a list of them and call the same function as before. A YAML
