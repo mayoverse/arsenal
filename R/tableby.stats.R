@@ -29,7 +29,7 @@ NULL
 meansd <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- if(na.rm && allNA(x))
   {
-    rep(NA_real_, times = 2)
+    NA_real_
   } else c(wtd.mean(x, weights=weights, na.rm=na.rm), sqrt(wtd.var(x, weights=weights, na.rm=na.rm)))
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"))
 }
@@ -37,7 +37,7 @@ meansd <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 #' @rdname tableby.stats
 #' @export
 medianrange <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
-  y <- if(na.rm && allNA(x)) rep(NA_real_, times = 3) else wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights)
+  y <- if(na.rm && allNA(x)) NA_real_ else wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights)
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
 
@@ -56,7 +56,7 @@ median <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 #' @rdname tableby.stats
 range <- function(x, na.rm=TRUE, ...) {
   y <- if(na.rm && allNA(x)) {
-    c(NA_real_, NA_real_)
+    NA_real_
   } else if(is.Date(x)) {
     as.Date(base::range(as.integer(x), na.rm=na.rm), origin="1970/01/01")
   } else {
@@ -99,7 +99,7 @@ medSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...) {
 NeventsSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
   y <- if(na.rm && allNA(x))
   {
-    matrix(NA_real_, nrow = 2, ncol = length(times))
+    matrix(NA_real_, nrow = 1, ncol = length(times))
   } else
   {
     xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
@@ -141,7 +141,7 @@ medTime <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
 #' @export
 q1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- if(na.rm && allNA(x)) {
-    c(NA_real_, NA_real_)
+    NA_real_
   } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm)
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = ", ")
 }
@@ -150,7 +150,7 @@ q1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 #' @export
 medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- if(na.rm && allNA(x)) {
-    c(NA_real_, NA_real_, NA_real_)
+    NA_real_
   } else wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm)
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
@@ -159,7 +159,7 @@ medianq1q3 <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
 #' @export
 iqr <- function(x, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   y <- if(na.rm && allNA(x)) {
-    c(NA_real_, NA_real_)
+    NA_real_
   } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm)
   as.tbstat(diff(y))
 }
@@ -197,7 +197,8 @@ count <- function (x, levels=NULL, na.rm = TRUE, weights = rep(1, length(x)), ..
 countpct <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
   if(is.null(levels)) levels <- sort(unique(x))
   wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)])
-  as.tbstat_multirow(lapply(Map(c, wtbl, 100*wtbl/sum(wtbl)), as.countpct, parens = c("(", ")"), pct = "%"))
+  as.tbstat_multirow(lapply(Map(c, wtbl, if(any(wtbl > 0)) 100*wtbl/sum(wtbl) else rep(list(NULL), times = length(wtbl))),
+                            as.countpct, parens = c("(", ")"), pct = "%"))
 }
 
 transpose_list <- function(x, levels, by.levels)
@@ -249,7 +250,7 @@ countcellpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=T
 }
 
 get_binom_est_ci <- function(x, tot, setNA, conf.level = 0.95) {
-  if(setNA) return(c(NA_real_, NA_real_, NA_real_))
+  if(setNA) return(NA_real_)
 
   b <- stats::binom.test(x, tot, conf.level = conf.level)
   unname(c(b$estimate, b$conf.int))

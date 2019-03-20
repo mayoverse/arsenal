@@ -26,6 +26,8 @@
   
 * `tableby()` / `paired()`: fixed a bug with per-variable stats and digit specifications being lost when using the `subset=` argument. (#182, #183)
 
+* `tableby()` / `paired()`: Made all-NA summaries prettier. (#190)
+
 # arsenal v2.0.0
 
 There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `modelsum()`, and `freqlist()`.
