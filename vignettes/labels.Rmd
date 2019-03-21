@@ -80,6 +80,14 @@ that by default these attributes usually get dropped upon subsetting, but `table
 
 ```{r}
 mockstudy.lab <- keep.labels(mockstudy)
+class(mockstudy$age)
+class(mockstudy.lab$age)
+```
+
+To undo this, simply `loosen.labels()`:
+
+```{r}
+class(loosen.labels(mockstudy.lab)$age)
 ```
 
 You can set attributes one at a time in two ways:

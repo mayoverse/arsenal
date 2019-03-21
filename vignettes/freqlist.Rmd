@@ -169,6 +169,15 @@ summary(example3, single = TRUE)
 
 ```
 
+## Show only the "n" most common combinations in each table (`head()` and `sort()`)
+
+You can now sort `freqlist()` objects, and, by taking the `head()` of the summary, output the most common frequencies. This looks
+the prettiest with `dupLabels=TRUE`.
+
+```{r}
+head(summary(sort(example1, decreasing = TRUE), dupLabels = TRUE))
+```
+
 ## Change labels on the fly
 
 ```{r changelabs, results = 'asis'}
