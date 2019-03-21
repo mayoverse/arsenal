@@ -92,6 +92,7 @@ freqlist.table <- function(object, na.options = c("include", "showexclude", "rem
       row.names(x) <- NULL
       x
     })
+    xTerms <- xTerms[c(strata, names(xTerms)[names(xTerms) %nin% strata])]
 
     strata.levels <- ""
     strataLabel <- strata
@@ -177,6 +178,7 @@ freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, la
       list(variable=nm, label=labelEff, term=nm)
     })
     names(xTerms) <- vapply(xTerms, "[[", NA_character_, "variable")
+    if(hasStrata) xTerms <- xTerms[c(strata, names(xTerms)[names(xTerms) %nin% strata])]
 
     ####
 

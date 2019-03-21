@@ -38,6 +38,8 @@
 
 * `freqlist()`: implemented a `sort()` method to sort tables on frequency. (#187)
 
+* `freqlist()`: fixed a bug with subsetting the table and labels. (#196)
+
 # arsenal v2.0.0
 
 There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `modelsum()`, and `freqlist()`.

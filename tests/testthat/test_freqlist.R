@@ -426,3 +426,18 @@ test_that("03/20/2019: freqlist still works with all zero counts (#194, #186).",
     )
   )
 })
+
+test_that("03/21/2019: freqlist doesn't lose labels when subsetting (#196)", {
+  expect_identical(
+    capture.kable(summary(freqlist(~ sex + ps + arm, data = mockstudy, strata = "arm", subset = arm == "F: FOLFOX")[c(1:2, 4)])),
+    c("|Treatment Arm |sex    | Freq|",
+      "|:-------------|:------|----:|",
+      "|F: FOLFOX     |Male   |  168|",
+      "|              |       |  148|",
+      "|              |       |   16|",
+      "|              |Female |  110|",
+      "|              |       |   95|",
+      "|              |       |   13|"
+    )
+  )
+})
