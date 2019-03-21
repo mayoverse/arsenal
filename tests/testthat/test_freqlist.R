@@ -413,3 +413,16 @@ test_that("02/26/19: don't drop labels with subset= argument (#184)", {
     )
   )
 })
+
+test_that("03/20/2019: freqlist still works with all zero counts (#194, #186).", {
+  tab0 <- table(factor(c(), levels = c("m", "f")))
+  expect_error(print(summary(freqlist(tab0))), "There wasn't anything")
+  expect_identical(
+    capture.kable(summary(freqlist(tab0), sparse = TRUE)),
+    c("|Var1 | Freq| Cumulative Freq| Percent| Cumulative Percent|",
+      "|:----|----:|---------------:|-------:|------------------:|",
+      "|m    |    0|               0|      NA|                 NA|",
+      "|f    |    0|               0|      NA|                 NA|"
+    )
+  )
+})

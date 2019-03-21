@@ -9,7 +9,8 @@
 #' @param x An object of class \code{summary.freqlist}.
 #' @inheritParams summary.tableby
 #' @return An object of class \code{"summary.freqlist"} (invisibly for the print method).
-#' @seealso \code{\link{freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+#' @seealso \code{\link{freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}},
+#'   \code{\link{freqlist.internal}}
 #'
 #' @examples
 #' # load mockstudy data
@@ -42,6 +43,7 @@ as_data_frame_summary_freqlist <- function(tb, labs, cntrl)
   fmtdups <- function(x, i)
   {
     x[i] <- lapply(x[i], as.character)
+    if(nrow(x) == 0) return(x)
     tab <- as.matrix(x[i])
     tab[is.na(tab)] <- "NA"
     num <- max(stringr::str_count(tab, ","))
@@ -49,13 +51,14 @@ as_data_frame_summary_freqlist <- function(tb, labs, cntrl)
     for(col in seq_len(ncol(tab)))
     {
       tmp <- apply(tab[, 1:col, drop = FALSE], 1, paste, collapse = paste0(rep(",", num + 1), collapse = "")) # in R >= 3.3.0, we could use strrep instead
-      x[duplicated(tmp), colnames(tab)[col]] <- ""
+      x[c(FALSE, tmp[-1] == tmp[-length(tmp)]), colnames(tab)[col]] <- ""
     }
     x
   }
 
   fmtdigits <- function(x, digits.count, digits.pct)
   {
+    if(nrow(x) == 0) return(x)
     if("Freq" %in% names(x)) x$Freq <- formatC(x$Freq, digits = digits.count, format = "f")
     if("cumFreq" %in% names(x)) x$cumFreq <- formatC(x$cumFreq, digits = digits.count, format = "f")
     if("freqPercent" %in% names(x)) x$freqPercent <- formatC(x$freqPercent, digits = digits.pct, format = "f")
