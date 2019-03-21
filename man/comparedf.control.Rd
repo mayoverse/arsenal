@@ -72,7 +72,7 @@ cntl <- comparedf.control(
 )
 }
 \seealso{
-\code{\link{comparedf}}, \code{\link{comparedf.tolerances}}
+\code{\link{comparedf}}, \code{\link{comparedf.tolerances}}, \code{\link{summary.comparedf}}
 }
 \author{
 Ethan Heinzen

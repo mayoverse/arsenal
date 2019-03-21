@@ -124,7 +124,7 @@ tests(tab.test)
 }
 \seealso{
 \code{\link{arsenal_table}}, \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}},
-  \code{\link{summary.tableby}}, \code{\link{formulize}}
+  \code{\link{summary.tableby}}, \code{\link{tableby.internal}}, \code{\link{formulize}}
 }
 \author{
 Jason Sinnwell, Beth Atkinson, Gregory Dougherty, and Ethan Heinzen, adapted from SAS Macros written by Paul Novotny and Ryan Lennon

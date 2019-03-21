@@ -31,7 +31,7 @@ A list with settings to be used within the \code{freqlist} function.
 Control test and summary settings for the \code{\link{freqlist}} function.
 }
 \seealso{
-\code{\link{freqlist}}, \code{\link{summary.freqlist}}
+\code{\link{freqlist}}, \code{\link{summary.freqlist}}, \code{\link{freqlist.internal}}
 }
 \author{
 Ethan Heinzen

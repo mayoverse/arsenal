@@ -32,8 +32,11 @@ is.summary.freqlist(x)
 A set of helper functions for \code{\link{freqlist}}.
 }
 \details{
-Note that \code{sort()} has to recalculate cumulative statistics.
+Note that \code{sort()} has to recalculate cumulative statistics. Note also that the reordering of rows
+  will also affect which labels are duplicates; you may also want to consider using
+  \code{dupLabels=TRUE} in \code{\link{freq.control}()}.
 }
 \seealso{
-\code{\link{merge.freqlist}}, \code{\link{arsenal_table}}, \code{\link{sort}}
+\code{\link{merge.freqlist}}, \code{\link{arsenal_table}}, \code{\link{sort}},
+  \code{\link{freqlist}}, \code{\link{summary.freqlist}}, \code{\link{freq.control}},
 }

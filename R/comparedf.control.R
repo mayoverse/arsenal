@@ -48,7 +48,7 @@
 #'                "._",   # set all underscores to dots.
 #'                "e")    # remove all letter e's
 #' )
-#' @seealso \code{\link{comparedf}}, \code{\link{comparedf.tolerances}}
+#' @seealso \code{\link{comparedf}}, \code{\link{comparedf.tolerances}}, \code{\link{summary.comparedf}}
 #' @author Ethan Heinzen
 #' @export
 comparedf.control <- function(

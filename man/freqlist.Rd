@@ -51,12 +51,16 @@ data(mockstudy)
 tab.ex <- table(mockstudy[c("arm", "sex", "mdquality.s")], useNA = "ifany")
 noby <- freqlist(tab.ex, na.options = "include")
 summary(noby)
+
+# show the top 6 rows' frequencies and percents
+head(summary(sort(noby, decreasing = TRUE)[c(1:4, 6)]))
+
 withby <- freqlist(tab.ex, strata = c("arm","sex"), na.options = "showexclude")
 summary(withby)
 }
 \seealso{
-\code{\link{arsenal_table}}, \code{\link{summary.freqlist}}, \code{\link{freq.control}},
-  \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+\code{\link{arsenal_table}}, \code{\link{summary.freqlist}}, \code{\link{freq.control}}, \code{\link{freqlist.internal}},
+  \code{\link[base]{table}}, \code{\link[stats]{xtabs}}
 }
 \author{
 Tina Gunderson, with revisions by Ethan Heinzen

@@ -50,5 +50,5 @@ If \code{format.p} is \code{FALSE}, \code{digits.p} denotes the number of signif
   is less than the resulting number of places, it will be formatted to show so.
 }
 \seealso{
-\code{\link{modelsum}}, \code{\link{summary.modelsum}}
+\code{\link{modelsum}}, \code{\link{summary.modelsum}}, \code{\link{modelsum.internal}}
 }

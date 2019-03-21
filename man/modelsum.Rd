@@ -64,7 +64,8 @@ tab2.df <- as.data.frame(tab2)
 tab2.df[1:5,]
 }
 \seealso{
-\code{\link{arsenal_table}}, \code{\link{modelsum.control}}, \code{\link{summary.modelsum}}, \code{\link{formulize}}
+\code{\link{arsenal_table}}, \code{\link{modelsum.control}}, \code{\link{summary.modelsum}},
+  \code{\link{modelsum.internal}}, \code{\link{formulize}}
 }
 \author{
 Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, and Ethan Heinzen, adapted from SAS Macro of the same name

@@ -86,7 +86,7 @@
 #'
 #' @return An object with class \code{c("tableby", "arsenal_table")}
 #' @seealso \code{\link{arsenal_table}}, \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}},
-#'   \code{\link{summary.tableby}}, \code{\link{formulize}}
+#'   \code{\link{summary.tableby}}, \code{\link{tableby.internal}}, \code{\link{formulize}}
 #'
 #' @examples
 #' data(mockstudy)

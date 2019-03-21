@@ -38,7 +38,8 @@ summary(comparedf(df1, df2, by = "id"))
 summary(comparedf(df1, df2, by = "row.names"))
 }
 \seealso{
-\code{\link{summary.comparedf}}, \code{\link{n.diffs}}, \code{\link{n.diff.obs}}
+\code{\link{summary.comparedf}}, \code{\link{comparedf.control}},
+  \code{\link{diffs}}, \code{\link{n.diffs}}, \code{\link{n.diff.obs}}
 }
 \author{
 Ethan Heinzen, adapted from code from Andrew Hanson

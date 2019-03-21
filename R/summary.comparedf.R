@@ -13,15 +13,15 @@
 #' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "pandoc".
 #'   To use the default in \code{kable}, pass \code{NULL}.
 #' @return An object of class \code{"summary.comparedf"} is returned.
-#' @seealso comparedf
+#' @seealso \code{\link{comparedf}}, \code{\link{comparedf.control}}
 #' @name summary.compare
 NULL
 #> NULL
 
 #' @rdname summary.compare
 #' @export
-summary.comparedf <- function(object,  ..., show.attrs = FALSE,
-                                       max.print.vars = NA, max.print.obs = NA, max.print.diff = 10, max.print.attrs = NA)
+summary.comparedf <- function(object, ..., show.attrs = FALSE,
+                              max.print.vars = NA, max.print.obs = NA, max.print.diff = 10, max.print.attrs = NA)
 {
   chk <- function(x) is.na(x) || (is.numeric(x) && x > 0)
   if(!chk(max.print.vars)) stop("'max.print.vars' needs to be a numeric > 0.")

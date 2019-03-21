@@ -18,8 +18,8 @@
 #' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}. Note
 #'   that \code{addNA=} only works in R >= 3.4.0.
 #' @return An object of class \code{c("freqlist", "arsenal_table")}
-#' @seealso \code{\link{arsenal_table}}, \code{\link{summary.freqlist}}, \code{\link{freq.control}},
-#'   \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+#' @seealso \code{\link{arsenal_table}}, \code{\link{summary.freqlist}}, \code{\link{freq.control}}, \code{\link{freqlist.internal}},
+#'   \code{\link[base]{table}}, \code{\link[stats]{xtabs}}
 #'
 #' @examples
 #' # load mockstudy data
@@ -27,6 +27,10 @@
 #' tab.ex <- table(mockstudy[c("arm", "sex", "mdquality.s")], useNA = "ifany")
 #' noby <- freqlist(tab.ex, na.options = "include")
 #' summary(noby)
+#'
+#' # show the top 6 rows' frequencies and percents
+#' head(summary(sort(noby, decreasing = TRUE)[c(1:4, 6)]))
+#'
 #' withby <- freqlist(tab.ex, strata = c("arm","sex"), na.options = "showexclude")
 #' summary(withby)
 #' @author Tina Gunderson, with revisions by Ethan Heinzen

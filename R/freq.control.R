@@ -14,7 +14,7 @@
 #' @param digits A deprecated argument
 #' @return A list with settings to be used within the \code{freqlist} function.
 #'
-#' @seealso \code{\link{freqlist}}, \code{\link{summary.freqlist}}
+#' @seealso \code{\link{freqlist}}, \code{\link{summary.freqlist}}, \code{\link{freqlist.internal}}
 #' @author Ethan Heinzen
 #' @export
 freq.control <- function(sparse = FALSE, single = FALSE, dupLabels = FALSE, digits.count = 0L, digits.pct = 2L, ..., digits = NULL)

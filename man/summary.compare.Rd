@@ -35,5 +35,5 @@ An object of class \code{"summary.comparedf"} is returned.
 Print a more detailed output of the \code{\link{comparedf}} object.
 }
 \seealso{
-comparedf
+\code{\link{comparedf}}, \code{\link{comparedf.control}}
 }

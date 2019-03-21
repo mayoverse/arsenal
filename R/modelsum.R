@@ -26,7 +26,8 @@
 #' @param ... additional arguments to be passed to internal \code{modelsum} functions.
 #' @return An object with class \code{c("modelsum", "arsenal_table")}
 #' @author Jason Sinnwell, Patrick Votruba, Beth Atkinson, Gregory Dougherty, and Ethan Heinzen, adapted from SAS Macro of the same name
-#' @seealso \code{\link{arsenal_table}}, \code{\link{modelsum.control}}, \code{\link{summary.modelsum}}, \code{\link{formulize}}
+#' @seealso \code{\link{arsenal_table}}, \code{\link{modelsum.control}}, \code{\link{summary.modelsum}},
+#'   \code{\link{modelsum.internal}}, \code{\link{formulize}}
 #' @examples
 #'
 #' data(mockstudy)

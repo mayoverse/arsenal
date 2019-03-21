@@ -23,7 +23,7 @@
 #'   p-values will be in exponential notation if necessary. If \code{format.p} is \code{TRUE},
 #'   \code{digits.p} will determine the number of digits after the decimal point to show. If the p-value
 #'   is less than the resulting number of places, it will be formatted to show so.
-#' @seealso \code{\link{modelsum}}, \code{\link{summary.modelsum}}
+#' @seealso \code{\link{modelsum}}, \code{\link{summary.modelsum}}, \code{\link{modelsum.internal}}
 #' @export
 modelsum.control <- function(
   digits = 3L, digits.ratio = 3L, digits.p = 3L, format.p = TRUE,

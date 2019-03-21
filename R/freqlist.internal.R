@@ -60,9 +60,12 @@ add_freqlist_xterms <- function(xTerms)
 #' @param x A \code{freqlist} object.
 #' @inheritParams tableby.internal
 #' @param decreasing Should the sort be increasing or decreasing?
-#' @seealso \code{\link{merge.freqlist}}, \code{\link{arsenal_table}}, \code{\link{sort}}
+#' @seealso \code{\link{merge.freqlist}}, \code{\link{arsenal_table}}, \code{\link{sort}},
+#'   \code{\link{freqlist}}, \code{\link{summary.freqlist}}, \code{\link{freq.control}},
 #' @details
-#' Note that \code{sort()} has to recalculate cumulative statistics.
+#' Note that \code{sort()} has to recalculate cumulative statistics. Note also that the reordering of rows
+#'   will also affect which labels are duplicates; you may also want to consider using
+#'   \code{dupLabels=TRUE} in \code{\link{freq.control}()}.
 #' @name freqlist.internal
 NULL
 #> NULL

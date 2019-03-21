@@ -65,5 +65,6 @@ A set of helper functions for \code{\link{tableby}}.
 Logical comparisons are implemented for \code{Ops.tableby}.
 }
 \seealso{
-\code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}}
+\code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}},
+  \code{\link{tableby}}, \code{\link{summary.tableby}}, \code{\link{tableby.control}}
 }
