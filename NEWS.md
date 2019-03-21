@@ -32,6 +32,8 @@
 
 * `tableby()`: Issue a warning when `coin` isn't available for the trend test. (#193)
 
+* `summary.freqlist()`: Implemented `head()` and `tail()`. (#188)
+
 # arsenal v2.0.0
 
 There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `modelsum()`, and `freqlist()`.

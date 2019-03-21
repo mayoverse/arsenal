@@ -4,14 +4,24 @@
 \alias{freqlist.internal}
 \alias{is.freqlist}
 \alias{is.summary.freqlist}
+\alias{head.summary.freqlist}
+\alias{tail.summary.freqlist}
 \title{Helper functions for freqlist}
 \usage{
 is.freqlist(x)
 
 is.summary.freqlist(x)
+
+\method{head}{summary.freqlist}(x, n = 6L, ...)
+
+\method{tail}{summary.freqlist}(x, n = 6L, ...)
 }
 \arguments{
 \item{x}{A \code{freqlist} object.}
+
+\item{n}{A single integer. See \code{\link[utils]{head}} or \code{\link[utils]{tail}} for more details}
+
+\item{...}{Other arguments.}
 }
 \description{
 A set of helper functions for \code{\link{freqlist}}.

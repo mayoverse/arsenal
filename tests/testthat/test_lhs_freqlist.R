@@ -13,6 +13,8 @@ dat <- data.frame(
   d = rep(c("H", "I"), each = 6),
   stringsAsFactors = FALSE
 )
+tab.wts <- freqlist(list(wts1, wts2) ~ a + b + d, strata = "d", data = dat, sparse = FALSE)
+
 
 #####################################
 
@@ -35,10 +37,8 @@ test_that("Multiple endpoints work", {
 })
 
 test_that("Multiple endpoints and strata work", {
-  tmp.tab <- freqlist(list(wts1, wts2) ~ a + b + d, strata = "d", data = dat)
-
   expect_identical(
-    capture.kable(summary(tmp.tab)),
+    capture.kable(summary(tab.wts)),
     c(
       capture.kable(summary(freqlist(wts1 ~ a + b + d, strata = "d", data = dat))), "", "",
       capture.kable(summary(freqlist(wts2 ~ a + b + d, strata = "d", data = dat)))
@@ -46,7 +46,7 @@ test_that("Multiple endpoints and strata work", {
   )
 
   expect_identical(
-    capture.kable(summary(tmp.tab)),
+    capture.kable(summary(tab.wts)),
     c(
       "|d  |a  |b  | Freq| Cumulative Freq| Percent| Cumulative Percent|",
       "|:--|:--|:--|----:|---------------:|-------:|------------------:|",
@@ -80,9 +80,8 @@ test_that("Multiple endpoints and strata work", {
 #####################################
 
 test_that("Reordering variables and subsetting", {
-  tmp.tab <- freqlist(list(wts1, wts2) ~ a + b + d, strata = "d", data = dat)
   expect_identical(
-    capture.kable(summary(tmp.tab[c("b", "d", "a", "Freq")], text = TRUE)),
+    capture.kable(summary(tab.wts[c("b", "d", "a", "Freq")], text = TRUE)),
     c(
       "|b  |d  |a  | Freq|",
       "|:--|:--|:--|----:|",
@@ -113,31 +112,31 @@ test_that("Reordering variables and subsetting", {
     )
   )
   expect_identical(
-    capture.kable(summary(tmp.tab[c(3,1,2,4)], text = TRUE)),
-    capture.kable(summary(tmp.tab[c("b", "d", "a", "Freq")], text = TRUE))
+    capture.kable(summary(tab.wts[c(3,1,2,4)], text = TRUE)),
+    capture.kable(summary(tab.wts[c("b", "d", "a", "Freq")], text = TRUE))
   )
   expect_identical(
-    capture.kable(summary(tmp.tab[, 2:1], text = TRUE)),
-    capture.kable(summary(tmp.tab[, c("wts2", "wts1")], text = TRUE))
+    capture.kable(summary(tab.wts[, 2:1], text = TRUE)),
+    capture.kable(summary(tab.wts[, c("wts2", "wts1")], text = TRUE))
   )
 
   expect_identical(
-    capture.kable(summary(tmp.tab[1:4], text = TRUE)),
-    capture.kable(summary(tmp.tab[c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)], text = TRUE))
+    capture.kable(summary(tab.wts[1:4], text = TRUE)),
+    capture.kable(summary(tab.wts[c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)], text = TRUE))
   )
   expect_identical(
-    capture.kable(summary(tmp.tab[, 2], text = TRUE)),
-    capture.kable(summary(tmp.tab[, c(FALSE, TRUE)], text = TRUE))
+    capture.kable(summary(tab.wts[, 2], text = TRUE)),
+    capture.kable(summary(tab.wts[, c(FALSE, TRUE)], text = TRUE))
   )
 
-  expect_warning(tmp.tab[1:8], "Some indices not found")
-  expect_warning(tmp.tab[, 1:3], "Some indices not found")
-  expect_error(tmp.tab[TRUE], "Logical vector")
-  expect_error(tmp.tab[, TRUE], "Logical vector")
+  expect_warning(tab.wts[1:8], "Some indices not found")
+  expect_warning(tab.wts[, 1:3], "Some indices not found")
+  expect_error(tab.wts[TRUE], "Logical vector")
+  expect_error(tab.wts[, TRUE], "Logical vector")
 })
 
 test_that("Merging freqlist objects", {
-  tb1 <- freqlist(list(wts1, wts2) ~ a + b + d, strata = "d", data = dat)
+  tb1 <- tab.wts
   tb2 <- freqlist(wts3 ~ b + d, strata = "d", data = dat)
   tb3 <- freqlist(~ a + d, strata = "d", data = dat)
   tb4 <- freqlist(~ b, data = dat)
@@ -152,3 +151,51 @@ test_that("Merging freqlist objects", {
   )
 })
 
+test_that("head() and tail() work with freqlist (#188)", {
+  expect_identical(
+    capture.kable(head(summary(tab.wts), 2)),
+    capture.kable(summary(tab.wts))[2-7*(1:4)]  # we already tested this above
+  )
+  expect_identical(
+    capture.kable(head(summary(tab.wts, sparse = TRUE))),
+    c("|d  |a  |b  | Freq| Cumulative Freq| Percent| Cumulative Percent|",
+      "|:--|:--|:--|----:|---------------:|-------:|------------------:|",
+      "|H  |A  |D  |    3|               3|   50.00|              50.00|",
+      "|   |   |E  |    1|               4|   16.67|              66.67|",
+      "|   |   |F  |    0|               4|    0.00|              66.67|",
+      "|   |   |G  |    0|               4|    0.00|              66.67|",
+      "|   |B  |D  |    0|               4|    0.00|              66.67|",
+      "|   |   |E  |    2|               6|   33.33|             100.00|",
+      ""                                                                 ,
+      ""                                                                 ,
+      "|d  |a  |b  | Freq| Cumulative Freq| Percent| Cumulative Percent|",
+      "|:--|:--|:--|----:|---------------:|-------:|------------------:|",
+      "|I  |A  |D  |    0|               0|    0.00|               0.00|",
+      "|   |   |E  |    0|               0|    0.00|               0.00|",
+      "|   |   |F  |    0|               0|    0.00|               0.00|",
+      "|   |   |G  |    0|               0|    0.00|               0.00|",
+      "|   |B  |D  |    0|               0|    0.00|               0.00|",
+      "|   |   |E  |    0|               0|    0.00|               0.00|",
+      ""                                                                 ,
+      ""                                                                 ,
+      "|d  |a  |b  | Freq| Cumulative Freq| Percent| Cumulative Percent|",
+      "|:--|:--|:--|----:|---------------:|-------:|------------------:|",
+      "|H  |A  |D  |    4|               4|   44.44|              44.44|",
+      "|   |   |E  |    2|               6|   22.22|              66.67|",
+      "|   |   |F  |    0|               6|    0.00|              66.67|",
+      "|   |   |G  |    0|               6|    0.00|              66.67|",
+      "|   |B  |D  |    0|               6|    0.00|              66.67|",
+      "|   |   |E  |    3|               9|   33.33|             100.00|",
+      ""                                                                 ,
+      ""                                                                 ,
+      "|d  |a  |b  | Freq| Cumulative Freq| Percent| Cumulative Percent|",
+      "|:--|:--|:--|----:|---------------:|-------:|------------------:|",
+      "|I  |A  |D  |    0|               0|    0.00|               0.00|",
+      "|   |   |E  |    0|               0|    0.00|               0.00|",
+      "|   |   |F  |    0|               0|    0.00|               0.00|",
+      "|   |   |G  |    0|               0|    0.00|               0.00|",
+      "|   |B  |D  |    0|               0|    0.00|               0.00|",
+      "|   |   |E  |    0|               0|    0.00|               0.00|"
+    )
+  )
+})

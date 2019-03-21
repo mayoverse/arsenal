@@ -9,7 +9,8 @@
 #' @param x An object of class \code{summary.freqlist}.
 #' @inheritParams summary.tableby
 #' @return An object of class \code{"summary.freqlist"} (invisibly for the print method).
-#' @seealso \code{\link{freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+#' @seealso \code{\link{freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}},
+#'   \code{\link{freqlist.internal}}
 #'
 #' @examples
 #' # load mockstudy data

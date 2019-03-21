@@ -65,3 +65,20 @@ is.freqlist <- function(x) inherits(x, "freqlist")
 #' @rdname freqlist.internal
 #' @export
 is.summary.freqlist <- function(x) inherits(x, "summary.freqlist")
+
+#' @rdname freqlist.internal
+#' @export
+head.summary.freqlist <- function(x, n = 6L, ...)
+{
+  x$object <- lapply(x$object, utils::head, n = n, ...)
+  x
+}
+
+#' @rdname freqlist.internal
+#' @export
+tail.summary.freqlist <- function(x, n = 6L, ...)
+{
+  x$object <- lapply(x$object, utils::tail, n = n, ...)
+  x
+}
+

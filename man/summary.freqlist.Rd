@@ -45,7 +45,8 @@ summary(withby)
 summary(withby, dupLabels = TRUE)
 }
 \seealso{
-\code{\link{freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}}
+\code{\link{freqlist}}, \code{\link[base]{table}}, \code{\link[stats]{xtabs}}, \code{\link[knitr]{kable}},
+  \code{\link{freqlist.internal}}
 }
 \author{
 Tina Gunderson, with major revisions by Ethan Heinzen
