@@ -1,24 +1,19 @@
-## Submission for arsenal 2.0.0
+## Submission for arsenal 3.0.0
 
 This is a new version. In this version:
 
-* Made major structural revisions to the three main functions (`tableby()`, `modelsum()`,
-  and `freqlist()`). This includes changes to S3 class structure.
-  Backwards compatibility was maintained in most cases.
-  
-* Made a major (but almost completely backwards-compatible) update to `write2()`, which now writes
-  `.Rmd` files instead of `.md`.
+* Renamed `compare()` to `comparedf()`, to avoid conflicting with the objects in the `testthat` package.
+
+* Fixed a major bug in `modelsum()` related to interaction terms.
 
 * Closed several bugs/feature requests.
 
 * We updated and clarified documentation where appropriate.
 
-* Added an image and corresponding artist.
-
 ## Test environments
 
 * local Linux install: R 3.4.2
-* ubuntu 14.04 (on travis-ci): R devel, R 3.5.2 (release), R 3.4.4 (oldrel), R 3.3.1, R 3.2.3
+* ubuntu 14.04 (on travis-ci): R devel, R 3.5.2 (release), R 3.4.4 (oldrel), R 3.4.2, R 3.3.1, R 3.2.3
 * win-builder (devel and release)
 
 ## R CMD check results

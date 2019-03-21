@@ -1,44 +1,57 @@
-# arsenal v2.0.2.9000
+# arsenal v3.0.0
 
-* `tableby()` / `paired()`: Fixed two bugs relating to `modpval.tableby()`: one which didn't
-  properly assign the p-value name (#174), and one which broke `as.data.frame()` when
-  assigning custom p-values for only one strata (#175).
+**There are a few non-backwards-compatible updates.**
 
-* `tableby()`: Fixed two bugs in the vignette: `modpval.tableby()` wasn't working properly (#170), and
-  `pfootnote=TRUE` was commented out (#169).
-  
-* `tableby()` / `paired()`: issue informative error when class isn't recognized. (#180)
-
-* `modelsum()`: Fixed bug(s) with interaction terms. (#173, #177)
+Major changes:
 
 * Renamed `compare()` -> `comparedf()` and `comparison.control()` -> `comparedf.control()`. (#179)
 
-* `comparedf()`: allow for zero-row data.frames. (#166)
-
-* `comparedf.control()`: allow for named `tol.vars=` argument to manually match column names. (#165)
-
-* `freqlist()`: fixed a bug where labels would get dropped when using the `subset=` argument. (#184)
+* `modelsum()`: Fixed bug(s) with interaction terms. (#173, #177)
 
 * Added a new function `loosen.labels()` which removes the classes added by `keep.labels()` and thereby speeds up subsetting when
   labels are no longer needed. This is now used in `tableby()`, `modelsum()`, `freqlist()`, and `paired()`.
-  
-* `keep.labels()` no longer sticks another class on data.frames.
 
-* Fixed a bug with replacement for objects of class `"keep_labels"`.
-  
-* `tableby()` / `paired()`: fixed a bug with per-variable stats and digit specifications being lost when using the `subset=` argument. (#182, #183)
+Smaller changes:
 
-* `tableby()` / `paired()`: Made all-NA summaries prettier. (#190)
+* `tableby()` / `paired()`:
 
-* `tableby()`: Issue a warning when `coin` isn't available for the trend test. (#193)
+    - Fixed two bugs relating to `modpval.tableby()`: one which didn't properly assign the p-value name (#174),
+      and one which broke `as.data.frame()` when assigning custom p-values for only one strata (#175).
+      
+    - These now issue informative error when class isn't recognized. (#180)
 
-* `summary.freqlist()`: Implemented `head()` and `tail()`. (#188)
+    - Fixed two bugs in the `tableby()` vignette: `modpval.tableby()` wasn't working properly (#170), and
+      `pfootnote=TRUE` was commented out (#169).
 
-* `summary.freqlist()`: fixed a bug when all table counts are 0 and `sparse=FALSE`. (#186, #194)
+    - Fixed a bug with per-variable stats and digit specifications being lost when using the `subset=` argument. (#182, #183)
 
-* `freqlist()`: implemented a `sort()` method to sort tables on frequency. (#187)
+    - Made all-NA summaries prettier. (#190)
 
-* `freqlist()`: fixed a bug with subsetting the table and labels. (#196)
+    - This now issues a warning when `coin` isn't available for the trend test. (#193)
+
+* `comparedf()`:
+
+    - This now allows for zero-row data.frames. (#166)
+    
+    - `comparedf.control()` now allows for named `tol.vars=` argument to manually match column names. (#165)
+
+* `freqlist()`:
+
+    - Fixed a bug where labels would get dropped when using the `subset=` argument. (#184)
+
+    - Fixed a bug where labels were lost when subsetting the table and using strata terms. (#196)
+
+    - `freqlist()`: implemented a `sort()` method to sort tables on frequency. (#187)
+
+    - `summary.freqlist()`: Implemented `head()` and `tail()`. (#188)
+
+    - `summary.freqlist()`: fixed a bug when all table counts are 0 and `sparse=FALSE`. (#186, #194)
+
+* `keep.labels()`:
+
+    - This no longer sticks another class on data.frames.
+    
+    - Fixed a bug with replacement for objects of class `"keep_labels"`.
 
 # arsenal v2.0.0
 
