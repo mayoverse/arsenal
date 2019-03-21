@@ -199,3 +199,86 @@ test_that("head() and tail() work with freqlist (#188)", {
     )
   )
 })
+
+test_that("sort() works with freqlist() (#187)", {
+  expect_error(sort(freqlist(~ arm, data = mockstudy)[c("arm", "cumFreq")]), "You tried to create or sort a freqlist")
+  mockstudy.wts <- mockstudy
+  mockstudy.wts$one <- 1
+  mockstudy.wts$two <- 2
+
+  mck.wts <- freqlist(list(one, two) ~ arm + addNA(mdquality.s) + sex, data = mockstudy.wts, strata = "sex",
+                      na.options = 'showexclude', labelTranslations = c("addNA(mdquality.s)" = "QOL"))
+  mck.wts2 <- freqlist(list(one, two) ~ arm + addNA(mdquality.s) + sex, data = mockstudy.wts, strata = "sex",
+                       na.options = 'include', labelTranslations = c("addNA(mdquality.s)" = "QOL"))
+  mck.wts3 <- freqlist(list(one, two) ~ arm + addNA(mdquality.s) + sex, data = mockstudy.wts, strata = "sex", na.options = 'remove')
+  expect_true(
+    all(capture.kable(summary(sort(mck.wts[c(1:4, 6)]), dupLabels = TRUE)) %in% capture.kable(summary(mck.wts[c(1:4, 6)], dupLabels = TRUE)))
+  )
+  expect_true(
+    all(capture.kable(summary(sort(mck.wts[c(1:4, 6)], decreasing = TRUE), dupLabels = TRUE)) %in%
+          capture.kable(summary(mck.wts[c(1:4, 6)], dupLabels = TRUE)))
+  )
+  expect_true(
+    all(capture.kable(summary(sort(mck.wts2[c(1:4, 6)]), dupLabels = TRUE)) %in% capture.kable(summary(mck.wts2[c(1:4, 6)], dupLabels = TRUE)))
+  )
+  expect_true(
+    all(capture.kable(summary(sort(mck.wts3[c(1:4, 6)]), dupLabels = TRUE)) %in% capture.kable(summary(mck.wts3[c(1:4, 6)], dupLabels = TRUE)))
+  )
+
+  ## this checks that each table recalculates with its own na.options
+  expect_identical(
+    capture.kable(summary(sort(merge(mck.wts[, 1], mck.wts2[, 2]), decreasing = TRUE))),
+    c("|sex  |Treatment Arm |QOL | Freq| Cumulative Freq| Percent| Cumulative Percent|"  ,
+      "|:----|:-------------|:---|----:|---------------:|-------:|------------------:|"  ,
+      "|Male |F: FOLFOX     |1   |  285|             285|   37.35|              37.35|"  ,
+      "|     |A: IFL        |1   |  214|             499|   28.05|              65.40|"  ,
+      "|     |G: IROX       |1   |  187|             686|   24.51|              89.91|"  ,
+      "|     |F: FOLFOX     |NA  |   95|              NA|      NA|                 NA|"  ,
+      "|     |A: IFL        |NA  |   34|              NA|      NA|                 NA|"  ,
+      "|     |F: FOLFOX     |0   |   31|             717|    4.06|              93.97|"  ,
+      "|     |A: IFL        |0   |   29|             746|    3.80|              97.77|"  ,
+      "|     |G: IROX       |NA  |   24|              NA|      NA|                 NA|"  ,
+      "|     |              |0   |   17|             763|    2.23|             100.00|"  ,
+      ""                                                                                 ,
+      ""                                                                                 ,
+      "|sex    |Treatment Arm |QOL | Freq| Cumulative Freq| Percent| Cumulative Percent|",
+      "|:------|:-------------|:---|----:|---------------:|-------:|------------------:|",
+      "|Female |F: FOLFOX     |1   |  198|             198|   40.91|              40.91|",
+      "|       |G: IROX       |1   |  121|             319|   25.00|              65.91|",
+      "|       |A: IFL        |1   |  118|             437|   24.38|              90.29|",
+      "|       |F: FOLFOX     |NA  |   61|              NA|      NA|                 NA|",
+      "|       |A: IFL        |NA  |   21|              NA|      NA|                 NA|",
+      "|       |F: FOLFOX     |0   |   21|             458|    4.34|              94.63|",
+      "|       |G: IROX       |NA  |   17|              NA|      NA|                 NA|",
+      "|       |              |0   |   14|             472|    2.89|              97.52|",
+      "|       |A: IFL        |0   |   12|             484|    2.48|             100.00|",
+      ""                                                                                 ,
+      ""                                                                                 ,
+      "|sex  |Treatment Arm |QOL | Freq| Cumulative Freq| Percent| Cumulative Percent|"  ,
+      "|:----|:-------------|:---|----:|---------------:|-------:|------------------:|"  ,
+      "|Male |F: FOLFOX     |1   |  570|             570|   31.11|              31.11|"  ,
+      "|     |A: IFL        |1   |  428|             998|   23.36|              54.48|"  ,
+      "|     |G: IROX       |1   |  374|            1372|   20.41|              74.89|"  ,
+      "|     |F: FOLFOX     |NA  |  190|            1562|   10.37|              85.26|"  ,
+      "|     |A: IFL        |NA  |   68|            1630|    3.71|              88.97|"  ,
+      "|     |F: FOLFOX     |0   |   62|            1692|    3.38|              92.36|"  ,
+      "|     |A: IFL        |0   |   58|            1750|    3.17|              95.52|"  ,
+      "|     |G: IROX       |NA  |   48|            1798|    2.62|              98.14|"  ,
+      "|     |              |0   |   34|            1832|    1.86|             100.00|"  ,
+      ""                                                                                 ,
+      ""                                                                                 ,
+      "|sex    |Treatment Arm |QOL | Freq| Cumulative Freq| Percent| Cumulative Percent|",
+      "|:------|:-------------|:---|----:|---------------:|-------:|------------------:|",
+      "|Female |F: FOLFOX     |1   |  396|             396|   33.96|              33.96|",
+      "|       |G: IROX       |1   |  242|             638|   20.75|              54.72|",
+      "|       |A: IFL        |1   |  236|             874|   20.24|              74.96|",
+      "|       |F: FOLFOX     |NA  |  122|             996|   10.46|              85.42|",
+      "|       |A: IFL        |NA  |   42|            1038|    3.60|              89.02|",
+      "|       |F: FOLFOX     |0   |   42|            1080|    3.60|              92.62|",
+      "|       |G: IROX       |NA  |   34|            1114|    2.92|              95.54|",
+      "|       |              |0   |   28|            1142|    2.40|              97.94|",
+      "|       |A: IFL        |0   |   24|            1166|    2.06|             100.00|"
+    )
+  )
+
+})

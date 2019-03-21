@@ -6,6 +6,7 @@
 \alias{is.summary.freqlist}
 \alias{head.summary.freqlist}
 \alias{tail.summary.freqlist}
+\alias{sort.freqlist}
 \title{Helper functions for freqlist}
 \usage{
 is.freqlist(x)
@@ -15,6 +16,8 @@ is.summary.freqlist(x)
 \method{head}{summary.freqlist}(x, n = 6L, ...)
 
 \method{tail}{summary.freqlist}(x, n = 6L, ...)
+
+\method{sort}{freqlist}(x, decreasing = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{freqlist} object.}
@@ -22,10 +25,15 @@ is.summary.freqlist(x)
 \item{n}{A single integer. See \code{\link[utils]{head}} or \code{\link[utils]{tail}} for more details}
 
 \item{...}{Other arguments.}
+
+\item{decreasing}{Should the sort be increasing or decreasing?}
 }
 \description{
 A set of helper functions for \code{\link{freqlist}}.
 }
+\details{
+Note that \code{sort()} has to recalculate cumulative statistics.
+}
 \seealso{
-\code{\link{merge.freqlist}}, \code{\link{arsenal_table}}
+\code{\link{merge.freqlist}}, \code{\link{arsenal_table}}, \code{\link{sort}}
 }

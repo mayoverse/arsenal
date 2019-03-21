@@ -107,7 +107,8 @@ freqlist.table <- function(object, na.options = c("include", "showexclude", "rem
       strata = list(term = strata, values = strata.levels, label = strataLabel, hasStrata = hasStrata),
       x = add_freqlist_xterms(xTerms),
       tables = unname(tableout),
-      hasWeights = FALSE
+      hasWeights = FALSE,
+      na.options = na.options
     )
   )
 

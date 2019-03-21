@@ -51,7 +51,7 @@ as_data_frame_summary_freqlist <- function(tb, labs, cntrl)
     for(col in seq_len(ncol(tab)))
     {
       tmp <- apply(tab[, 1:col, drop = FALSE], 1, paste, collapse = paste0(rep(",", num + 1), collapse = "")) # in R >= 3.3.0, we could use strrep instead
-      x[duplicated(tmp), colnames(tab)[col]] <- ""
+      x[c(FALSE, tmp[-1] == tmp[-length(tmp)]), colnames(tab)[col]] <- ""
     }
     x
   }

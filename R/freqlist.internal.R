@@ -1,7 +1,11 @@
-internalTable <- function(data, na.options) {
-  # orders and performs calculations for the table
-  # split into a function to be able to use with by statement
-  data <- data[do.call(order, unname(data)), ]
+internalTable <- function(data, na.options, keep_cols = c("cumFreq", "freqPercent", "cumPercent"), sort = FALSE, decreasing = FALSE) {
+  if("Freq" %nin% names(data)) stop("You tried to create or sort a freqlist table with no 'Freq' column!")
+
+  data <- if(!sort)
+  {
+    data[do.call(order, unname(data)), ]
+  } else data[order(data$Freq, decreasing = decreasing), ]
+
   na.index <- rowSums(is.na(data))
   if (na.options == 'remove') {
     data  <- data[na.index == 0, ]
@@ -20,9 +24,10 @@ internalTable <- function(data, na.options) {
     freqPct <- if(denom > 0) 100 * freq_tmp / denom else NA_real_
     cumPct <- cumfun(freqPct)
   }
-  data$cumFreq <- cumFreq
-  data$freqPercent <- freqPct
-  data$cumPercent <- cumPct
+
+  if("cumFreq" %in% keep_cols) data$cumFreq <- cumFreq
+  if("freqPercent" %in% keep_cols) data$freqPercent <- freqPct
+  if("cumPercent" %in% keep_cols) data$cumPercent <- cumPct
   row.names(data) <- NULL
   data
 }
@@ -54,7 +59,10 @@ add_freqlist_xterms <- function(xTerms)
 #'
 #' @param x A \code{freqlist} object.
 #' @inheritParams tableby.internal
-#' @seealso \code{\link{merge.freqlist}}, \code{\link{arsenal_table}}
+#' @param decreasing Should the sort be increasing or decreasing?
+#' @seealso \code{\link{merge.freqlist}}, \code{\link{arsenal_table}}, \code{\link{sort}}
+#' @details
+#' Note that \code{sort()} has to recalculate cumulative statistics.
 #' @name freqlist.internal
 NULL
 #> NULL
@@ -83,3 +91,17 @@ tail.summary.freqlist <- function(x, n = 6L, ...)
   x
 }
 
+#' @rdname freqlist.internal
+#' @export
+sort.freqlist <- function(x, decreasing = FALSE, ...)
+{
+  for(i in seq_along(x$tables))
+  {
+    na.opts <- x$tables[[i]]$na.options
+    keepcols <- names(x$tables[[i]]$x) # in case they subsetted away some of the columns
+
+    x$tables[[i]]$tables[] <- lapply(x$tables[[i]]$tables, internalTable, na.options = na.opts,
+                                     sort = TRUE, decreasing = decreasing, keep_cols = keepcols)
+  }
+  x
+}
