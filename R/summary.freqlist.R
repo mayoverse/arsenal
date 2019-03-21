@@ -43,6 +43,7 @@ as_data_frame_summary_freqlist <- function(tb, labs, cntrl)
   fmtdups <- function(x, i)
   {
     x[i] <- lapply(x[i], as.character)
+    if(nrow(x) == 0) return(x)
     tab <- as.matrix(x[i])
     tab[is.na(tab)] <- "NA"
     num <- max(stringr::str_count(tab, ","))
@@ -57,6 +58,7 @@ as_data_frame_summary_freqlist <- function(tb, labs, cntrl)
 
   fmtdigits <- function(x, digits.count, digits.pct)
   {
+    if(nrow(x) == 0) return(x)
     if("Freq" %in% names(x)) x$Freq <- formatC(x$Freq, digits = digits.count, format = "f")
     if("cumFreq" %in% names(x)) x$cumFreq <- formatC(x$cumFreq, digits = digits.count, format = "f")
     if("freqPercent" %in% names(x)) x$freqPercent <- formatC(x$freqPercent, digits = digits.pct, format = "f")

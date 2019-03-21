@@ -6,17 +6,18 @@ internalTable <- function(data, na.options) {
   if (na.options == 'remove') {
     data  <- data[na.index == 0, ]
     cumFreq <- cumsum(data$Freq)
-    freqPct <- 100 * data$Freq / sum(data$Freq)
+    freqPct <- if(sum(data$Freq) > 0) 100 * data$Freq / sum(data$Freq) else NA_real_
     cumPct <- cumsum(freqPct)
   } else if(na.options == 'include') {
     cumFreq <- cumsum(data$Freq)
-    freqPct <- 100 * data$Freq / sum(data$Freq)
+    freqPct <- if(sum(data$Freq) > 0) 100 * data$Freq / sum(data$Freq) else NA_real_
     cumPct <- cumsum(freqPct)
   } else if(na.options == 'showexclude') {
     freq_tmp <- data$Freq
     freq_tmp[na.index != 0] <- NA
     cumFreq <- cumfun(freq_tmp)
-    freqPct <- 100 * freq_tmp / max(stats::na.omit(cumFreq), na.rm = TRUE)
+    denom <- max(stats::na.omit(cumFreq), na.rm = TRUE)
+    freqPct <- if(denom > 0) 100 * freq_tmp / denom else NA_real_
     cumPct <- cumfun(freqPct)
   }
   data$cumFreq <- cumFreq

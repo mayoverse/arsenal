@@ -34,6 +34,8 @@
 
 * `summary.freqlist()`: Implemented `head()` and `tail()`. (#188)
 
+* `summary.freqlist()`: fixed a bug when all table counts are 0 and `sparse=FALSE`. (#186, #194)
+
 # arsenal v2.0.0
 
 There is a new class system (`"arsenal_table"`) which unifies `tableby()`, `modelsum()`, and `freqlist()`.

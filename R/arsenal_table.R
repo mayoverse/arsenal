@@ -249,11 +249,15 @@ print.summary.arsenal_table <- function(x, ..., format = if(!is.null(x$text) && 
 
   #### finally print it out ####
   if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
+  shown <- FALSE
   for(i in seq_along(df))
   {
+    if(nrow(df[[i]]) == 0) next
+    shown <- TRUE
     print(knitr::kable(df[[i]], caption = NULL, align = attr(df[[i]], "align"), format = format, row.names = FALSE, escape = escape, ...))
     if(!is.null(attr(df[[i]], "tests"))) cat(paste0(attr(df[[i]], "tests"), "\n", collapse = ""))
   }
+  if(!shown) stop("There wasn't anything to summarize! (All of the tables have 0 rows)")
   cat("\n")
 
   invisible(x)
