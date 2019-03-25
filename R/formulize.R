@@ -5,6 +5,9 @@
 #' @param y,x,... Character vectors, names, or calls to be collapsed (by \code{"+"}) and put left-to-right in the formula.
 #'   If \code{data} is supplied, these can also be numeric, denoting which column name to use. See examples.
 #' @param data An R object with non-null column names.
+#' @param collapse How should terms be collapsed? Default is addition.
+#' @param collapse.y How should the y-terms be collapsed? Default is addition. Also accepts the special string "list",
+#'   which combines them into a multiple-left-hand-side formula, for use in other functions.
 #' @seealso \code{\link[stats]{reformulate}}
 #' @author Ethan Heinzen
 #' @examples
@@ -27,9 +30,15 @@
 #' ## get an interaction
 #' formulize("y", c("x1*x2", "x3"))
 #'
+#' ## get only interactions
+#' formulize("y", c("x1", "x2", "x3"), collapse = "*")
+#'
 #' ## no intercept
 #' formulize("y", "x1 - 1")
 #' formulize("y", c("x1", "x2", "-1"))
+#'
+#' ## LHS as a list to use in arsenal functions
+#' formulize(c("y1", "y2", "y3"), c("x", "z"), collapse.y = "list")
 #'
 #' ## use in an lm
 #' form <- formulize(2, 3:4, data = mockstudy)
@@ -42,7 +51,7 @@
 #' formulize(f[[2]], f[[3]])
 #' @export
 
-formulize <- function(y = "", x = "", ..., data = NULL)
+formulize <- function(y = "", x = "", ..., data = NULL, collapse = "+", collapse.y = collapse)
 {
   dots <- list(y = y, x = x, ...)
   if(!is.null(data))
@@ -55,6 +64,12 @@ formulize <- function(y = "", x = "", ..., data = NULL)
   is.ok <- function(x) is.character(x) || (is.list(x) && all(vapply(x, name.or.call, NA)))
   trash <- lapply(dots, function(elt) if(!is.ok(elt))
     stop("One or more argument isn't a character vector, numeric vector, list of names, or list of calls"))
-  elts <- vapply(dots, paste0, character(1), collapse = " + ")
+
+  dots[[1]] <- if(collapse.y == "list")
+  {
+    paste0("list(", paste0(dots[[1]], collapse = ", "), ")")
+  } else paste0(dots[[1]], collapse = collapse.y)
+
+  elts <- vapply(dots, paste0, character(1), collapse = collapse)
   stats::as.formula(paste0(elts, collapse = " ~ "), env = parent.frame())
 }

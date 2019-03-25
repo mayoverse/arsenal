@@ -58,6 +58,7 @@ as_list_formula <- function(formula)
   if(is.list(formula)) return(formula)
   if(length(formula) == 2 || is.name(formula[[2]]) || !identical(formula[[2]][[1]], as.name("list")))
     return(list(formula)) # one-sided or LHS is single arg
+  if(length(formula[[2]]) == 1) return(list(replace2(formula, 2, NULL))) # for empty LHS-list()
   lapply(formula[[2]][-1], replace2, list = 2, x = formula)
 }
 
