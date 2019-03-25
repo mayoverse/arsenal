@@ -53,7 +53,7 @@ Smaller changes:
     
     - Fixed a bug with replacement for objects of class `"keep_labels"`.
     
-* `formulize()`: added the `collapse=` and `collapse.y=` arguments.
+* `formulize()`: added the `collapse=` and `collapse.y=` arguments. (#197)
 
 # arsenal v2.0.0
 
