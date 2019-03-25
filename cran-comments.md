@@ -6,6 +6,8 @@ This is a new version. In this version:
 
 * Fixed a major bug in `modelsum()` related to interaction terms.
 
+* Saved out a test dataset instead of building on-the-fly (to solve problems with `sample()` changing in R devel).
+
 * Closed several bugs/feature requests.
 
 * We updated and clarified documentation where appropriate.
