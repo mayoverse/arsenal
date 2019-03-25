@@ -67,6 +67,7 @@ test_that("Multi-sided formula, mixed input", {
 
 test_that("Two-sided formula, interaction", {
   check_form(formulize("y", c("x1*x2", "x3")), "y ~ x1 * x2 + x3")
+  check_form(formulize("y", c("x1", "x2", "x3"), collapse = "*"), "y ~ x1 * x2 * x3")
 })
 
 ###########################################################################################################
@@ -88,6 +89,30 @@ test_that("Two-sided formula, mixed input", {
   )
 })
 
+test_that("List formula, names and non-syntactic variables", {
+  d <- data.frame(`+-` = 1:2, `-+` = 2:3, `P/E` = "A", `% Growth` = c(1.1, 1.2), check.names = FALSE)
+  x <- c("`P/E`", "`% Growth`")
+  y <- list(as.name("+-"), as.name("-+"))
+  expect_identical(
+    capture.kable(summary(tableby(formulize(y, x, collapse.y = "list"), data = d, test = FALSE), text = TRUE)),
+    c("|             |    1 (N=1)    |    2 (N=1)    |  Total (N=2)  |",
+      "|:------------|:-------------:|:-------------:|:-------------:|",
+      "|P/E          |               |               |               |",
+      "|-  A         |  1 (100.0%)   |  1 (100.0%)   |  2 (100.0%)   |",
+      "|% Growth     |               |               |               |",
+      "|-  Mean (SD) |  1.100 (NaN)  |  1.200 (NaN)  | 1.150 (0.071) |",
+      "|-  Range     | 1.100 - 1.100 | 1.200 - 1.200 | 1.100 - 1.200 |",
+      ""                                                               ,
+      ""                                                               ,
+      "|             |    2 (N=1)    |    3 (N=1)    |  Total (N=2)  |",
+      "|:------------|:-------------:|:-------------:|:-------------:|",
+      "|P/E          |               |               |               |",
+      "|-  A         |  1 (100.0%)   |  1 (100.0%)   |  2 (100.0%)   |",
+      "|% Growth     |               |               |               |",
+      "|-  Mean (SD) |  1.100 (NaN)  |  1.200 (NaN)  | 1.150 (0.071) |",
+      "|-  Range     | 1.100 - 1.100 | 1.200 - 1.200 | 1.100 - 1.200 |")
+  )
+})
 
 ###########################################################################################################
 #### Reported bugs for formulize
@@ -116,3 +141,18 @@ test_that("11/06/2018: passing names or calls (#152, #153)", {
   f <- Surv(ft, case) ~ `hi there` + b
   expect_identical(f, formulize(f[[2]], f[[3]]))
 })
+
+test_that("03/25/2019: using collapse arguments (#197)", {
+  check_form(
+   formulize(c("y1", "y2", "y3"), c("x1", "x2"), collapse = "*", collapse.y = "list"),
+   "list(y1, y2, y3) ~ x1 * x2"
+  )
+
+  f <- Surv(ft, case) ~ `hi there` + b
+  g <- Surv(fu, stat) ~ `hi there` + b
+  check_form(
+    formulize(list(f[[2]], g[[2]]), f[[3]], collapse.y = "list"),
+    "list(Surv(ft, case), Surv(fu, stat)) ~ `hi there` + b"
+  )
+})
+

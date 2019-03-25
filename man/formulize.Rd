@@ -4,13 +4,19 @@
 \alias{formulize}
 \title{formulize}
 \usage{
-formulize(y = "", x = "", ..., data = NULL)
+formulize(y = "", x = "", ..., data = NULL, collapse = "+",
+  collapse.y = collapse)
 }
 \arguments{
 \item{y, x, ...}{Character vectors, names, or calls to be collapsed (by \code{"+"}) and put left-to-right in the formula.
 If \code{data} is supplied, these can also be numeric, denoting which column name to use. See examples.}
 
 \item{data}{An R object with non-null column names.}
+
+\item{collapse}{How should terms be collapsed? Default is addition.}
+
+\item{collapse.y}{How should the y-terms be collapsed? Default is addition. Also accepts the special string "list",
+which combines them into a multiple-left-hand-side formula, for use in other functions.}
 }
 \description{
 A shortcut to generate one-, two-, or many-sided formulas from vectors of variable names.
@@ -35,9 +41,15 @@ formulize(1, c("x1", "x2", "x3"), data = mockstudy)
 ## get an interaction
 formulize("y", c("x1*x2", "x3"))
 
+## get only interactions
+formulize("y", c("x1", "x2", "x3"), collapse = "*")
+
 ## no intercept
 formulize("y", "x1 - 1")
 formulize("y", c("x1", "x2", "-1"))
+
+## LHS as a list to use in arsenal functions
+formulize(c("y1", "y2", "y3"), c("x", "z"), collapse.y = "list")
 
 ## use in an lm
 form <- formulize(2, 3:4, data = mockstudy)

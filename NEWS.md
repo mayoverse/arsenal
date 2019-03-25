@@ -52,6 +52,8 @@ Smaller changes:
     - This no longer sticks another class on data.frames.
     
     - Fixed a bug with replacement for objects of class `"keep_labels"`.
+    
+* `formulize()`: added the `collapse=` and `collapse.y=` arguments.
 
 # arsenal v2.0.0
 
