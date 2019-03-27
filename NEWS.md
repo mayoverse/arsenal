@@ -5,6 +5,9 @@
   
 * `tableby.control()`: added `date.simplify=` and `ordered.simplify=` arguments. (#202)
   The order of arguments has changed slightly for consistency.
+  
+* `paired.control()`: took away the arguments that should be the same as `tableby.control()`, and only included arguments with
+  new defaults or which don't appear in `tableby.control()`.
 
 # arsenal v3.0.0
 
