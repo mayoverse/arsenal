@@ -86,13 +86,13 @@ as_data_frame_tableby <- function(byList, control)
   {
     simplify <- function(x)
     {
-      if(simp.cat[x$variable[1]] && nrow(x) == 3 &&
-         all(x$term[2:3] %in% c("count", "countpct", "countcellpct", "countrowpct", "binomCI", "rowbinomCI")))
+      ## make sure there's only two lines of (the same) summary statistic, and that it's categorical
+      if(simp.cat[x$variable[1]] && ((nrow(x) == 2) || (nrow(x) == 3 && x$term[2] == x$term[3])) && all(x$variable.type == "categorical"))
       {
-        y <- x[3, , drop = FALSE]
+        y <- x[nrow(x), , drop = FALSE]
         y$term[1] <- x$term[1]
         y$label[1] <- x$label[1]
-      } else if(simp.num[x$variable[1]] && nrow(x) == 2)
+      } else if(simp.num[x$variable[1]] && nrow(x) == 2 && all(x$variable.type == "numeric"))
       {
         y <- x[2, , drop = FALSE]
         y$term[1] <- x$term[1]

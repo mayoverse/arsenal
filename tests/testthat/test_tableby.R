@@ -969,3 +969,30 @@ test_that("02/26/2019: digits and stats are maintained when subsetting (#182, #1
     )
   )
 })
+
+test_that("03/27/2019: cat.simplify and numeric.simplify work right, even with custom stats (#199, #200, #203)", {
+  dat <- data.frame(x = c("A", "A"))
+  mystat <- countpct
+  expect_identical(
+    capture.kable(summary(tableby(~ x, data = dat, numeric.simplify = TRUE), text = TRUE)),
+    c("|     | Overall (N=2) |",
+      "|:----|:-------------:|",
+      "|x    |               |",
+      "|-  A |  2 (100.0%)   |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(~ x, data = dat, cat.simplify = TRUE), text = TRUE)),
+    c("|   | Overall (N=2) |",
+      "|:--|:-------------:|",
+      "|x  |  2 (100.0%)   |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(~ x, data = dat, cat.simplify = TRUE, cat.stats = "mystat"), text = TRUE)),
+    c("|   | Overall (N=2) |",
+      "|:--|:-------------:|",
+      "|x  |  2 (100.0%)   |"
+    )
+  )
+})

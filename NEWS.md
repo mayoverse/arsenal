@@ -1,3 +1,8 @@
+# arsenal v3.0.0.9000
+
+* `tableby.control()`: fixed a bug with simplifying categorical and numeric output. (#199, #203)
+  This fix also allows for simplification of custom statistics. (#200)
+
 # arsenal v3.0.0
 
 **There are a few non-backwards-compatible updates.**
