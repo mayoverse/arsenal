@@ -78,21 +78,26 @@ as_data_frame_tableby <- function(byList, control)
               MoreArgs = list(yList = byList$y, sList = byList$strata, xList = byList$x, cntrl = control))
   out <- do.call(rbind_chr, unlist(tabs, recursive = FALSE, use.names = FALSE))
 
-  f <- function(elt, whch = "cat.simplify") if(is.null(elt[[whch]])) control[[whch]] else elt[[whch]]
-  simp.cat <- vapply(byList$control.list, f, NA)
+  f <- function(elt, whch) if(is.null(elt[[whch]])) control[[whch]] else elt[[whch]]
   simp.num <- vapply(byList$control.list, f, NA, "numeric.simplify")
+  simp.cat <- vapply(byList$control.list, f, NA, "cat.simplify")
+  simp.ord <- vapply(byList$control.list, f, NA, "ordered.simplify")
+  simp.dat <- vapply(byList$control.list, f, NA, "date.simplify")
 
-  if(any(simp.cat) || any(simp.num))
+  if(any(simp.cat) || any(simp.num) || any(simp.ord) || any(simp.dat))
   {
     simplify <- function(x)
     {
       ## make sure there's only two lines of (the same) summary statistic, and that it's categorical
-      if(simp.cat[x$variable[1]] && ((nrow(x) == 2) || (nrow(x) == 3 && x$term[2] == x$term[3])) && all(x$variable.type == "categorical"))
+      if((simp.cat[x$variable[1]] && all(x$variable.type == "categorical") ||
+          simp.ord[x$variable[1]] && all(x$variable.type == "ordinal")) &&
+         (nrow(x) == 2 || nrow(x) == 3 && x$term[2] == x$term[3]))
       {
         y <- x[nrow(x), , drop = FALSE]
         y$term[1] <- x$term[1]
         y$label[1] <- x$label[1]
-      } else if(simp.num[x$variable[1]] && nrow(x) == 2 && all(x$variable.type == "numeric"))
+      } else if((simp.num[x$variable[1]] && all(x$variable.type == "numeric") ||
+                 simp.dat[x$variable[1]] && all(x$variable.type == "Date")) && nrow(x) == 2)
       {
         y <- x[2, , drop = FALSE]
         y$term[1] <- x$term[1]

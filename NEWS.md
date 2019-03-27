@@ -2,6 +2,9 @@
 
 * `tableby.control()`: fixed a bug with simplifying categorical and numeric output. (#199, #203)
   This fix also allows for simplification of custom statistics. (#200)
+  
+* `tableby.control()`: added `date.simplify=` and `ordered.simplify=` arguments. (#202)
+  The order of arguments has changed slightly for consistency.
 
 # arsenal v3.0.0
 
