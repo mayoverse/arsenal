@@ -9,6 +9,10 @@
 * `paired.control()`: took away the arguments that should be the same as `tableby.control()`, and only included arguments with
   new defaults or which don't appear in `tableby.control()`.
 
+* `tableby()` / `paired()`: added the functions `countN()` and `Nrisk()` (#201). `Nrisk()` now outputs what `NriskSurv()` used to; `NriskSurv()`
+  now outputs what its name suggests: the number at risk, and the survival. Additionally, `as.countpct()` gains the `which.pct=` argument,
+  whose default of `0` may break the formatting of percents (`digits.pct=`).
+
 # arsenal v3.0.0
 
 **There are a few non-backwards-compatible updates.**

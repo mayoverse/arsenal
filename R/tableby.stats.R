@@ -106,12 +106,27 @@ NeventsSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, .
     t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
   }
   out <- stats::setNames(as.list(as.data.frame(y)), paste0("time = ", times))
-  as.tbstat_multirow(lapply(out, as.countpct, parens = c("(", ")")))
+  as.tbstat_multirow(lapply(out, as.countpct, parens = c("(", ")"), which.pct = 2L))
 }
 
 #' @rdname tableby.stats
 #' @export
 NriskSurv <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
+  y <- if(na.rm && allNA(x))
+  {
+    matrix(NA_real_, nrow = 1, ncol = length(times))
+  } else
+  {
+    xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
+    t(cbind(xsumm$n.risk, 100*xsumm$surv))
+  }
+  out <- stats::setNames(as.list(as.data.frame(y)), paste0("time = ", times))
+  as.tbstat_multirow(lapply(out, as.countpct, parens = c("(", ")"), which.pct = 2L))
+}
+
+#' @rdname tableby.stats
+#' @export
+Nrisk <- function(x, na.rm = TRUE, weights = rep(1, nrow(x)), times=1:5, ...) {
   y <- if(na.rm && allNA(x))
   {
     rep(NA_real_, times = length(times))
@@ -198,7 +213,16 @@ countpct <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...)
   if(is.null(levels)) levels <- sort(unique(x))
   wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)])
   as.tbstat_multirow(lapply(Map(c, wtbl, if(any(wtbl > 0)) 100*wtbl/sum(wtbl) else rep(list(NULL), times = length(wtbl))),
-                            as.countpct, parens = c("(", ")"), pct = "%"))
+                            as.countpct, parens = c("(", ")"), pct = "%", which.pct = 2L))
+}
+
+#' @rdname tableby.stats
+#' @export
+countN <- function(x, levels=NULL, na.rm=TRUE, weights=rep(1, length(x)), ...) {
+  if(is.null(levels)) levels <- sort(unique(x))
+  wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)])
+  n <- sum(wtbl)
+  as.tbstat_multirow(lapply(Map(c, wtbl, rep(n, times = length(wtbl))), as.countpct, sep = "/"))
 }
 
 transpose_list <- function(x, levels, by.levels)
@@ -220,7 +244,7 @@ countrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TR
   wtbls <- lapply(levels, function(L) {
     tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
     wtbl <- c(tmp, Total = sum(tmp))
-    lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/sum(tmp)), parens = c("(", ")"), pct = "%"))
+    lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/sum(tmp)), parens = c("(", ")"), pct = "%", which.pct = 2L))
   })
   transpose_list(wtbls, levels, c(by.levels, "Total"))
 }
@@ -244,7 +268,7 @@ countcellpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=T
   wtbls <- lapply(levels, function(L) {
     tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
     wtbl <- c(tmp, Total = sum(tmp))
-    lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/tot), parens = c("(", ")"), pct = "%"))
+    lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/tot), parens = c("(", ")"), pct = "%", which.pct = 2L))
   })
   transpose_list(wtbls, levels, c(by.levels, "Total"))
 }

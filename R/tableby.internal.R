@@ -53,10 +53,9 @@ format.tbstat <- function(x, digits = NULL, ...)
 format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ...)
 {
   att <- attributes(x)
-  x <- if(length(x) == 2)
-  {
-    c(formatC(x[1], digits = digits.count, format = "f"), formatC(x[2], digits = digits.pct, format = "f"))
-  } else formatC(x[1], digits = digits.count, format = "f")
+  if(is.null(att$which.pct)) att$which.pct <- 0
+  x <- vapply(seq_along(x), function(i) formatC(x[i], digits = if(i %in% att$which.pct) digits.pct else digits.count, format = "f"), NA_character_)
+  x <- trimws(x)
   attributes(x) <- att
   NextMethod("format")
 }
@@ -70,6 +69,7 @@ format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, ..
 #' @param parens A length-2 vector denoting parentheses to use around \code{x[2]} and \code{x[3]}.
 #' @param sep2 The separator between \code{x[2]} and \code{x[3]}.
 #' @param pct The symbol to use after percents.
+#' @param which.pct Which statistics are percents? The default is 0, indicating that none are.
 #' @param ... arguments to pass to \code{as.tbstat}.
 #' @details
 #'   \code{as.tbstat} defines a tableby statistic with its appropriate formatting.
@@ -83,17 +83,17 @@ NULL
 
 #' @rdname tableby.stats.internal
 #' @export
-as.tbstat <- function(x, oldClass = NULL, sep = NULL, parens = NULL, sep2 = NULL, pct = NULL)
+as.tbstat <- function(x, oldClass = NULL, sep = NULL, parens = NULL, sep2 = NULL, pct = NULL, ...)
 {
   structure(x, class = c("tbstat", oldClass),
-            sep = sep, parens = parens, sep2 = sep2, pct = pct)
+            sep = sep, parens = parens, sep2 = sep2, pct = pct, ...)
 }
 
 #' @rdname tableby.stats.internal
 #' @export
-as.countpct <- function(x, ...)
+as.countpct <- function(x, ..., which.pct = 0L)
 {
-  tmp <- as.tbstat(x, ...)
+  tmp <- as.tbstat(x, ..., which.pct = which.pct)
   class(tmp) <- c("tbstat_countpct", class(tmp))
   tmp
 }

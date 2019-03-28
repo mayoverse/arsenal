@@ -8,9 +8,9 @@
 \title{Internal \code{tableby} functions}
 \usage{
 as.tbstat(x, oldClass = NULL, sep = NULL, parens = NULL,
-  sep2 = NULL, pct = NULL)
+  sep2 = NULL, pct = NULL, ...)
 
-as.countpct(x, ...)
+as.countpct(x, ..., which.pct = 0L)
 
 as.tbstat_multirow(x)
 }
@@ -28,6 +28,8 @@ as.tbstat_multirow(x)
 \item{pct}{The symbol to use after percents.}
 
 \item{...}{arguments to pass to \code{as.tbstat}.}
+
+\item{which.pct}{Which statistics are percents? The default is 0, indicating that none are.}
 }
 \description{
 A collection of functions that may help users create custom functions that are formatted correctly.

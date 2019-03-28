@@ -10,6 +10,7 @@
 \alias{medSurv}
 \alias{NeventsSurv}
 \alias{NriskSurv}
+\alias{Nrisk}
 \alias{medTime}
 \alias{q1q3}
 \alias{medianq1q3}
@@ -19,6 +20,7 @@
 \alias{N}
 \alias{count}
 \alias{countpct}
+\alias{countN}
 \alias{countrowpct}
 \alias{countcellpct}
 \alias{binomCI}
@@ -43,6 +45,8 @@ NeventsSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), times = 1:5,
 NriskSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), times = 1:5,
   ...)
 
+Nrisk(x, na.rm = TRUE, weights = rep(1, nrow(x)), times = 1:5, ...)
+
 medTime(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
 
 q1q3(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
@@ -61,6 +65,9 @@ count(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)),
   ...)
 
 countpct(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)),
+  ...)
+
+countN(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)),
   ...)
 
 countrowpct(x, levels = NULL, by, by.levels = sort(unique(by)),

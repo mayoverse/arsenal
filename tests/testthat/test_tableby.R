@@ -597,15 +597,17 @@ test_that("7/27/2017: as.data.frame.tableby and dates (#10)", {
   expect_identical(as.data.frame(tableby(~ dt, data = mdat))$Overall[[3]][2], as.Date("1968-05-14"))
 })
 
-test_that("01/24/2018: count and countpct at the same time (#51)", {
+test_that("01/24/2018: count, countN, and countpct at the same time (#51, #201)", {
   dat <- data.frame(y = rep(c("C", "D"), times = 5), x = rep(c("A", "B"), each = 5), stringsAsFactors = FALSE)
   expect_identical(
-    capture.kable(summary(tableby(y ~ x, data = dat, cat.stats = c("count", "countpct")), text = TRUE)),
+    capture.kable(summary(tableby(y ~ x, data = dat, cat.stats = c("count", "countN", "countpct")), text = TRUE)),
     c("|     |  C (N=5)  |  D (N=5)  | Total (N=10) | p value|",
       "|:----|:---------:|:---------:|:------------:|-------:|",
       "|x    |           |           |              |   0.527|",
       "|-  A |     3     |     2     |      5       |        |",
       "|-  B |     2     |     3     |      5       |        |",
+      "|-  A |    3/5    |    2/5    |     5/10     |        |",
+      "|-  B |    2/5    |    3/5    |     5/10     |        |",
       "|-  A | 3 (60.0%) | 2 (40.0%) |  5 (50.0%)   |        |",
       "|-  B | 2 (40.0%) | 3 (60.0%) |  5 (50.0%)   |        |"
     )
@@ -617,7 +619,7 @@ test_that("01/30/2018: additional follow-up statistics (#32)", {
   {
     expect_identical(
       capture.kable(summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5,
-                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime")), text = TRUE)),
+                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "Nrisk", "NriskSurv", "medTime")), text = TRUE)),
       c("|                              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
         "|:-----------------------------|:------------:|:--------------:|:--------------:|-------:|",
         "|Surv(fu.time/365.25, fu.stat) |              |                |                |   0.975|",
@@ -633,6 +635,11 @@ test_that("01/30/2018: additional follow-up statistics (#32)", {
         "|-  time = 3                   |     152      |       95       |      247       |        |",
         "|-  time = 4                   |      57      |       51       |      108       |        |",
         "|-  time = 5                   |      24      |       18       |       42       |        |",
+        "|-  time = 1                   |  626 (68.7)  |   380 (65.3)   |  1006 (67.4)   |        |",
+        "|-  time = 2                   |  309 (34.4)  |   190 (32.8)   |   499 (33.7)   |        |",
+        "|-  time = 3                   |  152 (17.5)  |   95 (17.0)    |   247 (17.3)   |        |",
+        "|-  time = 4                   |   57 (9.4)   |   51 (10.9)    |   108 (10.1)   |        |",
+        "|-  time = 5                   |   24 (6.3)   |    18 (7.4)    |    42 (6.8)    |        |",
         "|-  Median Follow-Up           |    4.665     |     4.413      |     4.561      |        |"
       )
     )
@@ -759,7 +766,7 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
   {
     expect_identical(
       capture.kable(summary(tableby(y ~ Surv(x), data=dat, times = 1:2,
-                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "NriskSurv", "medTime")), text = TRUE)),
+                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "Nrisk", "NriskSurv", "medTime")), text = TRUE)),
       c("|                    | A (N=3)  | B (N=2) | Total (N=5) | p value|",
         "|:-------------------|:--------:|:-------:|:-----------:|-------:|",
         "|Surv(x)             |          |         |             |        |",
@@ -769,6 +776,8 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
         "|-  time = 2         | 2 (33.3) |   NA    |  2 (33.3)   |        |",
         "|-  time = 1         |    3     |   NA    |      3      |        |",
         "|-  time = 2         |    2     |   NA    |      2      |        |",
+        "|-  time = 1         | 3 (66.7) |   NA    |  3 (66.7)   |        |",
+        "|-  time = 2         | 2 (33.3) |   NA    |  2 (33.3)   |        |",
         "|-  Median Follow-Up |    NA    |   NA    |     NA      |        |"
       )
     )
