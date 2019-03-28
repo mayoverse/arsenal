@@ -127,16 +127,15 @@ test_that("offset() works", {
 })
 
 test_that("strata() works", {
-  if(require(survival) && packageVersion("survival") >= "2.41-3")
-  {
-    expect_identical(
-      capture.kable(summary(modelsum(Surv(time, status) ~ ethan, adjust = ~strata(Sex), data = mdat, family="survival"), text = TRUE)),
-      c("|              |HR    |CI.lower.HR |CI.upper.HR |p.value |concordance |Nmiss |",
-        "|:-------------|:-----|:-----------|:-----------|:-------|:-----------|:-----|",
-        "|ethan Heinzen |1.051 |0.549       |2.014       |0.880   |0.499       |3     |"
-      )
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  expect_identical(
+    capture.kable(summary(modelsum(Surv(time, status) ~ ethan, adjust = ~strata(Sex), data = mdat, family="survival"), text = TRUE)),
+    c("|              |HR    |CI.lower.HR |CI.upper.HR |p.value |concordance |Nmiss |",
+      "|:-------------|:-----|:-----------|:-----------|:-------|:-----------|:-----|",
+      "|ethan Heinzen |1.051 |0.549       |2.014       |0.880   |0.499       |3     |"
     )
-  } else skip("survival package not available or not the right version.")
+  )
 })
 
 test_that("'weights=' works", {
@@ -307,34 +306,31 @@ test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem. Also 02/14/2018
 
 
 test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
-  if(require(survival) && packageVersion("survival") >= "2.41-3")
-  {
-    mdat.tmp <- keep.labels(mdat)
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  mdat.tmp <- keep.labels(mdat)
 
-    form <- Surv(time, status) ~ Sex + ethan
-    expect_identical(capture.kable(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
-                     capture.kable(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
+  form <- Surv(time, status) ~ Sex + ethan
+  expect_identical(capture.kable(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+                   capture.kable(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
 
-    mdat.tmp[3:4,"time"] <- c(NA,NA)
-    expect_identical(capture.kable(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
-                     capture.kable(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
+  mdat.tmp[3:4,"time"] <- c(NA,NA)
+  expect_identical(capture.kable(summary(modelsum(form, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+                   capture.kable(summary(modelsum(form, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
 
-    expect_identical(capture.kable(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
-                     capture.kable(summary(modelsum(form, adjust = ~Age, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
+  expect_identical(capture.kable(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+                   capture.kable(summary(modelsum(form, adjust = ~Age, data = mdat.tmp[mdat.tmp$Group=="High",], family="survival"), text = TRUE)))
 
-    expect_identical(
-      capture.kable(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
-      c("|              |HR    |CI.lower.HR |CI.upper.HR |p.value |concordance |Nmiss |",
-        "|:-------------|:-----|:-----------|:-----------|:-------|:-----------|:-----|",
-        "|Sex Male      |0.612 |0.210       |1.786       |0.369   |0.592       |0     |",
-        "|Age in Years  |1.061 |0.968       |1.164       |0.205   |            |      |",
-        "|ethan Heinzen |1.019 |0.297       |3.501       |0.976   |0.639       |3     |",
-        "|Age in Years  |1.058 |0.960       |1.166       |0.258   |            |      |"
-      )
+  expect_identical(
+    capture.kable(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
+    c("|              |HR    |CI.lower.HR |CI.upper.HR |p.value |concordance |Nmiss |",
+      "|:-------------|:-----|:-----------|:-----------|:-------|:-----------|:-----|",
+      "|Sex Male      |0.612 |0.210       |1.786       |0.369   |0.592       |0     |",
+      "|Age in Years  |1.061 |0.968       |1.164       |0.205   |            |      |",
+      "|ethan Heinzen |1.019 |0.297       |3.501       |0.976   |0.639       |3     |",
+      "|Age in Years  |1.058 |0.960       |1.166       |0.258   |            |      |"
     )
-
-    rm(mdat.tmp)
-  } else skip("survival package not available or not the right version.")
+  )
 })
 
 #################################################################################################################################
@@ -372,11 +368,10 @@ df <- data.frame(
   x2 = rnorm(1000),
   x3 = rpois(1000, 2),
   x5 = rnorm(1000),
-  x7 = sample(LETTERS[1:5], 1000, replace = TRUE),
+  x7 = rep(LETTERS[1:5], each = 200),
   x8 = runif(1000)
 )
 
-data(mockstudy)
 test_that("07/27/2017: Too many adjustment vars in as.data.frame.modelsum (#12)", {
   expect_equal(nrow(as.data.frame(modelsum(y ~ x1, adjust = ~ x7 + x2 + x3 + x5 + x8, data = df))), 10L)
 })

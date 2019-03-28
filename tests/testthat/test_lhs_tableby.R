@@ -21,7 +21,7 @@ test_that("A three-LHS tableby call", {
 })
 
 test_that("A tableby call with strata", {
-  coin.p <- if(requireNamespace("coin")) c("0.506", "0.005") else c("     ", "     ")
+  skip_if_not_installed("coin")
   expect_identical(
     capture.kable(summary(tableby(Group ~ Age + time + Phase, data = mdat, strata = trt), text = TRUE)),
     c("|Treatment Arm |             |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value |",
@@ -32,7 +32,7 @@ test_that("A tableby call with strata", {
       "|              |time         |                 |                 |                 |                 |  0.319  |",
       "|              |-  Mean (SD) |  4.357 (1.865)  |  3.273 (1.421)  |  3.727 (1.954)  |  3.833 (1.781)  |         |",
       "|              |-  Range     |  0.000 - 6.000  |  1.000 - 5.000  |  1.000 - 7.000  |  0.000 - 7.000  |         |",
-      paste0("|              |Phase        |                 |                 |                 |                 |  ", coin.p[1], "  |"),
+      "|              |Phase        |                 |                 |                 |                 |  0.506  |",
       "|              |-  I         |    6 (42.9%)    |    2 (18.2%)    |    0 (0.0%)     |    8 (22.2%)    |         |",
       "|              |-  II        |    3 (21.4%)    |    6 (54.5%)    |    8 (72.7%)    |   17 (47.2%)    |         |",
       "|              |-  III       |    5 (35.7%)    |    3 (27.3%)    |    3 (27.3%)    |   11 (30.6%)    |         |",
@@ -42,7 +42,7 @@ test_that("A tableby call with strata", {
       "|              |time         |                 |                 |                 |                 |  0.081  |",
       "|              |-  Mean (SD) |  4.750 (1.807)  |  3.105 (2.355)  |  3.895 (2.079)  |  3.870 (2.172)  |         |",
       "|              |-  Range     |  1.000 - 7.000  |  0.000 - 6.000  |  1.000 - 7.000  |  0.000 - 7.000  |         |",
-      paste0("|              |Phase        |                 |                 |                 |                 |  ", coin.p[2], "  |"),
+      "|              |Phase        |                 |                 |                 |                 |  0.005  |",
       "|              |-  I         |    5 (31.2%)    |   10 (52.6%)    |    0 (0.0%)     |   15 (27.8%)    |         |",
       "|              |-  II        |    7 (43.8%)    |    6 (31.6%)    |   11 (57.9%)    |   24 (44.4%)    |         |",
       "|              |-  III       |    4 (25.0%)    |    3 (15.8%)    |    8 (42.1%)    |   15 (27.8%)    |         |"

@@ -7,6 +7,7 @@ data(mockstudy)
 
 expect_write2_worked <- function(FUN, object, reference, ...)
 {
+  skip_on_cran()
   FUN <- match.fun(FUN)
   filename <- tempfile()
   on.exit(expect_true(file.remove(paste0(filename, ".Rmd"))))

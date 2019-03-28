@@ -29,7 +29,7 @@ test_that("A basic two-sided tableby call--no labels, no missings", {
 })
 
 test_that("A basic two-sided tableby call--labels, no missings", {
-  p.coin <- if(requireNamespace("coin")) "0.008" else "     "
+  skip_if_not_installed("coin")
   expect_identical(
     capture.kable(summary(tableby(Group ~ Age + trt + Phase, data = mdat, numeric.stats = c("meansd", "q1q3", "range")), text = TRUE)),
     c("|              |   High (N=30)   |   Low (N=30)    |   Med (N=30)    |  Total (N=90)   | p value|",
@@ -41,7 +41,7 @@ test_that("A basic two-sided tableby call--labels, no missings", {
       "|Treatment Arm |                 |                 |                 |                 |   0.659|",
       "|-  A          |   14 (46.7%)    |   11 (36.7%)    |   11 (36.7%)    |   36 (40.0%)    |        |",
       "|-  B          |   16 (53.3%)    |   19 (63.3%)    |   19 (63.3%)    |   54 (60.0%)    |        |",
-      paste0("|Phase         |                 |                 |                 |                 |   ", p.coin, "|"),
+      "|Phase         |                 |                 |                 |                 |   0.008|",
       "|-  I          |   11 (36.7%)    |   12 (40.0%)    |    0 (0.0%)     |   23 (25.6%)    |        |",
       "|-  II         |   10 (33.3%)    |   12 (40.0%)    |   19 (63.3%)    |   41 (45.6%)    |        |",
       "|-  III        |    9 (30.0%)    |    6 (20.0%)    |   11 (36.7%)    |   26 (28.9%)    |        |"
@@ -615,35 +615,34 @@ test_that("01/24/2018: count, countN, and countpct at the same time (#51, #201)"
 })
 
 test_that("01/30/2018: additional follow-up statistics (#32)", {
-  if(require(survival) && packageVersion("survival") >= "2.41-3")
-  {
-    expect_identical(
-      capture.kable(summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5,
-                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "Nrisk", "NriskSurv", "medTime")), text = TRUE)),
-      c("|                              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
-        "|:-----------------------------|:------------:|:--------------:|:--------------:|-------:|",
-        "|Surv(fu.time/365.25, fu.stat) |              |                |                |   0.975|",
-        "|-  Median Survival            |    1.506     |     1.487      |     1.495      |        |",
-        "|-  Events                     |     829      |      527       |      1356      |        |",
-        "|-  time = 1                   |  286 (68.7)  |   202 (65.3)   |   488 (67.4)   |        |",
-        "|-  time = 2                   |  597 (34.4)  |   391 (32.8)   |   988 (33.7)   |        |",
-        "|-  time = 3                   |  748 (17.5)  |   481 (17.0)   |  1229 (17.3)   |        |",
-        "|-  time = 4                   |  809 (9.4)   |   513 (10.9)   |  1322 (10.1)   |        |",
-        "|-  time = 5                   |  825 (6.3)   |   525 (7.4)    |   1350 (6.8)   |        |",
-        "|-  time = 1                   |     626      |      380       |      1006      |        |",
-        "|-  time = 2                   |     309      |      190       |      499       |        |",
-        "|-  time = 3                   |     152      |       95       |      247       |        |",
-        "|-  time = 4                   |      57      |       51       |      108       |        |",
-        "|-  time = 5                   |      24      |       18       |       42       |        |",
-        "|-  time = 1                   |  626 (68.7)  |   380 (65.3)   |  1006 (67.4)   |        |",
-        "|-  time = 2                   |  309 (34.4)  |   190 (32.8)   |   499 (33.7)   |        |",
-        "|-  time = 3                   |  152 (17.5)  |   95 (17.0)    |   247 (17.3)   |        |",
-        "|-  time = 4                   |   57 (9.4)   |   51 (10.9)    |   108 (10.1)   |        |",
-        "|-  time = 5                   |   24 (6.3)   |    18 (7.4)    |    42 (6.8)    |        |",
-        "|-  Median Follow-Up           |    4.665     |     4.413      |     4.561      |        |"
-      )
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5,
+                                  surv.stats=c("medSurv", "Nevents", "NeventsSurv", "Nrisk", "NriskSurv", "medTime")), text = TRUE)),
+    c("|                              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
+      "|:-----------------------------|:------------:|:--------------:|:--------------:|-------:|",
+      "|Surv(fu.time/365.25, fu.stat) |              |                |                |   0.975|",
+      "|-  Median Survival            |    1.506     |     1.487      |     1.495      |        |",
+      "|-  Events                     |     829      |      527       |      1356      |        |",
+      "|-  time = 1                   |  286 (68.7)  |   202 (65.3)   |   488 (67.4)   |        |",
+      "|-  time = 2                   |  597 (34.4)  |   391 (32.8)   |   988 (33.7)   |        |",
+      "|-  time = 3                   |  748 (17.5)  |   481 (17.0)   |  1229 (17.3)   |        |",
+      "|-  time = 4                   |  809 (9.4)   |   513 (10.9)   |  1322 (10.1)   |        |",
+      "|-  time = 5                   |  825 (6.3)   |   525 (7.4)    |   1350 (6.8)   |        |",
+      "|-  time = 1                   |     626      |      380       |      1006      |        |",
+      "|-  time = 2                   |     309      |      190       |      499       |        |",
+      "|-  time = 3                   |     152      |       95       |      247       |        |",
+      "|-  time = 4                   |      57      |       51       |      108       |        |",
+      "|-  time = 5                   |      24      |       18       |       42       |        |",
+      "|-  time = 1                   |  626 (68.7)  |   380 (65.3)   |  1006 (67.4)   |        |",
+      "|-  time = 2                   |  309 (34.4)  |   190 (32.8)   |   499 (33.7)   |        |",
+      "|-  time = 3                   |  152 (17.5)  |   95 (17.0)    |   247 (17.3)   |        |",
+      "|-  time = 4                   |   57 (9.4)   |   51 (10.9)    |   108 (10.1)   |        |",
+      "|-  time = 5                   |   24 (6.3)   |    18 (7.4)    |    42 (6.8)    |        |",
+      "|-  Median Follow-Up           |    4.665     |     4.413      |     4.561      |        |"
     )
-  } else skip("survival package not available or not the right version.")
+  )
 })
 
 
