@@ -3,12 +3,14 @@
 ## Store this as attribute in the modeldf column, along with the actual name of the variable,
 ## rather than anova(age) showing up in the result (though anova(age) will be the column name in modeldf
 ## but we pull these attributes off later.
-inline_tableby_stat_test <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL, cat.simplify = NULL, numeric.simplify = NULL)
+inline_tableby_stat_test <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL,
+                                     numeric.simplify = NULL, cat.simplify = NULL, ordered.simplify = NULL, date.simplify = NULL)
 {
   attr(x, "name") <- deparse(substitute(x))
   attr(x, "stats") <- if(missing(...)) NULL else list(...)
   attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
-                                  cat.simplify = cat.simplify, numeric.simplify = numeric.simplify)
+                                  numeric.simplify = numeric.simplify, cat.simplify = cat.simplify,
+                                  ordered.simplify = ordered.simplify, date.simplify = date.simplify)
   class(x) <- c("keep_tableby_attrs", class(x)[class(x) != "keep_tableby_attrs"])
   x
 }

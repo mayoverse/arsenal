@@ -7,14 +7,13 @@
 #' @param total logical, telling \code{tableby} whether to calculate a column of totals across group variable.
 #' @param test.pname character string denoting the p-value column name in \code{\link{summary.tableby}}.
 #'   Modifiable also with \code{\link{modpval.tableby}}.
-#' @param cat.simplify logical, tell \code{tableby} whether to remove the first level of the categorical variable if binary.
-#'   If \code{TRUE}, only the summary stats of the second level are reported.
-#'   NOTE: this only simplifies to one line if \code{cat.stats} is only one statistic, such as \code{countpct}.
-#'   In particular, if \code{cat.stats} also includes \code{Nmiss} and there are missings, then \code{cat.simplify} is ignored.
-#' @param numeric.simplify logical, tell \code{tableby} whether to condense numeric output to a single line.
-#'   NOTE: this only simplifies to one line if \code{numeric.stats} is only one statistic, such as \code{meansd}.
-#'   In particular, if \code{numeric.stats} also includes \code{Nmiss} and there are missings, then
-#'   \code{numeric.simplify} is ignored.
+#' @param cat.simplify,ordered.simplify logical, tell \code{tableby} whether to remove the first level of the categorical/ordinal variable if binary.
+#'   If \code{TRUE}, only the summary stats of the second level are reported (unless there's only one level, in which case it's reported).
+#'   NOTE: this only simplifies to one line if there is only one statistic reported, such as \code{countpct}.
+#'   In particular, if \code{Nmiss} is specified and there are missings, then the output is not simplified.
+#' @param numeric.simplify,date.simplify logical, tell \code{tableby} whether to condense numeric/date output to a single line.
+#'   NOTE: this only simplifies to one line if there is only one statistic reported, such as \code{meansd}.
+#'   In particular, if \code{Nmiss} is specified and there are missings, then the output is not simplified.
 #' @param numeric.test name of test for numeric RHS variables in \code{tableby}: anova, kwt (Kruskal-Wallis).
 #'   If no LHS variable exists, then a mean is required for a univariate test.
 #' @param numeric.stats summary statistics to include for numeric RHS variables within the levels of the group LHS variable.
@@ -75,16 +74,17 @@
 #' summary(outResp, text=TRUE)
 #' summary(outCtl, text=TRUE)
 #' @export
-tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=FALSE, numeric.simplify=FALSE,
-   numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt",
-   numeric.stats=c("Nmiss","meansd","range"), cat.stats=c("Nmiss","countpct"),
-   ordered.stats=c("Nmiss", "countpct"), surv.stats=c("Nevents","medSurv"), date.stats=c("Nmiss", "median","range"),
-   stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", medianrange="Median (Range)",
-                     median="Median", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3", iqr = "IQR",
-                     range="Range", countpct="Count (Pct)", Nevents="Events", medSurv="Median Survival",
-                     medTime = "Median Follow-Up"),
-   digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE, conf.level = 0.95,
-   chisq.correct=FALSE, simulate.p.value=FALSE, B=2000, ...) {
+tableby.control <- function(
+  test=TRUE,total=TRUE, test.pname=NULL, numeric.simplify=FALSE, cat.simplify=FALSE, ordered.simplify=FALSE, date.simplify=FALSE,
+  numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt",
+  numeric.stats=c("Nmiss","meansd","range"), cat.stats=c("Nmiss","countpct"),
+  ordered.stats=c("Nmiss", "countpct"), surv.stats=c("Nevents","medSurv"), date.stats=c("Nmiss", "median","range"),
+  stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", medianrange="Median (Range)",
+                    median="Median", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3", iqr = "IQR",
+                    range="Range", countpct="Count (Pct)", Nevents="Events", medSurv="Median Survival",
+                    medTime = "Median Follow-Up"),
+  digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE, conf.level = 0.95,
+  chisq.correct=FALSE, simulate.p.value=FALSE, B=2000, ...) {
 
   nm <- names(list(...))
   if("digits.test" %in% nm) .Deprecated(msg = "Using 'digits.test = ' is deprecated. Use 'digits.p = ' instead.")
@@ -130,7 +130,7 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
   if(!exists(date.test)) {
     stop("date test does not exist: ", date.test, "\n")
   }
- ## validate summary stat function names
+  ## validate summary stat function names
 
   if(any(!exists(numeric.stats))) {
     stop("One or more numeric summary statistic functions do not exist.\n")
@@ -148,12 +148,10 @@ tableby.control <- function(test=TRUE,total=TRUE, test.pname=NULL, cat.simplify=
     stop("One or more date summary statistic functions do not exist.\n")
   }
 
-  list(test=test, total=total, test.pname=test.pname, cat.simplify=cat.simplify, numeric.simplify=numeric.simplify,
-       numeric.test=numeric.test, cat.test=cat.test,
-       ordered.test=ordered.test, surv.test=surv.test,
-       numeric.stats=numeric.stats, cat.stats=cat.stats,
-       ordered.stats=ordered.stats,  surv.stats=surv.stats,
-       date.test=date.test, date.stats=date.stats,
+  list(test=test, total=total, test.pname=test.pname,
+       numeric.simplify=numeric.simplify, cat.simplify=cat.simplify, ordered.simplify=ordered.simplify, date.simplify=date.simplify,
+       numeric.test=numeric.test, cat.test=cat.test, ordered.test=ordered.test, surv.test=surv.test, date.test=date.test,
+       numeric.stats=numeric.stats, cat.stats=cat.stats, ordered.stats=ordered.stats, surv.stats=surv.stats, date.stats=date.stats,
        stats.labels=stats.labels,
        digits=digits, digits.p=digits.p, digits.count = digits.count, digits.pct = digits.pct, format.p = format.p,
        conf.level=conf.level, chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B)

@@ -864,10 +864,16 @@ test_that("09/07/2018: using countpct with numerics (#137)", {
 })
 
 test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134) and numeric.simplify (#139)", {
+  tmp.mockstudy <- mockstudy
+  tmp.mockstudy$date <- as.Date("2019-03-01") + c(rep(1, times = 750), rep(2, times = 749))
+  tmp.mockstudy$date2 <- tmp.mockstudy$date
+  tmp.mockstudy$ord <- ordered(c(rep("A", times = 749), rep("B", times = 750)))
+  tmp.mockstudy$ord2 <- tmp.mockstudy$ord
   expect_identical(
     capture.kable(summary(tableby(arm ~ I(age/10) + chisq(sex, digits.count=1, digits.pct=0, cat.simplify=TRUE) + race +
-                                    anova(ast, digits=0, digits.count=1) +
-                                    kwt(fu.time, "medianq1q3", digits=0), numeric.simplify=TRUE, data=mockstudy), text=TRUE)),
+                                    anova(ast, digits=0, digits.count=1) + kwt(fu.time, "medianq1q3", digits=0) +
+                                    kwt(date, date.simplify=TRUE) + notest(ord, ordered.simplify=TRUE) + date2 + notest(ord2),
+                                  numeric.simplify=TRUE, date.stats = "median", data = tmp.mockstudy), text=TRUE)),
     c("|                    | A: IFL (N=428) | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499) | p value|",
       "|:-------------------|:--------------:|:-----------------:|:---------------:|:--------------:|-------:|",
       "|Age in Years        |                |                   |                 |                |   0.614|",
@@ -887,7 +893,14 @@ test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134
       "|-  N-Miss           |      69.0      |       141.0       |      56.0       |     266.0      |        |",
       "|-  Mean (SD)        |    37 (28)     |      35 (27)      |     36 (26)     |    36 (27)     |        |",
       "|-  Range            |    10 - 205    |      7 - 174      |     5 - 176     |    5 - 205     |        |",
-      "|fu.time             | 446 (256, 724) |  601 (345, 1046)  | 516 (306, 807)  | 542 (310, 878) | < 0.001|"
+      "|fu.time             | 446 (256, 724) |  601 (345, 1046)  | 516 (306, 807)  | 542 (310, 878) | < 0.001|",
+      "|date                |   2019-03-02   |    2019-03-03     |   2019-03-02    |   2019-03-02   | < 0.001|",
+      "|ord                 |  170 (39.7%)   |    439 (63.5%)    |   141 (37.1%)   |  750 (50.0%)   |        |",
+      "|date2               |                |                   |                 |                | < 0.001|",
+      "|-  Median           |   2019-03-02   |    2019-03-03     |   2019-03-02    |   2019-03-02   |        |",
+      "|ord2                |                |                   |                 |                |        |",
+      "|-  A                |  258 (60.3%)   |    252 (36.5%)    |   239 (62.9%)   |  749 (50.0%)   |        |",
+      "|-  B                |  170 (39.7%)   |    439 (63.5%)    |   141 (37.1%)   |  750 (50.0%)   |        |"
     )
   )
 })
@@ -968,4 +981,31 @@ test_that("02/26/2019: digits and stats are maintained when subsetting (#182, #1
       "|&nbsp;&nbsp;&nbsp;G: IROX   |    137.0     |     102.0      |     239.0     |        |"
     )
   )
+})
+
+test_that("03/27/2019: cat.simplify and numeric.simplify work right, even with custom stats (#199, #200, #203)", {
+  dat <- data.frame(x = c("A", "A"))
+  expect_identical(
+    capture.kable(summary(tableby(~ x, data = dat, numeric.simplify = TRUE), text = TRUE)),
+    c("|     | Overall (N=2) |",
+      "|:----|:-------------:|",
+      "|x    |               |",
+      "|-  A |  2 (100.0%)   |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(~ x, data = dat, cat.simplify = TRUE), text = TRUE)),
+    c("|   | Overall (N=2) |",
+      "|:--|:-------------:|",
+      "|x  |  2 (100.0%)   |"
+    )
+  )
+  # mystat <- countpct
+  # expect_identical(
+  #   capture.kable(summary(tableby(~ x, data = dat, cat.simplify = TRUE, cat.stats = "mystat"), text = TRUE)),
+  #   c("|   | Overall (N=2) |",
+  #     "|:--|:-------------:|",
+  #     "|x  |  2 (100.0%)   |"
+  #   )
+  # )
 })

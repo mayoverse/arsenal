@@ -4,25 +4,13 @@
 \alias{paired.control}
 \title{Control settings for \code{paired} function}
 \usage{
-paired.control(test = TRUE, diff = TRUE, test.pname = NULL,
-  numeric.test = "paired.t", cat.test = "mcnemar",
-  ordered.test = "signed.rank", date.test = "paired.t",
-  numeric.stats = c("Nmiss", "meansd", "range"), cat.stats = c("Nmiss",
-  "countpct"), ordered.stats = c("Nmiss", "countpct"),
-  date.stats = c("Nmiss", "median", "range"), stats.labels = list(Nmiss
-  = "N-Miss", Nmiss2 = "N-Miss", meansd = "Mean (SD)", medianq1q3 =
-  "Median (Q1, Q3)", q1q3 = "Q1, Q3", range = "Range", countpct =
-  "Count (Pct)"), digits = 3L, digits.count = 0L, digits.p = 3L,
-  format.p = TRUE, conf.level = 0.95, mcnemar.correct = TRUE,
+paired.control(diff = TRUE, numeric.test = "paired.t",
+  cat.test = "mcnemar", ordered.test = "signed.rank",
+  date.test = "paired.t", mcnemar.correct = TRUE,
   signed.rank.exact = NULL, signed.rank.correct = TRUE, ...)
 }
 \arguments{
-\item{test}{logical, telling \code{paired} whether to perform tests of x variables across time points.}
-
 \item{diff}{logical, telling \code{paired} whether to calculate a column of differences between time points.}
-
-\item{test.pname}{character string denoting the p-value column name in \code{\link{summary.tableby}}.
-Modifiable also with \code{\link{modpval.tableby}}.}
 
 \item{numeric.test}{name of test for numeric RHS variables in \code{paired}: paired.t, signed.rank, sign.test.}
 
@@ -32,52 +20,22 @@ Modifiable also with \code{\link{modpval.tableby}}.}
 
 \item{date.test}{name of test to perform for date variables: paired.t, signed.rank, sign.test}
 
-\item{numeric.stats}{summary statistics to include for numeric RHS variables within the levels of the group LHS variable.
-Options are N, Nmiss, Nmiss2, mean, meansd, median, q1q3, medianq1q3, iqr, range, medianrange, or other R built-in or user-written functions.}
-
-\item{cat.stats}{summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
-Options are N, Nmiss, Nmiss2, count, countpct, countrowpct, countcellpct, or other R built-in or user-written functions.}
-
-\item{ordered.stats}{summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
-Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.}
-
-\item{date.stats}{stats functions to perform for Date variables: Nmiss, median, range, medianrange, q1q3, medianq1q3,
-or other R built-in or user-written functions.}
-
-\item{stats.labels}{A named list of labels for all the statistics function names, where the function name is the named element in the list
-and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
-e.g., \code{list(countpct="Count (Pct)")}.}
-
-\item{digits}{Number of decimal places for numeric values.}
-
-\item{digits.count}{Number of decimal places for count values.}
-
-\item{digits.p}{Number of decimal places for p-values.}
-
-\item{format.p}{Logical, denoting whether to format p-values. See "Details", below.}
-
-\item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.
-(See, e.g., \code{\link{binomCI}})}
-
 \item{mcnemar.correct, signed.rank.exact, signed.rank.correct}{Options for statistical tests. See \code{\link{wilcox.test}}
 and \code{\link{mcnemar.test}} for details.}
 
-\item{...}{additional arguments.}
+\item{...}{Arguments passed to \code{\link{tableby.control}}}
 }
 \value{
-A list with settings to be used within the \code{paired} function.
+A list with settings to be used within the \code{\link{paired}} function.
 }
 \description{
 Control test and summary settings for the \code{\link{paired}} function.
 }
 \details{
-All tests can be turned off by setting \code{test} to FALSE.
-  Otherwise, test are set to default settings in this list, or set explicitly in the formula of \code{tableby}.
-
-If \code{format.p} is \code{FALSE}, \code{digits.p} denotes the number of significant digits shown. The
-  p-values will be in exponential notation if necessary. If \code{format.p} is \code{TRUE},
-  \code{digits.p} will determine the number of digits after the decimal point to show. If the p-value
-  is less than the resulting number of places, it will be formatted to show so.
+Note that (with the exception of \code{total}) all arguments to \code{\link{tableby.control}} are accepted in
+  this function (in fact, this function passes everything through to \code{\link{tableby.control}}).
+  However, there are different defaults for the statistical tests (shown here). For details on the other arguments,
+  please see the help page for \code{\link{tableby.control}}.
 }
 \seealso{
 \code{\link{paired}}, \code{\link{tableby}}, \code{\link{tableby.control}}, \code{\link{summary.tableby}}
