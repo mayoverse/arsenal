@@ -37,7 +37,7 @@ tol.num.absolute <- function(x, y, tol)
 #' @export
 tol.num.percent <- tol.num.pct <- function(x, y, tol)
 {
-  tol.NA(x, y, abs((x - y)/x) > tol)
+  tol.NA(x, y, (x == 0 & y != 0) | (x != 0 & abs((x - y)/x) > tol))
 }
 
 #' @rdname comparedf.tolerances

@@ -12,6 +12,8 @@
 * `tableby()` / `paired()`: added the functions `countN()` and `Nrisk()` (#201). `Nrisk()` now outputs what `NriskSurv()` used to; `NriskSurv()`
   now outputs what its name suggests: the number at risk, and the survival. Additionally, `as.countpct()` gains the `which.pct=` argument,
   whose default of `0` may break the formatting of percents (`digits.pct=`).
+  
+* `comparedf()`: fixed a bug with numeric percent tolerances, when both values being compared are 0. (#206)
 
 # arsenal v3.0.0
 
