@@ -531,9 +531,13 @@ test_that("Summary output with attributes and max.print options", {
 })
 
 
+###########################################################################################################
+#### Reported bugs for comparedf
+###########################################################################################################
 
-
-
+test_that("2019/04/09: Percent tolerances work when everything is zero (#206)", {
+  expect_true(n.diffs(comparedf(data.frame(x = 0), data.frame(x = 0), tol.num = "percent")) == 0)
+})
 
 
 
