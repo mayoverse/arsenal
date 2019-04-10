@@ -15,6 +15,9 @@
   
 * `comparedf()`: fixed a bug with numeric percent tolerances, when both values being compared are 0. (#206)
 
+* `comparedf()`: fixed a bug in `diffs()` (and hence `summary()`) when no variables are compared (#207). Note that this change
+  also included a change to the by-variables reported in the `comparedf()` object when merging over row.names.
+
 # arsenal v3.0.0
 
 **There are a few non-backwards-compatible updates.**

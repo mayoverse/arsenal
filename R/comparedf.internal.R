@@ -267,7 +267,13 @@ diffs.comparedf <- function(object, vars = NULL, ..., by.var = FALSE)
   {
     diffs.table <- do.call(rbind, lapply(Map(cbind, var.x = diffs1$var.x, var.y = diffs1$var.y, diffs1$values,
                                              MoreArgs = list(stringsAsFactors = FALSE)), tolist))
-  } else diffs.table <- cbind(var.x = character(0), var.y = character(0), diffs$values[[1]], stringsAsFactors = FALSE)
+  } else
+  {
+    diffs.table <- data.frame(var.x = character(0), var.y = character(0), stringsAsFactors = FALSE)
+    diffs.table[object$frame.summary$by[[1]]] <- rep(list(character(0)), length(object$frame.summary$by[[1]]))
+    diffs.table$values.y <- diffs.table$values.x <- I(list())
+    diffs.table$row.y <- diffs.table$row.x <- integer(0)
+  }
 
   rownames(diffs.table) <- NULL
   diffs.table[diffs.table$var.x %in% vars | diffs.table$var.y %in% vars, , drop = FALSE]

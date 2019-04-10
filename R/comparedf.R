@@ -73,8 +73,7 @@ comparedf <- function(x, y, by = NULL, by.x = by, by.y = by, control = NULL, ...
     ncol = c(ncol(x), ncol(y)),
     nrow = c(nrow(x), nrow(y)), stringsAsFactors = FALSE
   )
-  frame.summary$by <- list(by.x, by.y)
-  frame.summary$attrs <- list(attributes(x), attributes(y))
+  tmp.attrs <- list(attributes(x), attributes(y))
 
   if("row.names" %in% by.x)
   {
@@ -86,7 +85,8 @@ comparedf <- function(x, y, by = NULL, by.x = by, by.y = by, control = NULL, ...
     y[["..row.names.."]] <- if(byrow) seq_len(nrow(y)) else row.names(y)
     by.y <- "..row.names.."
   }
-
+  frame.summary$by <- list(by.x, by.y)
+  frame.summary$attrs <- tmp.attrs
 
   #### tweak the column names ####
 

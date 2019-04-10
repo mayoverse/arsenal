@@ -539,6 +539,24 @@ test_that("2019/04/09: Percent tolerances work when everything is zero (#206)", 
   expect_true(n.diffs(comparedf(data.frame(x = 0), data.frame(x = 0), tol.num = "percent")) == 0)
 })
 
+test_that("2019/04/10: summary breaks when no variables were compared (#207)", {
+
+  check_it <- function(x, y, by = NULL, n = 0)
+  {
+    tmp <- diffs(comparedf(x, y, by = by))
+    expect_true(nrow(tmp) == n)
+    expect_identical(names(tmp), c("var.x", "var.y", if(is.null(by)) "..row.names.." else by, "values.x", "values.y", "row.x", "row.y"))
+    expect_true(inherits(tmp$values.x, "AsIs"))
+    expect_true(inherits(tmp$values.y, "AsIs"))
+    expect_true(is.integer(tmp$row.x))
+    expect_true(is.integer(tmp$row.y))
+  }
+
+  check_it(data.frame(x = 1, y = 1), data.frame(x = 1, z = 1))
+  check_it(data.frame(x = 1, y = 1), data.frame(x = 1, z = 1), by = "x")
+  check_it(data.frame(x = 1, y = 1), data.frame(x = 1, y = 1), by = "x")
+  check_it(data.frame(x = 1, y = 1), data.frame(x = 1, y = 1.1), by = "x", n = 1)
+})
 
 
 
