@@ -284,9 +284,9 @@ table(mockstudy$age.ordnew, mockstudy$sex)
 class(mockstudy$age.ord)
 ```
 
-```{r, results="asis", warning=FALSE}
+```{r, results="asis", eval=requireNamespace("coin", quietly = TRUE)}
 summary(tableby(sex ~ age.ordnew, data = mockstudy), pfootnote = TRUE)
-summary(tableby(sex ~ kwt(age.ord), data = mockstudy), pfootnote = TRUE)
+summary(tableby(sex ~ age.ord, data = mockstudy), pfootnote = TRUE)
 ```
 
 ## 4. Summarize a survival variable
