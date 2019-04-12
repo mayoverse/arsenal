@@ -1,3 +1,7 @@
+# arsenal v3.0.1.9000
+
+* `tableby()`: Added "Nmiss" to default `surv.stats=` in `tableby.control()`.
+
 # arsenal v3.0.1 (local install only)
 
 * `tableby.control()`: fixed a bug with simplifying categorical and numeric output. (#199, #203)

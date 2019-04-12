@@ -78,7 +78,7 @@ tableby.control <- function(
   test=TRUE,total=TRUE, test.pname=NULL, numeric.simplify=FALSE, cat.simplify=FALSE, ordered.simplify=FALSE, date.simplify=FALSE,
   numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt",
   numeric.stats=c("Nmiss","meansd","range"), cat.stats=c("Nmiss","countpct"),
-  ordered.stats=c("Nmiss", "countpct"), surv.stats=c("Nevents","medSurv"), date.stats=c("Nmiss", "median","range"),
+  ordered.stats=c("Nmiss", "countpct"), surv.stats=c("Nmiss", "Nevents","medSurv"), date.stats=c("Nmiss", "median","range"),
   stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", medianrange="Median (Range)",
                     median="Median", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3", iqr = "IQR",
                     range="Range", countpct="Count (Pct)", Nevents="Events", medSurv="Median Survival",
