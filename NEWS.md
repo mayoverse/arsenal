@@ -2,6 +2,8 @@
 
 * `tableby()`: Added "Nmiss" to default `surv.stats=` in `tableby.control()`.
 
+* `tableby()`: fixed a bug when some `Surv()` elements are NA. (#208)
+
 # arsenal v3.0.1 (local install only)
 
 * `tableby.control()`: fixed a bug with simplifying categorical and numeric output. (#199, #203)

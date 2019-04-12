@@ -1017,3 +1017,19 @@ test_that("03/27/2019: cat.simplify and numeric.simplify work right, even with c
   #   )
   # )
 })
+
+test_that("04/12/2019: Missing Surv()[,2] (#208)", {
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  dat <- data.frame(by = c(1, 1, 2), time = c(1, 2, 2), event = c(0, NA, 1))
+  expect_identical(
+    capture.kable(summary(tableby(by ~ Surv(time, event), data = dat), text = TRUE)),
+    c("|                   | 1 (N=2) | 2 (N=1) | Total (N=3) | p value|",
+      "|:------------------|:-------:|:-------:|:-----------:|-------:|",
+      "|Surv(time, event)  |         |         |             |   1.000|",
+      "|-  N-Miss          |    1    |    0    |      1      |        |",
+      "|-  Events          |    0    |    1    |      1      |        |",
+      "|-  Median Survival |   NA    |  2.000  |    2.000    |        |"
+    )
+  )
+})
