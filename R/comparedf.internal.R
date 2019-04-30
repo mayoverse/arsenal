@@ -177,7 +177,8 @@ idx_var_sum <- function(object, which = c("vars.not.shared", "vars.compared", "v
 
 #' Extract differences
 #'
-#' Extract differences, number of differences, or number of not-shared observations from a \code{comparedf} object.
+#' Extract differences (\code{diffs()}), number of differences (\code{n.diffs()}),
+#' or number of not-shared observations (\code{n.diff.obs()}) from a \code{comparedf} object.
 #'
 #' @param object An object of class \code{comparedf} or \code{summary.comparedf}.
 #' @param vars A character vector of variable names to subset the results to.

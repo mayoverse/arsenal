@@ -42,7 +42,8 @@ diffs(object, ...)
 all differences be reported (the default).}
 }
 \description{
-Extract differences, number of differences, or number of not-shared observations from a \code{comparedf} object.
+Extract differences (\code{diffs()}), number of differences (\code{n.diffs()}),
+or number of not-shared observations (\code{n.diff.obs()}) from a \code{comparedf} object.
 }
 \seealso{
 \code{\link{comparedf}} \code{\link{summary.comparedf}}
