@@ -250,7 +250,7 @@ diffs.comparedf <- function(object, vars = NULL, ..., by.var = FALSE)
   sumNA <- function(df) sum(is.na(df$values.x) | is.na(df$values.y))
   diffs$NAs <- vapply(diffs$values, sumNA, numeric(1))
 
-  if(is.null(vars)) vars <- unique(diffs$var.x, diffs$var.y) else if(!is.character(vars)) stop("'vars' should be NULL or a character vector.")
+  if(is.null(vars)) vars <- unique(c(diffs$var.x, diffs$var.y)) else if(!is.character(vars)) stop("'vars' should be NULL or a character vector.")
 
   rownames(diffs) <- NULL
   if(by.var) return(diffs[diffs$var.x %in% vars | diffs$var.y %in% vars, c("var.x", "var.y", "n", "NAs"), drop = FALSE])
