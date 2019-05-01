@@ -6,6 +6,9 @@
 
 * `comparedf()`: added additional summary table to the `summary()` output.
 
+* `comparedf()`: moved the `max.print...=` arguments to `comparedf.control()`. `max.print.diff=` is now deprecated and is replaced
+  by `max.print.diffs.per.var=`. `max.print.diffs=` was also added to control overall number of differences printed.
+
 # arsenal v3.0.1 (local install only)
 
 * `tableby.control()`: fixed a bug with simplifying categorical and numeric output. (#199, #203)

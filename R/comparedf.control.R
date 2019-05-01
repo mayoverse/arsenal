@@ -13,6 +13,13 @@
 #'   a named vector manually specifying variable names to compare (where the names correspond to columns of
 #'   \code{x} and the values correspond to columns of \code{y}), or a
 #'   character vector denoting equivalence classes for characters in the variable names. See "details", below.
+#' @param max.print.vars Integer denoting maximum number of variables to report in the "variables not shared" and "variables not compared"
+#'   output. \code{NA} will print all differences.
+#' @param max.print.obs Integer denoting maximum number of not-shared observations to report. \code{NA} will print all differences.
+#' @param max.print.diffs.per.var,max.print.diffs Integers denoting the maximum number of differences to report for each variable or overall.
+#'  \code{NA} will print all differences for each variable or overall.
+#' @param max.print.attrs Integers denoting the maximum number of non-identical attributes to report.\code{NA} will print all differences.
+#' @param max.print.diff Deprecated.
 #' @param ... Other arguments (not in use at this time).
 #' @return A list containing the necessary parameters for the \code{\link{comparedf}} function.
 #' @details
@@ -62,7 +69,9 @@ comparedf.control <- function(
   tol.date = "absolute",
   tol.date.val = 0,
   tol.other = "none",
-  tol.vars = "none", ...)
+  tol.vars = "none",
+  max.print.vars = NA, max.print.obs = NA, max.print.diffs.per.var = 10,
+  max.print.diffs = 50, max.print.attrs = NA, ..., max.print.diff = 10)
 {
   #### Logical ####
   if(!is.function(tol.logical)) tol.logical <- match.fun(paste0("tol.logical.", match.arg(tol.logical, several.ok = FALSE)))
@@ -93,7 +102,25 @@ comparedf.control <- function(
     if("case" %in% tol.vars) tol.vars <- c(paste0(letters, LETTERS), tol.vars[tol.vars != "case"])
   }
 
+  if(!missing(max.print.diff))
+  {
+    .Deprecated(msg = "Using 'max.print.diff = ' is deprecated. Use 'max.print.diffs.per.var = ' instead.")
+    max.print.diffs.per.var <- max.print.diff
+  }
+  chk <- function(x)
+  {
+    tmp <- deparse(substitute(x))
+    if(length(x) != 1 || (!is.na(x) && (!is.numeric(x) || x <= 0))) stop("'", tmp, "' needs to be NA or a numeric > 0")
+  }
+
+  chk(max.print.vars)
+  chk(max.print.obs)
+  chk(max.print.diffs.per.var)
+  chk(max.print.diffs)
+  chk(max.print.attrs)
+
   list(tol.logical = tol.logical, tol.num = tol.num, tol.num.val = tol.num.val, int.as.num = int.as.num, tol.char = tol.char,
        tol.factor = tol.factor, factor.as.char = factor.as.char, tol.date = tol.date, tol.date.val = tol.date.val,
-       tol.other = tol.other, tol.vars = tol.vars)
+       tol.other = tol.other, tol.vars = tol.vars, max.print.vars = max.print.vars, max.print.obs = max.print.obs,
+       max.print.diffs.per.var = max.print.diffs.per.var, max.print.diffs = max.print.diffs, max.print.attrs = max.print.attrs)
 }

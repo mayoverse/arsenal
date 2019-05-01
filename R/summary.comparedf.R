@@ -4,11 +4,9 @@
 #' Print a more detailed output of the \code{\link{comparedf}} object.
 #'
 #' @param object An object of class \code{"comparedf"}, as made by the \code{\link{comparedf}} S3 method.
-#' @param ... Other arguments. In \code{print}, these are passed to \code{\link[knitr]{kable}}.
+#' @param ... Other arguments passed to \code{\link{comparedf.control}}. In \code{print}, these are passed to \code{\link[knitr]{kable}}.
 #' @param show.attrs Logical, denoting whether to show the actual attributes which are different. For (e.g.) factors with lots
 #'   of levels, this can make the tables quite wide, so this feature is \code{FALSE} by default.
-#' @param max.print.vars,max.print.obs,max.print.diff,max.print.attrs Integers denoting the maximum number of differences to report
-#'   for each of the three tables. Passing \code{NA} will print all differences.
 #' @param x An object returned by the \code{summary.comparedf} function.
 #' @param format Passed to \code{\link[knitr]{kable}}: the format for the table. The default here is "pandoc".
 #'   To use the default in \code{kable}, pass \code{NULL}.
@@ -20,14 +18,10 @@ NULL
 
 #' @rdname summary.compare
 #' @export
-summary.comparedf <- function(object, ..., show.attrs = FALSE,
-                              max.print.vars = NA, max.print.obs = NA, max.print.diff = 10, max.print.attrs = NA)
+summary.comparedf <- function(object, ..., show.attrs = FALSE)
 {
-  chk <- function(x) is.na(x) || (is.numeric(x) && x > 0)
-  if(!chk(max.print.vars)) stop("'max.print.vars' needs to be a numeric > 0.")
-  if(!chk(max.print.obs)) stop("'max.print.obs' needs to be a numeric > 0.")
-  if(!chk(max.print.diff)) stop("'max.print.diff' needs to be a numeric > 0.")
-  if(!chk(max.print.attrs)) stop("'max.print.attrs' needs to be a numeric > 0.")
+  control <- c(list(...), object$control)
+  control <- do.call("comparedf.control", control[!duplicated(names(control))])
 
   #### start with summaries of the data.frames ####
 
@@ -42,7 +36,7 @@ summary.comparedf <- function(object, ..., show.attrs = FALSE,
     statistic = c(
       "Number of by-variables", "Number of variables in common", "Number of variables compared",
       "Number of variables in x but not y", "Number of variables in y but not x",
-      "Number of variables compared with some observations unequal", "Number of variables compared with all observations equal",
+      "Number of variables compared with some values unequal", "Number of variables compared with all values equal",
       "Number of observations in common", "Number of observations in x but not y", "Number of observations in y but not x",
       "Number of observations with some compared variables unequal", "Number of observations with all compared variables equal",
       "Number of values unequal"
@@ -102,8 +96,7 @@ summary.comparedf <- function(object, ..., show.attrs = FALSE,
     vars.ns.table = vars.ns, vars.nc.table = vars.nc, obs.table = obs.ns,
     diffs.byvar.table = diffs.byvar, diffs.table = diffs.tab,
     attrs.table = attrs.diffs,
-    max.print.vars.ns = max.print.vars, max.print.vars.nc = max.print.vars,
-    max.print.obs = max.print.obs, max.print.diff = max.print.diff, max.print.attrs = max.print.attrs
+    control = control
   ), class = "summary.comparedf")
 }
 
@@ -113,11 +106,15 @@ print.summary.comparedf <- function(x, ..., format = "pandoc")
 {
   orig <- x
   sumdiffs <- sum(x$diffs.byvar.table$n)
+  ctrl <- x$control
+  ctrl$max.print.vars.ns <- ctrl$max.print.vars
+  ctrl$max.print.vars.nc <- ctrl$max.print.vars
 
-  if(is.null(x$max.print.diff) || is.na(x$max.print.diff)) x$max.print.diff <- sumdiffs
+  if(is.null(ctrl$max.print.diffs.per.var) || is.na(ctrl$max.print.diffs.per.var)) ctrl$max.print.diffs.per.var <- sumdiffs
   if(nrow(x$diffs.table) > 0)
   {
-    x$diffs.table <- do.call(rbind, by(x$diffs.table, factor(x$diffs.table$var.x, levels = unique(x$diffs.table$var.x)), utils::head, x$max.print.diff))
+    x$diffs.table <- do.call(rbind, by(x$diffs.table, factor(x$diffs.table$var.x, levels = unique(x$diffs.table$var.x)),
+                                       utils::head, ctrl$max.print.diffs.per.var))
 
     # Need this for knitr to output list-cols of factors and dates correctly
     as_char <- function(x) if(is.factor(x) || is.Date(x)) x <- as.character(x) else x
@@ -128,9 +125,9 @@ print.summary.comparedf <- function(x, ..., format = "pandoc")
   for(v in c("frame.summary", "comparison.summary", "vars.ns", "vars.nc", "obs", "diffs.byvar", "diffs", "attrs"))
   {
     obj <- x[[paste0(v, ".table")]]
-    nprint <- x[[paste0("max.print.", v)]]
+    nprint <- ctrl[[paste0("max.print.", v)]]
 
-    # there is purposefully no max.print.diffs or max.print.frame.summary or max.print.comparison.summary
+    # there is purposefully no max.print.frame.summary or max.print.comparison.summary
     if(is.null(nprint) || is.na(nprint)) nprint <- nrow(obj)
 
     caption <- switch(
@@ -141,22 +138,21 @@ print.summary.comparedf <- function(x, ..., format = "pandoc")
       vars.nc = "Other variables not compared",
       obs = "Observations not shared",
       diffs.byvar = "Differences detected by variable",
-      diffs = paste0("First ", x$max.print.diff, " differences detected per variable"),
+      diffs = "Differences detected",
       attrs = "Non-identical attributes"
     )
     if(nrow(obj) > 0)
     {
-      if(nrow(obj) > nprint)
+      if(v == "diffs" && sumdiffs > min(nprint, nrow(obj)))
       {
-        caption <- paste0(caption, " (", nrow(obj) - nprint, " differences not shown)")
-      } else if(v == "diffs" && sumdiffs > nprint)
+        caption <- paste0(caption, " (", sumdiffs - min(nprint, nrow(obj)), " not shown)")
+      } else if(nrow(obj) > nprint)
       {
-        caption <- paste0(caption, " (", sumdiffs - nprint, " differences not shown)")
+        caption <- paste0(caption, " (", nrow(obj) - nprint, " not shown)")
       }
       print(knitr::kable(utils::head(obj, nprint), format = format, caption = caption, row.names = FALSE, ...))
     } else
     {
-      if(v == "diffs") caption <- "differences detected"
       nocaption <- paste0("No ", tolower(caption))
       print(knitr::kable(data.frame(x = nocaption), format = format, caption = caption, row.names = FALSE, col.names = "", ...))
     }

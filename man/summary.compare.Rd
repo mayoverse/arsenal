@@ -6,22 +6,17 @@
 \alias{print.summary.comparedf}
 \title{The summary method for a \code{comparedf} object}
 \usage{
-\method{summary}{comparedf}(object, ..., show.attrs = FALSE,
-  max.print.vars = NA, max.print.obs = NA, max.print.diff = 10,
-  max.print.attrs = NA)
+\method{summary}{comparedf}(object, ..., show.attrs = FALSE)
 
 \method{print}{summary.comparedf}(x, ..., format = "pandoc")
 }
 \arguments{
 \item{object}{An object of class \code{"comparedf"}, as made by the \code{\link{comparedf}} S3 method.}
 
-\item{...}{Other arguments. In \code{print}, these are passed to \code{\link[knitr]{kable}}.}
+\item{...}{Other arguments passed to \code{\link{comparedf.control}}. In \code{print}, these are passed to \code{\link[knitr]{kable}}.}
 
 \item{show.attrs}{Logical, denoting whether to show the actual attributes which are different. For (e.g.) factors with lots
 of levels, this can make the tables quite wide, so this feature is \code{FALSE} by default.}
-
-\item{max.print.vars, max.print.obs, max.print.diff, max.print.attrs}{Integers denoting the maximum number of differences to report
-for each of the three tables. Passing \code{NA} will print all differences.}
 
 \item{x}{An object returned by the \code{summary.comparedf} function.}
 
