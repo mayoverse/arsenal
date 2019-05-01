@@ -1,4 +1,4 @@
-# arsenal v3.0.1.9000
+# arsenal v3.0.1.9001
 
 * `tableby()`: Added "Nmiss" to default `surv.stats=` in `tableby.control()`.
 
