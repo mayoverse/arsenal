@@ -33,6 +33,31 @@ summary.comparedf <- function(object, ..., show.attrs = FALSE,
 
   frame.summary <- object$frame.summary[c("version", "arg", "ncol", "nrow")]
 
+  #### after we've done all that, summaries of the overall comparison ####
+  diffs.byvar <- diffs(object, by.var = TRUE)
+  diffs.tab <- diffs(object)
+  nobs.shared <- object$frame.summary$n.shared[1]
+  nobs.uneq <- length(unique(diffs.tab$row.x))
+  comparison.summary <- data.frame(
+    statistic = c(
+      "Number of by-variables", "Number of variables in common", "Number of variables compared",
+      "Number of variables in x but not y", "Number of variables in y but not x",
+      "Number of variables compared with some observations unequal", "Number of variables compared with all observations equal",
+      "Number of observations in common", "Number of observations in x but not y", "Number of observations in y but not x",
+      "Number of observations with some compared variables unequal", "Number of observations with all compared variables equal",
+      "Number of values unequal"
+    ),
+    value = c(
+      sum(idx_var_sum(object, "by.variables")), sum(!idx_var_sum(object, "vars.not.shared")), sum(idx_var_sum(object, "vars.compared")),
+      sum(is.na(object$vars.summary$var.y)), sum(is.na(object$vars.summary$var.x)),
+      sum(diffs.byvar$n > 0), sum(diffs.byvar$n == 0),
+      nobs.shared, nrow(object$frame.summary$unique[[1]]), nrow(object$frame.summary$unique[[2]]),
+      nobs.uneq, nobs.shared - nobs.uneq,
+      n.diffs(object)
+    ),
+    stringsAsFactors = FALSE
+  )
+
   #### start with differences in variables first ####
   get.vars.not.shared <- function(a, b)
   {
@@ -72,8 +97,10 @@ summary.comparedf <- function(object, ..., show.attrs = FALSE,
   } else if(!show.attrs) attrs.diffs <- attrs.diffs[c("var.x", "var.y", "name")]
 
   structure(list(
-    frame.summary.table = frame.summary, vars.ns.table = vars.ns, vars.nc.table = vars.nc, obs.table = obs.ns,
-    diffs.byvar.table = diffs(object, by.var = TRUE), diffs.table = diffs(object),
+    frame.summary.table = frame.summary,
+    comparison.summary.table = comparison.summary,
+    vars.ns.table = vars.ns, vars.nc.table = vars.nc, obs.table = obs.ns,
+    diffs.byvar.table = diffs.byvar, diffs.table = diffs.tab,
     attrs.table = attrs.diffs,
     max.print.vars.ns = max.print.vars, max.print.vars.nc = max.print.vars,
     max.print.obs = max.print.obs, max.print.diff = max.print.diff, max.print.attrs = max.print.attrs
@@ -98,22 +125,25 @@ print.summary.comparedf <- function(x, ..., format = "pandoc")
     x$diffs.table$values.y <- lapply(x$diffs.table$values.y, as_char)
   }
 
-  for(v in c("frame.summary", "vars.ns", "vars.nc", "obs", "diffs.byvar", "diffs", "attrs"))
+  for(v in c("frame.summary", "comparison.summary", "vars.ns", "vars.nc", "obs", "diffs.byvar", "diffs", "attrs"))
   {
     obj <- x[[paste0(v, ".table")]]
     nprint <- x[[paste0("max.print.", v)]]
 
-    # there is purposefully no max.print.diffs
+    # there is purposefully no max.print.diffs or max.print.frame.summary or max.print.comparison.summary
     if(is.null(nprint) || is.na(nprint)) nprint <- nrow(obj)
 
-    caption <- switch(v,
-                      frame.summary = "Summary of data.frames",
-                      vars.ns = "Variables not shared",
-                      vars.nc = "Other variables not compared",
-                      obs = "Observations not shared",
-                      diffs.byvar = "Differences detected by variable",
-                      diffs = paste0("First ", x$max.print.diff, " differences detected per variable"),
-                      attrs = "Non-identical attributes")
+    caption <- switch(
+      v,
+      frame.summary = "Summary of data.frames",
+      comparison.summary = "Summary of overall comparison",
+      vars.ns = "Variables not shared",
+      vars.nc = "Other variables not compared",
+      obs = "Observations not shared",
+      diffs.byvar = "Differences detected by variable",
+      diffs = paste0("First ", x$max.print.diff, " differences detected per variable"),
+      attrs = "Non-identical attributes"
+    )
     if(nrow(obj) > 0)
     {
       if(nrow(obj) > nprint)
