@@ -127,6 +127,7 @@ test_that("offset() works", {
 })
 
 test_that("strata() works", {
+  skip_if_not(getRversion() >= "3.3.0")
   skip_if_not_installed("survival", "2.41-3")
   require(survival)
   expect_identical(
@@ -306,6 +307,7 @@ test_that("02/07/2017: Ryan Lennon's R Markdown spacing problem. Also 02/14/2018
 
 
 test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
+  skip_if_not(getRversion() >= "3.3.0")
   skip_if_not_installed("survival", "2.41-3")
   require(survival)
   mdat.tmp <- keep.labels(mdat)

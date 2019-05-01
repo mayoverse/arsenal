@@ -615,6 +615,7 @@ test_that("01/24/2018: count, countN, and countpct at the same time (#51, #201)"
 })
 
 test_that("01/30/2018: additional follow-up statistics (#32)", {
+  skip_if_not(getRversion() >= "3.3.0")
   skip_if_not_installed("survival", "2.41-3")
   require(survival)
   expect_identical(
@@ -761,26 +762,6 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
       "|-  Range     | 1.000 - 3.000 |   NA    | 1.000 - 3.000 |        |"
     )
   )
-  if(require(survival) && packageVersion("survival") >= "2.41-3")
-  {
-    expect_identical(
-      capture.kable(summary(tableby(y ~ Surv(x), data=dat, times = 1:2,
-                                    surv.stats=c("medSurv", "Nevents", "NeventsSurv", "Nrisk", "NriskSurv", "medTime")), text = TRUE)),
-      c("|                    | A (N=3)  | B (N=2) | Total (N=5) | p value|",
-        "|:-------------------|:--------:|:-------:|:-----------:|-------:|",
-        "|Surv(x)             |          |         |             |        |",
-        "|-  Median Survival  |  2.000   |   NA    |    2.000    |        |",
-        "|-  Events           |    3     |   NA    |      3      |        |",
-        "|-  time = 1         | 1 (66.7) |   NA    |  1 (66.7)   |        |",
-        "|-  time = 2         | 2 (33.3) |   NA    |  2 (33.3)   |        |",
-        "|-  time = 1         |    3     |   NA    |      3      |        |",
-        "|-  time = 2         |    2     |   NA    |      2      |        |",
-        "|-  time = 1         | 3 (66.7) |   NA    |  3 (66.7)   |        |",
-        "|-  time = 2         | 2 (33.3) |   NA    |  2 (33.3)   |        |",
-        "|-  Median Follow-Up |    NA    |   NA    |     NA      |        |"
-      )
-    )
-  } else skip("survival package not available or not the right version.")
 
   dat2 <- data.frame(Group = rep(1:2, each=5), A = rep(c(1, NA), each=5), B = rep(factor(c("A", NA)), each=5))
   expect_identical(
@@ -797,6 +778,26 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
     )
   )
 
+  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  expect_identical(
+    capture.kable(summary(tableby(y ~ Surv(x), data=dat, times = 1:2,
+                                  surv.stats=c("medSurv", "Nevents", "NeventsSurv", "Nrisk", "NriskSurv", "medTime")), text = TRUE)),
+    c("|                    | A (N=3)  | B (N=2) | Total (N=5) | p value|",
+      "|:-------------------|:--------:|:-------:|:-----------:|-------:|",
+      "|Surv(x)             |          |         |             |        |",
+      "|-  Median Survival  |  2.000   |   NA    |    2.000    |        |",
+      "|-  Events           |    3     |   NA    |      3      |        |",
+      "|-  time = 1         | 1 (66.7) |   NA    |  1 (66.7)   |        |",
+      "|-  time = 2         | 2 (33.3) |   NA    |  2 (33.3)   |        |",
+      "|-  time = 1         |    3     |   NA    |      3      |        |",
+      "|-  time = 2         |    2     |   NA    |      2      |        |",
+      "|-  time = 1         | 3 (66.7) |   NA    |  3 (66.7)   |        |",
+      "|-  time = 2         | 2 (33.3) |   NA    |  2 (33.3)   |        |",
+      "|-  Median Follow-Up |    NA    |   NA    |     NA      |        |"
+    )
+  )
 })
 
 
@@ -1019,6 +1020,7 @@ test_that("03/27/2019: cat.simplify and numeric.simplify work right, even with c
 })
 
 test_that("04/12/2019: Missing Surv()[,2] (#208)", {
+  skip_if_not(getRversion() >= "3.3.0")
   skip_if_not_installed("survival", "2.41-3")
   require(survival)
   dat <- data.frame(by = c(1, 1, 2), time = c(1, 2, 2), event = c(0, NA, 1))
