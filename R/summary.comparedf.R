@@ -12,11 +12,11 @@
 #'   To use the default in \code{kable}, pass \code{NULL}.
 #' @return An object of class \code{"summary.comparedf"} is returned.
 #' @seealso \code{\link{comparedf}}, \code{\link{comparedf.control}}
-#' @name summary.compare
+#' @name summary.comparedf
 NULL
 #> NULL
 
-#' @rdname summary.compare
+#' @rdname summary.comparedf
 #' @export
 summary.comparedf <- function(object, ..., show.attrs = FALSE)
 {
@@ -100,7 +100,7 @@ summary.comparedf <- function(object, ..., show.attrs = FALSE)
   ), class = "summary.comparedf")
 }
 
-#' @rdname summary.compare
+#' @rdname summary.comparedf
 #' @export
 print.summary.comparedf <- function(x, ..., format = "pandoc")
 {
