@@ -154,7 +154,8 @@ compare_attrs <- function(i, v, x_, y_)
 ####################################################################################################
 ####################################################################################################
 
-idx_var_sum <- function(object, which = c("vars.not.shared", "vars.compared", "vars.not.compared", "differences.found", "non.identical.attributes"))
+idx_var_sum <- function(object, which = c("vars.not.shared", "vars.compared", "vars.not.compared",
+                                          "differences.found", "non.identical.attributes", "by.variables"))
 {
   which <- match.arg(which, several.ok = FALSE)
   if(which == "vars.not.shared")
@@ -163,6 +164,9 @@ idx_var_sum <- function(object, which = c("vars.not.shared", "vars.compared", "v
   } else if(which == "vars.not.compared")
   {
     vapply(object$vars.summary$values, identical, logical(1), y = "Not compared")
+  } else if(which == "by.variables")
+  {
+    vapply(object$vars.summary$values, identical, logical(1), y = "by-variable")
   } else if(which == "vars.compared")
   {
     vapply(object$vars.summary$values, function(elt) is.data.frame(elt), logical(1))
@@ -177,7 +181,8 @@ idx_var_sum <- function(object, which = c("vars.not.shared", "vars.compared", "v
 
 #' Extract differences
 #'
-#' Extract differences, number of differences, or number of not-shared observations from a \code{comparedf} object.
+#' Extract differences (\code{diffs()}), number of differences (\code{n.diffs()}),
+#' or number of not-shared observations (\code{n.diff.obs()}) from a \code{comparedf} object.
 #'
 #' @param object An object of class \code{comparedf} or \code{summary.comparedf}.
 #' @param vars A character vector of variable names to subset the results to.
@@ -250,7 +255,7 @@ diffs.comparedf <- function(object, vars = NULL, ..., by.var = FALSE)
   sumNA <- function(df) sum(is.na(df$values.x) | is.na(df$values.y))
   diffs$NAs <- vapply(diffs$values, sumNA, numeric(1))
 
-  if(is.null(vars)) vars <- unique(diffs$var.x, diffs$var.y) else if(!is.character(vars)) stop("'vars' should be NULL or a character vector.")
+  if(is.null(vars)) vars <- unique(c(diffs$var.x, diffs$var.y)) else if(!is.character(vars)) stop("'vars' should be NULL or a character vector.")
 
   rownames(diffs) <- NULL
   if(by.var) return(diffs[diffs$var.x %in% vars | diffs$var.y %in% vars, c("var.x", "var.y", "n", "NAs"), drop = FALSE])

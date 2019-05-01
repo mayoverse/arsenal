@@ -9,7 +9,9 @@ comparedf.control(tol.logical = "none", tol.num = c("absolute",
   int.as.num = FALSE, tol.char = c("none", "trim", "case", "both"),
   tol.factor = c("none", "levels", "labels"), factor.as.char = FALSE,
   tol.date = "absolute", tol.date.val = 0, tol.other = "none",
-  tol.vars = "none", ...)
+  tol.vars = "none", max.print.vars = NA, max.print.obs = NA,
+  max.print.diffs.per.var = 10, max.print.diffs = 50,
+  max.print.attrs = NA, ..., max.print.diff = 10)
 }
 \arguments{
 \item{tol.logical, tol.num, tol.char, tol.factor, tol.date, tol.other}{A function or one of the shortcut character strings,
@@ -28,7 +30,19 @@ a named vector manually specifying variable names to compare (where the names co
 \code{x} and the values correspond to columns of \code{y}), or a
 character vector denoting equivalence classes for characters in the variable names. See "details", below.}
 
+\item{max.print.vars}{Integer denoting maximum number of variables to report in the "variables not shared" and "variables not compared"
+output. \code{NA} will print all differences.}
+
+\item{max.print.obs}{Integer denoting maximum number of not-shared observations to report. \code{NA} will print all differences.}
+
+\item{max.print.diffs.per.var, max.print.diffs}{Integers denoting the maximum number of differences to report for each variable or overall.
+\code{NA} will print all differences for each variable or overall.}
+
+\item{max.print.attrs}{Integers denoting the maximum number of non-identical attributes to report.\code{NA} will print all differences.}
+
 \item{...}{Other arguments (not in use at this time).}
+
+\item{max.print.diff}{Deprecated.}
 }
 \value{
 A list containing the necessary parameters for the \code{\link{comparedf}} function.

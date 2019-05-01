@@ -264,25 +264,27 @@ test_that("tol.vars is working correctly", {
                  "'hi' not found in colnames of y")
 })
 
-
-tmp <- comparedf(mockstudy, mockstudy2, by = "case", tol.vars = c("._ ", "case"),
-                 int.as.num = TRUE, tol.num.val = 10,
-                 tol.factor = "labels", factor.as.char = TRUE, tol.char = "case")
+tol <- comparedf.control(
+  tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
+  int.as.num = TRUE,           # compare integers and numerics
+  tol.num.val = 10,            # allow absolute differences <= 10
+  tol.factor = "labels",       # match only factor labels
+  factor.as.char = TRUE,       # compare factors and characters
+  tol.char = "case"            # ignore case in character vectors
+)
 
 test_that("tolerances are working correctly", {
   expect_identical(
-    capture.output(tmp),
-    c("Compare Object"                                                            ,
-      ""                                                                          ,
-      "Function Call: "                                                           ,
-      "comparedf(x = mockstudy, y = mockstudy2, by = \"case\", tol.vars = c(\"._ \", ",
-      "    \"case\"), int.as.num = TRUE, tol.num.val = 10, tol.factor = \"labels\", " ,
-      "    factor.as.char = TRUE, tol.char = \"case\")"                           ,
-      ""                                                                          ,
-      "Shared: 13 variables and 1495 observations."                               ,
-      "Not shared: 1 variables and 4 observations."                               ,
-      ""                                                                          ,
-      "Differences found in 3/12 variables compared."                             ,
+    capture.output(comparedf(mockstudy, mockstudy2, by = "case", control = tol)),
+    c("Compare Object"                                                        ,
+      ""                                                                      ,
+      "Function Call: "                                                       ,
+      "comparedf(x = mockstudy, y = mockstudy2, by = \"case\", control = tol)",
+      ""                                                                      ,
+      "Shared: 13 variables and 1495 observations."                           ,
+      "Not shared: 1 variables and 4 observations."                           ,
+      ""                                                                      ,
+      "Differences found in 3/12 variables compared."                         ,
       "4 variables compared have non-identical attributes."
     )
   )
@@ -295,32 +297,48 @@ tol.minus9 <- function(x, y, tol)
   return(!idx1 & idx2)
 }
 
-tmp2 <- comparedf(mockstudy, mockstudy2, by = "case",
-                  tol.vars = c("._ ", "case"), # dots=underscores=spaces, ignore case
-                  int.as.num = TRUE,           # compare integers and numerics
-                  tol.num.val = 10,            # allow absolute differences <= 10
-                  tol.factor = "labels",       # match only factor labels
-                  factor.as.char = TRUE,       # compare factors and characters
-                  tol.char = "case",           # ignore case in character vectors
-                  tol.num = tol.minus9         # ignore NA -> -9 changes
-)
+tol$tol.num <- tol.minus9 # ignore NA -> -9 changes
 
 test_that("custom tolerances are working correctly", {
   expect_identical(
-    capture.output(tmp2),
-    c("Compare Object"                                                            ,
-      ""                                                                          ,
-      "Function Call: "                                                           ,
-      "comparedf(x = mockstudy, y = mockstudy2, by = \"case\", tol.vars = c(\"._ \", ",
-      "    \"case\"), int.as.num = TRUE, tol.num.val = 10, tol.factor = \"labels\", " ,
-      "    factor.as.char = TRUE, tol.char = \"case\", tol.num = tol.minus9)"     ,
-      ""                                                                          ,
-      "Shared: 13 variables and 1495 observations."                               ,
-      "Not shared: 1 variables and 4 observations."                               ,
-      ""                                                                          ,
-      "Differences found in 2/12 variables compared."                             ,
+    capture.output(comparedf(mockstudy, mockstudy2, by = "case", control = tol)),
+    c("Compare Object"                                                        ,
+      ""                                                                      ,
+      "Function Call: "                                                       ,
+      "comparedf(x = mockstudy, y = mockstudy2, by = \"case\", control = tol)",
+      ""                                                                      ,
+      "Shared: 13 variables and 1495 observations."                           ,
+      "Not shared: 1 variables and 4 observations."                           ,
+      ""                                                                      ,
+      "Differences found in 2/12 variables compared."                         ,
       "4 variables compared have non-identical attributes."
     )
+  )
+})
+
+
+
+tols <- comparedf.control(
+  tol.vars = c("._ ", "case"), # dots=underscores=spaces; don't match up Arm and arm
+  int.as.num = TRUE,           # compare integers and numerics
+  tol.factor = "labels",       # match only factor labels
+  factor.as.char = TRUE,       # compare factors and characters
+  tol.char = "case"            # ignore case in character vectors
+)
+
+test_that("Summary numbers are reported correctly", {
+  expect_equal(
+    summary(comparedf(mockstudy, mockstudy2, by = "case", control = tols))$comparison.summary.table$value,
+    c(1, 13, 12, 1, 0, 3, 9, 1495, 4, 0, 269, 1226, 270)
+  )
+})
+
+tols$tol.vars <- "._ "
+
+test_that("Summary numbers are still reported correctly", {
+  expect_equal(
+    summary(comparedf(mockstudy, mockstudy2, by = "case", control = tols))$comparison.summary.table$value,
+    c(1, 12, 11, 2, 1, 3, 8, 1495, 4, 0, 269, 1226, 270)
   )
 })
 
@@ -356,6 +374,26 @@ test_that("Summary output looks right (i.e. for factors)", {
       "--------  -----------  -----  -----"                                           ,
       "x         mockstudy       14   1499"                                           ,
       "y         mockstudy2      13   1495"                                           ,
+      ""                                                                              ,
+      ""                                                                              ,
+      ""                                                                              ,
+      "Table: Summary of overall comparison"                                          ,
+      ""                                                                              ,
+      "statistic                                                      value"          ,
+      "------------------------------------------------------------  ------"          ,
+      "Number of by-variables                                             1"          ,
+      "Number of variables in common                                     10"          ,
+      "Number of variables compared                                       7"          ,
+      "Number of variables in x but not y                                 4"          ,
+      "Number of variables in y but not x                                 3"          ,
+      "Number of variables compared with some values unequal              3"          ,
+      "Number of variables compared with all values equal                 4"          ,
+      "Number of observations in common                                1495"          ,
+      "Number of observations in x but not y                              4"          ,
+      "Number of observations in y but not x                              0"          ,
+      "Number of observations with some compared variables unequal     1495"          ,
+      "Number of observations with all compared variables equal           0"          ,
+      "Number of values unequal                                        1762"          ,
       ""                                                                              ,
       ""                                                                              ,
       ""                                                                              ,
@@ -407,7 +445,7 @@ test_that("Summary output looks right (i.e. for factors)", {
       ""                                                                              ,
       ""                                                                              ,
       ""                                                                              ,
-      "Table: First 10 differences detected per variable (1741 differences not shown)",
+      "Table: Differences detected (1741 not shown)"                                  ,
       ""                                                                              ,
       "var.x   var.y     case  values.x   values.y    row.x   row.y"                  ,
       "------  ------  ------  ---------  ---------  ------  ------"                  ,
@@ -453,7 +491,8 @@ test_that("Summary output looks right (i.e. for factors)", {
 test_that("Summary output with attributes and max.print options", {
   expect_identical(
     capture.kable(summary(comparedf(mockstudy, mockstudy2, by = "case"), show.attrs = TRUE,
-                          max.print.vars = 2, max.print.obs = 3, max.print.diff = 3, max.print.attrs = 3)),
+                          max.print.vars = 2, max.print.obs = 3, max.print.diffs.per.var = 3,
+                          max.print.diffs = NA, max.print.attrs = 3)),
     c("Table: Summary of data.frames"                                                ,
       ""                                                                             ,
       "version   arg           ncol   nrow"                                          ,
@@ -463,7 +502,27 @@ test_that("Summary output with attributes and max.print options", {
       ""                                                                             ,
       ""                                                                             ,
       ""                                                                             ,
-      "Table: Variables not shared (5 differences not shown)"                        ,
+      "Table: Summary of overall comparison"                                         ,
+      ""                                                                             ,
+      "statistic                                                      value"         ,
+      "------------------------------------------------------------  ------"         ,
+      "Number of by-variables                                             1"         ,
+      "Number of variables in common                                     10"         ,
+      "Number of variables compared                                       7"         ,
+      "Number of variables in x but not y                                 4"         ,
+      "Number of variables in y but not x                                 3"         ,
+      "Number of variables compared with some values unequal              3"         ,
+      "Number of variables compared with all values equal                 4"         ,
+      "Number of observations in common                                1495"         ,
+      "Number of observations in x but not y                              4"         ,
+      "Number of observations in y but not x                              0"         ,
+      "Number of observations with some compared variables unequal     1495"         ,
+      "Number of observations with all compared variables equal           0"         ,
+      "Number of values unequal                                        1762"         ,
+      ""                                                                             ,
+      ""                                                                             ,
+      ""                                                                             ,
+      "Table: Variables not shared (5 not shown)"                                    ,
       ""                                                                             ,
       "version   variable    position  class     "                                   ,
       "--------  ---------  ---------  ----------"                                   ,
@@ -481,7 +540,7 @@ test_that("Summary output with attributes and max.print options", {
       ""                                                                             ,
       ""                                                                             ,
       ""                                                                             ,
-      "Table: Observations not shared (1 differences not shown)"                     ,
+      "Table: Observations not shared (1 not shown)"                                 ,
       ""                                                                             ,
       "version     case   observation"                                               ,
       "--------  ------  ------------"                                               ,
@@ -505,7 +564,7 @@ test_that("Summary output with attributes and max.print options", {
       ""                                                                             ,
       ""                                                                             ,
       ""                                                                             ,
-      "Table: First 3 differences detected per variable (1755 differences not shown)",
+      "Table: Differences detected (1755 not shown)"                                 ,
       ""                                                                             ,
       "var.x   var.y     case  values.x   values.y    row.x   row.y"                 ,
       "------  ------  ------  ---------  ---------  ------  ------"                 ,
@@ -519,7 +578,7 @@ test_that("Summary output with attributes and max.print options", {
       ""                                                                             ,
       ""                                                                             ,
       ""                                                                             ,
-      "Table: Non-identical attributes (3 differences not shown)"                    ,
+      "Table: Non-identical attributes (3 not shown)"                                ,
       ""                                                                             ,
       "var.x   var.y   name     attr.x                attr.y              "          ,
       "------  ------  -------  --------------------  --------------------"          ,
