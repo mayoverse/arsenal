@@ -1,33 +1,35 @@
-# arsenal v3.0.1.9001
+# arsenal v3.1.0
 
-* `tableby()`: Added "Nmiss" to default `surv.stats=` in `tableby.control()`.
+* `tableby()` / `paired()`: 
 
-* `tableby()`: fixed a bug when some `Surv()` elements are NA. (#208)
+    - Added "Nmiss" to default `surv.stats=` in `tableby.control()`.
 
-* `comparedf()`: added additional summary table to the `summary()` output.
-
-* `comparedf()`: moved the `max.print...=` arguments to `comparedf.control()`. `max.print.diff=` is now deprecated and is replaced
-  by `max.print.diffs.per.var=`. `max.print.diffs=` was also added to control overall number of differences printed.
-
-# arsenal v3.0.1 (local install only)
-
-* `tableby.control()`: fixed a bug with simplifying categorical and numeric output. (#199, #203)
-  This fix also allows for simplification of custom statistics. (#200)
+    - Fixed a bug when some `Surv()` elements are NA. (#208)
+    
+    - `tableby.control()`: fixed a bug with simplifying categorical and numeric output. (#199, #203)
+      This fix also allows for simplification of custom statistics. (#200)
   
-* `tableby.control()`: added `date.simplify=` and `ordered.simplify=` arguments. (#202)
-  The order of arguments has changed slightly for consistency.
+    - `tableby.control()`: added `date.simplify=` and `ordered.simplify=` arguments. (#202)
+      The order of arguments has changed slightly for consistency.
   
-* `paired.control()`: took away the arguments that should be the same as `tableby.control()`, and only included arguments with
-  new defaults or which don't appear in `tableby.control()`.
+    - `paired.control()`: took away the arguments that should be the same as `tableby.control()`, and only included arguments with
+      new defaults or which don't appear in `tableby.control()`.
 
-* `tableby()` / `paired()`: added the functions `countN()` and `Nrisk()` (#201). `Nrisk()` now outputs what `NriskSurv()` used to; `NriskSurv()`
-  now outputs what its name suggests: the number at risk, and the survival. Additionally, `as.countpct()` gains the `which.pct=` argument,
-  whose default of `0` may break the formatting of percents (`digits.pct=`).
-  
-* `comparedf()`: fixed a bug with numeric percent tolerances, when both values being compared are 0. (#206)
+    - Added the functions `countN()` and `Nrisk()` (#201). `Nrisk()` now outputs what `NriskSurv()` used to; `NriskSurv()`
+      now outputs what its name suggests: the number at risk, and the survival. Additionally, `as.countpct()` gains the `which.pct=` argument,
+      whose default of `0` may break the formatting of percents (`digits.pct=`).
 
-* `comparedf()`: fixed a bug in `diffs()` (and hence `summary()`) when no variables are compared (#207). Note that this change
-  also included a change to the by-variables reported in the `comparedf()` object when merging over row.names.
+* `comparedf()`:
+
+    - Added additional summary table to the `summary()` output.
+
+    - Moved the `max.print...=` arguments to `comparedf.control()`. `max.print.diff=` is now deprecated and is replaced
+      by `max.print.diffs.per.var=`. `max.print.diffs=` was also added to control overall number of differences printed.
+
+    - Fixed a bug with numeric percent tolerances when both values being compared are 0. (#206)
+
+    - Fixed a bug in `diffs()` (and hence `summary()`) when no variables are compared (#207). Note that this change
+      also included a change to the by-variables reported in the `comparedf()` object when merging over row.names.
 
 # arsenal v3.0.0
 
