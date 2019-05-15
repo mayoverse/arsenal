@@ -154,13 +154,16 @@ compare_attrs <- function(i, v, x_, y_)
 ####################################################################################################
 ####################################################################################################
 
-idx_var_sum <- function(object, which = c("vars.not.shared", "vars.compared", "vars.not.compared",
+idx_var_sum <- function(object, which = c("vars.not.shared", "nonby.vars.shared", "vars.compared", "vars.not.compared",
                                           "differences.found", "non.identical.attributes", "by.variables"))
 {
   which <- match.arg(which, several.ok = FALSE)
   if(which == "vars.not.shared")
   {
     vapply(object$vars.summary$values, is.null, logical(1))
+  } else if(which == "nonby.vars.shared")
+  {
+    vapply(object$vars.summary$values, function(elt) !is.null(elt) && !identical(elt, "by-variable"), logical(1))
   } else if(which == "vars.not.compared")
   {
     vapply(object$vars.summary$values, identical, logical(1), y = "Not compared")

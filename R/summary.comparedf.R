@@ -34,7 +34,8 @@ summary.comparedf <- function(object, ..., show.attrs = FALSE)
   nobs.uneq <- length(unique(diffs.tab$row.x))
   comparison.summary <- data.frame(
     statistic = c(
-      "Number of by-variables", "Number of variables in common", "Number of variables compared",
+      "Number of by-variables",
+      "Number of non-by variables in common", "Number of variables compared",
       "Number of variables in x but not y", "Number of variables in y but not x",
       "Number of variables compared with some values unequal", "Number of variables compared with all values equal",
       "Number of observations in common", "Number of observations in x but not y", "Number of observations in y but not x",
@@ -42,7 +43,8 @@ summary.comparedf <- function(object, ..., show.attrs = FALSE)
       "Number of values unequal"
     ),
     value = c(
-      sum(idx_var_sum(object, "by.variables")), sum(!idx_var_sum(object, "vars.not.shared")), sum(idx_var_sum(object, "vars.compared")),
+      !attr(object$frame.summary$by, "byrow")*sum(idx_var_sum(object, "by.variables")),
+      sum(idx_var_sum(object, "nonby.vars.shared")), sum(idx_var_sum(object, "vars.compared")),
       sum(is.na(object$vars.summary$var.y)), sum(is.na(object$vars.summary$var.x)),
       sum(diffs.byvar$n > 0), sum(diffs.byvar$n == 0),
       nobs.shared, nrow(object$frame.summary$unique[[1]]), nrow(object$frame.summary$unique[[2]]),

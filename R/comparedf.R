@@ -85,7 +85,7 @@ comparedf <- function(x, y, by = NULL, by.x = by, by.y = by, control = NULL, ...
     y[["..row.names.."]] <- if(byrow) seq_len(nrow(y)) else row.names(y)
     by.y[by.y == "row.names"] <- "..row.names.."
   }
-  frame.summary$by <- list(by.x, by.y)
+  frame.summary$by <- set_attr(list(by.x, by.y), "byrow", byrow)
   frame.summary$attrs <- tmp.attrs
 
   #### tweak the column names ####
@@ -147,7 +147,7 @@ print.comparedf <- function(x, ...)
   cat("Function Call: \n")
   print(x$Call)
   cat("\n")
-  cat("Shared: ", sum(!idx_var_sum(x, "vars.not.shared")), " variables and ", x$frame.summary$n.shared[1], " observations.\n", sep = "")
+  cat("Shared: ", sum(idx_var_sum(x, "nonby.vars.shared")), " non-by variables and ", x$frame.summary$n.shared[1], " observations.\n", sep = "")
   cat("Not shared: ", sum(idx_var_sum(x, "vars.not.shared")), " variables and ",
       n.diff.obs(x), " observations.\n", sep = "")
   cat("\n")

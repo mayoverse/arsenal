@@ -4,6 +4,10 @@
 
 * `comparedf()`: fixed a bug when "row.names" was used in combination with other by-variables. (#212)
 
+* `summary.comparedf()`: fixed a bug with reporting blank by-variables. (#213)
+
+* `summary.comparedf()`: fixed a bug with reporting by-variables as variables in common. (#214)
+
 # arsenal v3.1.0
 
 * `tableby()` / `paired()`: 

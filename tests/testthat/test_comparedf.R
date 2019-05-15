@@ -24,9 +24,9 @@ test_that("Basic comparison works: by row", {
     c("Compare Object"                                     ,
       ""                                                   ,
       "Function Call: "                                    ,
-      "comparedf(x = df1, y = df2)"               ,
+      "comparedf(x = df1, y = df2)"                        ,
       ""                                                   ,
-      "Shared: 4 variables and 3 observations."            ,
+      "Shared: 3 non-by variables and 3 observations."     ,
       "Not shared: 2 variables and 0 observations."        ,
       ""                                                   ,
       "Differences found in 2/3 variables compared."       ,
@@ -42,9 +42,9 @@ test_that("Basic comparison works: by id", {
     c("Compare Object"                                     ,
       ""                                                   ,
       "Function Call: "                                    ,
-      "comparedf(x = df1, y = df2, by = \"id\")"  ,
+      "comparedf(x = df1, y = df2, by = \"id\")"           ,
       ""                                                   ,
-      "Shared: 3 variables and 3 observations."            ,
+      "Shared: 2 non-by variables and 3 observations."     ,
       "Not shared: 2 variables and 0 observations."        ,
       ""                                                   ,
       "Differences found in 1/2 variables compared."       ,
@@ -60,9 +60,9 @@ test_that("Basic comparison works: by row.names", {
     c("Compare Object"                                          ,
       ""                                                        ,
       "Function Call: "                                         ,
-      "comparedf(x = df1, y = df2, by = \"row.names\")",
+      "comparedf(x = df1, y = df2, by = \"row.names\")"         ,
       ""                                                        ,
-      "Shared: 4 variables and 3 observations."                 ,
+      "Shared: 3 non-by variables and 3 observations."          ,
       "Not shared: 2 variables and 0 observations."             ,
       ""                                                        ,
       "Differences found in 3/3 variables compared."            ,
@@ -78,9 +78,9 @@ test_that("Basic comparison works: by row.names for x and something else for y",
     c("Compare Object"                                                          ,
       ""                                                                        ,
       "Function Call: "                                                         ,
-      "comparedf(x = df1, y = df2, by.x = \"row.names\", by.y = \"d\")",
+      "comparedf(x = df1, y = df2, by.x = \"row.names\", by.y = \"d\")"         ,
       ""                                                                        ,
-      "Shared: 4 variables and 3 observations."                                 ,
+      "Shared: 3 non-by variables and 3 observations."                          ,
       "Not shared: 1 variables and 0 observations."                             ,
       ""                                                                        ,
       "Differences found in 2/3 variables compared."                            ,
@@ -98,9 +98,9 @@ test_that("List-column comparison works: by id", {
     c("Compare Object"                                     ,
       ""                                                   ,
       "Function Call: "                                    ,
-      "comparedf(x = df1, y = df2, by = \"id\")"  ,
+      "comparedf(x = df1, y = df2, by = \"id\")"           ,
       ""                                                   ,
-      "Shared: 4 variables and 3 observations."            ,
+      "Shared: 3 non-by variables and 3 observations."     ,
       "Not shared: 2 variables and 0 observations."        ,
       ""                                                   ,
       "Differences found in 2/3 variables compared."       ,
@@ -119,9 +119,9 @@ test_that("Dates comparison works: by id", {
     c("Compare Object"                                     ,
       ""                                                   ,
       "Function Call: "                                    ,
-      "comparedf(x = df1, y = df2, by = \"id\")"  ,
+      "comparedf(x = df1, y = df2, by = \"id\")"           ,
       ""                                                   ,
-      "Shared: 5 variables and 3 observations."            ,
+      "Shared: 4 non-by variables and 3 observations."     ,
       "Not shared: 2 variables and 0 observations."        ,
       ""                                                   ,
       "Differences found in 3/4 variables compared."       ,
@@ -137,9 +137,9 @@ test_that("Basic mockstudy comparison works: by id", {
     c("Compare Object"                                                  ,
       ""                                                                ,
       "Function Call: "                                                 ,
-      "comparedf(x = mockstudy, y = mockstudy2, by = \"case\")",
+      "comparedf(x = mockstudy, y = mockstudy2, by = \"case\")"         ,
       ""                                                                ,
-      "Shared: 10 variables and 1495 observations."                     ,
+      "Shared: 9 non-by variables and 1495 observations."               ,
       "Not shared: 7 variables and 4 observations."                     ,
       ""                                                                ,
       "Differences found in 3/7 variables compared."                    ,
@@ -157,9 +157,9 @@ test_that("Comparison with empty data.frames works", {
     c("Compare Object"                                            ,
       ""                                                          ,
       "Function Call: "                                           ,
-      "comparedf(x = mockstudy, y = mck2, by = \"case\")",
+      "comparedf(x = mockstudy, y = mck2, by = \"case\")"         ,
       ""                                                          ,
-      "Shared: 10 variables and 0 observations."                  ,
+      "Shared: 9 non-by variables and 0 observations."            ,
       "Not shared: 7 variables and 1499 observations."            ,
       ""                                                          ,
       "Differences found in 0/7 variables compared."              ,
@@ -174,9 +174,9 @@ test_that("Comparison with empty data.frames works", {
     c("Compare Object"                                                 ,
       ""                                                               ,
       "Function Call: "                                                ,
-      "comparedf(x = mockstudy, y = mck2, by = \"row.names\")",
+      "comparedf(x = mockstudy, y = mck2, by = \"row.names\")"         ,
       ""                                                               ,
-      "Shared: 11 variables and 0 observations."                       ,
+      "Shared: 10 non-by variables and 0 observations."                ,
       "Not shared: 7 variables and 1499 observations."                 ,
       ""                                                               ,
       "Differences found in 0/8 variables compared."                   ,
@@ -191,9 +191,9 @@ test_that("Comparison with empty data.frames works", {
     c("Compare Object"                                       ,
       ""                                                     ,
       "Function Call: "                                      ,
-      "comparedf(x = mck1, y = mck2, by = \"case\")",
+      "comparedf(x = mck1, y = mck2, by = \"case\")"         ,
       ""                                                     ,
-      "Shared: 10 variables and 0 observations."             ,
+      "Shared: 9 non-by variables and 0 observations."       ,
       "Not shared: 7 variables and 0 observations."          ,
       ""                                                     ,
       "Differences found in 0/7 variables compared."         ,
@@ -229,7 +229,7 @@ test_that("tol.vars is working correctly", {
       "Function Call: "                                                  ,
       "comparedf(x = mockstudy, y = mockstudy2, by = \"case\", tol.vars = \"._ \")",
       ""                                                                 ,
-      "Shared: 12 variables and 1495 observations."                      ,
+      "Shared: 11 non-by variables and 1495 observations."               ,
       "Not shared: 3 variables and 4 observations."                      ,
       ""                                                                 ,
       "Differences found in 3/9 variables compared."                     ,
@@ -245,7 +245,7 @@ test_that("tol.vars is working correctly", {
       "comparedf(x = mockstudy, y = mockstudy2, by = \"case\", tol.vars = c(\"._ \", ",
       "    \"case\"))"                                                   ,
       ""                                                                 ,
-      "Shared: 13 variables and 1495 observations."                      ,
+      "Shared: 12 non-by variables and 1495 observations."               ,
       "Not shared: 1 variables and 4 observations."                      ,
       ""                                                                 ,
       "Differences found in 3/10 variables compared."                    ,
@@ -281,7 +281,7 @@ test_that("tolerances are working correctly", {
       "Function Call: "                                                       ,
       "comparedf(x = mockstudy, y = mockstudy2, by = \"case\", control = tol)",
       ""                                                                      ,
-      "Shared: 13 variables and 1495 observations."                           ,
+      "Shared: 12 non-by variables and 1495 observations."                    ,
       "Not shared: 1 variables and 4 observations."                           ,
       ""                                                                      ,
       "Differences found in 3/12 variables compared."                         ,
@@ -307,7 +307,7 @@ test_that("custom tolerances are working correctly", {
       "Function Call: "                                                       ,
       "comparedf(x = mockstudy, y = mockstudy2, by = \"case\", control = tol)",
       ""                                                                      ,
-      "Shared: 13 variables and 1495 observations."                           ,
+      "Shared: 12 non-by variables and 1495 observations."                    ,
       "Not shared: 1 variables and 4 observations."                           ,
       ""                                                                      ,
       "Differences found in 2/12 variables compared."                         ,
@@ -329,7 +329,7 @@ tols <- comparedf.control(
 test_that("Summary numbers are reported correctly", {
   expect_equal(
     summary(comparedf(mockstudy, mockstudy2, by = "case", control = tols))$comparison.summary.table$value,
-    c(1, 13, 12, 1, 0, 3, 9, 1495, 4, 0, 269, 1226, 270)
+    c(1, 12, 12, 1, 0, 3, 9, 1495, 4, 0, 269, 1226, 270)
   )
 })
 
@@ -338,7 +338,7 @@ tols$tol.vars <- "._ "
 test_that("Summary numbers are still reported correctly", {
   expect_equal(
     summary(comparedf(mockstudy, mockstudy2, by = "case", control = tols))$comparison.summary.table$value,
-    c(1, 12, 11, 2, 1, 3, 8, 1495, 4, 0, 269, 1226, 270)
+    c(1, 11, 11, 2, 1, 3, 8, 1495, 4, 0, 269, 1226, 270)
   )
 })
 
@@ -382,7 +382,7 @@ test_that("Summary output looks right (i.e. for factors)", {
       "statistic                                                      value"          ,
       "------------------------------------------------------------  ------"          ,
       "Number of by-variables                                             1"          ,
-      "Number of variables in common                                     10"          ,
+      "Number of non-by variables in common                               9"          ,
       "Number of variables compared                                       7"          ,
       "Number of variables in x but not y                                 4"          ,
       "Number of variables in y but not x                                 3"          ,
@@ -507,7 +507,7 @@ test_that("Summary output with attributes and max.print options", {
       "statistic                                                      value"         ,
       "------------------------------------------------------------  ------"         ,
       "Number of by-variables                                             1"         ,
-      "Number of variables in common                                     10"         ,
+      "Number of non-by variables in common                               9"         ,
       "Number of variables compared                                       7"         ,
       "Number of variables in x but not y                                 4"         ,
       "Number of variables in y but not x                                 3"         ,
@@ -627,7 +627,7 @@ test_that("2019/05/15: using row.names with other by-variables", {
       "Function Call: "                                      ,
       "comparedf(x = d, y = f, by = c(\"a\", \"row.names\"))",
       ""                                                     ,
-      "Shared: 3 variables and 1 observations."              ,
+      "Shared: 1 non-by variables and 1 observations."       ,
       "Not shared: 0 variables and 4 observations."          ,
       ""                                                     ,
       "Differences found in 1/1 variables compared."         ,
@@ -636,6 +636,9 @@ test_that("2019/05/15: using row.names with other by-variables", {
   )
 })
 
+test_that("2019/05/15: empty by-variable isn't counted", {
+  expect_equal(summary(comparedf(mockstudy, mockstudy))$comparison.summary.table$value, c(0, 14, 14, 0, 0, 0, 14, 1499, 0, 0, 0, 1499, 0))
+})
 
 
 
