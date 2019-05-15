@@ -1,3 +1,7 @@
+# arsenal v3.1.1.9000
+
+* `summary.comparedf()`: removed the "comparedf.frame.summary" class from the first element to allow it to print. (#211)
+
 # arsenal v3.1.0
 
 * `tableby()` / `paired()`: 

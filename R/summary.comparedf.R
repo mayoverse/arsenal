@@ -25,7 +25,7 @@ summary.comparedf <- function(object, ..., show.attrs = FALSE)
 
   #### start with summaries of the data.frames ####
 
-  frame.summary <- object$frame.summary[c("version", "arg", "ncol", "nrow")]
+  frame.summary <- as.data.frame(object$frame.summary[c("version", "arg", "ncol", "nrow")])
 
   #### after we've done all that, summaries of the overall comparison ####
   diffs.byvar <- diffs(object, by.var = TRUE)
