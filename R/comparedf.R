@@ -78,12 +78,12 @@ comparedf <- function(x, y, by = NULL, by.x = by, by.y = by, control = NULL, ...
   if("row.names" %in% by.x)
   {
     x[["..row.names.."]] <- if(byrow) seq_len(nrow(x)) else row.names(x)
-    by.x <- "..row.names.."
+    by.x[by.x == "row.names"] <- "..row.names.."
   }
   if("row.names" %in% by.y)
   {
     y[["..row.names.."]] <- if(byrow) seq_len(nrow(y)) else row.names(y)
-    by.y <- "..row.names.."
+    by.y[by.y == "row.names"] <- "..row.names.."
   }
   frame.summary$by <- list(by.x, by.y)
   frame.summary$attrs <- tmp.attrs

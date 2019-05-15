@@ -617,6 +617,24 @@ test_that("2019/04/10: summary breaks when no variables were compared (#207)", {
   check_it(data.frame(x = 1, y = 1), data.frame(x = 1, y = 1.1), by = "x", n = 1)
 })
 
+test_that("2019/05/15: using row.names with other by-variables", {
+  d <- data.frame(a = 1:3, b = 2:4, row.names = c("A", "B", "C"))
+  f <- data.frame(a = 3:1, b = 2:4, row.names = c("C", "A", "B"))
+  expect_identical(
+    capture.output(comparedf(d, f, by = c("a", "row.names"))),
+    c("Compare Object"                                       ,
+      ""                                                     ,
+      "Function Call: "                                      ,
+      "comparedf(x = d, y = f, by = c(\"a\", \"row.names\"))",
+      ""                                                     ,
+      "Shared: 3 variables and 1 observations."              ,
+      "Not shared: 0 variables and 4 observations."          ,
+      ""                                                     ,
+      "Differences found in 1/1 variables compared."         ,
+      "0 variables compared have non-identical attributes."
+    )
+  )
+})
 
 
 

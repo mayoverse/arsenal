@@ -2,6 +2,8 @@
 
 * `summary.comparedf()`: removed the "comparedf.frame.summary" class from the first element to allow it to print. (#211)
 
+* `comparedf()`: fixed a bug when "row.names" was used in combination with other by-variables. (#212)
+
 # arsenal v3.1.0
 
 * `tableby()` / `paired()`: 
