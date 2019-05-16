@@ -43,7 +43,7 @@ summary.comparedf <- function(object, ..., show.attrs = FALSE)
       "Number of values unequal"
     ),
     value = c(
-      !attr(object$frame.summary$by, "byrow")*sum(idx_var_sum(object, "by.variables")),
+      (!attr(object$frame.summary$by, "byrow"))*sum(idx_var_sum(object, "by.variables")),
       sum(idx_var_sum(object, "nonby.vars.shared")), sum(idx_var_sum(object, "vars.compared")),
       sum(is.na(object$vars.summary$var.y)), sum(is.na(object$vars.summary$var.x)),
       sum(diffs.byvar$n > 0), sum(diffs.byvar$n == 0),

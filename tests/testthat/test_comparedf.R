@@ -640,6 +640,10 @@ test_that("2019/05/15: empty by-variable isn't counted", {
   expect_equal(summary(comparedf(mockstudy, mockstudy))$comparison.summary.table$value, c(0, 14, 14, 0, 0, 0, 14, 1499, 0, 0, 0, 1499, 0))
 })
 
+test_that("2019/05/16: multiple by-variables are counted", {
+  expect_equal(summary(comparedf(mockstudy, mockstudy, by = c("case", "sex", "arm")))$comparison.summary.table$value,
+               c(3, 11, 11, 0, 0, 0, 11, 1499, 0, 0, 0, 1499, 0))
+})
 
 
 
