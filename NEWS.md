@@ -8,6 +8,9 @@
 
 * `summary.comparedf()`: fixed a bug with reporting by-variables as variables in common. (#214)
 
+* `summary.tableby()`: fixed a bug with formatting when strata aren't in alphabetical order and have different number of elements
+  (e.g., if only one includes missing values). (#215)
+
 # arsenal v3.1.0
 
 * `tableby()` / `paired()`: 

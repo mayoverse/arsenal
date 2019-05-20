@@ -372,3 +372,23 @@ test_that("01/31/2019: modpval.tableby (#174, #175)", {
     )
   )
 })
+
+test_that("05/20/2019: non-alphabetical strata with missing values (#215)", {
+  dat <- data.frame(
+    strat = factor(rep(1:2, each = 5), levels = 2:1),
+    a = c("a", "a", "a", "b", NA, "b", "a", "b", "a", "b")
+  )
+  expect_identical(
+    capture.kable(summary(tableby(~ a, data = dat, strata = strat))),
+    c("|strat |                         | Overall (N=10) |",
+      "|:-----|:------------------------|:--------------:|",
+      "|2     |**a**                    |                |",
+      "|      |&nbsp;&nbsp;&nbsp;a      |   2 (40.0%)    |",
+      "|      |&nbsp;&nbsp;&nbsp;b      |   3 (60.0%)    |",
+      "|1     |**a**                    |                |",
+      "|      |&nbsp;&nbsp;&nbsp;N-Miss |       1        |",
+      "|      |&nbsp;&nbsp;&nbsp;a      |   3 (75.0%)    |",
+      "|      |&nbsp;&nbsp;&nbsp;b      |   1 (25.0%)    |"
+    )
+  )
+})

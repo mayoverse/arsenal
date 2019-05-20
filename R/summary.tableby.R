@@ -103,7 +103,10 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, cont
   }
 
   #### don't show the same statistics more than once ####
-  dups <- if(hasStrata) unlist(by(df, df[[4]], function(x) duplicated(x$variable), simplify = FALSE), use.names = FALSE) else duplicated(df$variable)
+  dups <- if(hasStrata)
+  {
+    unlist(by(df, factor(df[[4]], levels = unique(df[[4]])), function(x) duplicated(x$variable), simplify = FALSE), use.names = FALSE)
+  } else duplicated(df$variable)
   df$p.value[dups] <- ""
   if(hasStrata)
   {
