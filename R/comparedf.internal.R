@@ -80,7 +80,7 @@ compare_values <- function(i, v, df, byvars, contr)
   int.num <- function(vr) is.integer(vr) || is.numeric(vr)
   fac.chr <- function(vr) is.factor(vr)  || is.character(vr)
 
-  if(!identical(v$class.x[i], v$class.y[i]) &&
+  if(length(intersect(v$class.x[[i]], v$class.y[[i]])) == 0 &&
      !(contr$int.as.num && int.num(var.x) && int.num(var.y)) &&
      !(contr$factor.as.char && fac.chr(var.x) && fac.chr(var.y))) return("Not compared")
 

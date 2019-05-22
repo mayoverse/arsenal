@@ -645,6 +645,13 @@ test_that("2019/05/16: multiple by-variables are counted", {
                c(3, 11, 11, 0, 0, 0, 11, 1499, 0, 0, 0, 1499, 0))
 })
 
+test_that("2019/05/22: vectors that share a class are still compared (#216)", {
+  dat2 <- dat <- data.frame(x = 1:5)
+  class(dat2$x) <- c("myclass", class(dat2$x))
+  cmp <- summary(comparedf(dat, dat2))
+  expect_true(nrow(cmp$vars.nc.table) == 0)
+  expect_true(nrow(cmp$diffs.table) == 0)
+})
 
 
 

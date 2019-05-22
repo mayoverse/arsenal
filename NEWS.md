@@ -4,6 +4,8 @@
 
 * `comparedf()`: fixed a bug when "row.names" was used in combination with other by-variables. (#212)
 
+* `comparedf()`: allowed for comparison of variables who have any class in common. (#216)
+
 * `summary.comparedf()`: fixed a bug with reporting blank by-variables. (#213)
 
 * `summary.comparedf()`: fixed a bug with reporting by-variables as variables in common. (#214)
