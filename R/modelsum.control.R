@@ -93,7 +93,9 @@ modelsum.control <- function(
   ##Other  model fits:  logLik,AIC,BIC
   binomial.stats.valid <- c(
     "Nmiss", "OR", "CI.lower.OR", "CI.upper.OR", "p.value", "concordance",  # default
-    "estimate", "CI.OR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "N", "Nmiss2", "endpoint", "std.error", "statistic",
+    "estimate", "CI.OR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate",
+    "CI.wald", "CI.lower.wald", "CI.upper.wald", "CI.OR.wald", "CI.lower.OR.wald", "CI.upper.OR.wald",
+    "N", "Nmiss2", "endpoint", "std.error", "statistic",
     "logLik", "AIC", "BIC", "null.deviance", "deviance", "df.residual", "df.null"
   )
 
@@ -107,6 +109,12 @@ modelsum.control <- function(
   }
   if(any(binomial.stats == "CI.estimate")) {
     binomial.stats <- unique(c(binomial.stats[binomial.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
+  }
+  if(any(binomial.stats == "CI.wald")) {
+    binomial.stats <- unique(c(binomial.stats[binomial.stats != "CI.wald"], "CI.lower.wald", "CI.upper.wald"))
+  }
+  if(any(binomial.stats == "CI.OR.wald")) {
+    binomial.stats <- unique(c(binomial.stats[binomial.stats != "CI.OR.wald"], "CI.lower.OR.wald", "CI.upper.OR.wald"))
   }
 
   ##########################
@@ -155,7 +163,7 @@ modelsum.control <- function(
   }
 
   ##########################
-  ## Poisson stats:
+  ## Negbin stats:
   ##########################
 
   negbin.stats.valid <- c(

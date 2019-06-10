@@ -13,6 +13,8 @@
 * `summary.tableby()`: fixed a bug with formatting when strata aren't in alphabetical order and have different number of elements
   (e.g., if only one includes missing values). (#215)
 
+* `modelsum()`: added Wald confidence intervals to `binom.stats=`. (#219)
+
 # arsenal v3.1.0
 
 * `tableby()` / `paired()`: 

@@ -252,7 +252,12 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
           coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=control$conf.level)
           coeffORTidy[coeffORTidy$term == "Intercept", -1] <- NA
           coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=control$conf.level)
-          coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
+
+          waldTidy <- broom::confint_tidy(fit, conf.level=control$conf.level, func = stats::confint.default)
+
+          coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high,
+                             CI.lower.wald=waldTidy$conf.low, CI.upper.wald=waldTidy$conf.high,
+                             CI.lower.OR.wald=exp(waldTidy$conf.low), CI.upper.OR.wald=exp(waldTidy$conf.high))
           modelGlance <- c(broom::glance(fit), concordance = pROC::auc(rocOut))
 
         } else if (family == "quasipoisson" || family == "poisson") {

@@ -813,6 +813,7 @@ The available summary statistics, by varible type, are:
 * `binomial`,`quasibinomial`: Logistic regression models 
   +  default:  `OR, CI.lower.OR, CI.upper.OR, p.value, concordance, Nmiss`
   +  optional: `estimate, CI.OR, CI.estimate, CI.lower.estimate, CI.upper.estimate,`
+        `CI.wald, CI.lower.wald, CI.upper.wald, CI.OR.wald, CI.lower.OR.wald, CI.upper.OR.wald,`
         `N, Nmiss2, endpoint, std.error, statistic, logLik, AIC, BIC, null.deviance, deviance, df.residual, df.null`
 * `gaussian`: Linear regression models 
   +  default:  `estimate, std.error, p.value, adj.r.squared, Nmiss`
@@ -863,11 +864,13 @@ The full description of these parameters that can be shown for models include:
 * `CI.lower.HR, CI.upper.HR`: print the confidence interval for the HR 
 * `OR`: print the odd's ratio (for logistic models), i.e. exp(beta)
 * `CI.lower.OR, CI.upper.OR`: print the confidence interval for the OR
+* `CI.lower.OR.wald, CI.upper.OR.wald`: print the Wald confidence interval for the OR
 * `RR`: print the risk ratio (for poisson models), i.e. exp(beta)
 * `CI.lower.RR, CI.upper.RR`: print the confidence interval for the RR
 * `estimate`: print beta coefficient
 * `standardized.estimate`: print the standardized beta coefficient 
 * `CI.lower.estimate, CI.upper.estimate`: print the confidence interval for the beta coefficient
+* `CI.lower.wald, CI.upper.wald`: print the Wald confidence interval for the beta coefficient
 * `edf`: print the effective degrees of freedom.
 * `theta`: print the estimate of theta.
 * `SE.theta`: print the estimate of theta's standard error.
