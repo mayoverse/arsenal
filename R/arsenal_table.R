@@ -215,7 +215,7 @@ merge.arsenal_table <- function(x, y, all = FALSE, all.x = all, all.y = all, ...
     if(!identical(x$tables[[ytrm]]$strata, y$tables[[ytrm]]$strata)) stop("Strata not identical for term ", ytrm)
     if(!identical(x$tables[[ytrm]]$adjust, y$tables[[ytrm]]$adjust)) stop("Adjust not identical for term ", ytrm)
     if(x$tables[[ytrm]]$hasWeights != y$tables[[ytrm]]$hasWeights) stop("Weights not present in both objects for term ", ytrm)
-    if(!identical(x$tables[[ytrm]]$family, y$tables[[ytrm]]$family)) stop("Weights not present in both objects for term ", ytrm)
+    if(!identical(x$tables[[ytrm]]$family, y$tables[[ytrm]]$family)) stop("'family' not the same in both objects for term ", ytrm)
 
     xtrms <- names(y$tables[[ytrm]]$x)
     x$tables[[ytrm]]$x[xtrms] <- y$tables[[ytrm]]$x
