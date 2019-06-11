@@ -219,6 +219,9 @@ merge.arsenal_table <- function(x, y, all = FALSE, all.x = all, all.y = all, ...
 
     xtrms <- names(y$tables[[ytrm]]$x)
     x$tables[[ytrm]]$x[xtrms] <- y$tables[[ytrm]]$x
+    if(!is.null(x$tables[[ytrm]]$control.list) && !is.null(y$tables[[ytrm]]$control.list))
+      x$tables[[ytrm]]$control.list[xtrms] <- y$tables[[ytrm]]$control.list
+
     for(j in seq_along(x$tables[[ytrm]]$tables))
     {
       x$tables[[ytrm]]$tables[[j]][xtrms] <- y$tables[[ytrm]]$tables[[j]]

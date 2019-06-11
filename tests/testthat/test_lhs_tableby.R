@@ -392,3 +392,28 @@ test_that("05/20/2019: non-alphabetical strata with missing values (#215)", {
     )
   )
 })
+
+test_that("06/11/2019: retaining control.list with merge() (#221)", {
+
+  tab1 <- tableby(sex ~ age, data = mockstudy)
+  tab2 <- tableby(sex ~ anova(ps, digits = 0), data = mockstudy)
+
+  # this also doesn't work... I'm planning to fix this
+  expect_identical(
+    capture.kable(summary(merge(tab1, tab2))),
+    capture.kable(summary(merge(tab2, tab1)[2:1]))
+  )
+  expect_identical(
+    capture.kable(summary(merge(tab1, tab2), text = TRUE)),
+    c("|             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                 |                 |   0.048|",
+      "|-  Mean (SD) | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |",
+      "|-  Range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |",
+      "|ps           |                 |                 |                 |   0.345|",
+      "|-  N-Miss    |       162       |       104       |       266       |        |",
+      "|-  Mean (SD) |      1 (1)      |      1 (1)      |      1 (1)      |        |",
+      "|-  Range     |      0 - 2      |      0 - 2      |      0 - 2      |        |"
+    )
+  )
+})

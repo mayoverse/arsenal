@@ -15,6 +15,8 @@
 
 * `modelsum()`: added Wald confidence intervals to `binom.stats=`. (#219)
 
+* Fixed a bug with `merge.arsenal_table()` losing control parameters for `tableby()` objects. (#221)
+
 # arsenal v3.1.0
 
 * `tableby()` / `paired()`: 
