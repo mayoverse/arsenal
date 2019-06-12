@@ -182,7 +182,8 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
     xTerms <- Map(modeldf, names(modeldf), f = function(col, nm) {
       if(is.null(nameEff <- attr(col, "name"))) nameEff <- nm
       if(is.null(labelEff <- attr(col, "label"))) labelEff <- nameEff
-      list(variable=nameEff, label=labelEff, term=nm)
+      if(is.null(termEff <- attr(col, "term"))) termEff <- nm
+      list(variable=nameEff, label=labelEff, term=termEff, term.orig = nm)
     })
     names(xTerms) <- vapply(xTerms, "[[", NA_character_, "variable")
 

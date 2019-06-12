@@ -1035,3 +1035,30 @@ test_that("04/12/2019: Missing Surv()[,2] (#208)", {
     )
   )
 })
+
+
+test_that("06/12/2019: labelTranslations for non-default stat tests (#220, #222)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ age + kwt(fu.time), data = mockstudy), labelTranslations = list(fu.time = "FU time"), text = TRUE)),
+    c("|             |   Male (N=916)    |  Female (N=583)   |  Total (N=1499)   | p value|",
+      "|:------------|:-----------------:|:-----------------:|:-----------------:|-------:|",
+      "|Age in Years |                   |                   |                   |   0.048|",
+      "|-  Mean (SD) |  60.455 (11.369)  |  59.247 (11.722)  |  59.985 (11.519)  |        |",
+      "|-  Range     |  19.000 - 88.000  |  22.000 - 88.000  |  19.000 - 88.000  |        |",
+      "|FU time      |                   |                   |                   |   0.679|",
+      "|-  Mean (SD) | 649.345 (454.332) | 648.674 (475.472) | 649.084 (462.511) |        |",
+      "|-  Range     | 0.000 - 2472.000  | 9.000 - 2441.000  | 0.000 - 2472.000  |        |"
+    )
+  )
+
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ age + kwt(fu.time), data = mockstudy), labelTranslations = list(fu.time = "FU time"), text = TRUE)),
+    capture.kable(summary(tableby(sex ~ age + kwt(fu.time), data = mockstudy), labelTranslations = list(`kwt(fu.time)` = "FU time"), text = TRUE))
+  )
+
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ kwt(fu.time), data = set_labels(mockstudy, list(fu.time = "FU time"))), labelTranslations = list(NULL))),
+    capture.kable(summary(tableby(sex ~ kwt(fu.time), data = mockstudy)))
+  )
+
+})

@@ -17,6 +17,11 @@
 
 * Fixed a bug with `merge.arsenal_table()` losing control parameters for `tableby()` objects. (#221)
 
+* `tableby()` / `paired()`: allowed for variable-name-only `labelTranslations=` assignment for terms with inline statistical test specification.
+  Backward compatibility should be maintained here. (#220)
+
+* `tableby()` / `paired()`: fixed a bug with assigning `NULL` labels with inline statistical test specifications. (#222)
+
 # arsenal v3.1.0
 
 * `tableby()` / `paired()`: 

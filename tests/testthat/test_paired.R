@@ -191,7 +191,7 @@ test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134
   expect_identical(
     capture.kable(summary(paired(tp ~ mcnemar(Cat, digits.count = 1, digits.pct = 0, cat.simplify = TRUE) + paired.t(Num, digits = 1) +
                                    sign.test(Num2, "meansd") + paired.t(Dat, "median", date.simplify = TRUE),
-                                 data = dat, id = id, numeric.simplify = TRUE), text = TRUE)),
+                                 data = dat, id = id, numeric.simplify = TRUE), text = TRUE, labelTranslations = list(Dat = "Date"))),
     c("|             |    1 (N=4)    |    2 (N=4)    | Difference (N=4) | p value|",
       "|:------------|:-------------:|:-------------:|:----------------:|-------:|",
       "|Cat          |   2.0 (50%)   |   2.0 (50%)   |    1.0 (50%)     |   1.000|",
@@ -199,7 +199,7 @@ test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134
       "|-  Mean (SD) |   2.8 (1.3)   |   3.2 (1.0)   |    0.5 (1.0)     |        |",
       "|-  Range     |   1.0 - 4.0   |   2.0 - 4.0   |    -1.0 - 1.0    |        |",
       "|Num2         | 1.500 (0.577) | 1.250 (0.957) |  -0.250 (1.500)  |   1.000|",
-      "|Dat          |  2018-05-03   |  2018-05-04   |      0.500       |   0.182|"
+      "|Date         |  2018-05-03   |  2018-05-04   |      0.500       |   0.182|"
     )
   )
 })

@@ -6,7 +6,7 @@
 inline_tableby_stat_test <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL,
                                      numeric.simplify = NULL, cat.simplify = NULL, ordered.simplify = NULL, date.simplify = NULL)
 {
-  attr(x, "name") <- deparse(substitute(x))
+  attr(x, "term") <- attr(x, "name") <- deparse(substitute(x))
   attr(x, "stats") <- if(missing(...)) NULL else list(...)
   attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
                                   numeric.simplify = numeric.simplify, cat.simplify = cat.simplify,
@@ -21,6 +21,7 @@ inline_tableby_stat_test <- function(x, ..., digits = NULL, digits.count = NULL,
   y <- NextMethod()
   attr(y, "name") <- attr(x, "name")
   attr(y, "stats") <- attr(x, "stats")
+  attr(y, "term") <- attr(x, "term")
   attr(y, "control.list") <- attr(x, "control.list")
   class(y) <- class(y)[class(y) != "keep_tableby_attrs"] # purposely drop the class
   y

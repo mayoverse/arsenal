@@ -156,7 +156,14 @@ make_ms_labs <- function(x)
         val <- unname(value[L])
         for(j in seq_along(x$tables[[i]]$x))
         {
-          if(nm %in% x$tables[[i]]$x[[j]]$term) x$tables[[i]]$x[[j]]$label[x$tables[[i]]$x[[j]]$term == nm] <- val
+          if(nm %in% x$tables[[i]]$x[[j]]$term)
+          {
+            x$tables[[i]]$x[[j]]$label[x$tables[[i]]$x[[j]]$term == nm] <- val
+          } else if(nm %in% x$tables[[i]]$x[[j]]$term.orig)
+          {
+            # for backwards-compatibility
+            x$tables[[i]]$x[[j]]$label[x$tables[[i]]$x[[j]]$term.orig == nm] <- val
+          }
         }
         for(j in seq_along(x$tables[[i]]$adjust))
         {
