@@ -1,4 +1,4 @@
-# arsenal v3.1.1.9000
+# arsenal v3.2.0
 
 * `comparedf()`:
 

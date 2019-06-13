@@ -1,14 +1,10 @@
-## Submission for arsenal 3.1.0
+## Submission for arsenal 3.2.0
 
 This is a new version. In this version:
 
-* Moved some arguments from `summary.comparedf()` to `comparedf.control()` for consistency, while retaining backwards-compatibility.
+* Closed 10 bugs/feature requests.
 
-* Renamed one argument in `comparedf.control()`.
-
-* Closed several bugs/feature requests.
-
-* We updated and clarified documentation where appropriate.
+* We updated documentation where appropriate.
 
 ## Test environments
 
