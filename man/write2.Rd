@@ -103,7 +103,6 @@ write2(tab1, tempfile(fileext = ".rtf"),
   quiet = TRUE, # passed to rmarkdown::render
   title = "My cool new title", # passed to summary.tableby
   output_format = rmarkdown::rtf_document)
-}
 
 write2html(list(
   "# Header 1", # a header
@@ -112,6 +111,7 @@ write2html(list(
 ),
   tempfile(fileext = ".html"),
   quite = TRUE)
+}
 }
 \seealso{
 \code{\link{write2word}}, \code{\link{write2pdf}}, \code{\link{write2html}},

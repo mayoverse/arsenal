@@ -45,7 +45,6 @@
 #'   quiet = TRUE, # passed to rmarkdown::render
 #'   title = "My cool new title", # passed to summary.tableby
 #'   output_format = rmarkdown::rtf_document)
-#' }
 #'
 #' write2html(list(
 #'   "# Header 1", # a header
@@ -54,6 +53,7 @@
 #' ),
 #'   tempfile(fileext = ".html"),
 #'   quite = TRUE)
+#' }
 #' @author Ethan Heinzen, adapted from code from Krista Goergen
 #' @name write2
 NULL
