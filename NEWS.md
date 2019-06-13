@@ -1,26 +1,32 @@
 # arsenal v3.1.1.9000
 
-* `summary.comparedf()`: removed the "comparedf.frame.summary" class from the first element to allow it to print. (#211)
+* `comparedf()`:
 
-* `comparedf()`: fixed a bug when "row.names" was used in combination with other by-variables. (#212)
+    - Fixed a bug when "row.names" was used in combination with other by-variables. (#212)
 
-* `comparedf()`: allowed for comparison of variables who have any class in common. (#216)
+    - Allowed for comparison of variables which have any class in common. (#216)
 
-* `summary.comparedf()`: fixed a bug with reporting blank by-variables. (#213)
+    - `summary.comparedf()`:
+    
+        * Removed the "comparedf.frame.summary" class from the first element to allow it to print. (#211)
 
-* `summary.comparedf()`: fixed a bug with reporting by-variables as variables in common. (#214)
+        * Fixed a bug with reporting blank by-variables. (#213)
 
-* `summary.tableby()`: fixed a bug with formatting when strata aren't in alphabetical order and have different number of elements
-  (e.g., if only one includes missing values). (#215)
+        * Fixed a bug with reporting by-variables as variables in common. (#214)
 
 * `modelsum()`: added Wald confidence intervals to `binom.stats=`. (#219)
 
-* Fixed a bug with `merge.arsenal_table()` losing control parameters for `tableby()` objects. (#221)
+* `tableby()` / `paired()`:
 
-* `tableby()` / `paired()`: allowed for variable-name-only `labelTranslations=` assignment for terms with inline statistical test specification.
-  Backward compatibility should be maintained here. (#220)
+    - Fixed a bug with `merge.arsenal_table()` losing control parameters for `tableby()` objects. (#221)
 
-* `tableby()` / `paired()`: fixed a bug with assigning `NULL` labels with inline statistical test specifications. (#222)
+    - Allowed for variable-name-only `labelTranslations=` assignment for terms with inline statistical test specification.
+      Backward compatibility should be maintained here. (#220)
+
+    - Fixed a bug with assigning `NULL` labels with inline statistical test specifications. (#222)
+
+    - `summary.tableby()`: fixed a bug with formatting when strata aren't in alphabetical order and have different number of elements
+      (e.g., if only one includes missing values). (#215)
 
 # arsenal v3.1.0
 
