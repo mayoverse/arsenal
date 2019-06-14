@@ -33,6 +33,7 @@ Suggests:
     magrittr,
     knitr,
     rmarkdown,
+    testthat,
     xtable,
     pander,
     survival (>= 2.41-3),
@@ -46,7 +47,6 @@ Depends:
     R (>= 3.2.0),
     stats (>= 3.2.0)
 Imports:
-    testthat,
     utils (>= 3.2.0)
 URL: https://github.com/eheinzen/arsenal, https://cran.r-project.org/package=arsenal
 BugReports: https://github.com/eheinzen/arsenal/issues
