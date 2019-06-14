@@ -175,7 +175,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
       if(!is.numeric(weights) || any(weights < 0)) stop("'weights' must be a numeric vector and must be non-negative")
       modeldf[["(weights)"]] <- NULL
       control$test <- FALSE
-    } else weights <- rep(1, nrow(modeldf))
+    } else weights <- NULL
 
     ###### Check for strata ######
 

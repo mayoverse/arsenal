@@ -1,3 +1,8 @@
+# arsenal v3.2.1.9000
+
+* `tableby()`: redid how weights are handled. The only user-visible changes should be that standard deviations
+  on length-1 groups are now reported as `NA` instead of `NaN`.
+
 # arsenal v3.2.0
 
 * `comparedf()`:
