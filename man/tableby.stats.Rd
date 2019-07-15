@@ -3,6 +3,7 @@
 \name{tableby.stats}
 \alias{tableby.stats}
 \alias{meansd}
+\alias{meanCI}
 \alias{medianrange}
 \alias{median}
 \alias{range}
@@ -28,6 +29,8 @@
 \title{tableby Summary Statistics Functions}
 \usage{
 meansd(x, na.rm = TRUE, weights = NULL, ...)
+
+meanCI(x, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
 
 medianrange(x, na.rm = TRUE, weights = NULL, ...)
 
@@ -86,6 +89,8 @@ rowbinomCI(x, levels = NULL, by, by.levels = sort(unique(by)),
 
 \item{...}{Other arguments.}
 
+\item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.}
+
 \item{times}{A vector of times to use for survival summaries.}
 
 \item{levels}{A vector of levels that character \code{x}s should have.}
@@ -93,8 +98,6 @@ rowbinomCI(x, levels = NULL, by, by.levels = sort(unique(by)),
 \item{by}{a vector of the by-values.}
 
 \item{by.levels}{a vector of the levels of \code{by}.}
-
-\item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.}
 }
 \value{
 Usually a vector of the appropriate numbers.

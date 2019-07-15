@@ -36,6 +36,24 @@ meansd <- function(x, na.rm=TRUE, weights = NULL, ...) {
 
 #' @rdname tableby.stats
 #' @export
+meanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95,  ...) {
+  y <- if(!is.null(weights) || (na.rm && allNA(x)))
+  {
+    NA_real_
+  } else
+  {
+    if(na.rm) x <- x[!is.na(x)]
+    s <- sd(x, na.rm = na.rm)
+    m <- mean(x, na.rm = na.rm)
+    n <- length(x)
+    a <- (1 - conf.level)/2
+    c(m, m + qt(c(a, 1 - a), df = n - 1) * s / sqrt(n))
+  }
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
+}
+
+#' @rdname tableby.stats
+#' @export
 medianrange <- function(x, na.rm=TRUE, weights = NULL, ...) {
   y <- if(na.rm && allNA(x)) NA_real_ else wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights)
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
