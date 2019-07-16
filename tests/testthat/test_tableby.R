@@ -487,7 +487,7 @@ test_that("05/24/2017: Katherine King's count vs countpct", {
       "|-  Male      |        0        |        1        |        0        |        1        |",
       "|-  Female    |        2        |        1        |        1        |        4        |",
       "|age          |                 |                 |                 |                 |",
-      "|-  Mean (SD) | 62.000 (16.971) | 68.000 (1.414)  |  71.000 (NaN)   | 66.200 (9.418)  |",
+      "|-  Mean (SD) | 62.000 (16.971) | 68.000 (1.414)  |   71.000 (NA)   | 66.200 (9.418)  |",
       "|-  Range     | 50.000 - 74.000 | 67.000 - 69.000 | 71.000 - 71.000 | 50.000 - 74.000 |"
     )
   )
@@ -870,6 +870,17 @@ test_that("09/07/2018: using countpct with numerics (#137)", {
       "|-  3 |  0 (0.0%)  |  0 (0.0%)  | 1 (100.0%) |  1 (33.3%)  |        |"
     )
   )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ anova(ps, "count", "meansd"), data = mockstudy), text = TRUE)),
+    c("|             | Male (N=916)  | Female (N=583) | Total (N=1499) | p value|",
+      "|:------------|:-------------:|:--------------:|:--------------:|-------:|",
+      "|ps           |               |                |                |   0.345|",
+      "|-  0         |      391      |      244       |      635       |        |",
+      "|-  1         |      329      |      202       |      531       |        |",
+      "|-  2         |      34       |       33       |       67       |        |",
+      "|-  Mean (SD) | 0.527 (0.583) | 0.559 (0.621)  | 0.539 (0.598)  |        |"
+    )
+  )
 })
 
 test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134) and numeric.simplify (#139)", {
@@ -1077,6 +1088,19 @@ test_that("06/24/2019: fe() and chisq() works with only one level (#227)", {
       "|:-------------|:------------:|:--------------:|:-------------:|-------:|",
       "|Treatment Arm |              |                |               | < 0.001|",
       "|-  F: FOLFOX  | 411 (100.0%) |  280 (100.0%)  | 691 (100.0%)  |        |"
+    )
+  )
+})
+
+test_that("07/16/2019: n's in tableby header work with weights", {
+  d <- data.frame(a = 1:10, b = rep(c("A", "B"), 5), w = 1:10)
+  expect_identical(
+    capture.kable(summary(tableby(b ~ a, weights = w, data = d), text = TRUE)),
+    c("|             |   A (N=25)    |    B (N=30)    |  Total (N=55)  |",
+      "|:------------|:-------------:|:--------------:|:--------------:|",
+      "|a            |               |                |                |",
+      "|-  Mean (SD) | 6.600 (2.719) | 7.333 (2.870)  | 7.000 (2.622)  |",
+      "|-  Range     | 1.000 - 9.000 | 2.000 - 10.000 | 1.000 - 10.000 |"
     )
   )
 })

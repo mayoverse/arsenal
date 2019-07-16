@@ -3,6 +3,7 @@
 \name{tableby.stats}
 \alias{tableby.stats}
 \alias{meansd}
+\alias{meanCI}
 \alias{medianrange}
 \alias{median}
 \alias{range}
@@ -27,60 +28,57 @@
 \alias{rowbinomCI}
 \title{tableby Summary Statistics Functions}
 \usage{
-meansd(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
+meansd(x, na.rm = TRUE, weights = NULL, ...)
 
-medianrange(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
+meanCI(x, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
 
-median(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
+medianrange(x, na.rm = TRUE, weights = NULL, ...)
+
+median(x, na.rm = TRUE, weights = NULL, ...)
 
 range(x, na.rm = TRUE, ...)
 
-Nevents(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
+Nevents(x, na.rm = TRUE, weights = NULL, ...)
 
-medSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
+medSurv(x, na.rm = TRUE, weights = NULL, ...)
 
-NeventsSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), times = 1:5,
-  ...)
+NeventsSurv(x, na.rm = TRUE, weights = NULL, times = 1:5, ...)
 
-NriskSurv(x, na.rm = TRUE, weights = rep(1, nrow(x)), times = 1:5,
-  ...)
+NriskSurv(x, na.rm = TRUE, weights = NULL, times = 1:5, ...)
 
-Nrisk(x, na.rm = TRUE, weights = rep(1, nrow(x)), times = 1:5, ...)
+Nrisk(x, na.rm = TRUE, weights = NULL, times = 1:5, ...)
 
-medTime(x, na.rm = TRUE, weights = rep(1, nrow(x)), ...)
+medTime(x, na.rm = TRUE, weights = NULL, ...)
 
-q1q3(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
+q1q3(x, na.rm = TRUE, weights = NULL, ...)
 
-medianq1q3(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
+medianq1q3(x, na.rm = TRUE, weights = NULL, ...)
 
-iqr(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
+iqr(x, na.rm = TRUE, weights = NULL, ...)
 
-Nmiss(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
+Nmiss(x, na.rm = TRUE, weights = NULL, ...)
 
-Nmiss2(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
+Nmiss2(x, na.rm = TRUE, weights = NULL, ...)
 
-N(x, na.rm = TRUE, weights = rep(1, length(x)), ...)
+N(x, na.rm = TRUE, weights = NULL, ...)
 
-count(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)),
-  ...)
+count(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
 
-countpct(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)),
-  ...)
+countpct(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
 
-countN(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)),
-  ...)
+countN(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
 
 countrowpct(x, levels = NULL, by, by.levels = sort(unique(by)),
-  na.rm = TRUE, weights = rep(1, length(x)), ...)
+  na.rm = TRUE, weights = NULL, ...)
 
 countcellpct(x, levels = NULL, by, by.levels = sort(unique(by)),
-  na.rm = TRUE, weights = rep(1, length(x)), ...)
+  na.rm = TRUE, weights = NULL, ...)
 
-binomCI(x, levels = NULL, na.rm = TRUE, weights = rep(1, length(x)),
+binomCI(x, levels = NULL, na.rm = TRUE, weights = NULL,
   conf.level = 0.95, ...)
 
 rowbinomCI(x, levels = NULL, by, by.levels = sort(unique(by)),
-  na.rm = TRUE, weights = rep(1, length(x)), conf.level = 0.95, ...)
+  na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
 }
 \arguments{
 \item{x}{Usually a vector.}
@@ -91,6 +89,8 @@ rowbinomCI(x, levels = NULL, by, by.levels = sort(unique(by)),
 
 \item{...}{Other arguments.}
 
+\item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.}
+
 \item{times}{A vector of times to use for survival summaries.}
 
 \item{levels}{A vector of levels that character \code{x}s should have.}
@@ -98,8 +98,6 @@ rowbinomCI(x, levels = NULL, by, by.levels = sort(unique(by)),
 \item{by}{a vector of the by-values.}
 
 \item{by.levels}{a vector of the levels of \code{by}.}
-
-\item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.}
 }
 \value{
 Usually a vector of the appropriate numbers.

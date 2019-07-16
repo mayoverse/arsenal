@@ -1,6 +1,13 @@
 # arsenal v3.2.1.9000
 
+* `tableby()`: redid how weights are handled. The only user-visible changes should be that standard deviations
+  on length-1 groups are now reported as `NA` instead of `NaN`.
+  
+* `tableby()` / `paired()`: added `meanCI()`. (#230)
+
 * `tableby()`: fixed Chi-square and Fisher's Exact test for one-level categorical variables. (#227, #228)
+
+* `tableby()`: fixed the n's in the header when using weights.
 
 # arsenal v3.2.0
 

@@ -175,7 +175,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
       if(!is.numeric(weights) || any(weights < 0)) stop("'weights' must be a numeric vector and must be non-negative")
       modeldf[["(weights)"]] <- NULL
       control$test <- FALSE
-    } else weights <- rep(1, nrow(modeldf))
+    } else weights <- NULL
 
     ###### Check for strata ######
 
@@ -232,9 +232,11 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
       control$test <- FALSE
     }
 
-
-    yList <- list(stats=c(table(factor(by.col, levels=by.levels), exclude=NA), Total=sum(!is.na(by.col))),
-                  label=labelBy, term=termBy)
+    ystats <- if(hasWeights)
+    {
+      c(xtabs(weights ~ factor(by.col, levels=by.levels), exclude = NA), Total = sum(weights[!is.na(by.col)]))
+    } else c(table(factor(by.col, levels=by.levels), exclude=NA), Total=sum(!is.na(by.col)))
+    yList <- list(stats=ystats, label=labelBy, term=termBy)
 
     ## find which columnss of modeldf have specials assigned to known specials
     specialIndices <- unlist(attr(Terms, "specials")) - attributes(Terms)$response
