@@ -1091,3 +1091,16 @@ test_that("06/24/2019: fe() and chisq() works with only one level (#227)", {
     )
   )
 })
+
+test_that("07/16/2019: n's in tableby header work with weights", {
+  d <- data.frame(a = 1:10, b = rep(c("A", "B"), 5), w = 1:10)
+  expect_identical(
+    capture.kable(summary(tableby(b ~ a, weights = w, data = d), text = TRUE)),
+    c("|             |   A (N=25)    |    B (N=30)    |  Total (N=55)  |",
+      "|:------------|:-------------:|:--------------:|:--------------:|",
+      "|a            |               |                |                |",
+      "|-  Mean (SD) | 6.600 (2.719) | 7.333 (2.870)  | 7.000 (2.622)  |",
+      "|-  Range     | 1.000 - 9.000 | 2.000 - 10.000 | 1.000 - 10.000 |"
+    )
+  )
+})

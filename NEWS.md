@@ -7,6 +7,8 @@
 
 * `tableby()`: fixed Chi-square and Fisher's Exact test for one-level categorical variables. (#227, #228)
 
+* `tableby()`: fixed the n's in the header when using weights.
+
 # arsenal v3.2.0
 
 * `comparedf()`:
