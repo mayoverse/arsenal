@@ -431,7 +431,7 @@ test_that("02/07/2017: Jason Sinnwell's chisq problem", {
     capture.kable(summary(tableby(x ~ y, data = dat[dat$y == "cough",]), text = TRUE)),
     c("|              |  A (N=1)   |  B (N=3)   |  C (N=1)   | Total (N=5) | p value|",
       "|:-------------|:----------:|:----------:|:----------:|:-----------:|-------:|",
-      "|y             |            |            |            |             |   1.000|",
+      "|y             |            |            |            |             |        |",
       "|-  chest pain |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)   |        |",
       "|-  cough      | 1 (100.0%) | 3 (100.0%) | 1 (100.0%) | 5 (100.0%)  |        |",
       "|-  pneumonia  |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)   |        |"
@@ -441,7 +441,7 @@ test_that("02/07/2017: Jason Sinnwell's chisq problem", {
     capture.kable(summary(tableby(x ~ as.character(y), data = dat[dat$y == "cough",]), text = TRUE)),
     c("|                |  A (N=1)   |  B (N=3)   |  C (N=1)   | Total (N=5) | p value|",
       "|:---------------|:----------:|:----------:|:----------:|:-----------:|-------:|",
-      "|as.character(y) |            |            |            |             |   1.000|",
+      "|as.character(y) |            |            |            |             |   0.449|",
       "|-  cough        | 1 (100.0%) | 3 (100.0%) | 1 (100.0%) | 5 (100.0%)  |        |"
     )
   )
@@ -772,7 +772,7 @@ test_that("02/26/2018: all NA vars (#80, #81, #82, #83, #84)", {
       "|-  N-Miss    |       0       |    5    |       5       |        |",
       "|-  Mean (SD) | 1.000 (0.000) |   NA    | 1.000 (0.000) |        |",
       "|-  Range     | 1.000 - 1.000 |   NA    | 1.000 - 1.000 |        |",
-      "|B            |               |         |               |   1.000|",
+      "|B            |               |         |               |   0.025|",
       "|-  N-Miss    |       0       |    5    |       5       |        |",
       "|-  A         |  5 (100.0%)   |    0    |  5 (100.0%)   |        |"
     )
@@ -1071,5 +1071,23 @@ test_that("06/12/2019: labelTranslations for non-default stat tests (#220, #222)
     capture.kable(summary(tableby(sex ~ kwt(fu.time), data = set_labels(mockstudy, list(fu.time = "FU time"))), labelTranslations = list(NULL))),
     capture.kable(summary(tableby(sex ~ kwt(fu.time), data = mockstudy)))
   )
+})
 
+test_that("06/24/2019: fe() and chisq() works with only one level (#227)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ fe(arm), data = mockstudy, subset = arm == "F: FOLFOX"), text = TRUE)),
+    c("|              | Male (N=411) | Female (N=280) | Total (N=691) | p value|",
+      "|:-------------|:------------:|:--------------:|:-------------:|-------:|",
+      "|Treatment Arm |              |                |               |        |",
+      "|-  F: FOLFOX  | 411 (100.0%) |  280 (100.0%)  | 691 (100.0%)  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ chisq(arm), data = mockstudy, subset = arm == "F: FOLFOX"), text = TRUE)),
+    c("|              | Male (N=411) | Female (N=280) | Total (N=691) | p value|",
+      "|:-------------|:------------:|:--------------:|:-------------:|-------:|",
+      "|Treatment Arm |              |                |               | < 0.001|",
+      "|-  F: FOLFOX  | 411 (100.0%) |  280 (100.0%)  | 691 (100.0%)  |        |"
+    )
+  )
 })

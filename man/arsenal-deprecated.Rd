@@ -2,26 +2,9 @@
 % Please edit documentation in R/deprecated.R
 \name{arsenal-deprecated}
 \alias{arsenal-deprecated}
-\alias{comparison.control}
-\alias{compare.data.frame}
 \title{Deprecated functions in \code{arsenal}}
-\usage{
-comparison.control(...)
-
-\method{compare}{data.frame}(x, y, ...)
-}
-\arguments{
-\item{...}{Arguments passed to functions that aren't deprecated.}
-
-\item{x, y}{See \code{\link{comparedf}}.}
-}
 \description{
 Details about deprecated functions in \code{arsenal}
-}
-\details{
-\code{comparison.control} was renamed to \code{\link{comparedf.control}}.
-
-\code{compare.data.frame} was renamed to \code{\link{comparedf}}.
 }
 \seealso{
 \code{\link{arsenal-defunct}}

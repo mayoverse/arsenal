@@ -36,16 +36,21 @@ kwt <- function(x, x.by, ...) {
 ## 1. chisq goodness of fit, equal proportions across table cells
 chisq <- function(x, x.by, ..., chisq.correct=FALSE, simulate.p.value=FALSE, B=2000) {
   tab <- table(x, x.by, exclude=NA)
-  if(sum(rowSums(tab)>0)>1) {
+  rs <- rowSums(tab)
+  if(sum(rs > 0) > 1 || (nrow(tab) == 1 && sum(rs > 0) == 1)) {
     suppressWarnings(stats::chisq.test(tab[rowSums(tab)>0,], correct=chisq.correct, simulate.p.value=simulate.p.value, B=B))
   } else {
-    list(statistic=0, p.value=1, method="Pearson's Chi-squared test")
+    list(p.value=NA_real_, method="Pearson's Chi-squared test")
   }
 }
 ## 2. Fisher's exact test for prob of as or more extreme table
 fe <- function(x, x.by, ..., simulate.p.value=FALSE, B=2000) {
   tab <- table(x,x.by, exclude=NA)
-  stats::fisher.test(tab, simulate.p.value=simulate.p.value, B=B)
+  if(sum(rowSums(tab)>0)>1) {
+    stats::fisher.test(tab, simulate.p.value=simulate.p.value, B=B)
+  } else {
+    list(p.value=NA_real_, method = "Fisher's Exact Test for Count Data")
+  }
 }
 
 ## trend test for ordinal data

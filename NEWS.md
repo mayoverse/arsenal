@@ -5,6 +5,8 @@
   
 * `tableby()` / `paired()`: added `meanCI()`. (#230)
 
+* `tableby()`: fixed Chi-square and Fisher's Exact test for one-level categorical variables. (#227, #228)
+
 # arsenal v3.2.0
 
 * `comparedf()`:

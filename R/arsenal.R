@@ -55,11 +55,6 @@
 #'
 NULL
 
-#' @importFrom testthat compare
-#' @seealso \code{\link{comparedf}}
-#' @export
-testthat::compare
-
 #' @importFrom utils head
 #' @seealso \code{\link[utils]{head}}
 #' @export

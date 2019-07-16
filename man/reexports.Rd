@@ -3,13 +3,10 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
-\alias{compare}
 \alias{head}
 \alias{tail}
 \title{Objects exported from other packages}
 \seealso{
-\code{\link{comparedf}}
-
 \code{\link[utils]{head}}
 
 \code{\link[utils]{tail}}
@@ -20,8 +17,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{testthat}{\code{\link[testthat]{compare}}}
-
   \item{utils}{\code{\link[utils]{head}}, \code{\link[utils]{tail}}}
 }}
 
