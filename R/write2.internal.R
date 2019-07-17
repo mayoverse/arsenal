@@ -46,7 +46,7 @@ verbatim <- function(x)
 #' @export
 code.chunk <- function(..., chunk.opts = "r")
 {
-  if(!is.character(chunk.opts) && length(chunk.opts) == 1) stop("'chunk.opts' should be a single character string")
+  if(!is.character(chunk.opts) || length(chunk.opts) != 1) stop("'chunk.opts' should be a single character string")
   Call <- match.call()
   Call[[1]] <- NULL
   Call$chunk.opts <- NULL

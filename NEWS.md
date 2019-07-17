@@ -19,6 +19,8 @@
 
 * `tableby()`: add option to run statistical tests even if one by-group has 0 observations. (#233)
 
+* `code.chunk()`: fixed logic checking the length of `chunk.opts=`.
+
 # arsenal v3.2.0
 
 * `comparedf()`:
