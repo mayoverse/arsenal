@@ -14,6 +14,7 @@ dat <- data.frame(
   Dat = as.Date("2018-05-01") + c(1, 1, 2, 2, 3, 4, 5, 6, 3, 4),
   stringsAsFactors = FALSE
 )
+dat2 <- dat
 
 ###########################################################################################################
 #### Basic paired calls
@@ -207,3 +208,23 @@ test_that("09/07/2018: specifying different digits (#107) and cat.simplify (#134
 dat$tp <- replace(as.character(dat$tp), dat$tp == "2", "")
 test_that("08/23/2018: empty string in by-variable (#121)",
           expect_warning(summary(paired(tp ~ Cat, id = id, data = dat, signed.rank.exact = FALSE)), "Empty"))
+
+
+test_that("07/17/2019: fix bug with confidence limits and count (#234, #235)", {
+  tmp <- dat2
+  tmp$Cat[2] <- "B"
+  expect_identical(
+    capture.kable(summary(paired(tp ~ Cat, data = tmp, cat.stats = c("binomCI", "count", "countpct"), id = id,
+                                  control = tableby.control(conf.level = 0.9)), text = TRUE)),
+    c("|     |       1 (N=4)        |       2 (N=4)        |   Difference (N=4)   | p value|",
+      "|:----|:--------------------:|:--------------------:|:--------------------:|-------:|",
+      "|Cat  |                      |                      |                      |   0.248|",
+      "|-  A | 0.500 (0.098, 0.902) | 0.250 (0.013, 0.751) | 1.000 (0.224, 1.000) |        |",
+      "|-  B | 0.500 (0.098, 0.902) | 0.750 (0.249, 0.987) | 0.500 (0.025, 0.975) |        |",
+      "|-  A |          2           |          1           |          2           |        |",
+      "|-  B |          2           |          3           |          1           |        |",
+      "|-  A |      2 (50.0%)       |      1 (25.0%)       |      2 (100.0%)      |        |",
+      "|-  B |      2 (50.0%)       |      3 (75.0%)       |      1 (50.0%)       |        |"
+    )
+  )
+})

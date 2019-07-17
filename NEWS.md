@@ -13,6 +13,8 @@
 
 * `tableby()` / `paired()`: fixed a bug with confidence levels supplied through the control argument. (#234)
 
+* `paired()`: fixed a bug when using `count()` with factors. (#235)
+
 # arsenal v3.2.0
 
 * `comparedf()`:

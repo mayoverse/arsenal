@@ -306,7 +306,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           } else if(statfun == "count")
           {
             # this doesn't have percentages
-            bystatlist$Difference <- count(ifelse(TP1.eff == TP2.eff, TP1.eff, NA), levels = xlevels, na.rm = TRUE)
+            bystatlist$Difference <- count(replace(TP1.eff, TP1.eff == TP2.eff, NA), levels = xlevels, na.rm = TRUE)
           } else if(statfun %in% c("binomCI", "rowbinomCI"))
           {
             bystatlist$Difference <- rowbinomCI(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
