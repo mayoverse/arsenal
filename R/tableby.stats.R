@@ -65,6 +65,7 @@ medianrange <- function(x, na.rm=TRUE, weights = NULL, ...) {
 
 
 #' @rdname tableby.stats
+#' @export
 medianmad <- function(x, na.rm=TRUE, weights = NULL, ...) {
   y <- if(!is.null(weights) || (na.rm && allNA(x)))
   {

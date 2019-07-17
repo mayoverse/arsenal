@@ -5,6 +5,7 @@
 \alias{meansd}
 \alias{meanCI}
 \alias{medianrange}
+\alias{medianmad}
 \alias{median}
 \alias{range}
 \alias{Nevents}
@@ -33,6 +34,8 @@ meansd(x, na.rm = TRUE, weights = NULL, ...)
 meanCI(x, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
 
 medianrange(x, na.rm = TRUE, weights = NULL, ...)
+
+medianmad(x, na.rm = TRUE, weights = NULL, ...)
 
 median(x, na.rm = TRUE, weights = NULL, ...)
 
