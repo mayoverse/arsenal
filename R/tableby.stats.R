@@ -47,11 +47,11 @@ meanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
   } else
   {
     if(na.rm) x <- x[!is.na(x)]
-    s <- sd(x, na.rm = na.rm)
+    s <- stats::sd(x, na.rm = na.rm)
     m <- mean(x, na.rm = na.rm)
     n <- length(x)
     a <- (1 - conf.level)/2
-    c(m, m + qt(c(a, 1 - a), df = n - 1) * s / sqrt(n))
+    c(m, m + stats::qt(c(a, 1 - a), df = n - 1) * s / sqrt(n))
   }
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }

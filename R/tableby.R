@@ -234,7 +234,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
 
     ystats <- if(hasWeights)
     {
-      c(xtabs(weights ~ factor(by.col, levels=by.levels), exclude = NA), Total = sum(weights[!is.na(by.col)]))
+      c(stats::xtabs(weights ~ factor(by.col, levels=by.levels), exclude = NA), Total = sum(weights[!is.na(by.col)]))
     } else c(table(factor(by.col, levels=by.levels), exclude=NA), Total=sum(!is.na(by.col)))
     yList <- list(stats=ystats, label=labelBy, term=termBy)
 
