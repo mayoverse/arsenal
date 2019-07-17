@@ -352,10 +352,12 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           {
             for(bylev in by.levels) {
               idx <- bycol == bylev
-              bystatlist[[bylev]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, weights=weightscol[idx], ...))
+              bystatlist[[bylev]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE,
+                                                           weights=weightscol[idx], conf.level = control$conf.level))
             }
             ## add Total
-            bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, weights=weightscol, ...))
+            bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, na.rm=TRUE,
+                                                      weights=weightscol, conf.level = control$conf.level))
           }
           statList[[statfun]] <- bystatlist
         }

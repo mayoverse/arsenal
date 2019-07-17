@@ -11,6 +11,8 @@
 
 * `tableby()`: fixed the n's in the header when using weights. (#229)
 
+* `tableby()` / `paired()`: fixed a bug with confidence levels supplied through the control argument. (#234)
+
 # arsenal v3.2.0
 
 * `comparedf()`:

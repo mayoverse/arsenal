@@ -1095,7 +1095,7 @@ test_that("06/24/2019: fe() and chisq() works with only one level (#227)", {
   )
 })
 
-test_that("07/16/2019: n's in tableby header work with weights", {
+test_that("07/16/2019: n's in tableby header work with weights (#229)", {
   d <- data.frame(a = 1:10, b = rep(c("A", "B"), 5), w = 1:10)
   expect_identical(
     capture.kable(summary(tableby(b ~ a, weights = w, data = d), text = TRUE)),
@@ -1104,6 +1104,21 @@ test_that("07/16/2019: n's in tableby header work with weights", {
       "|a            |               |                |                |",
       "|-  Mean (SD) | 6.600 (2.719) | 7.333 (2.870)  | 7.000 (2.622)  |",
       "|-  Range     | 1.000 - 9.000 | 2.000 - 10.000 | 1.000 - 10.000 |"
+    )
+  )
+})
+
+
+test_that("07/17/2019: fix bug with confidence limits (#234)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ arm, data = mockstudy, cat.stats = "binomCI",
+                                  control = tableby.control(conf.level = 0.9)), text = TRUE)),
+    c("|              |     Male (N=916)     |    Female (N=583)    |    Total (N=1499)    | p value|",
+      "|:-------------|:--------------------:|:--------------------:|:--------------------:|-------:|",
+      "|Treatment Arm |                      |                      |                      |   0.190|",
+      "|-  A: IFL     | 0.302 (0.277, 0.328) | 0.259 (0.229, 0.291) | 0.286 (0.266, 0.305) |        |",
+      "|-  F: FOLFOX  | 0.449 (0.421, 0.476) | 0.480 (0.446, 0.515) | 0.461 (0.440, 0.483) |        |",
+      "|-  G: IROX    | 0.249 (0.225, 0.274) | 0.261 (0.231, 0.292) | 0.254 (0.235, 0.273) |        |"
     )
   )
 })
