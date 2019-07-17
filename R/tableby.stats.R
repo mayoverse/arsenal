@@ -30,13 +30,17 @@ meansd <- function(x, na.rm=TRUE, weights = NULL, ...) {
   y <- if(na.rm && allNA(x))
   {
     NA_real_
-  } else c(wtd.mean(x, weights=weights, na.rm=na.rm), sqrt(wtd.var(x, weights=weights, na.rm=na.rm)))
-  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"))
+  } else {
+    m <- wtd.mean(x, weights=weights, na.rm=na.rm)
+    s <- sqrt(wtd.var(x, weights=weights, na.rm=na.rm))
+    if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
+  }
+  as.tbstat(y, parens = c("(", ")"))
 }
 
 #' @rdname tableby.stats
 #' @export
-meanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95,  ...) {
+meanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
   y <- if(!is.null(weights) || (na.rm && allNA(x)))
   {
     NA_real_
@@ -58,6 +62,21 @@ medianrange <- function(x, na.rm=TRUE, weights = NULL, ...) {
   y <- if(na.rm && allNA(x)) NA_real_ else wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights)
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
+
+
+#' @rdname tableby.stats
+medianmad <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if(!is.null(weights) || (na.rm && allNA(x)))
+  {
+    NA_real_
+  } else {
+    m <- stats::median(x, na.rm=na.rm)
+    s <- stats::mad(x, na.rm=na.rm, constant = 1)
+    if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
+  }
+  as.tbstat(y, parens = c("(", ")"))
+}
+
 
 #' @rdname tableby.stats
 median <- function(x, na.rm=TRUE, weights = NULL, ...) {
@@ -193,8 +212,12 @@ medianq1q3 <- function(x, na.rm=TRUE, weights = NULL, ...) {
 iqr <- function(x, na.rm=TRUE, weights = NULL, ...) {
   y <- if(na.rm && allNA(x)) {
     NA_real_
-  } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm)
-  as.tbstat(diff(y))
+  } else {
+    s <- diff(wtd.quantile(x, weights=weights, probs=c(0.25, 0.75), na.rm=na.rm))
+    if(is.Date(x)) list(as.difftime(s, units = "days")) else s
+  }
+
+  as.tbstat(y)
 }
 
 ## Count of missings: always show missings

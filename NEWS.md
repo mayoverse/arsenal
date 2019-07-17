@@ -3,11 +3,13 @@
 * `tableby()`: redid how weights are handled. The only user-visible changes should be that standard deviations
   on length-1 groups are now reported as `NA` instead of `NaN`.
   
-* `tableby()` / `paired()`: added `meanCI()`. (#230)
+* `tableby()` / `paired()`: added `meanCI()` and `medianmad()`. (#230, #232)
+
+* `tableby()` / `paired()`: added the units for `difftime` statistics when using dates (e.g., `meansd`, `medianmad`, `iqr`).
 
 * `tableby()`: fixed Chi-square and Fisher's Exact test for one-level categorical variables. (#227, #228)
 
-* `tableby()`: fixed the n's in the header when using weights.
+* `tableby()`: fixed the n's in the header when using weights. (#229)
 
 # arsenal v3.2.0
 
