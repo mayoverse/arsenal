@@ -17,6 +17,8 @@
 
 * `tableby.control()`: added explicit `times=` argument for survival summaries.
 
+* `tableby()`: add option to run statistical tests even if one by-group has 0 observations. (#233)
+
 # arsenal v3.2.0
 
 * `comparedf()`:

@@ -44,6 +44,7 @@
 #' @param conf.level Numeric, denoting what confidence level to use for confidence intervals.
 #'   (See, e.g., \code{\link{binomCI}})
 #' @param times A vector of times to use for survival summaries.
+#' @param test.anyway Should the test be performed even if one or more by-group has ?
 #' @param ... additional arguments.
 #' @details
 #' All tests can be turned off by setting \code{test} to FALSE.
@@ -77,7 +78,7 @@
 #' @export
 tableby.control <- function(
   test=TRUE,total=TRUE, test.pname=NULL, numeric.simplify=FALSE, cat.simplify=FALSE, ordered.simplify=FALSE, date.simplify=FALSE,
-  numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt",
+  numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt", test.anyway = FALSE,
   numeric.stats=c("Nmiss","meansd","range"), cat.stats=c("Nmiss","countpct"),
   ordered.stats=c("Nmiss", "countpct"), surv.stats=c("Nmiss", "Nevents","medSurv"), date.stats=c("Nmiss", "median","range"),
   stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", medianrange="Median (Range)",
@@ -151,7 +152,7 @@ tableby.control <- function(
 
   list(test=test, total=total, test.pname=test.pname,
        numeric.simplify=numeric.simplify, cat.simplify=cat.simplify, ordered.simplify=ordered.simplify, date.simplify=date.simplify,
-       numeric.test=numeric.test, cat.test=cat.test, ordered.test=ordered.test, surv.test=surv.test, date.test=date.test,
+       numeric.test=numeric.test, cat.test=cat.test, ordered.test=ordered.test, surv.test=surv.test, date.test=date.test, test.anyway=test.anyway,
        numeric.stats=numeric.stats, cat.stats=cat.stats, ordered.stats=ordered.stats, surv.stats=surv.stats, date.stats=date.stats,
        stats.labels=stats.labels,
        digits=digits, digits.p=digits.p, digits.count = digits.count, digits.pct = digits.pct, format.p = format.p,

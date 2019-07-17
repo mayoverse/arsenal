@@ -1122,3 +1122,28 @@ test_that("07/17/2019: fix bug with confidence limits (#234)", {
     )
   )
 })
+
+test_that("07/17/2019: run stat test even if one group has 0 observations", {
+  dd <- data.frame(group=rep(c("A", "B", "C"), 20), x1=1:60)
+  dd$x1[dd$group == "C"] <- NA
+  expect_identical(
+    capture.kable(summary(tableby(group ~ x1, data = dd), text = TRUE)),
+    c("|             |    A (N=20)     |    B (N=20)     | C (N=20) |  Total (N=60)   | p value|",
+      "|:------------|:---------------:|:---------------:|:--------:|:---------------:|-------:|",
+      "|x1           |                 |                 |          |                 |        |",
+      "|-  N-Miss    |        0        |        0        |    20    |       20        |        |",
+      "|-  Mean (SD) | 29.500 (17.748) | 30.500 (17.748) |    NA    | 30.000 (17.527) |        |",
+      "|-  Range     | 1.000 - 58.000  | 2.000 - 59.000  |    NA    | 1.000 - 59.000  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ x1, data = dd, test.anyway = TRUE), text = TRUE)),
+    c("|             |    A (N=20)     |    B (N=20)     | C (N=20) |  Total (N=60)   | p value|",
+      "|:------------|:---------------:|:---------------:|:--------:|:---------------:|-------:|",
+      "|x1           |                 |                 |          |                 |   0.860|",
+      "|-  N-Miss    |        0        |        0        |    20    |       20        |        |",
+      "|-  Mean (SD) | 29.500 (17.748) | 30.500 (17.748) |    NA    | 30.000 (17.527) |        |",
+      "|-  Range     | 1.000 - 58.000  | 2.000 - 59.000  |    NA    | 1.000 - 59.000  |        |"
+    )
+  )
+})
