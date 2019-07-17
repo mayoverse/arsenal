@@ -15,6 +15,8 @@
 
 * `paired()`: fixed a bug when using `count()` with factors. (#235)
 
+* `tableby.control()`: added explicit `times=` argument for survival summaries.
+
 # arsenal v3.2.0
 
 * `comparedf()`:

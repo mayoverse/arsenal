@@ -20,7 +20,7 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   "Median Follow-Up", medianmad = "Median (MAD)"), digits = 3L,
   digits.count = 0L, digits.pct = 1L, digits.p = 3L,
   format.p = TRUE, conf.level = 0.95, chisq.correct = FALSE,
-  simulate.p.value = FALSE, B = 2000, ...)
+  simulate.p.value = FALSE, B = 2000, times = 1:5, ...)
 }
 \arguments{
 \item{test}{logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.}
@@ -87,6 +87,8 @@ e.g., \code{list(countpct="Count (Pct)")}.}
 \item{simulate.p.value}{logical, simulate p-value for categorical tests (fe and chisq)}
 
 \item{B}{number of simulations to perform for simulation-based p-value}
+
+\item{times}{A vector of times to use for survival summaries.}
 
 \item{...}{additional arguments.}
 }

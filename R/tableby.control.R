@@ -43,6 +43,7 @@
 #' @param format.p Logical, denoting whether to format p-values. See "Details", below.
 #' @param conf.level Numeric, denoting what confidence level to use for confidence intervals.
 #'   (See, e.g., \code{\link{binomCI}})
+#' @param times A vector of times to use for survival summaries.
 #' @param ... additional arguments.
 #' @details
 #' All tests can be turned off by setting \code{test} to FALSE.
@@ -84,7 +85,7 @@ tableby.control <- function(
                     range="Range", countpct="Count (Pct)", Nevents="Events", medSurv="Median Survival",
                     medTime = "Median Follow-Up", medianmad="Median (MAD)"),
   digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE, conf.level = 0.95,
-  chisq.correct=FALSE, simulate.p.value=FALSE, B=2000, ...) {
+  chisq.correct=FALSE, simulate.p.value=FALSE, B=2000, times = 1:5, ...) {
 
   nm <- names(list(...))
   if("digits.test" %in% nm) .Deprecated(msg = "Using 'digits.test = ' is deprecated. Use 'digits.p = ' instead.")
@@ -154,5 +155,5 @@ tableby.control <- function(
        numeric.stats=numeric.stats, cat.stats=cat.stats, ordered.stats=ordered.stats, surv.stats=surv.stats, date.stats=date.stats,
        stats.labels=stats.labels,
        digits=digits, digits.p=digits.p, digits.count = digits.count, digits.pct = digits.pct, format.p = format.p,
-       conf.level=conf.level, chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B)
+       conf.level=conf.level, chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B, times=times)
 }
