@@ -21,6 +21,8 @@
 
 * `code.chunk()`: fixed logic checking the length of `chunk.opts=`.
 
+* `code.chunk()`: allow for empty code chunks. (#236)
+
 # arsenal v3.2.0
 
 * `comparedf()`:

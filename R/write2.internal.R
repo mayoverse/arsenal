@@ -50,6 +50,7 @@ code.chunk <- function(..., chunk.opts = "r")
   Call <- match.call()
   Call[[1]] <- NULL
   Call$chunk.opts <- NULL
+  if(length(Call) == 0) Call[[1]] <- ""
   set_attr(set_attr(Call, "chunk.opts", chunk.opts), "class", c("code.chunk", class(Call)))
 }
 
