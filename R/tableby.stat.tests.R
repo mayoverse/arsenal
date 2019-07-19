@@ -12,9 +12,9 @@ notest <- function(x, x.by, ...)
 ## aov does not return p-value. Could add it after.
 ## For now, just write our own to avoid over-writing anova R-base function
 ## also, nice to keep same format to call, eval(call(function, x, x,by)), as other tests
-anova <- function(x, x.by, ..., test.anyway = FALSE) {
+anova <- function(x, x.by, ..., test.always = FALSE) {
   tab <- table(is.na(x), x.by)
-  if(!test.anyway && (any(tab[1, ] == 0) || any(colSums(tab) == 0))) {
+  if(!test.always && (any(tab[1, ] == 0) || any(colSums(tab) == 0))) {
     return(list(p.value=NA_real_, statistic.F=NA_real_, method="Linear Model ANOVA"))
   }
   aov.out <- stats::lm(x~x.by)
@@ -24,9 +24,9 @@ anova <- function(x, x.by, ..., test.anyway = FALSE) {
        method = "Linear Model ANOVA")
 }
 ## 2. kruskal-wallis (non-parametric)
-kwt <- function(x, x.by, ..., test.anyway = FALSE) {
+kwt <- function(x, x.by, ..., test.always = FALSE) {
   tab <- table(is.na(x), x.by)
-  if(!test.anyway && (any(tab[1, ] == 0) || any(colSums(tab) == 0))) {
+  if(!test.always && (any(tab[1, ] == 0) || any(colSums(tab) == 0))) {
     return(list(p.value=NA_real_, statistic.F=NA_real_, method="Kruskal-Wallis rank sum test"))
   }
   stats::kruskal.test(x, as.factor(x.by))

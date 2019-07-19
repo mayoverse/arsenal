@@ -1137,7 +1137,7 @@ test_that("07/17/2019: run stat test even if one group has 0 observations", {
     )
   )
   expect_identical(
-    capture.kable(summary(tableby(group ~ x1, data = dd, test.anyway = TRUE), text = TRUE)),
+    capture.kable(summary(tableby(group ~ x1, data = dd, test.always = TRUE), text = TRUE)),
     c("|             |    A (N=20)     |    B (N=20)     | C (N=20) |  Total (N=60)   | p value|",
       "|:------------|:---------------:|:---------------:|:--------:|:---------------:|-------:|",
       "|x1           |                 |                 |          |                 |   0.860|",

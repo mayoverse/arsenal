@@ -8,7 +8,7 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   numeric.simplify = FALSE, cat.simplify = FALSE,
   ordered.simplify = FALSE, date.simplify = FALSE,
   numeric.test = "anova", cat.test = "chisq", ordered.test = "trend",
-  surv.test = "logrank", date.test = "kwt", test.anyway = FALSE,
+  surv.test = "logrank", date.test = "kwt", test.always = FALSE,
   numeric.stats = c("Nmiss", "meansd", "range"), cat.stats = c("Nmiss",
   "countpct"), ordered.stats = c("Nmiss", "countpct"),
   surv.stats = c("Nmiss", "Nevents", "medSurv"),
@@ -50,7 +50,8 @@ If no LHS variable exists, then a mean is required for a univariate test.}
 
 \item{date.test}{name of test for date variables: kwt}
 
-\item{test.anyway}{Should the test be performed even if one or more by-group has ?}
+\item{test.always}{Should the test be performed even if one or more by-group has 0 observations? Relevant
+for kwt and anova.}
 
 \item{numeric.stats}{summary statistics to include for numeric RHS variables within the levels of the group LHS variable.
 Options are N, Nmiss, Nmiss2, mean, meansd, median, q1q3, medianq1q3, iqr, range, medianrange, or other R built-in or user-written functions.}

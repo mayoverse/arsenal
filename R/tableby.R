@@ -365,7 +365,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest
         testout <- if(control$test) {
           eval(call(currtest, currcol, factor(bycol, levels = by.levels),
-                    chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B, test.anyway=control$test.anyway))
+                    chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B, test.always=control$test.always))
         } else notest()
 
         xList[[eff]] <- list(stats=statList, test=testout, type=vartype)
