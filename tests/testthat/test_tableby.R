@@ -1147,3 +1147,14 @@ test_that("07/17/2019: run stat test even if one group has 0 observations", {
     )
   )
 })
+
+test_that("07/30/2019: modpval.tableby and factors (#239)", {
+  tab1 <- tableby(arm ~ sex + age + race, total = FALSE, test = FALSE, data = mockstudy)
+  mypval <- data.frame(
+    byvar = factor("arm"),
+    variable = factor(c("sex", "age", "race")),
+    adj.pvalue = 1:3
+  )
+  tab2 <- modpval.tableby(tab1, mypval, use.pname = TRUE)
+  expect_equal(tests(tab2)$adj.pvalue, mypval$adj.pvalue)
+})
