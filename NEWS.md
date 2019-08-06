@@ -21,6 +21,8 @@
 
 * `modelsum()`: added functionality for multiple adjustor sets. (#240)
 
+* `modelsum()`: fixed "Nmiss" when used with strata. (#241)
+
 * `code.chunk()`: fixed logic checking the length of `chunk.opts=`.
 
 * `code.chunk()`: allow for empty code chunks. (#236)

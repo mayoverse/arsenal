@@ -190,7 +190,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
           results <- modelsum_guts(family.list, temp.call, envir = parent.frame(), conf.level = control$conf.level)
 
           currCols <- maindf[attr(Terms.x, "factors")[, eff] > 0]
-          nmiss <- sum(rowSums(is.na(currCols)) > 0)
+          nmiss <- sum(rowSums(is.na(currCols))[strata.col == strat] > 0)
           xList[[eff]][[adj.i]] <- list(
             coeff=results$coeffTidy,
             glance = c(
