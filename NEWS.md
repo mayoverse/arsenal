@@ -23,6 +23,8 @@
 
 * `code.chunk()`: allow for empty code chunks. (#236)
 
+* Removed defunct functions.
+
 # arsenal v3.2.0
 
 * `comparedf()`:

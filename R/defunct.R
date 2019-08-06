@@ -21,17 +21,3 @@
 NULL
 #> NULL
 
-
-#' @rdname arsenal-defunct
-#' @export
-comparison.control <- function(...)
-{
-  .Defunct("comparedf.control", package = "arsenal")
-}
-
-#' @rdname arsenal-defunct
-#' @export
-compare.data.frame <- function(x, y, ...)
-{
-  .Defunct("comparedf", package = "arsenal")
-}
