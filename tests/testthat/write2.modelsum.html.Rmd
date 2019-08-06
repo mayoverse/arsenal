@@ -3,7 +3,7 @@ Table: My test table
 
 |                            |estimate  |std.error |p.value |adj.r.squared |Nmiss |
 |:---------------------------|:---------|:---------|:-------|:-------------|:-----|
-|**Treatment Arm F: FOLFOX** |-13.70062 |8.72963   |0.117   |-0.00070      |0     |
+|**Treatment Arm F: FOLFOX** |-13.70062 |8.72963   |0.117   |-0.00070      |266   |
 |**Treatment Arm G: IROX**   |-2.24498  |9.86004   |0.820   |              |      |
 |**Age in Years**            |-0.01741  |0.31878   |0.956   |              |      |
 |**sex Female**              |3.01598   |7.52097   |0.688   |              |      |

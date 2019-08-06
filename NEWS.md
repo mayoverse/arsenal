@@ -21,7 +21,7 @@
 
 * `modelsum()`: added functionality for multiple adjustor sets. (#240)
 
-* `modelsum()`: fixed "Nmiss" when used with strata. (#241)
+* `modelsum()`: fixed "Nmiss" and "N" when used with strata, which now both report the missings for the entire fit. (#241, #242, #243)
 
 * `code.chunk()`: fixed logic checking the length of `chunk.opts=`.
 

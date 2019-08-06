@@ -168,7 +168,7 @@ test_that("interactions work", {
     capture.kable(summary(modelsum(age ~ bmi, adjust = ~ hgb*arm, data=mockstudy))),
     c("|                                |estimate |std.error |p.value |adj.r.squared |Nmiss |",
       "|:-------------------------------|:--------|:---------|:-------|:-------------|:-----|",
-      "|(Intercept)                     |54.324   |4.747     |< 0.001 |0.004         |33    |",
+      "|(Intercept)                     |54.324   |4.747     |< 0.001 |0.004         |294   |",
       "|**Body Mass Index (kg/m^2)**    |0.029    |0.062     |0.643   |              |      |",
       "|**hgb**                         |0.404    |0.366     |0.271   |              |      |",
       "|**Treatment Arm F: FOLFOX**     |-1.386   |5.748     |0.809   |              |      |",
@@ -181,7 +181,7 @@ test_that("interactions work", {
     capture.kable(summary(modelsum(age ~ bmi:arm, adjust = ~ hgb, data=mockstudy))),
     c("|                                                     |estimate |std.error |p.value |adj.r.squared |Nmiss |",
       "|:----------------------------------------------------|:--------|:---------|:-------|:-------------|:-----|",
-      "|(Intercept)                                          |53.303   |2.822     |< 0.001 |0.005         |33    |",
+      "|(Intercept)                                          |53.303   |2.822     |< 0.001 |0.005         |294   |",
       "|**hgb**                                              |0.499    |0.193     |0.010   |              |      |",
       "|**Body Mass Index (kg/m^2):Treatment Arm A: IFL**    |0.023    |0.065     |0.721   |              |      |",
       "|**Body Mass Index (kg/m^2):Treatment Arm F: FOLFOX** |0.052    |0.063     |0.416   |              |      |",
@@ -192,7 +192,7 @@ test_that("interactions work", {
     capture.kable(summary(modelsum(age ~ bmi:arm, adjust = ~ hgb, data=mockstudy))),
     c("|                                                     |estimate |std.error |p.value |adj.r.squared |Nmiss |",
       "|:----------------------------------------------------|:--------|:---------|:-------|:-------------|:-----|",
-      "|(Intercept)                                          |53.303   |2.822     |< 0.001 |0.005         |33    |",
+      "|(Intercept)                                          |53.303   |2.822     |< 0.001 |0.005         |294   |",
       "|**hgb**                                              |0.499    |0.193     |0.010   |              |      |",
       "|**Body Mass Index (kg/m^2):Treatment Arm A: IFL**    |0.023    |0.065     |0.721   |              |      |",
       "|**Body Mass Index (kg/m^2):Treatment Arm F: FOLFOX** |0.052    |0.063     |0.416   |              |      |",
@@ -327,9 +327,9 @@ test_that("02/13/2017: Krista Goergen's survival subset and NA problems", {
     capture.kable(summary(modelsum(form, adjust = ~Age, data = mdat.tmp, subset = Group=="High", family="survival"), text = TRUE)),
     c("|              |HR    |CI.lower.HR |CI.upper.HR |p.value |concordance |Nmiss |",
       "|:-------------|:-----|:-----------|:-----------|:-------|:-----------|:-----|",
-      "|Sex Male      |0.612 |0.210       |1.786       |0.369   |0.592       |0     |",
+      "|Sex Male      |0.612 |0.210       |1.786       |0.369   |0.592       |2     |",
       "|Age in Years  |1.061 |0.968       |1.164       |0.205   |            |      |",
-      "|ethan Heinzen |1.019 |0.297       |3.501       |0.976   |0.639       |3     |",
+      "|ethan Heinzen |1.019 |0.297       |3.501       |0.976   |0.639       |4     |",
       "|Age in Years  |1.058 |0.960       |1.166       |0.258   |            |      |"
     )
   )
@@ -384,11 +384,11 @@ test_that("07/27/2017: modelsum labels (#13)", {
   expect_identical(
     capture.kable(summary(modelsum(bmi ~ age, adjust = ~sex, data = mockstudy),
                           labelTranslations = list(sexFemale = "Female", age = "Age, yrs"), text = TRUE)),
-    c("|            |estimate |std.error |p.value |adj.r.squared |",
-      "|:-----------|:--------|:---------|:-------|:-------------|",
-      "|(Intercept) |26.793   |0.766     |< 0.001 |0.004         |",
-      "|Age, yrs    |0.012    |0.012     |0.348   |              |",
-      "|Female      |-0.718   |0.291     |0.014   |              |"
+    c("|            |estimate |std.error |p.value |adj.r.squared |Nmiss |",
+      "|:-----------|:--------|:---------|:-------|:-------------|:-----|",
+      "|(Intercept) |26.793   |0.766     |< 0.001 |0.004         |33    |",
+      "|Age, yrs    |0.012    |0.012     |0.348   |              |      |",
+      "|Female      |-0.718   |0.291     |0.014   |              |      |"
     )
   )
   expect_identical(
