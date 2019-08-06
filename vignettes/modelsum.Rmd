@@ -106,7 +106,6 @@ tab2 <- modelsum(alk.phos ~ arm + ps + hgb, adjust= ~age + sex, data=mockstudy)
 summary(tab2)
 ```
 
-
 # Models for each endpoint type
 
 To make sure the correct model is run you need to specify "family".  The options available right
@@ -799,6 +798,18 @@ You can also specify a grouping variable that doesn't get tested (but instead se
 ```{r results='asis'}
 summary(modelsum(list(age, hgb) ~ bmi + sex, strata = arm, data = mockstudy))
 ```
+
+## 26. Add multiple sets of adjustors to the model
+
+By putting multiple formulas into a list, you can use multiple sets of adjustors. Use `~ 1` for an "unadjusted" model. By using the 
+`adjustment.names=TRUE` argument and giving names to your adjustor sets in the list, you can name the various analyses.
+
+```{r}
+multi.adjust <- modelsum(list(age, bmi) ~ fu.time + ast, adjust = list(Unadjusted = ~ 1, "Adjusted for Arm" = ~ arm), data = mockstudy)
+summary(multi.adjust, adjustment.names = TRUE)
+summary(multi.adjust, adjustment.names = TRUE, show.intercept = FALSE, show.adjust = FALSE)
+```
+
 
 # Available Function Options
 

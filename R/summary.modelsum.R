@@ -14,6 +14,7 @@
 #'   \code{\link[knitr]{kable}}.
 #' @inheritParams summary.tableby
 #' @param x An object of class \code{"summary.modelsum"}.
+#' @param adjustment.names Logical, denoting whether the names of the adjustment models should be printed.
 #' @seealso \code{\link{modelsum}}, \code{\link{as.data.frame.modelsum}}
 #' @return An object of class \code{"summary.modelsum"}
 #' @author Ethan Heinzen, based on code originally by Greg Dougherty
@@ -23,7 +24,7 @@ NULL
 
 #' @rdname summary.modelsum
 #' @export
-summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, term.name = "")
+summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE, title = NULL, term.name = "", adjustment.names = FALSE)
 {
   dat <- as.data.frame(object, ..., labelTranslations = labelTranslations, list.ok = TRUE)
   structure(list(
@@ -32,11 +33,12 @@ summary.modelsum <- function(object, ..., labelTranslations = NULL, text = FALSE
     hasStrata = has_strata(object),
     text = text,
     title = title,
-    term.name = term.name
+    term.name = term.name,
+    adjustment.names = adjustment.names
   ), class = c("summary.modelsum", "summary.arsenal_table"))
 }
 
-as_data_frame_summary_modelsum <- function(df, control, hasStrata, term.name, text, width, min.split)
+as_data_frame_summary_modelsum <- function(df, control, hasStrata, term.name, text, adjustment.names, width, min.split)
 {
   df.orig <- df
 
@@ -92,6 +94,10 @@ as_data_frame_summary_modelsum <- function(df, control, hasStrata, term.name, te
   df$term <- NULL
   term.type <- df$term.type
   df$term.type <- NULL
+  if(!adjustment.names)
+  {
+    df$adjustment <- NULL
+  } else df$adjustment[dups] <- ""
 
   #### Format if necessary ####
   if(!is.null(width))
@@ -134,7 +140,8 @@ as_data_frame_summary_modelsum <- function(df, control, hasStrata, term.name, te
 }
 #' @rdname summary.modelsum
 #' @export
-as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$term.name, width = NULL, min.split = NULL, list.ok = FALSE)
+as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$term.name, adjustment.names = x$adjustment.names,
+                                           width = NULL, min.split = NULL, list.ok = FALSE)
 {
   if(is.null(term.name) || identical(term.name, TRUE))
   {
@@ -142,7 +149,7 @@ as.data.frame.summary.modelsum <- function(x, ..., text = x$text, term.name = x$
   }
   stopifnot(length(term.name) <= length(x$object))
   out <- Map(as_data_frame_summary_modelsum, x$object, x$hasStrata, term.name,
-             MoreArgs = list(control = x$control, text = text, width = width, min.split = min.split))
+             MoreArgs = list(control = x$control, text = text, width = width, min.split = min.split, adjustment.names = adjustment.names))
   if(!list.ok)
   {
     if(length(out) == 1) out <- out[[1]] else warning("as.data.frame.summary.modelsum is returning a list of data.frames")

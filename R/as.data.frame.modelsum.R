@@ -1,7 +1,7 @@
 
 get_ms_strata_part <- function(msList, sValue, xList, ...)
 {
-  Map(get_ms_part, msList, seq_along(msList), xList, MoreArgs = list(sValue = sValue, ...))
+  Map(get_ms_part, msList, c(0, cumsum(lengths(msList)[-1])), xList, MoreArgs = list(sValue = sValue, ...))
 }
 
 get_ms_part <- function(msList, modelnum, xList, yList, aList, sList, sValue, fam, cntrl)
@@ -9,21 +9,6 @@ get_ms_part <- function(msList, modelnum, xList, yList, aList, sList, sValue, fa
   get_labs <- function(x) stats::setNames(x$label, x$term)
   # even if the model doesn't have an intercept, that's okay
   labs <- c("(Intercept)" = "(Intercept)", get_labs(xList), adj <- unlist(unname(lapply(aList, get_labs))))
-  trms <- msList$coeff$term
-  out <- data.frame(
-    y.term = yList$term,
-    y.label = yList$label,
-    strata.term = if(!sList$hasStrata) "" else paste0("(", sList$term, ") == ", sValue),
-    strata.value = if(!sList$hasStrata) "" else sValue,
-    model = modelnum,
-    term = trms,
-    label = ifelse(trms %in% names(labs), labs[trms], trms),
-    term.type = ifelse(trms %in% names(adj), "Adjuster",
-                       ifelse(trms %in% xList$term, "Term", "Intercept")),
-    stringsAsFactors = FALSE
-  )
-  if(!sList$hasStrata) out$strata.value <- NULL else names(out)[4] <- sList$label
-
   statFields <- switch(
     fam,
     quasibinomial = cntrl$binomial.stats, binomial = cntrl$binomial.stats,
@@ -31,10 +16,30 @@ get_ms_part <- function(msList, modelnum, xList, yList, aList, sList, sValue, fa
     negbin = cntrl$negbin.stats, survival = cntrl$survival.stats,
     ordinal = cntrl$ordinal.stats, gaussian = cntrl$gaussian.stats
   )
-  if(any(names(msList$coeff) %in% statFields)) out <- cbind(out, msList$coeff[intersect(statFields, names(msList$coeff))])
-  if(any(names(msList$glance) %in% statFields)) out <- cbind(out, msList$glance[intersect(statFields, names(msList$glance))])
 
-  out
+  OUT <- NULL
+  for(adj.i in seq_along(msList))
+  {
+    msLst <- msList[[adj.i]]
+    trms <- msLst$coeff$term
+    out <- data.frame(
+      y.term = yList$term,
+      y.label = yList$label,
+      strata.term = if(!sList$hasStrata) "" else paste0("(", sList$term, ") == ", sValue),
+      strata.value = if(!sList$hasStrata) "" else sValue,
+      adjustment = names(msList)[adj.i],
+      model = modelnum + adj.i,
+      term = trms,
+      label = ifelse(trms %in% names(labs), labs[trms], trms),
+      term.type = ifelse(trms %in% names(adj), "Adjuster", ifelse(trms %in% xList$term, "Term", "Intercept")),
+      stringsAsFactors = FALSE
+    )
+    if(!sList$hasStrata) out$strata.value <- NULL else names(out)[4] <- sList$label
+    if(any(names(msLst$coeff) %in% statFields)) out <- cbind(out, msLst$coeff[intersect(statFields, names(msLst$coeff))])
+    if(any(names(msLst$glance) %in% statFields)) out <- cbind(out, msLst$glance[intersect(statFields, names(msLst$glance))])
+    OUT <- rbind_chr(OUT, out)
+  }
+  OUT
 }
 
 #' as.data.frame.modelsum

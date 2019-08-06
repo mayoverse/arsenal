@@ -28,8 +28,15 @@ join_formula <- function(x, y)
   x <- stats::formula(x)
   if(is.null(y)) return(x)
   y <- stats::formula(y)
-  stopifnot(length(x) == 3 && length(y) == 2)
-  x[[3]] <- call("+", x[[3]], y[[2]])
+  stopifnot(length(y) == 2)
+  if(length(x) == 2)
+  {
+    x[[2]] <- call("+", x[[2]], y[[2]])
+  } else
+  {
+    stopifnot(length(x) == 3)
+    x[[3]] <- call("+", x[[3]], y[[2]])
+  }
   x
 }
 
@@ -65,3 +72,135 @@ lm.beta  <- function (MOD) {
     beta <- c(NA,round(b * sx/sy,3))
     return(beta)
 }
+
+make_ms_term_labels <- function(mf, trms)
+{
+  factors <- attr(trms, "factors")
+  mm <- stats::model.matrix(trms, mf)
+  assign <- attr(mm, "assign")
+  mm <- mm[, assign > 0, drop = FALSE]
+  assign <- assign[assign > 0]
+  lvls <- colnames(factors)[assign]
+  names(lvls) <- colnames(mm)
+
+  out <- lapply(colnames(factors), function(nm2) {
+    idx <- factors[, nm2] > 0
+    nm <- names(mf)[idx]
+    labelEff <- vapply(nm, function(nam) {
+      if(is.null(lab <- attr(mf[[nam]], "label"))) lab <- nam
+      lab
+    }, NA_character_)
+    list(variable = paste(nm, collapse = ":"), variable2 = nm2,
+         varterm = nm, varterm2 = row.names(factors)[idx], varlabel = unname(labelEff),
+         term = names(lvls)[lvls == nm2])
+  })
+  names(out) <- vapply(out, "[[", NA_character_, "variable")
+  out
+}
+
+
+
+modelsum_guts <- function(fam, temp.call, envir, conf.level, fit.only = FALSE)
+{
+  ## y is ordered factor
+  if (fam$family == "ordinal") {
+    temp.call[[1]] <- quote(MASS::polr)
+    temp.call$Hess <- TRUE
+    temp.call$method <- fam$method
+    fit <- eval(temp.call, envir)
+    if(fit.only) return(fit)
+    coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
+    coeffORTidy[coeffORTidy$coefficient_type == "zeta", names(coeffORTidy) %nin% c("term", "coefficient_type")] <- NA
+    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
+    coeffTidy$p.value <- 2*stats::pnorm(abs(coeffTidy$statistic), lower.tail = FALSE)
+    coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
+    # sort so that zeta comes first, but hold all else fixed
+    coeffTidy <- coeffTidy[order(coeffTidy$coefficient_type == "coefficient", seq_len(nrow(coeffTidy))), ]
+    modelGlance <- broom::glance(fit)
+
+  } else if (fam$family == "gaussian") {
+    # ## issue warning if appears categorical
+
+    temp.call[[1]] <- quote(stats::lm)
+    temp.call$x <- TRUE
+    fit <- eval(temp.call, envir)
+    if(fit.only) return(fit)
+    coeffTidy <- broom::tidy(fit, conf.int=TRUE, conf.level=conf.level)
+
+    if("(weights)" %in% colnames(fit$model)) fit$model[["(weights)"]] <- NULL
+
+    coeffTidy$standard.estimate <- lm.beta(fit)
+    ## Continuous variable (numeric) ###############
+    ## Note: Using tidy changes colname from 't value' to 'statistic'
+    modelGlance <- broom::glance(fit)
+    names(modelGlance)[names(modelGlance) == "p.value"] <- "p.value.F"
+
+
+  } else if (fam$family == "binomial" || fam$family == "quasibinomial") {
+    ## These families are used in glm
+
+    temp.call[[1]] <- quote(stats::glm)
+    temp.call$x <- TRUE
+    temp.call$family <- fam
+    fit <- eval(temp.call, envir)
+    if(fit.only) return(fit)
+    rocOut <- pROC::roc(fit$y ~ predict(fit, type='response'))
+    #coeffbeta <- summary(fit)$coef
+    ## find out that broom:::tidy.lm allows conf.int and exp
+    coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
+    coeffORTidy[coeffORTidy$term == "Intercept", -1] <- NA
+    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
+
+    waldTidy <- broom::confint_tidy(fit, conf.level=conf.level, func = stats::confint.default)
+
+    coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high,
+                       CI.lower.wald=waldTidy$conf.low, CI.upper.wald=waldTidy$conf.high,
+                       CI.lower.OR.wald=exp(waldTidy$conf.low), CI.upper.OR.wald=exp(waldTidy$conf.high))
+    modelGlance <- c(broom::glance(fit), concordance = pROC::auc(rocOut))
+
+  } else if (fam$family == "quasipoisson" || fam$family == "poisson") {
+    ## These families use glm
+
+    temp.call[[1]] <- quote(stats::glm)
+    temp.call$x <- TRUE
+    temp.call$family <- fam
+    fit <- eval(temp.call, envir)
+    if(fit.only) return(fit)
+    coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
+    coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
+    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
+    coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
+    modelGlance <- broom::glance(fit)
+
+  } else if (fam$family == "negbin") {
+    ## Also uses glm
+    temp.call[[1]] <- quote(MASS::glm.nb)
+    temp.call$x <- TRUE
+    temp.call$link <- fam$link
+    fit <- eval(temp.call, envir)
+    if(fit.only) return(fit)
+    coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
+    coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
+    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
+    coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
+    modelGlance <- broom::glance(fit)
+    modelGlance$theta <- fit$theta
+    modelGlance$SE.theta <- fit$SE.theta
+
+  } else if(fam$family == "survival") {
+
+    temp.call[[1]] <- quote(survival::coxph)
+    fit <- eval(temp.call, envir)
+    if(fit.only) return(fit)
+    ## use tidy to get both CIs, merge
+    coeffHRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=.95)
+    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=.95)
+    coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
+    modelGlance <-  broom::glance(fit)
+  }
+
+  names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"
+  names(coeffTidy)[names(coeffTidy) == "conf.high"] <- "CI.upper.estimate"
+  list(coeffTidy = coeffTidy, modelGlance = modelGlance, fit = fit)
+}
+

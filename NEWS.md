@@ -19,6 +19,8 @@
 
 * `tableby()`: add option to run statistical tests even if one by-group has 0 observations. (#233)
 
+* `modelsum()`: added functionality for multiple adjustor sets. (#240)
+
 * `code.chunk()`: fixed logic checking the length of `chunk.opts=`.
 
 * `code.chunk()`: allow for empty code chunks. (#236)

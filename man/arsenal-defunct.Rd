@@ -2,18 +2,11 @@
 % Please edit documentation in R/defunct.R
 \name{arsenal-defunct}
 \alias{arsenal-defunct}
-\alias{comparison.control}
-\alias{compare.data.frame}
 \title{Defunct functions in \code{arsenal}}
-\usage{
-comparison.control(...)
-
-compare.data.frame(x, y, ...)
-}
 \arguments{
-\item{...}{Other arguments.}
-
 \item{x, y}{See \code{\link{comparedf}}.}
+
+\item{...}{Other arguments.}
 }
 \description{
 Details about defunct functions in \code{arsenal}

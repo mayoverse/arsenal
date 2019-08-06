@@ -6,11 +6,12 @@
 \title{Summarize a \code{modelsum} object.}
 \usage{
 \method{summary}{modelsum}(object, ..., labelTranslations = NULL,
-  text = FALSE, title = NULL, term.name = "")
+  text = FALSE, title = NULL, term.name = "",
+  adjustment.names = FALSE)
 
 \method{as.data.frame}{summary.modelsum}(x, ..., text = x$text,
-  term.name = x$term.name, width = NULL, min.split = NULL,
-  list.ok = FALSE)
+  term.name = x$term.name, adjustment.names = x$adjustment.names,
+  width = NULL, min.split = NULL, list.ok = FALSE)
 }
 \arguments{
 \item{object}{A \code{\link{modelsum}} object.}
@@ -35,6 +36,8 @@ the LaTeX command \code{\\textbf}.}
 \item{term.name}{A character vector denoting the column name for the "terms" column. It should be the same length
 as the number of tables or less (it will get recycled if needed). The special value \code{TRUE} will
 use the y-variable's label for each table.}
+
+\item{adjustment.names}{Logical, denoting whether the names of the adjustment models should be printed.}
 
 \item{x}{An object of class \code{"summary.modelsum"}.}
 
