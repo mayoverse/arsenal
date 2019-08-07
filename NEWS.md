@@ -23,6 +23,8 @@
 
 * `modelsum()`: fixed "Nmiss" and "N" when used with strata, which now both report the missings for the entire fit. (#241, #242, #243)
 
+* `modelsum()`: suppressed messages from `pROC::auc()` when calculating AUC. (#244)
+
 * `code.chunk()`: fixed logic checking the length of `chunk.opts=`.
 
 * `code.chunk()`: allow for empty code chunks. (#236)

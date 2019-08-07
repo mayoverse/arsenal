@@ -100,15 +100,15 @@ make_ms_term_labels <- function(mf, trms)
 
 
 
-modelsum_guts <- function(fam, temp.call, envir, conf.level, fit.only = FALSE)
+modelsum_guts <- function(fam, temp.call, envir, conf.level)
 {
+
   ## y is ordered factor
   if (fam$family == "ordinal") {
     temp.call[[1]] <- quote(MASS::polr)
     temp.call$Hess <- TRUE
     temp.call$method <- fam$method
     fit <- eval(temp.call, envir)
-    if(fit.only) return(fit)
     coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
     coeffORTidy[coeffORTidy$coefficient_type == "zeta", names(coeffORTidy) %nin% c("term", "coefficient_type")] <- NA
     coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
@@ -124,7 +124,6 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, fit.only = FALSE)
     temp.call[[1]] <- quote(stats::lm)
     temp.call$x <- TRUE
     fit <- eval(temp.call, envir)
-    if(fit.only) return(fit)
     coeffTidy <- broom::tidy(fit, conf.int=TRUE, conf.level=conf.level)
 
     if("(weights)" %in% colnames(fit$model)) fit$model[["(weights)"]] <- NULL
@@ -135,7 +134,6 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, fit.only = FALSE)
     modelGlance <- broom::glance(fit)
     names(modelGlance)[names(modelGlance) == "p.value"] <- "p.value.F"
 
-
   } else if (fam$family == "binomial" || fam$family == "quasibinomial") {
     ## These families are used in glm
 
@@ -143,8 +141,6 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, fit.only = FALSE)
     temp.call$x <- TRUE
     temp.call$family <- fam
     fit <- eval(temp.call, envir)
-    if(fit.only) return(fit)
-    rocOut <- pROC::roc(fit$y ~ predict(fit, type='response'))
     #coeffbeta <- summary(fit)$coef
     ## find out that broom:::tidy.lm allows conf.int and exp
     coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
@@ -156,7 +152,8 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, fit.only = FALSE)
     coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high,
                        CI.lower.wald=waldTidy$conf.low, CI.upper.wald=waldTidy$conf.high,
                        CI.lower.OR.wald=exp(waldTidy$conf.low), CI.upper.OR.wald=exp(waldTidy$conf.high))
-    modelGlance <- c(broom::glance(fit), concordance = pROC::auc(rocOut))
+    modelGlance <- broom::glance(fit)
+    modelGlance$concordance <- as.numeric(pROC::auc(fit$y ~ predict(fit, type='response'), direction = "<", levels = 0:1))
 
   } else if (fam$family == "quasipoisson" || fam$family == "poisson") {
     ## These families use glm
@@ -165,7 +162,6 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, fit.only = FALSE)
     temp.call$x <- TRUE
     temp.call$family <- fam
     fit <- eval(temp.call, envir)
-    if(fit.only) return(fit)
     coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
     coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
     coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
@@ -178,7 +174,6 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, fit.only = FALSE)
     temp.call$x <- TRUE
     temp.call$link <- fam$link
     fit <- eval(temp.call, envir)
-    if(fit.only) return(fit)
     coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
     coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
     coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
@@ -191,7 +186,6 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, fit.only = FALSE)
 
     temp.call[[1]] <- quote(survival::coxph)
     fit <- eval(temp.call, envir)
-    if(fit.only) return(fit)
     ## use tidy to get both CIs, merge
     coeffHRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=.95)
     coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=.95)
