@@ -29,6 +29,8 @@
 
 * `modelsum()`: added an option for the likelihood ratio test for the main effect (but not the adjustors): `p.value.lrt` (#238)
 
+* `modelsum()`: blanked out p-values that are NA. (#246)
+
 * `code.chunk()`: fixed logic checking the length of `chunk.opts=`.
 
 * `code.chunk()`: allow for empty code chunks. (#236)

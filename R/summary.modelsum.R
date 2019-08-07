@@ -74,6 +74,8 @@ as_data_frame_summary_modelsum <- function(df, control, hasStrata, term.name, te
       if(tst %in% cn) df[[tst]][df.orig[[tst]] < cutoff] <- fmt
     }
   }
+  df[cn %in% c("p.value", use.digits.p)] <- lapply(df[cn %in% c("p.value", use.digits.p)], sub,
+                                                   pattern = "^\\s*NA\\s*$", replacement = "")
 
   #### don't show the same statistics more than once ####
   dups <- if(hasStrata) unlist(by(df, df[[4]], function(x) duplicated(x$model), simplify = FALSE), use.names = FALSE) else duplicated(df$model)

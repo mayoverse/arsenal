@@ -614,7 +614,7 @@ test_that("08/07/2019: p.value.lrt (#238)", {
       "|sex Female               |0.002    |0.975       |",
       "|Treatment Arm F: FOLFOX  |-0.449   |< 0.001     |",
       "|Treatment Arm G: IROX    |-0.138   |            |",
-      "|Body Mass Index (kg/m^2) |-0.016   |NA          |"
+      "|Body Mass Index (kg/m^2) |-0.016   |            |"
     )
   )
 })
