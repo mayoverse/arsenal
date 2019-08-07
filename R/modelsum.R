@@ -178,7 +178,8 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
 
         for(adj.i in seq_along(adjust))
         {
-          adj.formula <- join_formula(stats::drop.terms(Terms, if(length(effCols) > 1) setdiff(effCols, eff) else NULL, keep.response = TRUE), adjust[[adj.i]])
+          curr.formula <- stats::drop.terms(Terms, if(length(effCols) > 1) setdiff(effCols, eff) else NULL, keep.response = TRUE)
+          adj.formula <- join_formula(curr.formula, adjust[[adj.i]])
 
           temp.call <- Call[c(1, match(c("data", "subset", "na.action", "weights"), names(Call), 0L))]
           temp.call$formula <- adj.formula
@@ -187,7 +188,9 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
             temp.call$subset <- if(!is.null(temp.call$subset)) call("&", call("(", temp.call$subset), idx) else idx
           }
 
-          results <- modelsum_guts(family.list, temp.call, envir = parent.frame(), conf.level = control$conf.level)
+          currCols <- maindf[strata.col == strat, attr(Terms.x, "factors")[, eff] > 0, drop=FALSE]
+          results <- modelsum_guts(family.list, temp.call, envir = parent.frame(), conf.level = control$conf.level,
+                                   scope = stats::delete.response(curr.formula), anyna = anyNA(currCols))
 
           nmiss <- length(results$fit$na.action)
           xList[[eff]][[adj.i]] <- list(

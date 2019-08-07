@@ -70,7 +70,7 @@ modelsum.control <- function(
   ordinal.stats.valid <- c(
     "Nmiss", "OR", "CI.lower.OR", "CI.upper.OR", "p.value", # default
     "estimate", "CI.OR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "N", "Nmiss2", "endpoint", "std.error", "statistic",
-    "logLik", "AIC", "BIC", "edf", "deviance", "df.residual"
+    "logLik", "AIC", "BIC", "edf", "deviance", "df.residual", "p.value.lrt"
   )
 
   if(any(ordinal.stats %nin% ordinal.stats.valid)) {
@@ -96,7 +96,7 @@ modelsum.control <- function(
     "estimate", "CI.OR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate",
     "CI.wald", "CI.lower.wald", "CI.upper.wald", "CI.OR.wald", "CI.lower.OR.wald", "CI.upper.OR.wald",
     "N", "Nmiss2", "endpoint", "std.error", "statistic",
-    "logLik", "AIC", "BIC", "null.deviance", "deviance", "df.residual", "df.null"
+    "logLik", "AIC", "BIC", "null.deviance", "deviance", "df.residual", "df.null", "p.value.lrt"
   )
 
   if(any(binomial.stats %nin% binomial.stats.valid)) {
@@ -125,7 +125,7 @@ modelsum.control <- function(
   gaussian.stats.valid <- c(
     "Nmiss", "estimate", "std.error", "p.value", "adj.r.squared",  #default
     "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "N", "Nmiss2", "statistic", "standard.estimate", "endpoint",
-    "r.squared", "AIC", "BIC", "logLik", "statistic.F", "p.value.F"
+    "r.squared", "AIC", "BIC", "logLik", "statistic.F", "p.value.F", "p.value.lrt"
   )
 
   if(any(gaussian.stats %nin% gaussian.stats.valid)) {
@@ -147,7 +147,7 @@ modelsum.control <- function(
   poisson.stats.valid <- c(
     "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss", # default
     "CI.RR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "CI.RR", "Nmiss2", "std.error", "estimate", "statistic", "endpoint",
-    "AIC", "BIC", "logLik", "dispersion", "null.deviance", "deviance", "df.residual", "df.null"
+    "AIC", "BIC", "logLik", "dispersion", "null.deviance", "deviance", "df.residual", "df.null", "p.value.lrt"
   )
 
   if(any(poisson.stats %nin% poisson.stats.valid)) {
@@ -169,7 +169,7 @@ modelsum.control <- function(
   negbin.stats.valid <- c(
     "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss", # default
     "CI.RR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "CI.RR", "Nmiss2", "std.error", "estimate", "statistic", "endpoint",
-    "AIC", "BIC", "logLik", "dispersion", "null.deviance", "deviance", "df.residual", "df.null", "theta", "SE.theta"
+    "AIC", "BIC", "logLik", "dispersion", "null.deviance", "deviance", "df.residual", "df.null", "theta", "SE.theta", "p.value.lrt"
   )
 
   if(any(negbin.stats %nin% negbin.stats.valid)) {
@@ -193,7 +193,7 @@ modelsum.control <- function(
   surv.stats.valid <- c(
     "HR", "CI.lower.HR", "CI.upper.HR", "p.value", "concordance", "Nmiss", # default
     "CI.HR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "N", "Nmiss2", "estimate", "std.error", "endpoint", "Nevents", "statistic",
-    "r.squared", "logLik", "AIC", "BIC", "statistic.sc", "p.value.sc", "p.value.log", "p.value.wald", "N", "std.error.concordance"
+    "r.squared", "logLik", "AIC", "BIC", "statistic.sc", "p.value.sc", "p.value.log", "p.value.wald", "N", "std.error.concordance", "p.value.lrt"
   )
 
   if(any(survival.stats %nin% surv.stats.valid)) {

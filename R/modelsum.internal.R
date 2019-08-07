@@ -100,8 +100,13 @@ make_ms_term_labels <- function(mf, trms)
 
 
 
-modelsum_guts <- function(fam, temp.call, envir, conf.level)
+modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
 {
+  try_lrt <- function(f, s, a)
+  {
+    if(a) return(NA_real_)
+    setdiff(stats::drop1(f, scope = s, test = "Chisq")[["Pr(>Chi)"]], NA_real_)
+  }
 
   ## y is ordered factor
   if (fam$family == "ordinal") {
@@ -117,6 +122,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level)
     # sort so that zeta comes first, but hold all else fixed
     coeffTidy <- coeffTidy[order(coeffTidy$coefficient_type == "coefficient", seq_len(nrow(coeffTidy))), ]
     modelGlance <- broom::glance(fit)
+    modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
 
   } else if (fam$family == "gaussian") {
     # ## issue warning if appears categorical
@@ -133,6 +139,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level)
     ## Note: Using tidy changes colname from 't value' to 'statistic'
     modelGlance <- broom::glance(fit)
     names(modelGlance)[names(modelGlance) == "p.value"] <- "p.value.F"
+    modelGlance$p.value.lrt <- try_lrt(fit, scope, FALSE)
 
   } else if (fam$family == "binomial" || fam$family == "quasibinomial") {
     ## These families are used in glm
@@ -154,6 +161,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level)
                        CI.lower.OR.wald=exp(waldTidy$conf.low), CI.upper.OR.wald=exp(waldTidy$conf.high))
     modelGlance <- broom::glance(fit)
     modelGlance$concordance <- as.numeric(pROC::auc(fit$y ~ predict(fit, type='response'), direction = "<", levels = 0:1))
+    modelGlance$p.value.lrt <- try_lrt(fit, scope, FALSE)
 
   } else if (fam$family == "quasipoisson" || fam$family == "poisson") {
     ## These families use glm
@@ -167,6 +175,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level)
     coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
     coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
     modelGlance <- broom::glance(fit)
+    modelGlance$p.value.lrt <- try_lrt(fit, scope, FALSE)
 
   } else if (fam$family == "negbin") {
     ## Also uses glm
@@ -181,6 +190,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level)
     modelGlance <- broom::glance(fit)
     modelGlance$theta <- fit$theta
     modelGlance$SE.theta <- fit$SE.theta
+    modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
 
   } else if(fam$family == "survival") {
 
@@ -191,6 +201,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level)
     coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=conf.level)
     coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
     modelGlance <-  broom::glance(fit)
+    modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
   }
 
   names(coeffTidy)[names(coeffTidy) == "conf.low"] <- "CI.lower.estimate"

@@ -27,6 +27,8 @@
 
 * `modelsum()`: fixed confidence level for survival models. (#245)
 
+* `modelsum()`: added an option for the likelihood ratio test for the main effect (but not the adjustors): `p.value.lrt` (#238)
+
 * `code.chunk()`: fixed logic checking the length of `chunk.opts=`.
 
 * `code.chunk()`: allow for empty code chunks. (#236)

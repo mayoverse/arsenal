@@ -55,7 +55,7 @@ as_data_frame_summary_modelsum <- function(df, control, hasStrata, term.name, te
   use.digits2 <- c("estimate", "CI.lower.estimate", "CI.upper.estimate", "std.error", "statistic", "standard.estimate")
 
   use.digits.ratio <- c("OR", "CI.lower.OR", "CI.upper.OR", "RR", "CI.lower.RR", "CI.upper.RR", "HR", "CI.lower.HR", "CI.upper.HR")
-  use.digits.p <- c("p.value.sc", "p.value.log", "p.value.wald", "p.value.F") #"p.value"
+  use.digits.p <- c("p.value.sc", "p.value.log", "p.value.wald", "p.value.F", "p.value.lrt") #"p.value"
 
   cn <- colnames(df)
 

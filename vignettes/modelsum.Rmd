@@ -820,29 +820,29 @@ The available summary statistics, by varible type, are:
 * `ordinal`: Ordinal logistic regression models
   + default: `Nmiss, OR, CI.lower.OR, CI.upper.OR, p.value`
   + optional: `estimate, CI.OR, CI.estimate, CI.lower.estimate, CI.upper.estimate,`
-       `N, Nmiss2, endpoint, std.error, statistic, logLik, AIC, BIC, edf, deviance, df.residual`
+       `N, Nmiss2, endpoint, std.error, statistic, logLik, AIC, BIC, edf, deviance, df.residual, p.value.lrt`
 * `binomial`,`quasibinomial`: Logistic regression models 
   +  default:  `OR, CI.lower.OR, CI.upper.OR, p.value, concordance, Nmiss`
   +  optional: `estimate, CI.OR, CI.estimate, CI.lower.estimate, CI.upper.estimate,`
         `CI.wald, CI.lower.wald, CI.upper.wald, CI.OR.wald, CI.lower.OR.wald, CI.upper.OR.wald,`
-        `N, Nmiss2, endpoint, std.error, statistic, logLik, AIC, BIC, null.deviance, deviance, df.residual, df.null`
+        `N, Nmiss2, endpoint, std.error, statistic, logLik, AIC, BIC, null.deviance, deviance, df.residual, df.null, p.value.lrt`
 * `gaussian`: Linear regression models 
   +  default:  `estimate, std.error, p.value, adj.r.squared, Nmiss`
   +  optional: `CI.estimate, CI.lower.estimate, CI.upper.estimate, N, Nmiss2, statistic,`
-        `standard.estimate, endpoint, r.squared, AIC, BIC, logLik, statistic.F, p.value.F`
+        `standard.estimate, endpoint, r.squared, AIC, BIC, logLik, statistic.F, p.value.F, p.value.lrt`
 * `poisson`, `quasipoisson`: Poisson regression models 
   +  default: `RR, CI.lower.RR, CI.upper.RR, p.value, Nmiss`
   +  optional: `CI.RR, CI.estimate, CI.lower.estimate, CI.upper.estimate, CI.RR, Nmiss2, std.error,`
-        `estimate, statistic, endpoint, AIC, BIC, logLik, dispersion, null.deviance, deviance, df.residual, df.null`
+        `estimate, statistic, endpoint, AIC, BIC, logLik, dispersion, null.deviance, deviance, df.residual, df.null, p.value.lrt`
 * `negbin`: Negative binomial regression models 
   +  default: `RR, CI.lower.RR, CI.upper.RR, p.value, Nmiss`
   +  optional: `CI.RR, CI.estimate, CI.lower.estimate, CI.upper.estimate, CI.RR, Nmiss2, std.error, estimate,`
-        `statistic, endpoint, AIC, BIC, logLik, dispersion, null.deviance, deviance, df.residual, df.null, theta, SE.theta`
+        `statistic, endpoint, AIC, BIC, logLik, dispersion, null.deviance, deviance, df.residual, df.null, theta, SE.theta, p.value.lrt`
 * `survival`: Cox models 
   +  default: `HR, CI.lower.HR, CI.upper.HR, p.value, concordance, Nmiss`
   +  optional: `CI.HR, CI.estimate, CI.lower.estimate, CI.upper.estimate, N, Nmiss2, estimate, std.error, endpoint,`
         `Nevents, statistic, r.squared, logLik, AIC, BIC, statistic.sc, p.value.sc, p.value.log,`
-        `p.value.wald, N, std.error.concordance`
+        `p.value.wald, N, std.error.concordance, p.value.lrt`
 
 The full description of these parameters that can be shown for models include:
 
@@ -854,6 +854,7 @@ The full description of these parameters that can be shown for models include:
 * `statistic`: test statistic
 * `statistic.F`: test statistic (F test)
 * `p.value`: print the p-value
+* `p.value.lrt`: print the likelihood ratio p-value for *the main effect only* (not the adjustors)
 * `r.squared`: print the model R-square 
 * `adj.r.squared`: print the model adjusted R-square 
 * `r.squared`: print the model R-square

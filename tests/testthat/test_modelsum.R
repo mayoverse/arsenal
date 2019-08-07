@@ -587,3 +587,35 @@ test_that("08/07/2019: survival confidence limits (#245)", {
     )
   )
 })
+
+#################################################################################################################################
+
+test_that("08/07/2019: p.value.lrt (#238)", {
+  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  expect_identical(
+    capture.kable(summary(modelsum(age ~ sex + arm + bmi, data = mockstudy, gaussian.stats = c("estimate", "p.value.lrt")),
+                          text = TRUE, show.intercept = FALSE)),
+    c("|                         |estimate |p.value.lrt |",
+      "|:------------------------|:--------|:-----------|",
+      "|sex Female               |-1.208   |0.048       |",
+      "|Treatment Arm F: FOLFOX  |0.628    |0.614       |",
+      "|Treatment Arm G: IROX    |0.090    |            |",
+      "|Body Mass Index (kg/m^2) |0.059    |0.289       |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(modelsum(Surv(fu.time, fu.stat) ~ sex + arm + bmi, data = mockstudy,
+                                   family="survival", survival.stats = c("estimate", "p.value.lrt")),
+                          text = TRUE, show.intercept = FALSE)),
+    c("|                         |estimate |p.value.lrt |",
+      "|:------------------------|:--------|:-----------|",
+      "|sex Female               |0.002    |0.975       |",
+      "|Treatment Arm F: FOLFOX  |-0.449   |< 0.001     |",
+      "|Treatment Arm G: IROX    |-0.138   |            |",
+      "|Body Mass Index (kg/m^2) |-0.016   |NA          |"
+    )
+  )
+})
+
