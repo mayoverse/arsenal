@@ -571,3 +571,19 @@ test_that("09/05/2018: correctly label contrasts for ordinal variables (#133)", 
     )
   )
 })
+
+#################################################################################################################################
+
+test_that("08/07/2019: survival confidence limits (#245)", {
+  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  expect_identical(
+    capture.kable(summary(modelsum(Surv(fu.time, fu.stat) ~ arm, data = mockstudy, conf.level = 0.99, family="survival"), text = TRUE)),
+    c("|                        |HR    |CI.lower.HR |CI.upper.HR |p.value |concordance |",
+      "|:-----------------------|:-----|:-----------|:-----------|:-------|:-----------|",
+      "|Treatment Arm F: FOLFOX |0.638 |0.540       |0.754       |< 0.001 |0.556       |",
+      "|Treatment Arm G: IROX   |0.871 |0.722       |1.050       |0.057   |            |"
+    )
+  )
+})

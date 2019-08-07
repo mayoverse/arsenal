@@ -25,6 +25,8 @@
 
 * `modelsum()`: suppressed messages from `pROC::auc()` when calculating AUC. (#244)
 
+* `modelsum()`: fixed confidence level for survival models. (#245)
+
 * `code.chunk()`: fixed logic checking the length of `chunk.opts=`.
 
 * `code.chunk()`: allow for empty code chunks. (#236)

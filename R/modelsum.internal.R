@@ -187,8 +187,8 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level)
     temp.call[[1]] <- quote(survival::coxph)
     fit <- eval(temp.call, envir)
     ## use tidy to get both CIs, merge
-    coeffHRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=.95)
-    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=.95)
+    coeffHRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=conf.level)
+    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=conf.level)
     coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
     modelGlance <-  broom::glance(fit)
   }
