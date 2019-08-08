@@ -15,7 +15,7 @@ x \%nin\% table
     \link{Long vectors} are not supported.}
 }
 \value{
-The negation of \code{\link{\%nin\%}}.
+The negation of \code{\link{\%in\%}}.
 }
 \description{
 The not-in operator for R.

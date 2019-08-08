@@ -8,7 +8,7 @@
 #' The not-in operator for R.
 #'
 #' @inheritParams base::`%in%`
-#' @return The negation of \code{\link{\%nin\%}}.
+#' @return The negation of \code{\link{\%in\%}}.
 #' @examples
 #' 1 %nin% 2:10
 #' c("a", "b") %nin% c("a", "c", "d")
