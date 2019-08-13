@@ -35,6 +35,8 @@
 
 * `code.chunk()`: allow for empty code chunks. (#236)
 
+* `verbatim()`: removed named argument in favor of the dots; reworked the object structure to fix edge case printing oddities. (#248)
+
 * Removed defunct functions.
 
 # arsenal v3.2.0

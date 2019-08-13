@@ -2,9 +2,8 @@
 #'
 #' Helper functions for \code{\link{write2}}.
 #'
-#' @param x An R object to coerce to class \code{"verbatim"} or such an object to print.
-#' @param ... For \code{print.verbatim}, other arguments passed to \code{print}. For \code{code.chunk},
-#'   either expressions or single character strings to paste into the code chunk. Not used for \code{print.code.chunk}.
+#' @param ... For \code{verbatim}, objects to print out monospaced (as if in the terminal). For \code{code.chunk},
+#'   either expressions or single character strings to paste into the code chunk.
 #' @param chunk.opts A single character string giving the code chunk options. Make sure to specify the engine!
 #' @details
 #' The \code{"verbatim"} class is to tell \code{\link{write2}} to print the object inside
@@ -16,30 +15,23 @@
 NULL
 #> NULL
 
-#' @rdname write2.internal
 #' @export
 print.verbatim <- function(x, ...)
 {
-  cat("```\n")
-
-  # This line demands some explanation:
-  #   its purpose is to make sure that the "verbatim" class doesn't confuse
-  #   the downstream print methods. For example, character vectors would
-  #   also print the "verbatim" class when run through the default, which
-  #   isn't what I wanted. I want "verbatim" to be as invisible as possible.
-  #   Note that this won't change what NextMethod() calls.
-  class(x) <- class(x)[class(x) != "verbatim"]
-
-  NextMethod("print")
-  cat("\n```\n\n")
+  for(i in seq_along(x))
+  {
+    cat("```\n")
+    print(x[[i]], ...)
+    cat("\n```\n\n")
+  }
+  invisible(x)
 }
 
 #' @rdname write2.internal
 #' @export
-verbatim <- function(x)
+verbatim <- function(...)
 {
-  class(x) <- c("verbatim", class(x)[class(x) != "verbatim"])
-  x
+  structure(list(...), class = "verbatim")
 }
 
 #' @rdname write2.internal
@@ -54,7 +46,6 @@ code.chunk <- function(..., chunk.opts = "r")
   set_attr(set_attr(Call, "chunk.opts", chunk.opts), "class", c("code.chunk", class(Call)))
 }
 
-#' @rdname write2.internal
 #' @export
 print.code.chunk <- function(x, ...)
 {

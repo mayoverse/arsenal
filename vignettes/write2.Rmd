@@ -232,6 +232,12 @@ chr <- paste0("MyVector", 1:10)
 write2pdf(verbatim(chr), paste0(tmpdir, "/test.character.pdf"), quiet = TRUE)
 ```
 
+Note that you can combine multiple objects in one call:
+
+```{r}
+write2pdf(verbatim(tab4, chr), paste0(tmpdir, "/test.verbatim.pdf"), quiet = TRUE)
+```
+
 # Add a YAML Header to the Output
 
 You can add a YAML header to `write2()` output using the `yaml()` function.

@@ -2,25 +2,17 @@
 % Please edit documentation in R/write2.internal.R
 \name{write2.internal}
 \alias{write2.internal}
-\alias{print.verbatim}
 \alias{verbatim}
 \alias{code.chunk}
-\alias{print.code.chunk}
 \title{Helper functions for \code{write2}}
 \usage{
-\method{print}{verbatim}(x, ...)
-
-verbatim(x)
+verbatim(...)
 
 code.chunk(..., chunk.opts = "r")
-
-\method{print}{code.chunk}(x, ...)
 }
 \arguments{
-\item{x}{An R object to coerce to class \code{"verbatim"} or such an object to print.}
-
-\item{...}{For \code{print.verbatim}, other arguments passed to \code{print}. For \code{code.chunk},
-either expressions or single character strings to paste into the code chunk. Not used for \code{print.code.chunk}.}
+\item{...}{For \code{verbatim}, objects to print out monospaced (as if in the terminal). For \code{code.chunk},
+either expressions or single character strings to paste into the code chunk.}
 
 \item{chunk.opts}{A single character string giving the code chunk options. Make sure to specify the engine!}
 }
