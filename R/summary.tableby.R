@@ -83,16 +83,18 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, cont
   df[idx] <- lapply(df[idx], function(col) unlist(Map(format, col, digits = digits, format = "f", # the format="f" is not used for tbstat objects
                                                       digits.count = digits.count, digits.pct = digits.pct)))
 
-  df$p.value <- formatC(df$p.value, digits = control$digits.p, format = if(control$format.p) "f" else "g")
-
-  if(control$format.p)
+  if(is.numeric(df$p.value))
   {
-    cutoff <- 10^(-control$digits.p)
-    fmt <- paste0("< ", format(cutoff, digits = control$digits.p, format = "f"))
+    df$p.value <- formatC(df$p.value, digits = control$digits.p, format = if(control$format.p) "f" else "g")
 
-    df$p.value[df.orig$p.value < cutoff] <- fmt
+    if(control$format.p)
+    {
+      cutoff <- 10^(-control$digits.p)
+      fmt <- paste0("< ", format(cutoff, digits = control$digits.p, format = "f"))
+      df$p.value[df.orig$p.value < cutoff] <- fmt
+    }
   }
-  df$p.value[grepl("^\\s*NA$", df$p.value)] <- ""
+  df$p.value[grepl("^\\s*NA$", df$p.value) | is.na(df$p.value)] <- ""
 
   tests.used <- NULL
   if(control$test && pfootnote)

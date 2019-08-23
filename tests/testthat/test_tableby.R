@@ -1158,3 +1158,22 @@ test_that("07/30/2019: modpval.tableby and factors (#239)", {
   tab2 <- modpval.tableby(tab1, mypval, use.pname = TRUE)
   expect_equal(tests(tab2)$adj.pvalue, mypval$adj.pvalue)
 })
+
+
+test_that("07/30/2019: summary.tableby and pre-formatted p-values (#249)", {
+  tab1 <- tableby(arm ~ sex + age, total = FALSE, test = FALSE, data = mockstudy)
+  mypval <- data.frame(byvar = "arm", variable = "sex", adj.pvalue = "0.0001", stringsAsFactors = FALSE)
+  tab2 <- modpval.tableby(tab1, mypval, use.pname = TRUE)
+  expect_identical(
+    capture.kable(summary(tab2, text = TRUE)),
+    c("|             | A: IFL (N=428)  | F: FOLFOX (N=691) | G: IROX (N=380) | adj.pvalue|",
+      "|:------------|:---------------:|:-----------------:|:---------------:|----------:|",
+      "|sex          |                 |                   |                 |     0.0001|",
+      "|-  Male      |   277 (64.7%)   |    411 (59.5%)    |   228 (60.0%)   |           |",
+      "|-  Female    |   151 (35.3%)   |    280 (40.5%)    |   152 (40.0%)   |           |",
+      "|Age in Years |                 |                   |                 |           |",
+      "|-  Mean (SD) | 59.673 (11.365) |  60.301 (11.632)  | 59.763 (11.499) |           |",
+      "|-  Range     | 27.000 - 88.000 |  19.000 - 88.000  | 26.000 - 85.000 |           |"
+    )
+  )
+})

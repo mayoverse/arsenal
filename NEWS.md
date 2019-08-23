@@ -19,6 +19,8 @@
 
 * `tableby()`: add option to run statistical tests even if one by-group has 0 observations. (#233)
 
+* `tableby()` / `paired()`: stopped the formatting of p-values when they're not numeric (if, say, they're pre-formatted by the user). (#249)
+
 * `modelsum()`: added functionality for multiple adjustor sets. (#240)
 
 * `modelsum()`: fixed "Nmiss" and "N" when used with strata, which now both report the missings for the entire fit. (#241, #242, #243)
