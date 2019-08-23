@@ -94,7 +94,7 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, cont
       df$p.value[df.orig$p.value < cutoff] <- fmt
     }
   }
-  df$p.value[grepl("^\\s*NA$", df$p.value) | is.na(df$p.value)] <- ""
+  if(!is.null(df$p.value)) df$p.value[grepl("^\\s*NA$", df$p.value) | is.na(df$p.value)] <- ""
 
   tests.used <- NULL
   if(control$test && pfootnote)
