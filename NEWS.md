@@ -3,6 +3,8 @@
 * `tableby()`: redid how weights are handled. The only user-visible changes should be that standard deviations
   on length-1 groups are now reported as `NA` instead of `NaN`.
   
+* `tableby()` / `paired()`: fixed a bug with `modpval.tableby()` when factors are involved. (#239)
+  
 * `tableby()` / `paired()`: added `meanCI()` and `medianmad()`. (#230, #232)
 
 * `tableby()` / `paired()`: added the units for `difftime` statistics when using dates (e.g., `meansd`, `medianmad`, `iqr`).
