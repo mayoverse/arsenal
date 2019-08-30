@@ -1198,6 +1198,8 @@ test_that("07/17/2019: run stat test even if one group has 0 observations (#233,
     capture.kable(summary(tableby(group ~ x2, data = dd), text = TRUE)),
     capture.kable(summary(tableby(group ~ ordered(x2), data = dd), labelTranslations = list("ordered(x2)" = "x2"), text = TRUE))
   )
+  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not_installed("coin")
   expect_identical(
     capture.kable(summary(tableby(group ~ ordered(x2), data = dd, test.always = TRUE), labelTranslations = list("ordered(x2)" = "x2"), text = TRUE)),
     c("|          | A (N=20)  | B (N=20)  | C (N=20) | Total (N=60) | p value|",
@@ -1210,7 +1212,6 @@ test_that("07/17/2019: run stat test even if one group has 0 observations (#233,
     )
   )
 
-  skip_if_not(getRversion() >= "3.3.0")
   skip_if_not_installed("survival", "2.41-3")
   require(survival)
   dd$surv <- Surv(1:60)
