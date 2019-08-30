@@ -61,11 +61,19 @@ fe <- function(x, x.by, ..., simulate.p.value=FALSE, B=2000, test.always = FALSE
 }
 
 ## trend test for ordinal data
-trend <- function(x, x.by, ...) {
+trend <- function(x, x.by, ..., test.always = FALSE) {
   if(!requireNamespace("coin", quietly = TRUE))
   {
     warning("The \"coin\" package is required to run a trend test.", call. = FALSE)
     return(notest(x, x.by, ...))
+  }
+
+  tab <- table(x, x.by, exclude=NA)
+  rs <- rowSums(tab)
+  cs <- colSums(tab)
+
+  if(!test.always && (any(rs == 0) || any(cs == 0))) {
+    return(list(p.value=NA_real_, method = "Trend test for ordinal variables"))
   }
   ## should be taken care of with coin::
   ## require(coin, quietly=TRUE, warn.conflicts=FALSE)

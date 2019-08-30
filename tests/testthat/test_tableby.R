@@ -1093,6 +1093,16 @@ test_that("06/24/2019: fe() and chisq() works with only one level (#227)", {
       "|-  F: FOLFOX  | 411 (100.0%) |  280 (100.0%)  | 691 (100.0%)  |        |"
     )
   )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ ordered(arm), data = mockstudy, subset = arm == "F: FOLFOX"), text = TRUE)),
+    c("|             | Male (N=411) | Female (N=280) | Total (N=691) | p value|",
+      "|:------------|:------------:|:--------------:|:-------------:|-------:|",
+      "|ordered(arm) |              |                |               |        |",
+      "|-  A: IFL    |   0 (0.0%)   |    0 (0.0%)    |   0 (0.0%)    |        |",
+      "|-  F: FOLFOX | 411 (100.0%) |  280 (100.0%)  | 691 (100.0%)  |        |",
+      "|-  G: IROX   |   0 (0.0%)   |    0 (0.0%)    |   0 (0.0%)    |        |"
+    )
+  )
 })
 
 test_that("07/16/2019: n's in tableby header work with weights (#229)", {
@@ -1123,7 +1133,7 @@ test_that("07/17/2019: fix bug with confidence limits (#234)", {
   )
 })
 
-test_that("07/17/2019: run stat test even if one group has 0 observations (#233)", {
+test_that("07/17/2019: run stat test even if one group has 0 observations (#233, #250)", {
   dd <- data.frame(group=factor(rep(c("A", "B", "C"), 20)), x1=1:60, x2 = rep(c("D", "E", "F"), each = 20))
   dd$x1[dd$group == "C"] <- NA
   dd$x2[dd$group == "C"] <- NA
@@ -1182,6 +1192,21 @@ test_that("07/17/2019: run stat test even if one group has 0 observations (#233)
       "|-  D      | 7 (50.0%) | 7 (35.0%) |    0     |  14 (41.2%)  |        |",
       "|-  E      | 7 (50.0%) | 6 (30.0%) |    0     |  13 (38.2%)  |        |",
       "|-  F      | 0 (0.0%)  | 7 (35.0%) |    0     |  7 (20.6%)   |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ x2, data = dd), text = TRUE)),
+    capture.kable(summary(tableby(group ~ ordered(x2), data = dd), labelTranslations = list("ordered(x2)" = "x2"), text = TRUE))
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ ordered(x2), data = dd, test.always = TRUE), labelTranslations = list("ordered(x2)" = "x2"), text = TRUE)),
+    c("|          | A (N=20)  | B (N=20)  | C (N=20) | Total (N=60) | p value|",
+      "|:---------|:---------:|:---------:|:--------:|:------------:|-------:|",
+      "|x2        |           |           |          |              |   0.849|",
+      "|-  N-Miss |     0     |     0     |    20    |      20      |        |",
+      "|-  D      | 7 (35.0%) | 7 (35.0%) |    0     |  14 (35.0%)  |        |",
+      "|-  E      | 7 (35.0%) | 6 (30.0%) |    0     |  13 (32.5%)  |        |",
+      "|-  F      | 6 (30.0%) | 7 (35.0%) |    0     |  13 (32.5%)  |        |"
     )
   )
 })
