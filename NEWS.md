@@ -19,7 +19,7 @@
 
 * `tableby.control()`: added explicit `times=` argument for survival summaries.
 
-* `tableby()`: add option to run statistical tests even if one by-group has 0 observations. (#233, #250)
+* `tableby()`: add option to run statistical tests even if one by-group has 0 observations. (#233, #250, #251)
 
 * `tableby()` / `paired()`: stopped the formatting of p-values when they're not numeric (if, say, they're pre-formatted by the user). (#249)
 

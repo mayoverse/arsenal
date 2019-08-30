@@ -1209,6 +1209,32 @@ test_that("07/17/2019: run stat test even if one group has 0 observations (#233,
       "|-  F      | 6 (30.0%) | 7 (35.0%) |    0     |  13 (32.5%)  |        |"
     )
   )
+
+  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
+  dd$surv <- Surv(1:60)
+  dd$surv[dd$group == "C"] <- NA
+  expect_identical(
+    capture.kable(summary(tableby(group ~ surv, data = dd), text = TRUE)),
+    c("|                   | A (N=20) | B (N=20) | C (N=20) | Total (N=60) | p value|",
+      "|:------------------|:--------:|:--------:|:--------:|:------------:|-------:|",
+      "|surv               |          |          |          |              |        |",
+      "|-  N-Miss          |    0     |    0     |    20    |      20      |        |",
+      "|-  Events          |    20    |    20    |    NA    |      40      |        |",
+      "|-  Median Survival |  29.500  |  30.500  |    NA    |    30.000    |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ surv, data = dd, test.always = TRUE), text = TRUE)),
+    c("|                   | A (N=20) | B (N=20) | C (N=20) | Total (N=60) | p value|",
+      "|:------------------|:--------:|:--------:|:--------:|:------------:|-------:|",
+      "|surv               |          |          |          |              |   0.690|",
+      "|-  N-Miss          |    0     |    0     |    20    |      20      |        |",
+      "|-  Events          |    20    |    20    |    NA    |      40      |        |",
+      "|-  Median Survival |  29.500  |  30.500  |    NA    |    30.000    |        |"
+    )
+  )
 })
 
 test_that("07/30/2019: modpval.tableby and factors (#239)", {

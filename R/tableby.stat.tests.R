@@ -87,13 +87,13 @@ trend <- function(x, x.by, ..., test.always = FALSE) {
 ## ' @param x  surv variable
 ## ' @param x.by  by, categorical variable
 ## ' @return   test output with $method and $p.value
-logrank <- function(x, x.by, ...) {
-  tab <- table(is.na(x), x.by)
-  if(any(tab[1, ] == 0) || any(colSums(tab) == 0)) {
+logrank <- function(x, x.by, ..., test.always = FALSE) {
+  tab <- table(is.na(x), x.by, exclude=NA)
+  if(!test.always && (any(tab[1, ] == 0) || any(colSums(tab) == 0))) {
     return(list(p.value=NA_real_, method="survdiff logrank"))
   }
   out <- survival::survdiff(x ~ x.by)
-  out$p.value <- 1-stats::pchisq(out$chisq, df=length(unique(x.by))-1)
+  out$p.value <- 1-stats::pchisq(out$chisq, df=sum(tab[1,] != 0)-1)
   out$method <- "survdiff logrank"
   out
 }
