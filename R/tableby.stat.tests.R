@@ -34,23 +34,30 @@ kwt <- function(x, x.by, ..., test.always = FALSE) {
 
 ## two tests for categorical,
 ## 1. chisq goodness of fit, equal proportions across table cells
-chisq <- function(x, x.by, ..., chisq.correct=FALSE, simulate.p.value=FALSE, B=2000) {
+chisq <- function(x, x.by, ..., chisq.correct=FALSE, simulate.p.value=FALSE, B=2000, test.always = FALSE) {
   tab <- table(x, x.by, exclude=NA)
   rs <- rowSums(tab)
-  if(sum(rs > 0) > 1 || (nrow(tab) == 1 && sum(rs > 0) == 1)) {
-    suppressWarnings(stats::chisq.test(tab[rowSums(tab)>0,], correct=chisq.correct, simulate.p.value=simulate.p.value, B=B))
-  } else {
-    list(p.value=NA_real_, method="Pearson's Chi-squared test")
+  cs <- colSums(tab)
+
+  if(!test.always && (any(rs == 0) || any(cs == 0)) && ncol(tab) > 1 && nrow(tab) > 1) {
+    return(list(p.value=NA_real_, method="Pearson's Chi-squared test"))
   }
+  if(length(cs) > 1) tab <- tab[rs > 0, , drop = FALSE]
+  if(length(rs) > 1) tab <- tab[, cs > 0, drop = FALSE]
+  suppressWarnings(stats::chisq.test(tab, correct=chisq.correct, simulate.p.value=simulate.p.value, B=B))
 }
+
 ## 2. Fisher's exact test for prob of as or more extreme table
-fe <- function(x, x.by, ..., simulate.p.value=FALSE, B=2000) {
-  tab <- table(x,x.by, exclude=NA)
-  if(sum(rowSums(tab)>0)>1) {
-    stats::fisher.test(tab, simulate.p.value=simulate.p.value, B=B)
-  } else {
-    list(p.value=NA_real_, method = "Fisher's Exact Test for Count Data")
+fe <- function(x, x.by, ..., simulate.p.value=FALSE, B=2000, test.always = FALSE) {
+  tab <- table(x, x.by, exclude=NA)
+  rs <- rowSums(tab)
+  cs <- colSums(tab)
+
+  if((!test.always && (any(rs == 0) || any(cs == 0))) || ncol(tab) == 1 || nrow(tab) == 1) {
+    return(list(p.value=NA_real_, method = "Fisher's Exact Test for Count Data"))
   }
+  # this already subsets out rows and cols with all 0's
+  stats::fisher.test(tab, simulate.p.value=simulate.p.value, B=B)
 }
 
 ## trend test for ordinal data

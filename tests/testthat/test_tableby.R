@@ -1123,9 +1123,10 @@ test_that("07/17/2019: fix bug with confidence limits (#234)", {
   )
 })
 
-test_that("07/17/2019: run stat test even if one group has 0 observations", {
-  dd <- data.frame(group=rep(c("A", "B", "C"), 20), x1=1:60)
+test_that("07/17/2019: run stat test even if one group has 0 observations (#233)", {
+  dd <- data.frame(group=factor(rep(c("A", "B", "C"), 20)), x1=1:60, x2 = rep(c("D", "E", "F"), each = 20))
   dd$x1[dd$group == "C"] <- NA
+  dd$x2[dd$group == "C"] <- NA
   expect_identical(
     capture.kable(summary(tableby(group ~ x1, data = dd), text = TRUE)),
     c("|             |    A (N=20)     |    B (N=20)     | C (N=20) |  Total (N=60)   | p value|",
@@ -1144,6 +1145,43 @@ test_that("07/17/2019: run stat test even if one group has 0 observations", {
       "|-  N-Miss    |        0        |        0        |    20    |       20        |        |",
       "|-  Mean (SD) | 29.500 (17.748) | 30.500 (17.748) |    NA    | 30.000 (17.527) |        |",
       "|-  Range     | 1.000 - 58.000  | 2.000 - 59.000  |    NA    | 1.000 - 59.000  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ x2, data = dd), text = TRUE)),
+    c("|          | A (N=20)  | B (N=20)  | C (N=20) | Total (N=60) | p value|",
+      "|:---------|:---------:|:---------:|:--------:|:------------:|-------:|",
+      "|x2        |           |           |          |              |        |",
+      "|-  N-Miss |     0     |     0     |    20    |      20      |        |",
+      "|-  D      | 7 (35.0%) | 7 (35.0%) |    0     |  14 (35.0%)  |        |",
+      "|-  E      | 7 (35.0%) | 6 (30.0%) |    0     |  13 (32.5%)  |        |",
+      "|-  F      | 6 (30.0%) | 7 (35.0%) |    0     |  13 (32.5%)  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ x2, data = dd, test.always = TRUE), text = TRUE)),
+    c("|          | A (N=20)  | B (N=20)  | C (N=20) | Total (N=60) | p value|",
+      "|:---------|:---------:|:---------:|:--------:|:------------:|-------:|",
+      "|x2        |           |           |          |              |   0.926|",
+      "|-  N-Miss |     0     |     0     |    20    |      20      |        |",
+      "|-  D      | 7 (35.0%) | 7 (35.0%) |    0     |  14 (35.0%)  |        |",
+      "|-  E      | 7 (35.0%) | 6 (30.0%) |    0     |  13 (32.5%)  |        |",
+      "|-  F      | 6 (30.0%) | 7 (35.0%) |    0     |  13 (32.5%)  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ x2, data = dd), text = TRUE)),
+    capture.kable(summary(tableby(group ~ fe(x2), data = dd), text = TRUE))
+  )
+  expect_identical(
+    capture.kable(summary(tableby(group ~ fe(x2), data = dd, test.always = TRUE, subset = group != "A" | x2 != "F"), text = TRUE)),
+    c("|          | A (N=14)  | B (N=20)  | C (N=20) | Total (N=54) | p value|",
+      "|:---------|:---------:|:---------:|:--------:|:------------:|-------:|",
+      "|x2        |           |           |          |              |   0.055|",
+      "|-  N-Miss |     0     |     0     |    20    |      20      |        |",
+      "|-  D      | 7 (50.0%) | 7 (35.0%) |    0     |  14 (41.2%)  |        |",
+      "|-  E      | 7 (50.0%) | 6 (30.0%) |    0     |  13 (38.2%)  |        |",
+      "|-  F      | 0 (0.0%)  | 7 (35.0%) |    0     |  7 (20.6%)   |        |"
     )
   )
 })
@@ -1177,3 +1215,4 @@ test_that("07/30/2019: summary.tableby and pre-formatted p-values (#249)", {
     )
   )
 })
+
