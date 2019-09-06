@@ -1,43 +1,49 @@
-# arsenal v3.2.1.9000
+# arsenal v3.3.0
 
-* `tableby()`: redid how weights are handled. The only user-visible changes should be that standard deviations
-  on length-1 groups are now reported as `NA` instead of `NaN`.
+* `tableby()` / `paired()`:
+
+    - Redid how weights are handled. The only user-visible changes should be that standard deviations
+      on length-1 groups are now reported as `NA` instead of `NaN`.
   
-* `tableby()` / `paired()`: fixed a bug with `modpval.tableby()` when factors are involved. (#239)
+    - Fixed a bug with `modpval.tableby()` when factors are involved. (#239)
   
-* `tableby()` / `paired()`: added `meanCI()` and `medianmad()`. (#230, #232)
+    - Added `meanCI()` and `medianmad()`. (#230, #232)
 
-* `tableby()` / `paired()`: added the units for `difftime` statistics when using dates (e.g., `meansd`, `medianmad`, `iqr`).
+    - Added the units for `difftime` statistics when using dates (e.g., `meansd`, `medianmad`, `iqr`).
 
-* `tableby()`: fixed Chi-square and Fisher's Exact test for one-level categorical variables. (#227, #228)
+    - Fixed Chi-square and Fisher's Exact test for one-level categorical variables. (#227, #228)
 
-* `tableby()`: fixed the n's in the header when using weights. (#229)
+    - Fixed the n's in the header when using weights. (#229)
 
-* `tableby()` / `paired()`: fixed a bug with confidence levels supplied through the control argument. (#234)
+    - Fixed a bug with confidence levels supplied through the control argument. (#234)
 
-* `paired()`: fixed a bug when using `count()` with factors. (#235)
+    - `paired()`: fixed a bug when using `count()` with factors. (#235)
 
-* `tableby.control()`: added explicit `times=` argument for survival summaries.
+    - `tableby.control()`: added explicit `times=` argument for survival summaries.
 
-* `tableby()`: add option to run statistical tests even if one by-group has 0 observations. (#233, #250, #251)
+    - Added option to run statistical tests even if one by-group has 0 observations. (#233, #250, #251)
 
-* `tableby()` / `paired()`: stopped the formatting of p-values when they're not numeric (if, say, they're pre-formatted by the user). (#249)
+    - Stopped the formatting of p-values when they're not numeric (if, say, they're pre-formatted by the user). (#249)
 
-* `modelsum()`: added functionality for multiple adjustor sets. (#240)
+* `modelsum()`:
 
-* `modelsum()`: fixed "Nmiss" and "N" when used with strata, which now both report the missings for the entire fit. (#241, #242, #243)
+    - Added functionality for multiple adjustor sets. (#240)
 
-* `modelsum()`: suppressed messages from `pROC::auc()` when calculating AUC. (#244)
+    - Fixed "Nmiss" and "N" when used with strata, which now both report the missings for the entire fit. (#241, #242, #243)
 
-* `modelsum()`: fixed confidence level for survival models. (#245)
+    - Suppressed messages from `pROC::auc()` when calculating AUC. (#244)
 
-* `modelsum()`: added an option for the likelihood ratio test for the main effect (but not the adjustors): `p.value.lrt` (#238)
+    - Fixed confidence level for survival models. (#245)
 
-* `modelsum()`: blanked out p-values that are NA. (#246)
+    - Added an option for the likelihood ratio test for the main effect (but not the adjustors): `p.value.lrt` (#238)
 
-* `code.chunk()`: fixed logic checking the length of `chunk.opts=`.
+    - Blanked out p-values that are NA. (#246)
 
-* `code.chunk()`: allow for empty code chunks. (#236)
+* `code.chunk()`:
+
+    - Fixed logic checking the length of `chunk.opts=`.
+
+    - Allowed for empty code chunks. (#236)
 
 * `verbatim()`: removed named argument in favor of the dots; reworked the object structure to fix edge case printing oddities. (#248)
 
