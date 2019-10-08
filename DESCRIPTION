@@ -31,7 +31,6 @@ Suggests:
     broom,
     stringr,
     magrittr,
-    knitr,
     rmarkdown,
     testthat,
     xtable,
@@ -47,6 +46,7 @@ Depends:
     R (>= 3.2.0),
     stats (>= 3.2.0)
 Imports:
+    knitr,
     utils (>= 3.2.0)
 URL: https://github.com/eheinzen/arsenal, https://cran.r-project.org/package=arsenal
 BugReports: https://github.com/eheinzen/arsenal/issues

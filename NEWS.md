@@ -1,3 +1,7 @@
+# arsenal v3.3.1.9000
+
+* Moved knitr to an import. (#255)
+
 # arsenal v3.3.0
 
 * `tableby()` / `paired()`:
