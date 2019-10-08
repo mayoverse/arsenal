@@ -319,7 +319,7 @@ test_that("custom tolerances are working correctly", {
 
 
 tols <- comparedf.control(
-  tol.vars = c("._ ", "case"), # dots=underscores=spaces; don't match up Arm and arm
+  tol.vars = c("._ ", "case"), # dots=underscores=spaces; match up Arm and arm
   int.as.num = TRUE,           # compare integers and numerics
   tol.factor = "labels",       # match only factor labels
   factor.as.char = TRUE,       # compare factors and characters
@@ -333,12 +333,36 @@ test_that("Summary numbers are reported correctly", {
   )
 })
 
-tols$tol.vars <- "._ "
+tols$tol.vars <- "._ " # don't match arm and Arm anymore
 
 test_that("Summary numbers are still reported correctly", {
   expect_equal(
     summary(comparedf(mockstudy, mockstudy2, by = "case", control = tols))$comparison.summary.table$value,
     c(1, 11, 11, 2, 1, 3, 8, 1495, 4, 0, 269, 1226, 270)
+  )
+})
+
+###########################################################################################################
+#### Using custom tolerances
+###########################################################################################################
+
+test_that("Custom tolerances work specified by variable", {
+  dat1 <- dat2 <- data.frame(
+    x1 = rep(c("A", "B", "C"), each = 10),
+    x2 = rep(c("D", "E", "F"), each = 10),
+    x3 = 1:30 + 0.5,
+    x4 = 1:30 + 0,
+    stringsAsFactors = FALSE
+  )
+  dat2$x1 <- tolower(dat2$x1)
+  dat2$x2 <- tolower(dat2$x2)
+  dat2$x3 <- dat2$x3 + rep(c(0, -0.5, 1), each = 10)
+  dat2$x4 <- dat2$x4 * rep(c(1, 1.1, 1.6), each = 10)
+
+  expect_equal(
+    summary(comparedf(dat1, dat2, tol.num = list("absolute", x4 = "percent"), tol.num.val = 0.5,
+                      tol.char = list(x1 = "case", x2 = function(x, y) x != y & x %nin% c("D", "E"))))$comparison.summary.table$value,
+    c(0, 4, 4, 0, 0, 3, 1, 30, 0, 0, 10, 20, 30)
   )
 })
 

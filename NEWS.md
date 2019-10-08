@@ -2,6 +2,8 @@
 
 * Moved knitr to an import. (#255)
 
+* `comparedf()`: Added support for tolerances by variable. (#167)
+
 # arsenal v3.3.0
 
 * `tableby()` / `paired()`:

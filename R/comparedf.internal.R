@@ -97,25 +97,34 @@ compare_values <- function(i, v, df, byvars, contr)
     var.y <- as.character(var.y)
   }
 
+  find_tol <- function(whch)
+  {
+    opts <- contr[[whch]]
+    if(v$var.x[i] %in% names(opts)) return(opts[[v$var.x[i]]])
+    if(is.null(names(opts))) return(opts[[1]])
+    if("" %nin% names(opts)) stop("No default tolerance specified for ", whch)
+    opts[[which(names(opts) == "")]]
+  }
+
   if(is.logical(var.x) && is.logical(var.y))
   {
-    idx <- contr$tol.logical(var.x, var.y)
+    idx <- find_tol("tol.logical")(var.x, var.y)
   } else if(is.numeric(var.x) && is.numeric(var.y)) # this covers integers, too
   {
-    idx <- contr$tol.num(var.x, var.y, contr$tol.num.val)
+    idx <- find_tol("tol.num")(var.x, var.y, contr$tol.num.val)
   } else if(is.factor(var.x) && is.factor(var.y))
   {
-    idx <- contr$tol.factor(var.x, var.y)
+    idx <- find_tol("tol.factor")(var.x, var.y)
 
   } else if(is.character(var.x) && is.character(var.y))
   {
-    idx <- contr$tol.char(var.x, var.y)
+    idx <- find_tol("tol.char")(var.x, var.y)
   } else if(is.Date(var.x) && is.Date(var.y))
   {
-    idx <- contr$tol.date(var.x, var.y, contr$tol.date.val)
+    idx <- find_tol("tol.date")(var.x, var.y, contr$tol.date.val)
   } else
   {
-    idx <- contr$tol.other(var.x, var.y)
+    idx <- find_tol("tol.other")(var.x, var.y)
   }
 
   out <- data.frame(values.x = I(var.x[idx]), # just in case list-column

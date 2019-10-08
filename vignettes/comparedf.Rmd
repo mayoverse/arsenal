@@ -235,6 +235,18 @@ Use the `tol.date=` argument to change how dates are compared. By default, they'
 Use the `tol.other=` argument to change how other objects are compared. By default,
 they're expected to be `identical()`.
 
+## Specifying tolerances for each variable
+
+You can also provide a list of tolerance functions to `comparedf()`:
+
+```{r eval=FALSE}
+comparedf.control(tol.char = list(
+  "none",      # the default
+  x1 = "case", # be case-insensitive for the variable "x1"
+  x2 = function(x, y) tol.NA(x, y, x != y | y == "NA") # a custom-defined tolerance
+))
+```
+
 ## User-defined tolerance functions
 
 ### Details
