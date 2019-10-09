@@ -17,8 +17,8 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   "Median (Range)", median = "Median", medianq1q3 = "Median (Q1, Q3)", q1q3
   = "Q1, Q3", iqr = "IQR", range = "Range", countpct = "Count (Pct)",
   Nevents = "Events", medSurv = "Median Survival", medTime =
-  "Median Follow-Up", medianmad = "Median (MAD)"), digits = 3L,
-  digits.count = 0L, digits.pct = 1L, digits.p = 3L,
+  "Median Follow-Up", medianmad = "Median (MAD)", overall = "Overall"),
+  digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L,
   format.p = TRUE, conf.level = 0.95, chisq.correct = FALSE,
   simulate.p.value = FALSE, B = 2000, times = 1:5, ...)
 }
