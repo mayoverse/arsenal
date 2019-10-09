@@ -226,8 +226,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
     } else
     {
       ## no response, create a dummy one
-      by.col <- rep("Overall", nrow(modeldf))
-      termBy <- labelBy <- by.levels <- "Overall"
+      if(is.null(overall <- control$stats.labels$overall)) overall <- "Overall"
+      by.col <- rep(overall, nrow(modeldf))
+      termBy <- labelBy <- by.levels <- overall
       control$total <- FALSE
       control$test <- FALSE
     }

@@ -1268,3 +1268,24 @@ test_that("07/30/2019: summary.tableby and pre-formatted p-values (#249)", {
   )
 })
 
+test_that("10/09/2019: change title for overall (#253)", {
+  tab1 <- tableby(~ sex + age, data = mockstudy, stats.labels = list(overall = "Total"))
+  tab2 <- tableby(~ sex + age, data = mockstudy, stats.labels = list(overall = "Hello"))
+
+  expect_identical(
+    capture.kable(summary(tab1, text = TRUE)),
+    c("|             | Total (N=1499)  |",
+      "|:------------|:---------------:|",
+      "|sex          |                 |",
+      "|-  Male      |   916 (61.1%)   |",
+      "|-  Female    |   583 (38.9%)   |",
+      "|Age in Years |                 |",
+      "|-  meansd    | 59.985 (11.519) |",
+      "|-  range     | 19.000 - 88.000 |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tab1, text = TRUE)),
+    sub("Hello", "Total", capture.kable(summary(tab2, text = TRUE)))
+  )
+})

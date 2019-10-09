@@ -4,6 +4,8 @@
 
 * `comparedf()`: Added support for tolerances by variable. (#167)
 
+* `tableby()`: Allowed for changing of "Overall" label. (#253)
+
 # arsenal v3.3.0
 
 * `tableby()` / `paired()`:

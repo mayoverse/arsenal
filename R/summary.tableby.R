@@ -126,7 +126,7 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, cont
   df$test <- NULL
   df$variable.type <- NULL
   if(!control$test) df$p.value <- NULL
-  if(!control$total) df$Total <- NULL
+  if(!control$total && !identical(control$stats.labels$overall, "Total")) df$Total <- NULL
 
   #### Format if necessary ####
   if(!is.null(width))
