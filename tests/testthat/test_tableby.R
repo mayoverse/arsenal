@@ -1105,7 +1105,7 @@ test_that("06/24/2019: fe() and chisq() works with only one level (#227)", {
   )
 })
 
-test_that("07/16/2019: n's in tableby header work with weights (#229)", {
+test_that("07/16/2019: n's in tableby header work with weights (#229, #257)", {
   d <- data.frame(a = 1:10, b = rep(c("A", "B"), 5), w = 1:10)
   expect_identical(
     capture.kable(summary(tableby(b ~ a, weights = w, data = d), text = TRUE)),
@@ -1114,6 +1114,16 @@ test_that("07/16/2019: n's in tableby header work with weights (#229)", {
       "|a            |               |                |                |",
       "|-  Mean (SD) | 6.600 (2.719) | 7.333 (2.870)  | 7.000 (2.622)  |",
       "|-  Range     | 1.000 - 9.000 | 2.000 - 10.000 | 1.000 - 10.000 |"
+    )
+  )
+  d$w <- d$w + 0.111
+  expect_identical(
+    capture.kable(summary(tableby(b ~ a, weights = w, data = d, digits.n = 2), text = TRUE)),
+    c("|             |  A (N=25.55)  |  B (N=30.55)   | Total (N=56.11) |",
+      "|:------------|:-------------:|:--------------:|:---------------:|",
+      "|a            |               |                |                 |",
+      "|-  Mean (SD) | 6.565 (2.741) | 7.309 (2.881)  |  6.970 (2.640)  |",
+      "|-  Range     | 1.000 - 9.000 | 2.000 - 10.000 | 1.000 - 10.000  |"
     )
   )
 })
@@ -1289,3 +1299,20 @@ test_that("10/09/2019: change title for overall (#253)", {
     sub("Hello", "Total", capture.kable(summary(tab2, text = TRUE)))
   )
 })
+
+test_that("11/05/2019: remove N's in title (#256)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ age, data = mockstudy, digits.n = NA), text = TRUE)),
+    c("|             |      Male       |     Female      |      Total      | p value|",
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                 |                 |   0.048|",
+      "|-  Mean (SD) | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |",
+      "|-  Range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ age, data = mockstudy, digits.n = NA), text = TRUE))[-1],
+    capture.kable(summary(tableby(sex ~ age, data = mockstudy), text = TRUE))[-1]
+  )
+})
+

@@ -159,7 +159,8 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, cont
   cn <- stats::setNames(colnames(df), colnames(df))
   align <- c(if(hasStrata) "l", "l", rep("c", times = sum(cn != "p.value")-1), if("p.value" %in% cn) "r")
   nm <- intersect(cn, names(totals))
-  if(length(nm)) cn[nm] <- paste0(cn[nm], " (N=", totals[nm], ")")
+  if(length(nm) && (is.null(control$digits.n) || !is.na(control$digits.n)))
+    cn[nm] <- paste0(cn[nm], " (N=", formatC(totals[nm], digits = control$digits.n, format = "f"), ")")
   cn["label"] <- term.name
   if("p.value" %in% cn && is.null(control$test.pname)) cn["p.value"] <- "p value" else if("p.value" %in% cn) cn["p.value"] <- control$test.pname
   colnames(df) <- cn

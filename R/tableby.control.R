@@ -41,6 +41,7 @@
 #' @param digits.pct Number of decimal places for percents.
 #' @param digits.p Number of decimal places for p-values.
 #' @param format.p Logical, denoting whether to format p-values. See "Details", below.
+#' @param digits.n Number of decimal places for N's in the header. Set it to NA to suppress the N's.
 #' @param conf.level Numeric, denoting what confidence level to use for confidence intervals.
 #'   (See, e.g., \code{\link{binomCI}})
 #' @param times A vector of times to use for survival summaries.
@@ -86,7 +87,7 @@ tableby.control <- function(
                     median="Median", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3", iqr = "IQR",
                     range="Range", countpct="Count (Pct)", Nevents="Events", medSurv="Median Survival",
                     medTime = "Median Follow-Up", medianmad="Median (MAD)", overall = "Overall"),
-  digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE, conf.level = 0.95,
+  digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE, digits.n = 0L, conf.level = 0.95,
   chisq.correct=FALSE, simulate.p.value=FALSE, B=2000, times = 1:5, ...) {
 
   nm <- names(list(...))
@@ -115,6 +116,11 @@ tableby.control <- function(
   {
     warning("digits.p must be >= 0. Set to default.")
     digits.p <- 3L
+  }
+  if(!is.null(digits.n) && !is.na(digits.n) && digits.p < 0L)
+  {
+    warning("digits.n must be >= 0 or NA or NULL. Set to default.")
+    digits.n <- 0L
   }
 
   ## validate all test names
@@ -156,6 +162,6 @@ tableby.control <- function(
        numeric.test=numeric.test, cat.test=cat.test, ordered.test=ordered.test, surv.test=surv.test, date.test=date.test, test.always=test.always,
        numeric.stats=numeric.stats, cat.stats=cat.stats, ordered.stats=ordered.stats, surv.stats=surv.stats, date.stats=date.stats,
        stats.labels=stats.labels,
-       digits=digits, digits.p=digits.p, digits.count = digits.count, digits.pct = digits.pct, format.p = format.p,
+       digits=digits, digits.p=digits.p, digits.count = digits.count, digits.pct = digits.pct, format.p = format.p, digits.n = digits.n,
        conf.level=conf.level, chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B, times=times)
 }

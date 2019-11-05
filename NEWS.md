@@ -1,10 +1,14 @@
-# arsenal v3.3.1.9000
+# arsenal v3.3.2.9001
 
 * Moved knitr to an import. (#255)
 
 * `comparedf()`: Added support for tolerances by variable. (#167)
 
 * `tableby()`: Allowed for changing of "Overall" label. (#253)
+
+* `tableby()`: Allowed for suppression of N's in the header. (#256, #36)
+
+* `tableby()`: Allowed for digits formatting of N's in the header. (#257)
 
 # arsenal v3.3.0
 

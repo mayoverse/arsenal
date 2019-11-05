@@ -19,8 +19,9 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   Nevents = "Events", medSurv = "Median Survival", medTime =
   "Median Follow-Up", medianmad = "Median (MAD)", overall = "Overall"),
   digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L,
-  format.p = TRUE, conf.level = 0.95, chisq.correct = FALSE,
-  simulate.p.value = FALSE, B = 2000, times = 1:5, ...)
+  format.p = TRUE, digits.n = 0L, conf.level = 0.95,
+  chisq.correct = FALSE, simulate.p.value = FALSE, B = 2000,
+  times = 1:5, ...)
 }
 \arguments{
 \item{test}{logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.}
@@ -81,6 +82,8 @@ e.g., \code{list(countpct="Count (Pct)")}.}
 \item{digits.p}{Number of decimal places for p-values.}
 
 \item{format.p}{Logical, denoting whether to format p-values. See "Details", below.}
+
+\item{digits.n}{Number of decimal places for N's in the header. Set it to NA to suppress the N's.}
 
 \item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.
 (See, e.g., \code{\link{binomCI}})}
