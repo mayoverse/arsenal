@@ -153,6 +153,8 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, cont
     {
       ifelse(dups, paste0("-  ", df$label), df$label)
     } else ifelse(dups, paste0("&nbsp;&nbsp;&nbsp;", df$label), paste0("**", ifelse(df$label == "", "&nbsp;", df$label), "**"))
+
+    if(identical(text, "latex")) df[] <- lapply(df, gsub, pattern = "%", replacement = "\\%", fixed = TRUE)
   }
 
   #### tweak column names according to specifications ####

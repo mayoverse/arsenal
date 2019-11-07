@@ -839,7 +839,7 @@ test_that("06/19/2018: term.name (#109)", {
 mockstudy$grp <- c(rep("Group1", 749), rep("Group2",749), "")
 test_that("08/23/2018: empty string in by-variable (#121)", expect_warning(summary(tableby(grp ~ race, data=mockstudy)), "Empty"))
 
-test_that("08/24/2018: latex (#123)", {
+test_that("08/24/2018: latex (#123, #258)", {
   expect_identical(
     capture.output(summary(tableby(Group ~ ethan, data = mdat), text = "latex")),
     c(""                                                                     ,
@@ -851,9 +851,9 @@ test_that("08/24/2018: latex (#123)", {
       "\\hline"                                                              ,
       "~~~N-Miss & 3 & 0 & 0 & 3 & \\\\"                                     ,
       "\\hline"                                                              ,
-      "~~~Ethan & 17 (63.0%) & 13 (43.3%) & 12 (40.0%) & 42 (48.3%) & \\\\"  ,
+      "~~~Ethan & 17 (63.0\\%) & 13 (43.3\\%) & 12 (40.0\\%) & 42 (48.3\\%) & \\\\"  ,
       "\\hline"                                                              ,
-      "~~~Heinzen & 10 (37.0%) & 17 (56.7%) & 18 (60.0%) & 45 (51.7%) & \\\\",
+      "~~~Heinzen & 10 (37.0\\%) & 17 (56.7\\%) & 18 (60.0\\%) & 45 (51.7\\%) & \\\\",
       "\\hline"                                                              ,
       "\\end{tabular}"                                                       ,
       ""

@@ -10,6 +10,8 @@
 
 * `tableby()`: Allowed for digits formatting of N's in the header. (#257)
 
+* `tableby()`: Escaped `%` for `text="latex"`. (#258)
+
 # arsenal v3.3.0
 
 * `tableby()` / `paired()`:
