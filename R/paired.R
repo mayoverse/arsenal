@@ -284,7 +284,8 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
         TP2.eff <- TP2.eff[strata.col2 == strat]
         if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
         statList <- list()
-        for(statfun in currstats) {
+        for(statfun2 in currstats) {
+          statfun <- get_stat_function(statfun2)
           bystatlist <- list()
           if(statfun %in% c("countrowpct", "countcellpct", "rowbinomCI"))
           {
@@ -316,7 +317,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
             bystatlist$Difference <- do.call(statfun, list(as.numeric(TP2.eff) - as.numeric(TP1.eff),
                                                            levels=xlevels, na.rm=TRUE, conf.level = control$conf.level))
           }
-          statList[[statfun]] <- bystatlist
+          statList[[statfun2]] <- bystatlist
         }
 
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest

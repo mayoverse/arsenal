@@ -343,9 +343,10 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         currcol <- currcol[strata.col == strat]
         if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
         statList <- list()
-        for(statfun in currstats) {
+        for(statfun2 in currstats) {
+          statfun <- get_stat_function(statfun2)
           bystatlist <- list()
-          if(statfun %in% c("countrowpct", "countcellpct", "rowbinomCI"))
+          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI"))
           {
             bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                                 by = bycol, by.levels = by.levels, weights = weightscol, na.rm = TRUE))
@@ -360,7 +361,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
             bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, na.rm=TRUE,
                                                       weights=weightscol, conf.level=control$conf.level, times=control$times))
           }
-          statList[[statfun]] <- bystatlist
+          statList[[statfun2]] <- bystatlist
         }
 
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest

@@ -799,8 +799,7 @@ The **default** summary statistics, by varible type, are:
 * `surv.stats`: Survival variables will show by default `Nmiss, Nevents, medsurv`
 * `date.stats`: Date variables will show by default `Nmiss, median, range`
 
-Any summary statistics standardly defined in R (e.g. mean, median, sd, med, range) can be specified,
-however there are a number of extra functions defined specifically for the tableby function.
+There are a number of extra functions defined specifically for the tableby function.
 
 * `N`: a count of the number of observations for a particular group
 * `Nmiss`: only show the count of the number of missing values if there are some missing values
@@ -824,6 +823,13 @@ however there are a number of extra functions defined specifically for the table
 * `NriskSurv`: print the number still at risk and survival at given times
 * `Nrisk`: print the number still at risk at given times
 * `medTime`: print the median follow-up time
+* `max`
+* `min`
+* `mean`
+* `sd`
+* `var`
+* `median`
+* `range`
 
 ## Testing options
 

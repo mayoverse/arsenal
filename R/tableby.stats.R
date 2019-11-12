@@ -19,10 +19,69 @@
 #' @param ... Other arguments.
 #' @return Usually a vector of the appropriate numbers.
 #' @details Not all these functions are exported, in order to avoid conflicting NAMESPACES.
+#'   Note also that the functions prefixed with \code{"arsenal_"} can be referred to by their short names
+#'   (e.g., \code{"min"} for \code{"arsenal_min"}).
 #' @seealso \code{\link{includeNA}}, \code{\link{tableby.control}}
 #' @name tableby.stats
 NULL
 #> NULL
+
+get_stat_function <- function(x) switch(x, min = , max = , range = , mean = , sd = , var = , median = paste0("arsenal_", x), x)
+
+#' @rdname tableby.stats
+arsenal_min <- function(x, na.rm=TRUE, ...) {
+  y <- if(na.rm && allNA(x)) {
+    NA_real_
+  } else {
+    min(x, na.rm=na.rm)
+  }
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL)
+}
+
+#' @rdname tableby.stats
+arsenal_max <- function(x, na.rm=TRUE, ...) {
+  y <- if(na.rm && allNA(x)) {
+    NA_real_
+  } else {
+    max(x, na.rm=na.rm)
+  }
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL)
+}
+
+#' @rdname tableby.stats
+arsenal_mean <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else {
+    wtd.mean(x, weights=weights, na.rm=na.rm)
+  }
+  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL)
+}
+
+#' @rdname tableby.stats
+arsenal_sd <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else {
+    s <- sqrt(wtd.var(x, weights=weights, na.rm=na.rm))
+    if(is.Date(x)) list(as.difftime(s, units = "days")) else s
+  }
+  as.tbstat(y)
+}
+
+#' @rdname tableby.stats
+arsenal_var <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else {
+    wtd.var(x, weights=weights, na.rm=na.rm)
+    # if(is.Date(x)) as.difftime(s, units = "days") else s
+  }
+  as.tbstat(y)
+}
 
 #' @rdname tableby.stats
 #' @export
@@ -80,7 +139,7 @@ medianmad <- function(x, na.rm=TRUE, weights = NULL, ...) {
 
 
 #' @rdname tableby.stats
-median <- function(x, na.rm=TRUE, weights = NULL, ...) {
+arsenal_median <- function(x, na.rm=TRUE, weights = NULL, ...) {
   y <- if(na.rm && allNA(x)) {
     NA_real_
   } else if(is.Date(x)) {
@@ -92,13 +151,11 @@ median <- function(x, na.rm=TRUE, weights = NULL, ...) {
 }
 
 #' @rdname tableby.stats
-range <- function(x, na.rm=TRUE, ...) {
+arsenal_range <- function(x, na.rm=TRUE, ...) {
   y <- if(na.rm && allNA(x)) {
     NA_real_
-  } else if(is.Date(x)) {
-    as.Date(base::range(as.integer(x), na.rm=na.rm), origin="1970/01/01")
   } else {
-    base::range(x, na.rm=na.rm)
+    range(x, na.rm=na.rm)
   }
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = " - ")
 }

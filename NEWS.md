@@ -1,4 +1,4 @@
-# arsenal v3.3.2.9001
+# arsenal v3.3.2.9002
 
 * Moved knitr to an import. (#255)
 
@@ -11,6 +11,8 @@
 * `tableby()`: Allowed for digits formatting of N's in the header. (#257)
 
 * `tableby()`: Escaped `%` for `text="latex"`. (#258)
+
+* `tableby()` / `paired()`: Added support for "min", "max", "sd", "mean", "var", etc. (#259)
 
 # arsenal v3.3.0
 
