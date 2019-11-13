@@ -1317,7 +1317,7 @@ test_that("11/05/2019: remove N's in title (#256)", {
 })
 
 test_that("11/12/2019: base summary stats work (#259)", {
-  allstats <- c("min", "max", "range", "mean", "sd", "meansd", "var", "median", "medianrange")
+  allstats <- c("min", "max", "range", "mean", "sd", "meansd", "meanCI", "var", "median", "medianrange")
   expect_identical(
     capture.kable(summary(tableby(Sex ~ Age + dt, data = mdat, numeric.stats = allstats, date.stats = allstats), text = TRUE)),
     c("|                  |            Female (N=46)            |             Male (N=44)             |            Total (N=90)             | p value|",
@@ -1329,6 +1329,7 @@ test_that("11/12/2019: base summary stats work (#259)", {
       "|-  Mean           |               39.826                |               39.568                |               39.700                |        |",
       "|-  SD             |                5.259                |                5.315                |                5.258                |        |",
       "|-  Mean (SD)      |           39.826 (5.259)            |           39.568 (5.315)            |           39.700 (5.258)            |        |",
+      "|-  Mean (CI)      |       39.826 (38.264, 41.388)       |       39.568 (37.952, 41.184)       |       39.700 (38.599, 40.801)       |        |",
       "|-  Var            |               27.658                |               28.251                |               27.651                |        |",
       "|-  Median         |               39.000                |               39.500                |               39.000                |        |",
       "|-  Median (Range) |       39.000 (30.000, 49.000)       |       39.500 (29.000, 53.000)       |       39.000 (29.000, 53.000)       |        |",
@@ -1339,9 +1340,36 @@ test_that("11/12/2019: base summary stats work (#259)", {
       "|-  Mean           |             1949-06-11              |             1950-07-14              |             1949-12-23              |        |",
       "|-  SD             |            1981.348 days            |            2227.654 days            |            2103.010 days            |        |",
       "|-  Mean (SD)      |     1949-06-11 (1981.348 days)      |     1950-07-14 (2227.654 days)      |     1949-12-23 (2103.010 days)      |        |",
+      "|-  Mean (CI)      | 1949-06-11 (1947-10-31, 1951-01-20) | 1950-07-14 (1948-09-05, 1952-05-22) | 1949-12-23 (1948-10-08, 1951-03-08) |        |",
       "|-  Var            |             3925741.628             |             4962443.482             |             4422652.929             |        |",
       "|-  Median         |             1948-12-07              |             1951-03-26              |             1949-10-07              |        |",
       "|-  Median (Range) | 1948-12-07 (1935-08-15, 1959-09-06) | 1951-03-26 (1937-02-08, 1968-05-14) | 1949-10-07 (1935-08-15, 1968-05-14) |        |"
+    )
+  )
+})
+
+test_that("11/13/2019: geometric summaries (#260)", {
+  allstats <- c("gmean", "gsd", "gmeansd", "gmeanCI")
+  blah <- data.frame(
+    a = rep(c("A", "B", "C"), each = 5),
+    b = c(0:4, 1:5, -1, 1:4),
+    d = Sys.Date() + c(-1, 1:14),
+    stringsAsFactors = FALSE
+  )
+  expect_identical(
+    capture.kable(summary(tableby(a ~ b + d, data = blah, numeric.stats = allstats, date.stats = allstats), text = TRUE)),
+    c("|                       |  A (N=5)   |       B (N=5)        | C (N=5) | Total (N=15) | p value|",
+      "|:----------------------|:----------:|:--------------------:|:-------:|:------------:|-------:|",
+      "|b                      |            |                      |         |              |   0.510|",
+      "|-  Geom Mean           |   0.000    |        2.605         |   NA    |      NA      |        |",
+      "|-  Geom SD             |     NA     |        1.765         |   NA    |      NA      |        |",
+      "|-  Geom Mean (Geom SD) | 0.000 (NA) |    2.605 (1.765)     |   NA    |      NA      |        |",
+      "|-  Geom Mean (CI)      | 0.000 (NA) | 2.605 (1.286, 5.277) |   NA    |      NA      |        |",
+      "|d                      |            |                      |         |              |   0.002|",
+      "|-  Geom Mean           |     NA     |          NA          |   NA    |      NA      |        |",
+      "|-  Geom SD             |     NA     |          NA          |   NA    |      NA      |        |",
+      "|-  Geom Mean (Geom SD) |     NA     |          NA          |   NA    |      NA      |        |",
+      "|-  Geom Mean (CI)      |     NA     |          NA          |   NA    |      NA      |        |"
     )
   )
 })

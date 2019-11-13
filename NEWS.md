@@ -12,7 +12,8 @@
 
 * `tableby()`: Escaped `%` for `text="latex"`. (#258)
 
-* `tableby()` / `paired()`: Added support for "min", "max", "sd", "mean", "var", etc. (#259)
+* `tableby()` / `paired()`: Added support for "min", "max", "sd", "mean", and "var" (#259) and
+  "gmean", "gsd", "gmeansd", "gmeanCI" (#260).
 
 # arsenal v3.3.0
 

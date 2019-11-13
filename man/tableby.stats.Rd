@@ -13,6 +13,10 @@
 \alias{medianmad}
 \alias{arsenal_median}
 \alias{arsenal_range}
+\alias{gmean}
+\alias{gsd}
+\alias{gmeansd}
+\alias{gmeanCI}
 \alias{Nevents}
 \alias{medSurv}
 \alias{NeventsSurv}
@@ -55,6 +59,14 @@ medianmad(x, na.rm = TRUE, weights = NULL, ...)
 arsenal_median(x, na.rm = TRUE, weights = NULL, ...)
 
 arsenal_range(x, na.rm = TRUE, ...)
+
+gmean(x, na.rm = TRUE, weights = NULL, ...)
+
+gsd(x, na.rm = TRUE, weights = NULL, ...)
+
+gmeansd(x, na.rm = TRUE, weights = NULL, ...)
+
+gmeanCI(x, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
 
 Nevents(x, na.rm = TRUE, weights = NULL, ...)
 

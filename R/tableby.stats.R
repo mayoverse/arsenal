@@ -160,6 +160,67 @@ arsenal_range <- function(x, na.rm=TRUE, ...) {
   as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = " - ")
 }
 
+#' @rdname tableby.stats
+#' @export
+gmean <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if((na.rm && allNA(x)) || any(x < 0, na.rm = TRUE) || is.Date(x))
+  {
+    NA_real_
+  } else {
+    exp(wtd.mean(log(x), weights=weights, na.rm=na.rm))
+  }
+  as.tbstat(y)
+}
+
+#' @rdname tableby.stats
+#' @export
+gsd <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if((na.rm && allNA(x)) || any(x <= 0, na.rm = TRUE) || is.Date(x))
+  {
+    NA_real_
+  } else {
+    n <- sum(!is.na(x))
+    exp(sqrt(wtd.var(log(x), weights = weights, na.rm = na.rm) * (n-1)/n))
+  }
+  as.tbstat(y)
+}
+
+#' @rdname tableby.stats
+#' @export
+gmeansd <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if((na.rm && allNA(x)) || any(x < 0, na.rm = TRUE) || is.Date(x))
+  {
+    NA_real_
+  } else {
+    m <- exp(wtd.mean(log(x), weights=weights, na.rm=na.rm))
+    n <- sum(!is.na(x))
+    s <- if(any(x == 0, na.rm = TRUE)) {
+      NA_real_
+    } else exp(sqrt(wtd.var(log(x), weights = weights, na.rm = na.rm) * (n-1)/n))
+    c(m, s)
+  }
+  as.tbstat(y, parens = c("(", ")"))
+}
+
+#' @rdname tableby.stats
+#' @export
+gmeanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
+  y <- if(!is.null(weights) || (na.rm && allNA(x)) || any(x < 0, na.rm = TRUE) || is.Date(x))
+  {
+    NA_real_
+  } else
+  {
+    if(na.rm) x <- x[!is.na(x)]
+    n <- length(x)
+    s <- sqrt(stats::var(log(x), na.rm = na.rm) * (n-1)/n)
+    m <- mean(log(x), na.rm = na.rm)
+    a <- (1 - conf.level)/2
+    ci <- if(any(x == 0, na.rm = TRUE)) NA_real_ else m + stats::qt(c(a, 1 - a), df = n - 1) * s / sqrt(n)
+    exp(c(m, ci))
+  }
+  as.tbstat(y, parens = c("(", ")"), sep2 = ", ")
+}
+
 
 ## survival stats
 #' @rdname tableby.stats

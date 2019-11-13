@@ -830,6 +830,7 @@ There are a number of extra functions defined specifically for the tableby funct
 * `var`
 * `median`
 * `range`
+* `gmean`, `gsd`, `gmeansd`, `gmeanCI`: geometric means, sds, and confidence intervals.
 
 ## Testing options
 
