@@ -20,8 +20,8 @@ tableby.control(test = TRUE, total = TRUE, test.pname = NULL,
   "Geom SD", gmeansd = "Geom Mean (Geom SD)", gmeanCI = "Geom Mean (CI)",
   range = "Range", countpct = "Count (Pct)", Nevents = "Events", medSurv =
   "Median Survival", medTime = "Median Follow-Up", medianmad =
-  "Median (MAD)",      overall = "Overall"), digits = 3L,
-  digits.count = 0L, digits.pct = 1L, digits.p = 3L,
+  "Median (MAD)",      overall = "Overall", total = "Total"),
+  digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L,
   format.p = TRUE, digits.n = 0L, conf.level = 0.95,
   chisq.correct = FALSE, simulate.p.value = FALSE, B = 2000,
   times = 1:5, ...)

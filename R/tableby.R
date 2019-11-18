@@ -233,10 +233,12 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
       control$test <- FALSE
     }
 
+    if(is.null(totallab <- control$stats.labels$total)) totallab <- "Total"
     ystats <- if(hasWeights)
     {
       c(stats::xtabs(weights ~ factor(by.col, levels=by.levels), exclude = NA), Total = sum(weights[!is.na(by.col)]))
     } else c(table(factor(by.col, levels=by.levels), exclude=NA), Total=sum(!is.na(by.col)))
+    names(ystats)[names(ystats) == "Total"] <- totallab
     yList <- list(stats=ystats, label=labelBy, term=termBy)
 
     ## find which columnss of modeldf have specials assigned to known specials
@@ -358,8 +360,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
                                                            weights=weightscol[idx], conf.level=control$conf.level, times=control$times))
             }
             ## add Total
-            bystatlist$Total <- do.call(statfun, list(currcol, levels=xlevels, na.rm=TRUE,
-                                                      weights=weightscol, conf.level=control$conf.level, times=control$times))
+            bystatlist[[totallab]] <- do.call(statfun, list(currcol, levels=xlevels, na.rm=TRUE,
+                                                            weights=weightscol, conf.level=control$conf.level, times=control$times))
           }
           statList[[statfun2]] <- bystatlist
         }

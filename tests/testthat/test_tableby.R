@@ -1278,10 +1278,9 @@ test_that("07/30/2019: summary.tableby and pre-formatted p-values (#249)", {
   )
 })
 
-test_that("10/09/2019: change title for overall (#253)", {
+test_that("10/09/2019: change title for overall and total (#253, #261)", {
   tab1 <- tableby(~ sex + age, data = mockstudy, stats.labels = list(overall = "Total"))
   tab2 <- tableby(~ sex + age, data = mockstudy, stats.labels = list(overall = "Hello"))
-
   expect_identical(
     capture.kable(summary(tab1, text = TRUE)),
     c("|             | Total (N=1499)  |",
@@ -1297,6 +1296,22 @@ test_that("10/09/2019: change title for overall (#253)", {
   expect_identical(
     capture.kable(summary(tab1, text = TRUE)),
     sub("Hello", "Total", capture.kable(summary(tab2, text = TRUE)))
+  )
+
+  tab3 <- tableby(sex ~ age, data = mockstudy, stats.labels = list(total = "Overall"))
+  tab4 <- tableby(sex ~ age, data = mockstudy, stats.labels = list(total = "Hellooo"))
+  expect_identical(
+    capture.kable(summary(tab3, text = TRUE)),
+    c("|             |  Male (N=916)   | Female (N=583)  | Overall (N=1499) | p value|",
+      "|:------------|:---------------:|:---------------:|:----------------:|-------:|",
+      "|Age in Years |                 |                 |                  |   0.048|",
+      "|-  meansd    | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519)  |        |",
+      "|-  range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tab3, text = TRUE)),
+    sub("Hellooo", "Overall", capture.kable(summary(tab4, text = TRUE)))
   )
 })
 

@@ -4,7 +4,7 @@
 
 * `comparedf()`: Added support for tolerances by variable. (#167)
 
-* `tableby()`: Allowed for changing of "Overall" label. (#253)
+* `tableby()`: Allowed for changing of "Overall" and "Total" labels. (#253, #261)
 
 * `tableby()`: Allowed for suppression of N's in the header. (#256, #36)
 
