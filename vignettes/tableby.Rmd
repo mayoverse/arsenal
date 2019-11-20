@@ -362,6 +362,16 @@ tmp2 <- formulize('arm',c('ps','hgb^2','bmi'))
 summary(tableby(tmp, data=mockstudy))
 ```
 
+To change summary statistics or statistical tests en masse, consider using `paste0()` together with `formulize()`:
+
+```{r results='asis'}
+varlist1 <- c('age','sex','hgb')
+varlist2 <- paste0("anova(", c('bmi','alk.phos','ast'), ", 'meansd')")
+
+summary(tableby(formulize("arm", c(varlist1, varlist2)),
+                data = mockstudy, numeric.test = "kwt"), pfootnote = TRUE)
+```
+
 ## 7. Subset the dataset used in the analysis
 
 Here are two ways to get the same result (limit the analysis to subjects age>5 and in the F: FOLFOX treatment group). 
