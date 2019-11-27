@@ -619,3 +619,16 @@ test_that("08/07/2019: p.value.lrt (#238)", {
   )
 })
 
+test_that("statistic.F works (#262)", {
+  tab3 <- modelsum(bmi ~ age + sex, data=mockstudy, family=gaussian, gaussian.stats=c("estimate", "N","Nmiss","statistic.F"))
+  expect_identical(
+    capture.kable(summary(tab3, text=TRUE)),
+    c("|             |estimate |N    |Nmiss |statistic.F |",
+      "|:------------|:--------|:----|:-----|:-----------|",
+      "|(Intercept)  |26.424   |1466 |33    |1.122       |",
+      "|Age in Years |0.013    |     |      |            |",
+      "|(Intercept)  |27.491   |1466 |33    |6.341       |",
+      "|sex Female   |-0.731   |     |      |            |"
+    )
+  )
+})

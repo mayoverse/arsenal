@@ -138,6 +138,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     ## Continuous variable (numeric) ###############
     ## Note: Using tidy changes colname from 't value' to 'statistic'
     modelGlance <- broom::glance(fit)
+    names(modelGlance)[names(modelGlance) == "statistic"] <- "statistic.F"
     names(modelGlance)[names(modelGlance) == "p.value"] <- "p.value.F"
     modelGlance$p.value.lrt <- try_lrt(fit, scope, FALSE)
 

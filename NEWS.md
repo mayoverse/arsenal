@@ -14,6 +14,8 @@
 
 * `tableby()` / `paired()`: Added support for "min", "max", "sd", "mean", and "var" (#259) and
   "gmean", "gsd", "gmeansd", "gmeanCI" (#260).
+  
+* `modelsum()`: Fixed "statistic.F" for family="gaussian". (#262)
 
 # arsenal v3.3.0
 
