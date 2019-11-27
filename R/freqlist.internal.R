@@ -82,7 +82,7 @@ is.summary.freqlist <- function(x) inherits(x, "summary.freqlist")
 #' @export
 head.summary.freqlist <- function(x, n = 6L, ...)
 {
-  x$object <- lapply(x$object, utils::head, n = n, ...)
+  x$object <- lapply(x$object, function(d) set_attr(utils::head(d, n = n, ...), "labels", attr(d, "labels")))
   x
 }
 
@@ -90,7 +90,7 @@ head.summary.freqlist <- function(x, n = 6L, ...)
 #' @export
 tail.summary.freqlist <- function(x, n = 6L, ...)
 {
-  x$object <- lapply(x$object, utils::tail, n = n, ...)
+  x$object <- lapply(x$object, function(d) set_attr(utils::tail(d, n = n, ...), "labels", attr(d, "labels")))
   x
 }
 

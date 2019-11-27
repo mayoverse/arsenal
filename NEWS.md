@@ -17,6 +17,8 @@
   
 * `modelsum()`: Fixed "statistic.F" for family="gaussian". (#262)
 
+* Updated `head.summary.freqlist()` and `tail.summary.freqlist()` to comply with new R-devel definitions.
+
 # arsenal v3.3.0
 
 * `tableby()` / `paired()`:
