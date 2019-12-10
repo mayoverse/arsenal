@@ -202,6 +202,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=conf.level)
     coeffTidy <- cbind(coeffTidy, HR=coeffHRTidy$estimate, CI.lower.HR=coeffHRTidy$conf.low, CI.upper.HR=coeffHRTidy$conf.high)
     modelGlance <-  broom::glance(fit)
+    names(modelGlance)[names(modelGlance) == "nevent"] <- "Nevents"
     modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
   }
 
