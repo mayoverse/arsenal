@@ -634,6 +634,9 @@ test_that("statistic.F works (#262)", {
 })
 
 test_that("Nevents works (#266)", {
+  skip_if_not(getRversion() >= "3.3.0")
+  skip_if_not_installed("survival", "2.41-3")
+  require(survival)
   tab3 <- modelsum(Surv(fu.time,fu.stat)~sex, data=mockstudy, survival.stats=c('HR','p.value','Nmiss','Nevents','N'), family = "survival")
   expect_identical(
     capture.kable(summary(tab3)),
