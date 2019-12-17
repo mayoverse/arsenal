@@ -1,10 +1,12 @@
 
-# The `arsenal` Package <img src="man/figures/arsenal.png" alt="Arsenal logo" style="float:right;height:232.25px" align="right" height="232.25">
+# The `arsenal` Package <img src="man/figures/logo.png" alt="Arsenal logo" style="float:right;height:232.25px" align="right" height="232.25">
 
+<!-- badges: start -->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/arsenal)](https://CRAN.R-project.org/package=arsenal)
 [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/arsenal)](https://CRAN.R-project.org/package=arsenal)
 [![Downloads](http://cranlogs.r-pkg.org/badges/arsenal)](https://CRAN.R-project.org/package=arsenal)
 [![Travis-CI Build Status](https://travis-ci.org/eheinzen/arsenal.svg?branch=master)](https://travis-ci.org/eheinzen/arsenal)
+<!-- badges: end -->
 
 ## Overview
 
