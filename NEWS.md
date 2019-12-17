@@ -1,4 +1,6 @@
-# arsenal v3.3.2.9002
+# arsenal v3.3.2.9005
+
+* Added a `pkgdown` site: https://eheinzen.github.io/arsenal/
 
 * Moved knitr to an import. (#255)
 

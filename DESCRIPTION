@@ -1,6 +1,6 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical Summaries
-Version: 3.3.2.9003
+Version: 3.3.2.9005
 Date: 2019-11-18
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
@@ -48,7 +48,7 @@ Depends:
 Imports:
     knitr,
     utils (>= 3.2.0)
-URL: https://github.com/eheinzen/arsenal, https://cran.r-project.org/package=arsenal
+URL: https://github.com/eheinzen/arsenal, https://cran.r-project.org/package=arsenal, https://eheinzen.github.io/arsenal/
 BugReports: https://github.com/eheinzen/arsenal/issues
 VignetteBuilder: knitr
 License: GPL (>= 2)
