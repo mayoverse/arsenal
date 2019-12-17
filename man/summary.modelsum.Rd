@@ -5,13 +5,26 @@
 \alias{as.data.frame.summary.modelsum}
 \title{Summarize a \code{modelsum} object.}
 \usage{
-\method{summary}{modelsum}(object, ..., labelTranslations = NULL,
-  text = FALSE, title = NULL, term.name = "",
-  adjustment.names = FALSE)
+\method{summary}{modelsum}(
+  object,
+  ...,
+  labelTranslations = NULL,
+  text = FALSE,
+  title = NULL,
+  term.name = "",
+  adjustment.names = FALSE
+)
 
-\method{as.data.frame}{summary.modelsum}(x, ..., text = x$text,
-  term.name = x$term.name, adjustment.names = x$adjustment.names,
-  width = NULL, min.split = NULL, list.ok = FALSE)
+\method{as.data.frame}{summary.modelsum}(
+  x,
+  ...,
+  text = x$text,
+  term.name = x$term.name,
+  adjustment.names = x$adjustment.names,
+  width = NULL,
+  min.split = NULL,
+  list.ok = FALSE
+)
 }
 \arguments{
 \item{object}{A \code{\link{modelsum}} object.}

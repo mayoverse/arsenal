@@ -5,8 +5,7 @@
 \alias{as.data.frame.summary.freqlist}
 \title{summary.freqlist}
 \usage{
-\method{summary}{freqlist}(object, ..., labelTranslations = NULL,
-  title = NULL)
+\method{summary}{freqlist}(object, ..., labelTranslations = NULL, title = NULL)
 
 \method{as.data.frame}{summary.freqlist}(x, ..., list.ok = FALSE)
 }

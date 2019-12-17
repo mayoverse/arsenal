@@ -3,7 +3,6 @@
 \docType{package}
 \name{arsenal}
 \alias{arsenal}
-\alias{arsenal-package}
 \title{An Arsenal of 'R' Functions for Large-Scale Statistical Summaries}
 \description{
 An Arsenal of 'R' functions for large-scale statistical summaries,

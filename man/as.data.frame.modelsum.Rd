@@ -4,8 +4,7 @@
 \alias{as.data.frame.modelsum}
 \title{as.data.frame.modelsum}
 \usage{
-\method{as.data.frame}{modelsum}(x, ..., labelTranslations = NULL,
-  list.ok = FALSE)
+\method{as.data.frame}{modelsum}(x, ..., labelTranslations = NULL, list.ok = FALSE)
 }
 \arguments{
 \item{x}{A \code{\link{modelsum}} object.}

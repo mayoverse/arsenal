@@ -4,8 +4,7 @@
 \alias{as.data.frame.tableby}
 \title{as.data.frame.tableby}
 \usage{
-\method{as.data.frame}{tableby}(x, ..., labelTranslations = NULL,
-  list.ok = FALSE)
+\method{as.data.frame}{tableby}(x, ..., labelTranslations = NULL, list.ok = FALSE)
 }
 \arguments{
 \item{x}{A \code{\link{tableby}} object.}

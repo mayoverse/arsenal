@@ -4,14 +4,26 @@
 \alias{comparedf.control}
 \title{Control settings for \code{comparedf} function}
 \usage{
-comparedf.control(tol.logical = "none", tol.num = c("absolute",
-  "percent", "pct"), tol.num.val = sqrt(.Machine$double.eps),
-  int.as.num = FALSE, tol.char = c("none", "trim", "case", "both"),
-  tol.factor = c("none", "levels", "labels"), factor.as.char = FALSE,
-  tol.date = "absolute", tol.date.val = 0, tol.other = "none",
-  tol.vars = "none", max.print.vars = NA, max.print.obs = NA,
-  max.print.diffs.per.var = 10, max.print.diffs = 50,
-  max.print.attrs = NA, ..., max.print.diff = 10)
+comparedf.control(
+  tol.logical = "none",
+  tol.num = c("absolute", "percent", "pct"),
+  tol.num.val = sqrt(.Machine$double.eps),
+  int.as.num = FALSE,
+  tol.char = c("none", "trim", "case", "both"),
+  tol.factor = c("none", "levels", "labels"),
+  factor.as.char = FALSE,
+  tol.date = "absolute",
+  tol.date.val = 0,
+  tol.other = "none",
+  tol.vars = "none",
+  max.print.vars = NA,
+  max.print.obs = NA,
+  max.print.diffs.per.var = 10,
+  max.print.diffs = 50,
+  max.print.attrs = NA,
+  ...,
+  max.print.diff = 10
+)
 }
 \arguments{
 \item{tol.logical, tol.num, tol.char, tol.factor, tol.date, tol.other}{A function or one of the shortcut character strings or a list thereof,

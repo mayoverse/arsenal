@@ -4,10 +4,17 @@
 \alias{paired.control}
 \title{Control settings for \code{paired} function}
 \usage{
-paired.control(diff = TRUE, numeric.test = "paired.t",
-  cat.test = "mcnemar", ordered.test = "signed.rank",
-  date.test = "paired.t", mcnemar.correct = TRUE,
-  signed.rank.exact = NULL, signed.rank.correct = TRUE, ...)
+paired.control(
+  diff = TRUE,
+  numeric.test = "paired.t",
+  cat.test = "mcnemar",
+  ordered.test = "signed.rank",
+  date.test = "paired.t",
+  mcnemar.correct = TRUE,
+  signed.rank.exact = NULL,
+  signed.rank.correct = TRUE,
+  ...
+)
 }
 \arguments{
 \item{diff}{logical, telling \code{paired} whether to calculate a column of differences between time points.}

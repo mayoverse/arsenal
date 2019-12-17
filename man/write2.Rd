@@ -20,13 +20,11 @@ write2(object, file, ..., output_format)
 
 \method{write2}{arsenal_table}(object, file, ..., output_format = NULL)
 
-\method{write2}{summary.arsenal_table}(object, file, ...,
-  output_format = NULL)
+\method{write2}{summary.arsenal_table}(object, file, ..., output_format = NULL)
 
 \method{write2}{comparedf}(object, file, ..., output_format = NULL)
 
-\method{write2}{summary.comparedf}(object, file, ...,
-  output_format = NULL)
+\method{write2}{summary.comparedf}(object, file, ..., output_format = NULL)
 
 \method{write2}{verbatim}(object, file, ..., output_format = NULL)
 
@@ -40,12 +38,26 @@ write2(object, file, ..., output_format)
 
 \method{write2}{character}(object, file, ..., output_format = NULL)
 
-\method{write2}{list}(object, file, ..., append. = FALSE,
-  render. = TRUE, keep.rmd = !render., output_format = NULL)
+\method{write2}{list}(
+  object,
+  file,
+  ...,
+  append. = FALSE,
+  render. = TRUE,
+  keep.rmd = !render.,
+  output_format = NULL
+)
 
-\method{write2}{default}(object, file, FUN = NULL, ...,
-  append. = FALSE, render. = TRUE, keep.rmd = !render.,
-  output_format = NULL)
+\method{write2}{default}(
+  object,
+  file,
+  FUN = NULL,
+  ...,
+  append. = FALSE,
+  render. = TRUE,
+  keep.rmd = !render.,
+  output_format = NULL
+)
 }
 \arguments{
 \item{object}{An object.}

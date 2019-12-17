@@ -4,8 +4,14 @@
 \alias{formulize}
 \title{formulize}
 \usage{
-formulize(y = "", x = "", ..., data = NULL, collapse = "+",
-  collapse.y = collapse)
+formulize(
+  y = "",
+  x = "",
+  ...,
+  data = NULL,
+  collapse = "+",
+  collapse.y = collapse
+)
 }
 \arguments{
 \item{y, x, ...}{Character vectors, names, or calls to be collapsed (by \code{"+"}) and put left-to-right in the formula.

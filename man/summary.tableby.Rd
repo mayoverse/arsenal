@@ -5,12 +5,26 @@
 \alias{as.data.frame.summary.tableby}
 \title{The summary method for a \code{tableby} object}
 \usage{
-\method{summary}{tableby}(object, ..., labelTranslations = NULL,
-  text = FALSE, title = NULL, pfootnote = FALSE, term.name = "")
+\method{summary}{tableby}(
+  object,
+  ...,
+  labelTranslations = NULL,
+  text = FALSE,
+  title = NULL,
+  pfootnote = FALSE,
+  term.name = ""
+)
 
-\method{as.data.frame}{summary.tableby}(x, ..., text = x$text,
-  pfootnote = x$pfootnote, term.name = x$term.name, width = NULL,
-  min.split = NULL, list.ok = FALSE)
+\method{as.data.frame}{summary.tableby}(
+  x,
+  ...,
+  text = x$text,
+  pfootnote = x$pfootnote,
+  term.name = x$term.name,
+  width = NULL,
+  min.split = NULL,
+  list.ok = FALSE
+)
 }
 \arguments{
 \item{object}{An object of class \code{"tableby"}, made by the \code{\link{tableby}} function.}

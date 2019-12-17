@@ -4,8 +4,15 @@
 \alias{freq.control}
 \title{Control settings for \code{freqlist} function}
 \usage{
-freq.control(sparse = FALSE, single = FALSE, dupLabels = FALSE,
-  digits.count = 0L, digits.pct = 2L, ..., digits = NULL)
+freq.control(
+  sparse = FALSE,
+  single = FALSE,
+  dupLabels = FALSE,
+  digits.count = 0L,
+  digits.pct = 2L,
+  ...,
+  digits = NULL
+)
 }
 \arguments{
 \item{sparse}{a logical value indicating whether to keep rows with counts of zero.

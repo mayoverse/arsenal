@@ -4,8 +4,16 @@
 \alias{paired}
 \title{Summary Statistics of a Set of Independent Variables Paired Across Two Timepoints}
 \usage{
-paired(formula, data, id, na.action, subset = NULL, strata,
-  control = NULL, ...)
+paired(
+  formula,
+  data,
+  id,
+  na.action,
+  subset = NULL,
+  strata,
+  control = NULL,
+  ...
+)
 }
 \arguments{
 \item{formula}{an object of class \code{\link{formula}} of the form \code{time ~ var1 + ...}.

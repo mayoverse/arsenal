@@ -5,8 +5,7 @@
 \alias{print.comparedf}
 \title{Compare two data.frames and report differences}
 \usage{
-comparedf(x, y, by = NULL, by.x = by, by.y = by, control = NULL,
-  ...)
+comparedf(x, y, by = NULL, by.x = by, by.y = by, control = NULL, ...)
 
 \method{print}{comparedf}(x, ...)
 }

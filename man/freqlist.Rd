@@ -8,13 +8,28 @@
 \usage{
 freqlist(object, ...)
 
-\method{freqlist}{table}(object, na.options = c("include", "showexclude",
-  "remove"), strata = NULL, labelTranslations = NULL, control = NULL,
-  ...)
+\method{freqlist}{table}(
+  object,
+  na.options = c("include", "showexclude", "remove"),
+  strata = NULL,
+  labelTranslations = NULL,
+  control = NULL,
+  ...
+)
 
-\method{freqlist}{formula}(formula, data, subset, na.action,
-  strata = NULL, labelTranslations = NULL, control = NULL, addNA,
-  exclude, drop.unused.levels, ...)
+\method{freqlist}{formula}(
+  formula,
+  data,
+  subset,
+  na.action,
+  strata = NULL,
+  labelTranslations = NULL,
+  control = NULL,
+  addNA,
+  exclude,
+  drop.unused.levels,
+  ...
+)
 }
 \arguments{
 \item{object}{An R object, usually of class \code{"table"} or class \code{"xtabs"}}

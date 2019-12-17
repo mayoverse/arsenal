@@ -4,17 +4,25 @@
 \alias{modelsum.control}
 \title{Control settings for \code{modelsum} function}
 \usage{
-modelsum.control(digits = 3L, digits.ratio = 3L, digits.p = 3L,
-  format.p = TRUE, show.adjust = TRUE, show.intercept = TRUE,
-  conf.level = 0.95, ordinal.stats = c("OR", "CI.lower.OR",
-  "CI.upper.OR", "p.value", "Nmiss"), binomial.stats = c("OR",
-  "CI.lower.OR", "CI.upper.OR", "p.value", "concordance", "Nmiss"),
-  gaussian.stats = c("estimate", "std.error", "p.value", "adj.r.squared",
-  "Nmiss"), poisson.stats = c("RR", "CI.lower.RR", "CI.upper.RR",
-  "p.value", "Nmiss"), negbin.stats = c("RR", "CI.lower.RR",
-  "CI.upper.RR", "p.value", "Nmiss"), survival.stats = c("HR",
-  "CI.lower.HR", "CI.upper.HR", "p.value", "concordance", "Nmiss"),
-  stat.labels = list(), ...)
+modelsum.control(
+  digits = 3L,
+  digits.ratio = 3L,
+  digits.p = 3L,
+  format.p = TRUE,
+  show.adjust = TRUE,
+  show.intercept = TRUE,
+  conf.level = 0.95,
+  ordinal.stats = c("OR", "CI.lower.OR", "CI.upper.OR", "p.value", "Nmiss"),
+  binomial.stats = c("OR", "CI.lower.OR", "CI.upper.OR", "p.value", "concordance",
+    "Nmiss"),
+  gaussian.stats = c("estimate", "std.error", "p.value", "adj.r.squared", "Nmiss"),
+  poisson.stats = c("RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss"),
+  negbin.stats = c("RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss"),
+  survival.stats = c("HR", "CI.lower.HR", "CI.upper.HR", "p.value", "concordance",
+    "Nmiss"),
+  stat.labels = list(),
+  ...
+)
 }
 \arguments{
 \item{digits}{Numeric, denoting the number of digits after the decimal point for beta coefficients and standard errors.}

@@ -52,6 +52,6 @@ URL: https://github.com/eheinzen/arsenal, https://cran.r-project.org/package=ars
 BugReports: https://github.com/eheinzen/arsenal/issues
 VignetteBuilder: knitr
 License: GPL (>= 2)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 LazyData: true
 Encoding: UTF-8

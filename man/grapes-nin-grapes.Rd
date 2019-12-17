@@ -9,10 +9,10 @@ x \%nin\% table
 }
 \arguments{
 \item{x}{vector or \code{NULL}: the values to be matched.
-    \link{Long vectors} are supported.}
+    \link[base]{Long vectors} are supported.}
 
 \item{table}{vector or \code{NULL}: the values to be matched against.
-    \link{Long vectors} are not supported.}
+    \link[base]{Long vectors} are not supported.}
 }
 \value{
 The negation of \code{\link{\%in\%}}.

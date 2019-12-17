@@ -28,8 +28,7 @@ diffs(object, ...)
 
 \method{diffs}{comparedf}(object, vars = NULL, ..., by.var = FALSE)
 
-\method{diffs}{summary.comparedf}(object, vars = NULL, ...,
-  by.var = FALSE)
+\method{diffs}{summary.comparedf}(object, vars = NULL, ..., by.var = FALSE)
 }
 \arguments{
 \item{object}{An object of class \code{comparedf} or \code{summary.comparedf}.}

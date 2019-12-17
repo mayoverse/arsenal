@@ -4,8 +4,7 @@
 \alias{as.data.frame.freqlist}
 \title{as.data.frame.freqlist}
 \usage{
-\method{as.data.frame}{freqlist}(x, ..., labelTranslations = NULL,
-  list.ok = FALSE)
+\method{as.data.frame}{freqlist}(x, ..., labelTranslations = NULL, list.ok = FALSE)
 }
 \arguments{
 \item{x}{An object of class \code{"freqlist"}.}

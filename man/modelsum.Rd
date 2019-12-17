@@ -4,9 +4,18 @@
 \alias{modelsum}
 \title{Fit models over each of a set of independent variables with a response variable}
 \usage{
-modelsum(formula, family = "gaussian", data, adjust = NULL,
-  na.action = NULL, subset = NULL, weights = NULL, strata,
-  control = NULL, ...)
+modelsum(
+  formula,
+  family = "gaussian",
+  data,
+  adjust = NULL,
+  na.action = NULL,
+  subset = NULL,
+  weights = NULL,
+  strata,
+  control = NULL,
+  ...
+)
 }
 \arguments{
 \item{formula}{an object of class \code{\link{formula}}; a symbolic description of the variables to be modeled.  See "Details" for more information.}

@@ -11,11 +11,9 @@ padjust(p, method, n, ...)
 
 \method{padjust}{default}(p, method, n, ...)
 
-\method{padjust}{tableby}(p, method, n,
-  suffix = " (adjusted for multiple comparisons)", ...)
+\method{padjust}{tableby}(p, method, n, suffix = " (adjusted for multiple comparisons)", ...)
 
-\method{padjust}{summary.tableby}(p, method, n,
-  suffix = " (adjusted for multiple comparisons)", ...)
+\method{padjust}{summary.tableby}(p, method, n, suffix = " (adjusted for multiple comparisons)", ...)
 }
 \arguments{
 \item{p}{An object.}

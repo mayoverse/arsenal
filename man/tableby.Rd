@@ -4,8 +4,16 @@
 \alias{tableby}
 \title{Summary Statistics of a Set of Independent Variables by a Categorical Variable}
 \usage{
-tableby(formula, data, na.action, subset = NULL, weights = NULL,
-  strata, control = NULL, ...)
+tableby(
+  formula,
+  data,
+  na.action,
+  subset = NULL,
+  weights = NULL,
+  strata,
+  control = NULL,
+  ...
+)
 }
 \arguments{
 \item{formula}{an object of class \code{\link{formula}}; a symbolic description of the variables to be summarized by the group,

@@ -22,15 +22,19 @@ has_strata(x)
 
 \method{print}{arsenal_table}(x, ...)
 
-\method{merge}{arsenal_table}(x, y, all = FALSE, all.x = all,
-  all.y = all, ...)
+\method{merge}{arsenal_table}(x, y, all = FALSE, all.x = all, all.y = all, ...)
 
 \method{merge}{freqlist}(x, y, all = TRUE, ...)
 
-\method{print}{summary.arsenal_table}(x, ..., format = if
-  (!is.null(x$text) && x$text \%in\% c("html", "latex")) x$text else
-  "markdown", escape = x$text \%nin\% c("html", "latex"), width = NULL,
-  min.split = NULL)
+\method{print}{summary.arsenal_table}(
+  x,
+  ...,
+  format = if (!is.null(x$text) && x$text \%in\% c("html", "latex")) x$text else
+    "markdown",
+  escape = x$text \%nin\% c("html", "latex"),
+  width = NULL,
+  min.split = NULL
+)
 }
 \arguments{
 \item{x, y, object}{An object of class \code{"arsenal_table"}}

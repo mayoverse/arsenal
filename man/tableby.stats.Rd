@@ -98,17 +98,38 @@ countpct(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
 
 countN(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
 
-countrowpct(x, levels = NULL, by, by.levels = sort(unique(by)),
-  na.rm = TRUE, weights = NULL, ...)
+countrowpct(
+  x,
+  levels = NULL,
+  by,
+  by.levels = sort(unique(by)),
+  na.rm = TRUE,
+  weights = NULL,
+  ...
+)
 
-countcellpct(x, levels = NULL, by, by.levels = sort(unique(by)),
-  na.rm = TRUE, weights = NULL, ...)
+countcellpct(
+  x,
+  levels = NULL,
+  by,
+  by.levels = sort(unique(by)),
+  na.rm = TRUE,
+  weights = NULL,
+  ...
+)
 
-binomCI(x, levels = NULL, na.rm = TRUE, weights = NULL,
-  conf.level = 0.95, ...)
+binomCI(x, levels = NULL, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
 
-rowbinomCI(x, levels = NULL, by, by.levels = sort(unique(by)),
-  na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
+rowbinomCI(
+  x,
+  levels = NULL,
+  by,
+  by.levels = sort(unique(by)),
+  na.rm = TRUE,
+  weights = NULL,
+  conf.level = 0.95,
+  ...
+)
 }
 \arguments{
 \item{x}{Usually a vector.}
