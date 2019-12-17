@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.2.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.2.9005</span>
       </span>
     </div>
 
@@ -156,27 +156,46 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>tableby.control</span>(<span class='kw'>test</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>test.pname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>numeric.simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cat.simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ordered.simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>date.simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>numeric.test</span> <span class='kw'>=</span> <span class='st'>"anova"</span>, <span class='kw'>cat.test</span> <span class='kw'>=</span> <span class='st'>"chisq"</span>, <span class='kw'>ordered.test</span> <span class='kw'>=</span> <span class='st'>"trend"</span>,
-  <span class='kw'>surv.test</span> <span class='kw'>=</span> <span class='st'>"logrank"</span>, <span class='kw'>date.test</span> <span class='kw'>=</span> <span class='st'>"kwt"</span>, <span class='kw'>test.always</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>numeric.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Nmiss"</span>, <span class='st'>"meansd"</span>, <span class='st'>"range"</span>), <span class='kw'>cat.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Nmiss"</span>,
-  <span class='st'>"countpct"</span>), <span class='kw'>ordered.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Nmiss"</span>, <span class='st'>"countpct"</span>),
+    <pre class="usage"><span class='fu'>tableby.control</span>(
+  <span class='kw'>test</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>total</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>test.pname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>numeric.simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>cat.simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ordered.simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>date.simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>numeric.test</span> <span class='kw'>=</span> <span class='st'>"anova"</span>,
+  <span class='kw'>cat.test</span> <span class='kw'>=</span> <span class='st'>"chisq"</span>,
+  <span class='kw'>ordered.test</span> <span class='kw'>=</span> <span class='st'>"trend"</span>,
+  <span class='kw'>surv.test</span> <span class='kw'>=</span> <span class='st'>"logrank"</span>,
+  <span class='kw'>date.test</span> <span class='kw'>=</span> <span class='st'>"kwt"</span>,
+  <span class='kw'>test.always</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>numeric.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Nmiss"</span>, <span class='st'>"meansd"</span>, <span class='st'>"range"</span>),
+  <span class='kw'>cat.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Nmiss"</span>, <span class='st'>"countpct"</span>),
+  <span class='kw'>ordered.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Nmiss"</span>, <span class='st'>"countpct"</span>),
   <span class='kw'>surv.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Nmiss"</span>, <span class='st'>"Nevents"</span>, <span class='st'>"medSurv"</span>),
-  <span class='kw'>date.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Nmiss"</span>, <span class='st'>"median"</span>, <span class='st'>"range"</span>), <span class='kw'>stats.labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>Nmiss</span>
-  <span class='kw'>=</span> <span class='st'>"N-Miss"</span>, <span class='kw'>Nmiss2</span> <span class='kw'>=</span> <span class='st'>"N-Miss"</span>, <span class='kw'>meansd</span> <span class='kw'>=</span> <span class='st'>"Mean (SD)"</span>, <span class='kw'>medianrange</span> <span class='kw'>=</span>
-  <span class='st'>"Median (Range)"</span>, <span class='kw'>median</span> <span class='kw'>=</span> <span class='st'>"Median"</span>, <span class='kw'>medianq1q3</span> <span class='kw'>=</span> <span class='st'>"Median (Q1, Q3)"</span>, <span class='kw'>q1q3</span>
-  <span class='kw'>=</span> <span class='st'>"Q1, Q3"</span>, <span class='kw'>iqr</span> <span class='kw'>=</span> <span class='st'>"IQR"</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='st'>"Mean"</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='st'>"SD"</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='st'>"Var"</span>, <span class='kw'>max</span> <span class='kw'>=</span>
-  <span class='st'>"Max"</span>, <span class='kw'>min</span> <span class='kw'>=</span> <span class='st'>"Min"</span>, <span class='kw'>meanCI</span> <span class='kw'>=</span> <span class='st'>"Mean (CI)"</span>, <span class='kw'>gmean</span> <span class='kw'>=</span> <span class='st'>"Geom Mean"</span>, <span class='kw'>gsd</span> <span class='kw'>=</span>
-  <span class='st'>"Geom SD"</span>, <span class='kw'>gmeansd</span> <span class='kw'>=</span> <span class='st'>"Geom Mean (Geom SD)"</span>, <span class='kw'>gmeanCI</span> <span class='kw'>=</span> <span class='st'>"Geom Mean (CI)"</span>,
-  <span class='kw'>range</span> <span class='kw'>=</span> <span class='st'>"Range"</span>, <span class='kw'>countpct</span> <span class='kw'>=</span> <span class='st'>"Count (Pct)"</span>, <span class='kw'>Nevents</span> <span class='kw'>=</span> <span class='st'>"Events"</span>, <span class='kw'>medSurv</span> <span class='kw'>=</span>
-  <span class='st'>"Median Survival"</span>, <span class='kw'>medTime</span> <span class='kw'>=</span> <span class='st'>"Median Follow-Up"</span>, <span class='kw'>medianmad</span> <span class='kw'>=</span>
-  <span class='st'>"Median (MAD)"</span>,      <span class='kw'>overall</span> <span class='kw'>=</span> <span class='st'>"Overall"</span>, <span class='kw'>total</span> <span class='kw'>=</span> <span class='st'>"Total"</span>),
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3L</span>, <span class='kw'>digits.count</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>digits.pct</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>digits.p</span> <span class='kw'>=</span> <span class='fl'>3L</span>,
-  <span class='kw'>format.p</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>digits.n</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>conf.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>chisq.correct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>simulate.p.value</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>2000</span>,
-  <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>date.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Nmiss"</span>, <span class='st'>"median"</span>, <span class='st'>"range"</span>),
+  <span class='kw'>stats.labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>Nmiss</span> <span class='kw'>=</span> <span class='st'>"N-Miss"</span>, <span class='kw'>Nmiss2</span> <span class='kw'>=</span> <span class='st'>"N-Miss"</span>, <span class='kw'>meansd</span> <span class='kw'>=</span> <span class='st'>"Mean (SD)"</span>,
+    <span class='kw'>medianrange</span> <span class='kw'>=</span> <span class='st'>"Median (Range)"</span>, <span class='kw'>median</span> <span class='kw'>=</span> <span class='st'>"Median"</span>, <span class='kw'>medianq1q3</span> <span class='kw'>=</span> <span class='st'>"Median (Q1, Q3)"</span>,
+    <span class='kw'>q1q3</span> <span class='kw'>=</span> <span class='st'>"Q1, Q3"</span>, <span class='kw'>iqr</span> <span class='kw'>=</span> <span class='st'>"IQR"</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='st'>"Mean"</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='st'>"SD"</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='st'>"Var"</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='st'>"Max"</span>, <span class='kw'>min</span>
+    <span class='kw'>=</span> <span class='st'>"Min"</span>, <span class='kw'>meanCI</span> <span class='kw'>=</span> <span class='st'>"Mean (CI)"</span>, <span class='kw'>gmean</span> <span class='kw'>=</span> <span class='st'>"Geom Mean"</span>, <span class='kw'>gsd</span> <span class='kw'>=</span> <span class='st'>"Geom SD"</span>, <span class='kw'>gmeansd</span> <span class='kw'>=</span>
+    <span class='st'>"Geom Mean (Geom SD)"</span>, <span class='kw'>gmeanCI</span> <span class='kw'>=</span> <span class='st'>"Geom Mean (CI)"</span>, <span class='kw'>range</span> <span class='kw'>=</span> <span class='st'>"Range"</span>, <span class='kw'>countpct</span> <span class='kw'>=</span>
+    <span class='st'>"Count (Pct)"</span>, <span class='kw'>Nevents</span> <span class='kw'>=</span> <span class='st'>"Events"</span>, <span class='kw'>medSurv</span> <span class='kw'>=</span> <span class='st'>"Median Survival"</span>, <span class='kw'>medTime</span> <span class='kw'>=</span>
+    <span class='st'>"Median Follow-Up"</span>, <span class='kw'>medianmad</span> <span class='kw'>=</span> <span class='st'>"Median (MAD)"</span>,      <span class='kw'>overall</span> <span class='kw'>=</span> <span class='st'>"Overall"</span>, <span class='kw'>total</span> <span class='kw'>=</span>
+    <span class='st'>"Total"</span>),
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3L</span>,
+  <span class='kw'>digits.count</span> <span class='kw'>=</span> <span class='fl'>0L</span>,
+  <span class='kw'>digits.pct</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='kw'>digits.p</span> <span class='kw'>=</span> <span class='fl'>3L</span>,
+  <span class='kw'>format.p</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>digits.n</span> <span class='kw'>=</span> <span class='fl'>0L</span>,
+  <span class='kw'>conf.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>chisq.correct</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>simulate.p.value</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>2000</span>,
+  <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>,
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

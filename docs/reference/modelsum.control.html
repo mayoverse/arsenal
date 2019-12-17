@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.2.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.2.9005</span>
       </span>
     </div>
 
@@ -156,17 +156,25 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>modelsum.control</span>(<span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3L</span>, <span class='kw'>digits.ratio</span> <span class='kw'>=</span> <span class='fl'>3L</span>, <span class='kw'>digits.p</span> <span class='kw'>=</span> <span class='fl'>3L</span>,
-  <span class='kw'>format.p</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>show.adjust</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>show.intercept</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>conf.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ordinal.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"OR"</span>, <span class='st'>"CI.lower.OR"</span>,
-  <span class='st'>"CI.upper.OR"</span>, <span class='st'>"p.value"</span>, <span class='st'>"Nmiss"</span>), <span class='kw'>binomial.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"OR"</span>,
-  <span class='st'>"CI.lower.OR"</span>, <span class='st'>"CI.upper.OR"</span>, <span class='st'>"p.value"</span>, <span class='st'>"concordance"</span>, <span class='st'>"Nmiss"</span>),
-  <span class='kw'>gaussian.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"estimate"</span>, <span class='st'>"std.error"</span>, <span class='st'>"p.value"</span>, <span class='st'>"adj.r.squared"</span>,
-  <span class='st'>"Nmiss"</span>), <span class='kw'>poisson.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"RR"</span>, <span class='st'>"CI.lower.RR"</span>, <span class='st'>"CI.upper.RR"</span>,
-  <span class='st'>"p.value"</span>, <span class='st'>"Nmiss"</span>), <span class='kw'>negbin.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"RR"</span>, <span class='st'>"CI.lower.RR"</span>,
-  <span class='st'>"CI.upper.RR"</span>, <span class='st'>"p.value"</span>, <span class='st'>"Nmiss"</span>), <span class='kw'>survival.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"HR"</span>,
-  <span class='st'>"CI.lower.HR"</span>, <span class='st'>"CI.upper.HR"</span>, <span class='st'>"p.value"</span>, <span class='st'>"concordance"</span>, <span class='st'>"Nmiss"</span>),
-  <span class='kw'>stat.labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>modelsum.control</span>(
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3L</span>,
+  <span class='kw'>digits.ratio</span> <span class='kw'>=</span> <span class='fl'>3L</span>,
+  <span class='kw'>digits.p</span> <span class='kw'>=</span> <span class='fl'>3L</span>,
+  <span class='kw'>format.p</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>show.adjust</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>show.intercept</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>conf.level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>ordinal.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"OR"</span>, <span class='st'>"CI.lower.OR"</span>, <span class='st'>"CI.upper.OR"</span>, <span class='st'>"p.value"</span>, <span class='st'>"Nmiss"</span>),
+  <span class='kw'>binomial.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"OR"</span>, <span class='st'>"CI.lower.OR"</span>, <span class='st'>"CI.upper.OR"</span>, <span class='st'>"p.value"</span>, <span class='st'>"concordance"</span>,
+    <span class='st'>"Nmiss"</span>),
+  <span class='kw'>gaussian.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"estimate"</span>, <span class='st'>"std.error"</span>, <span class='st'>"p.value"</span>, <span class='st'>"adj.r.squared"</span>, <span class='st'>"Nmiss"</span>),
+  <span class='kw'>poisson.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"RR"</span>, <span class='st'>"CI.lower.RR"</span>, <span class='st'>"CI.upper.RR"</span>, <span class='st'>"p.value"</span>, <span class='st'>"Nmiss"</span>),
+  <span class='kw'>negbin.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"RR"</span>, <span class='st'>"CI.lower.RR"</span>, <span class='st'>"CI.upper.RR"</span>, <span class='st'>"p.value"</span>, <span class='st'>"Nmiss"</span>),
+  <span class='kw'>survival.stats</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"HR"</span>, <span class='st'>"CI.lower.HR"</span>, <span class='st'>"CI.upper.HR"</span>, <span class='st'>"p.value"</span>, <span class='st'>"concordance"</span>,
+    <span class='st'>"Nmiss"</span>),
+  <span class='kw'>stat.labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

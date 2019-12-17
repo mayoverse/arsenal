@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.2.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.2.9005</span>
       </span>
     </div>
 
@@ -162,15 +162,13 @@
 <span class='fu'>write2</span>(<span class='no'>object</span>, <span class='no'>file</span>, <span class='no'>...</span>, <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='co'># S3 method for summary.arsenal_table</span>
-<span class='fu'>write2</span>(<span class='no'>object</span>, <span class='no'>file</span>, <span class='no'>...</span>,
-  <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>write2</span>(<span class='no'>object</span>, <span class='no'>file</span>, <span class='no'>...</span>, <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='co'># S3 method for comparedf</span>
 <span class='fu'>write2</span>(<span class='no'>object</span>, <span class='no'>file</span>, <span class='no'>...</span>, <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='co'># S3 method for summary.comparedf</span>
-<span class='fu'>write2</span>(<span class='no'>object</span>, <span class='no'>file</span>, <span class='no'>...</span>,
-  <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>write2</span>(<span class='no'>object</span>, <span class='no'>file</span>, <span class='no'>...</span>, <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='co'># S3 method for verbatim</span>
 <span class='fu'>write2</span>(<span class='no'>object</span>, <span class='no'>file</span>, <span class='no'>...</span>, <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -191,13 +189,27 @@
 <span class='fu'>write2</span>(<span class='no'>object</span>, <span class='no'>file</span>, <span class='no'>...</span>, <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='co'># S3 method for list</span>
-<span class='fu'>write2</span>(<span class='no'>object</span>, <span class='no'>file</span>, <span class='no'>...</span>, <span class='kw'>append.</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>render.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>keep.rmd</span> <span class='kw'>=</span> !<span class='no'>render.</span>, <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>write2</span>(
+  <span class='no'>object</span>,
+  <span class='no'>file</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>append.</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>render.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>keep.rmd</span> <span class='kw'>=</span> !<span class='no'>render.</span>,
+  <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>write2</span>(<span class='no'>object</span>, <span class='no'>file</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>,
-  <span class='kw'>append.</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>render.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>keep.rmd</span> <span class='kw'>=</span> !<span class='no'>render.</span>,
-  <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>write2</span>(
+  <span class='no'>object</span>,
+  <span class='no'>file</span>,
+  <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>append.</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>render.</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>keep.rmd</span> <span class='kw'>=</span> !<span class='no'>render.</span>,
+  <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
