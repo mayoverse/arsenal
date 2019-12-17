@@ -1,0 +1,63 @@
+destination: docs
+reference:
+  - title: "tableby and paired"
+    contents:
+      - tableby
+      - paired
+      - tableby.control
+      - paired.control
+      - tableby.stats
+      - tableby.stats.internal
+      - summary.tableby
+      - as.data.frame.tableby
+      - tableby.internal
+      - paired.internal
+  - title: "modelsum"
+    contents:
+      - modelsum
+      - modelsum.control
+      - modelsum.family
+      - summary.modelsum
+      - as.data.frame.modelsum
+      - modelsum.internal
+  - title: freqlist
+    contents:
+      - freqlist
+      - freq.control
+      - as.data.frame.freqlist
+      - summary.freqlist
+      - freqlist.internal
+  - title: comparedf
+    contents:
+      - comparedf
+      - comparedf.control
+      - comparedf.tolerances
+      - summary.comparedf
+      - diffs
+  - title: write2
+    contents:
+      - write2
+      - write2.internal
+      - write2specific
+      - yaml
+  - title: "Regarding labels"
+    contents:
+      - labels
+      - keep.labels
+  - title: "Other utilities"
+    contents:
+      - formulize
+      - "%nin%"
+      - NA.operations
+      - mdy.Date
+      - padjust
+      - internal.functions
+  - title: "Common arsenal table structure"
+    contents:
+      - arsenal_table
+  - title: "Other reference"
+    contents:
+      - mockstudy
+      - arsenal
+      - arsenal-deprecated
+      - arsenal-defunct
