@@ -1388,3 +1388,17 @@ test_that("11/13/2019: geometric summaries (#260)", {
     )
   )
 })
+
+test_that("12/20/2019: Npct (#263)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ arm + ps, data = mockstudy, cat.stats = "Npct", numeric.stats = c("Npct", "Nmiss")), text = TRUE)),
+    c("|              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
+      "|:-------------|:------------:|:--------------:|:--------------:|-------:|",
+      "|Treatment Arm |              |                |                |   0.190|",
+      "|-  N (Pct)    | 916 (61.1%)  |  583 (38.9%)   | 1499 (100.0%)  |        |",
+      "|ps            |              |                |                |   0.345|",
+      "|-  N (Pct)    | 754 (61.2%)  |  479 (38.8%)   | 1233 (100.0%)  |        |",
+      "|-  N-Miss     |     162      |      104       |      266       |        |"
+    )
+  )
+})

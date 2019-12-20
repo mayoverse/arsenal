@@ -15,7 +15,7 @@
 * `tableby()`: Escaped `%` for `text="latex"`. (#258)
 
 * `tableby()` / `paired()`: Added support for "min", "max", "sd", "mean", and "var" (#259) and
-  "gmean", "gsd", "gmeansd", "gmeanCI" (#260).
+  "gmean", "gsd", "gmeansd", "gmeanCI" (#260) and "Npct" (#263).
   
 * `modelsum()`: Fixed "statistic.F" for family="gaussian". (#262)
 

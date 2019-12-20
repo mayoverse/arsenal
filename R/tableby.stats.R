@@ -361,6 +361,24 @@ N <- function(x, na.rm=TRUE, weights = NULL, ...) {
   as.countpct(sum(weights[!is.na(x)]))
 }
 
+#' @rdname tableby.stats
+#' @export
+Npct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ...) {
+  if(is.null(levels)) levels <- sort(unique(x))
+  if(na.rm)
+  {
+    idx <- !is.na(x) & !is.na(by)
+    if(!is.null(weights)) idx <- idx & !is.na(weights)
+    x <- x[idx]
+    by <- by[idx]
+    weights <- weights[idx]
+  }
+
+  tmp <- wtd.table(factor(by, levels = by.levels), weights = weights)
+  wtbl <- c(tmp, Total = sum(tmp))
+  lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/sum(tmp)), parens = c("(", ")"), pct = "%", which.pct = 2L))
+}
+
 ## count within group variable
 #' @rdname tableby.stats
 count <- function (x, levels=NULL, na.rm = TRUE, weights = NULL, ...)  {

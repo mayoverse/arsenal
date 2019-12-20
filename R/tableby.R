@@ -348,7 +348,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         for(statfun2 in currstats) {
           statfun <- get_stat_function(statfun2)
           bystatlist <- list()
-          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI"))
+          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct"))
           {
             bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                                 by = bycol, by.levels = by.levels, weights = weightscol, na.rm = TRUE))

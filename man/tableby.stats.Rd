@@ -29,6 +29,7 @@
 \alias{Nmiss}
 \alias{Nmiss2}
 \alias{N}
+\alias{Npct}
 \alias{count}
 \alias{countpct}
 \alias{countN}
@@ -91,6 +92,16 @@ Nmiss(x, na.rm = TRUE, weights = NULL, ...)
 Nmiss2(x, na.rm = TRUE, weights = NULL, ...)
 
 N(x, na.rm = TRUE, weights = NULL, ...)
+
+Npct(
+  x,
+  levels = NULL,
+  by,
+  by.levels = sort(unique(by)),
+  na.rm = TRUE,
+  weights = NULL,
+  ...
+)
 
 count(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
 
