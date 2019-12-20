@@ -23,6 +23,8 @@
 
 * Updated `head.summary.freqlist()` and `tail.summary.freqlist()` to comply with new R-devel definitions.
 
+* Updated "labels" vignette. (#267)
+
 # arsenal v3.3.0
 
 * `tableby()` / `paired()`:

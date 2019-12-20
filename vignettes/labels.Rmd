@@ -119,4 +119,16 @@ To extract labels from a `data.frame`, simply use the `labels()` function:
 labels(mockstudy.lab)
 ```
 
+## When labels get long
+
+`tableby()` and `modelsum()` both support the wrapping of long labels. Consider the `width=` argument in the `print()` function:
+
+```{r}
+mockstudy %>% 
+  set_labels(list(age = "This is a really long label for the arm variable")) %>% 
+  tableby(sex ~ age, data = .) %>% 
+  summary() %>% 
+  print(width = 20)
+```
+
 
