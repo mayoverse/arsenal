@@ -1,7 +1,6 @@
 ---
 title: "The compare function"
 author: "Ethan Heinzen, Ryan Lennon, Andrew Hanson"
-date: '`r format(Sys.time(),"%d %B, %Y")`'
 output:
   rmarkdown::html_vignette:
     toc: yes

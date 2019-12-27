@@ -1,7 +1,6 @@
 ---
 title: "The tableby function"
 author: "Beth Atkinson, Ethan Heinzen, Jason Sinnwell, Shannon McDonnell and Greg Dougherty"
-date: '`r format(Sys.time(),"%d %B, %Y")`'
 output: 
   rmarkdown::html_vignette:
     toc: yes

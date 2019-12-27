@@ -1,7 +1,6 @@
 ---
 title: "The paired function"
 author: "Ethan Heinzen, Beth Atkinson, Jason Sinnwell"
-date: '`r format(Sys.time(),"%d %B, %Y")`'
 output: 
   rmarkdown::html_vignette:
     toc: yes

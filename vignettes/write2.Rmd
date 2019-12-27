@@ -1,7 +1,6 @@
 ---
 title: "The write2 function"
 author: "Ethan Heinzen"
-date: '`r format(Sys.time(),"%d %B, %Y")`'
 output:
   rmarkdown::html_vignette:
     toc: yes
