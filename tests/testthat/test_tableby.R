@@ -1278,7 +1278,7 @@ test_that("07/30/2019: summary.tableby and pre-formatted p-values (#249)", {
   )
 })
 
-test_that("10/09/2019: change title for overall and total (#253, #261)", {
+test_that("10/09/2019: change title for overall and total (#253, #261, #272)", {
   tab1 <- tableby(~ sex + age, data = mockstudy, stats.labels = list(overall = "Total"))
   tab2 <- tableby(~ sex + age, data = mockstudy, stats.labels = list(overall = "Hello"))
   expect_identical(
@@ -1298,20 +1298,35 @@ test_that("10/09/2019: change title for overall and total (#253, #261)", {
     sub("Hello", "Total", capture.kable(summary(tab2, text = TRUE)))
   )
 
-  tab3 <- tableby(sex ~ age, data = mockstudy, stats.labels = list(total = "Overall"))
-  tab4 <- tableby(sex ~ age, data = mockstudy, stats.labels = list(total = "Hellooo"))
+  tab3 <- tableby(sex ~ age + arm, data = mockstudy, stats.labels = list(total = "Overa"), cat.stats = c("countpct", "countrowpct", "rowbinomCI"))
+  tab4 <- tableby(sex ~ age + arm, data = mockstudy, stats.labels = list(total = "Hello"), cat.stats = c("countpct", "countrowpct", "rowbinomCI"))
+  tab5 <- tableby(sex ~ age + arm, data = mockstudy, stats.labels = list(total = "Total"), cat.stats = c("countpct", "countrowpct", "rowbinomCI"))
   expect_identical(
-    capture.kable(summary(tab3, text = TRUE)),
-    c("|             |  Male (N=916)   | Female (N=583)  | Overall (N=1499) | p value|",
-      "|:------------|:---------------:|:---------------:|:----------------:|-------:|",
-      "|Age in Years |                 |                 |                  |   0.048|",
-      "|-  meansd    | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519)  |        |",
-      "|-  range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000  |        |"
+    capture.kable(summary(tab5, text = TRUE)),
+    c("|              |     Male (N=916)     |    Female (N=583)    |    Total (N=1499)    | p value|",
+      "|:-------------|:--------------------:|:--------------------:|:--------------------:|-------:|",
+      "|Age in Years  |                      |                      |                      |   0.048|",
+      "|-  meansd     |   60.455 (11.369)    |   59.247 (11.722)    |   59.985 (11.519)    |        |",
+      "|-  range      |   19.000 - 88.000    |   22.000 - 88.000    |   19.000 - 88.000    |        |",
+      "|Treatment Arm |                      |                      |                      |   0.190|",
+      "|-  A: IFL     |     277 (30.2%)      |     151 (25.9%)      |     428 (28.6%)      |        |",
+      "|-  F: FOLFOX  |     411 (44.9%)      |     280 (48.0%)      |     691 (46.1%)      |        |",
+      "|-  G: IROX    |     228 (24.9%)      |     152 (26.1%)      |     380 (25.4%)      |        |",
+      "|-  A: IFL     |     277 (64.7%)      |     151 (35.3%)      |     428 (100.0%)     |        |",
+      "|-  F: FOLFOX  |     411 (59.5%)      |     280 (40.5%)      |     691 (100.0%)     |        |",
+      "|-  G: IROX    |     228 (60.0%)      |     152 (40.0%)      |     380 (100.0%)     |        |",
+      "|-  A: IFL     | 0.647 (0.600, 0.692) | 0.353 (0.308, 0.400) | 1.000 (0.991, 1.000) |        |",
+      "|-  F: FOLFOX  | 0.595 (0.557, 0.632) | 0.405 (0.368, 0.443) | 1.000 (0.995, 1.000) |        |",
+      "|-  G: IROX    | 0.600 (0.549, 0.650) | 0.400 (0.350, 0.451) | 1.000 (0.990, 1.000) |        |"
     )
   )
   expect_identical(
     capture.kable(summary(tab3, text = TRUE)),
-    sub("Hellooo", "Overall", capture.kable(summary(tab4, text = TRUE)))
+    sub("Total", "Overa", capture.kable(summary(tab5, text = TRUE)))
+  )
+  expect_identical(
+    capture.kable(summary(tab4, text = TRUE)),
+    sub("Total", "Hello", capture.kable(summary(tab5, text = TRUE)))
   )
 })
 

@@ -352,6 +352,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           {
             bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                                 by = bycol, by.levels = by.levels, weights = weightscol, na.rm = TRUE))
+            names(bystatlist)[names(bystatlist) == "Total"] <- totallab
           } else
           {
             for(bylev in by.levels) {
