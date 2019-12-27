@@ -195,39 +195,39 @@ which combines them into a multiple-left-hand-side formula, for use in other fun
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## two-sided formula</span>
-<span class='fu'>formulize</span>(<span class='st'>"y"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>, <span class='st'>"x3"</span>))</div><div class='output co'>#&gt; y ~ x1 + x2 + x3
-#&gt; &lt;environment: 0x783b1d8&gt;</div><div class='input'>
+<span class='no'>f1</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='st'>"y"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>, <span class='st'>"x3"</span>))
+
 <span class='co'>## one-sided formula</span>
-<span class='fu'>formulize</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>, <span class='st'>"x3"</span>))</div><div class='output co'>#&gt; ~x1 + x2 + x3
-#&gt; &lt;environment: 0x783b1d8&gt;</div><div class='input'>
+<span class='no'>f2</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>, <span class='st'>"x3"</span>))
+
 <span class='co'>## multi-sided formula</span>
-<span class='fu'>formulize</span>(<span class='st'>"y"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>, <span class='st'>"x3"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"z1"</span>, <span class='st'>"z2"</span>), <span class='st'>"w1"</span>)</div><div class='output co'>#&gt; y ~ x1 + x2 + x3 ~ z1 + z2 ~ w1
-#&gt; &lt;environment: 0x783b1d8&gt;</div><div class='input'>
+<span class='no'>f3</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='st'>"y"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>, <span class='st'>"x3"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"z1"</span>, <span class='st'>"z2"</span>), <span class='st'>"w1"</span>)
+
 <span class='co'>## can use numerics for column names</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>mockstudy</span>)
-<span class='fu'>formulize</span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>4</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mockstudy</span>)</div><div class='output co'>#&gt; case ~ age + arm + sex
-#&gt; &lt;environment: 0x783b1d8&gt;</div><div class='input'>
+<span class='no'>f4</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>4</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mockstudy</span>)
+
 <span class='co'>## mix and match</span>
-<span class='fu'>formulize</span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>, <span class='st'>"x3"</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mockstudy</span>)</div><div class='output co'>#&gt; case ~ x1 + x2 + x3
-#&gt; &lt;environment: 0x783b1d8&gt;</div><div class='input'>
+<span class='no'>f5</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>, <span class='st'>"x3"</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mockstudy</span>)
+
 <span class='co'>## get an interaction</span>
-<span class='fu'>formulize</span>(<span class='st'>"y"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1*x2"</span>, <span class='st'>"x3"</span>))</div><div class='output co'>#&gt; y ~ x1 * x2 + x3
-#&gt; &lt;environment: 0x783b1d8&gt;</div><div class='input'>
+<span class='no'>f6</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='st'>"y"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1*x2"</span>, <span class='st'>"x3"</span>))
+
 <span class='co'>## get only interactions</span>
-<span class='fu'>formulize</span>(<span class='st'>"y"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>, <span class='st'>"x3"</span>), <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"*"</span>)</div><div class='output co'>#&gt; y ~ x1 * x2 * x3
-#&gt; &lt;environment: 0x783b1d8&gt;</div><div class='input'>
+<span class='no'>f7</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='st'>"y"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>, <span class='st'>"x3"</span>), <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"*"</span>)
+
 <span class='co'>## no intercept</span>
-<span class='fu'>formulize</span>(<span class='st'>"y"</span>, <span class='st'>"x1 - 1"</span>)</div><div class='output co'>#&gt; y ~ x1 - 1
-#&gt; &lt;environment: 0x783b1d8&gt;</div><div class='input'><span class='fu'>formulize</span>(<span class='st'>"y"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>, <span class='st'>"-1"</span>))</div><div class='output co'>#&gt; y ~ x1 + x2 + -1
-#&gt; &lt;environment: 0x783b1d8&gt;</div><div class='input'>
+<span class='no'>f8</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='st'>"y"</span>, <span class='st'>"x1 - 1"</span>)
+<span class='no'>f9</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='st'>"y"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x1"</span>, <span class='st'>"x2"</span>, <span class='st'>"-1"</span>))
+
 <span class='co'>## LHS as a list to use in arsenal functions</span>
-<span class='fu'>formulize</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"y1"</span>, <span class='st'>"y2"</span>, <span class='st'>"y3"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x"</span>, <span class='st'>"z"</span>), <span class='kw'>collapse.y</span> <span class='kw'>=</span> <span class='st'>"list"</span>)</div><div class='output co'>#&gt; list(y1, y2, y3) ~ x + z
-#&gt; &lt;environment: 0x783b1d8&gt;</div><div class='input'>
+<span class='no'>f10</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"y1"</span>, <span class='st'>"y2"</span>, <span class='st'>"y3"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x"</span>, <span class='st'>"z"</span>), <span class='kw'>collapse.y</span> <span class='kw'>=</span> <span class='st'>"list"</span>)
+
 <span class='co'>## use in an lm</span>
-<span class='no'>form</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='fl'>2</span>, <span class='fl'>3</span>:<span class='fl'>4</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mockstudy</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span>(<span class='no'>form</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mockstudy</span>))</div><div class='output co'>#&gt; 
+<span class='no'>f11</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='fl'>2</span>, <span class='fl'>3</span>:<span class='fl'>4</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mockstudy</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span>(<span class='no'>f11</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mockstudy</span>))</div><div class='output co'>#&gt; 
 #&gt; Call:
-#&gt; lm(formula = form, data = mockstudy)
+#&gt; lm(formula = f11, data = mockstudy)
 #&gt; 
 #&gt; Residuals:
 #&gt;     Min      1Q  Median      3Q     Max 
@@ -247,11 +247,10 @@ which combines them into a multiple-left-hand-side formula, for use in other fun
 #&gt; F-statistic: 1.683 on 3 and 1495 DF,  p-value: 0.1688
 #&gt; </div><div class='input'>
 <span class='co'>## using non-syntactic names or calls (like reformulate example)</span>
-<span class='fu'>formulize</span>(<span class='fu'><a href='https://rdrr.io/r/base/name.html'>as.name</a></span>(<span class='st'>"+-"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"`P/E`"</span>, <span class='st'>"`% Growth`"</span>))</div><div class='output co'>#&gt; `+-` ~ `P/E` + `% Growth`
-#&gt; &lt;environment: 0x783b1d8&gt;</div><div class='input'>
+<span class='no'>f12</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='fu'><a href='https://rdrr.io/r/base/name.html'>as.name</a></span>(<span class='st'>"+-"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"`P/E`"</span>, <span class='st'>"`% Growth`"</span>))
+
 <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'>Surv</span>(<span class='no'>ft</span>, <span class='no'>case</span>) ~ <span class='no'>a</span> + <span class='no'>b</span>
-<span class='fu'>formulize</span>(<span class='no'>f</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='no'>f</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div><div class='output co'>#&gt; Surv(ft, case) ~ a + b
-#&gt; &lt;environment: 0x783b1d8&gt;</div></pre>
+<span class='no'>f13</span> <span class='kw'>&lt;-</span> <span class='fu'>formulize</span>(<span class='no'>f</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='no'>f</span><span class='kw'>[[</span><span class='fl'>3</span>]])</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

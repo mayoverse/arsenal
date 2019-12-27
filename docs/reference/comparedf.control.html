@@ -280,113 +280,11 @@ as the default.</p>
                <span class='st'>"e"</span>)    <span class='co'># remove all letter e's</span>
 )
 
-<span class='fu'>comparedf.control</span>(<span class='kw'>tol.char</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+<span class='no'>cntl</span> <span class='kw'>&lt;-</span> <span class='fu'>comparedf.control</span>(<span class='kw'>tol.char</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
   <span class='st'>"none"</span>,      <span class='co'># the default</span>
   <span class='kw'>x1</span> <span class='kw'>=</span> <span class='st'>"case"</span>, <span class='co'># be case-insensitive for the variable "x1"</span>
   <span class='kw'>x2</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) <span class='fu'><a href='comparedf.tolerances.html'>tol.NA</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>x</span> <span class='kw'>!=</span> <span class='no'>y</span> <span class='kw'>|</span> <span class='no'>y</span> <span class='kw'>==</span> <span class='st'>"NA"</span>) <span class='co'># a custom-defined tolerance</span>
-))</div><div class='output co'>#&gt; $tol.logical
-#&gt; $tol.logical[[1]]
-#&gt; function (x, y) 
-#&gt; {
-#&gt;     tol.NA(x, y, x != y)
-#&gt; }
-#&gt; &lt;bytecode: 0x61485f8&gt;
-#&gt; &lt;environment: namespace:arsenal&gt;
-#&gt; 
-#&gt; 
-#&gt; $tol.num
-#&gt; $tol.num[[1]]
-#&gt; function (x, y, tol) 
-#&gt; {
-#&gt;     tol.NA(x, y, abs(x - y) &gt; tol)
-#&gt; }
-#&gt; &lt;bytecode: 0x679a168&gt;
-#&gt; &lt;environment: namespace:arsenal&gt;
-#&gt; 
-#&gt; 
-#&gt; $tol.num.val
-#&gt; [1] 1.490116e-08
-#&gt; 
-#&gt; $int.as.num
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $tol.char
-#&gt; $tol.char[[1]]
-#&gt; function (x, y) 
-#&gt; {
-#&gt;     tol.NA(x, y, x != y)
-#&gt; }
-#&gt; &lt;bytecode: 0x7887b58&gt;
-#&gt; &lt;environment: namespace:arsenal&gt;
-#&gt; 
-#&gt; $tol.char$x1
-#&gt; function (x, y) 
-#&gt; {
-#&gt;     tol.NA(x, y, tolower(x) != tolower(y))
-#&gt; }
-#&gt; &lt;bytecode: 0x27d3aa0&gt;
-#&gt; &lt;environment: namespace:arsenal&gt;
-#&gt; 
-#&gt; $tol.char$x2
-#&gt; function(x, y) tol.NA(x, y, x != y | y == "NA")
-#&gt; &lt;environment: 0x2c33fd0&gt;
-#&gt; 
-#&gt; 
-#&gt; $tol.factor
-#&gt; $tol.factor[[1]]
-#&gt; function (x, y) 
-#&gt; {
-#&gt;     tol.NA(x, y, (as.character(x) != as.character(y)) | (as.numeric(x) != 
-#&gt;         as.numeric(y)))
-#&gt; }
-#&gt; &lt;bytecode: 0x5e9c798&gt;
-#&gt; &lt;environment: namespace:arsenal&gt;
-#&gt; 
-#&gt; 
-#&gt; $factor.as.char
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $tol.date
-#&gt; $tol.date[[1]]
-#&gt; function (x, y, tol) 
-#&gt; {
-#&gt;     tol.NA(x, y, abs(x - y) &gt; tol)
-#&gt; }
-#&gt; &lt;bytecode: 0x7826aa8&gt;
-#&gt; &lt;environment: namespace:arsenal&gt;
-#&gt; 
-#&gt; 
-#&gt; $tol.date.val
-#&gt; [1] 0
-#&gt; 
-#&gt; $tol.other
-#&gt; $tol.other[[1]]
-#&gt; function (x, y) 
-#&gt; {
-#&gt;     unlist(Map(Negate(identical), x, y))
-#&gt; }
-#&gt; &lt;bytecode: 0x6153ce0&gt;
-#&gt; &lt;environment: namespace:arsenal&gt;
-#&gt; 
-#&gt; 
-#&gt; $tol.vars
-#&gt; [1] "none"
-#&gt; 
-#&gt; $max.print.vars
-#&gt; [1] NA
-#&gt; 
-#&gt; $max.print.obs
-#&gt; [1] NA
-#&gt; 
-#&gt; $max.print.diffs.per.var
-#&gt; [1] 10
-#&gt; 
-#&gt; $max.print.diffs
-#&gt; [1] 50
-#&gt; 
-#&gt; $max.print.attrs
-#&gt; [1] NA
-#&gt; </div></pre>
+))</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

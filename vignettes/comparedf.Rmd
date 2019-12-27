@@ -260,10 +260,6 @@ include a third argument for tolerance size (even if it's not used).
 CAUTION: the results should not include NAs, since the logical vector is used to subset the input data.frames. The `tol.NA()` function
 is useful for considering any NAs in the two vectors (but not both) as differences, in addition to other criteria.
 
-```{r results='markup'}
-tol.NA
-```
-
 The `tol.NA()` function is used in all default tolerance functions to help handle NAs.
 
 ### Example 1

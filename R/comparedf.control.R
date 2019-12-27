@@ -59,7 +59,7 @@
 #'                "e")    # remove all letter e's
 #' )
 #'
-#' comparedf.control(tol.char = list(
+#' cntl <- comparedf.control(tol.char = list(
 #'   "none",      # the default
 #'   x1 = "case", # be case-insensitive for the variable "x1"
 #'   x2 = function(x, y) tol.NA(x, y, x != y | y == "NA") # a custom-defined tolerance
