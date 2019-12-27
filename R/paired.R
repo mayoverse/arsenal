@@ -287,7 +287,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
         for(statfun2 in currstats) {
           statfun <- get_stat_function(statfun2)
           bystatlist <- list()
-          if(statfun %in% c("countrowpct", "countcellpct", "rowbinomCI"))
+          if(statfun %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct"))
           {
             bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                                 by = by.col, by.levels = by.levels, na.rm = TRUE))
@@ -312,6 +312,10 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           {
             bystatlist$Difference <- rowbinomCI(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
                                                 by.levels = c(TRUE, FALSE), na.rm = TRUE, conf.level = control$conf.level)[[2]]
+          } else if(statfun == "Npct")
+          {
+            # get the right percentages
+            bystatlist$Difference <- Npct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff, by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
           } else
           {
             bystatlist$Difference <- do.call(statfun, list(as.numeric(TP2.eff) - as.numeric(TP1.eff),
