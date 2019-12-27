@@ -29,7 +29,8 @@ tableby.control(
     = "Min", meanCI = "Mean (CI)", gmean = "Geom Mean", gsd = "Geom SD", gmeansd =
     "Geom Mean (Geom SD)", gmeanCI = "Geom Mean (CI)", range = "Range", Npct = "N (Pct)",
     Nevents = "Events", medSurv = "Median Survival", medTime = "Median Follow-Up",
-    medianmad = "Median (MAD)",      overall = "Overall", total = "Total"),
+    medianmad = "Median (MAD)",      overall = "Overall", total = "Total", difference =
+    "Difference"),
   digits = 3L,
   digits.count = 0L,
   digits.pct = 1L,

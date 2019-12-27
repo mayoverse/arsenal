@@ -8,6 +8,8 @@
 
 * `tableby()`: Allowed for changing of "Overall" and "Total" labels. (#253, #261)
 
+* `paired()`: Allowed for changing of "Difference" label. (#271)
+
 * `tableby()`: Allowed for suppression of N's in the header. (#256, #36)
 
 * `tableby()`: Allowed for digits formatting of N's in the header. (#257)
