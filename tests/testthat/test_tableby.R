@@ -1417,3 +1417,7 @@ test_that("12/20/2019: Npct (#263)", {
     )
   )
 })
+
+test_that("12/27/2019: informative error when no stats are computed (#273)", {
+  expect_error(summary(tableby(~ sex, data = mockstudy, cat.stats = "Nmiss")), "Nothing to show for variable")
+})

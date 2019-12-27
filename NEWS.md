@@ -19,6 +19,8 @@
 * `tableby()` / `paired()`: Added support for "min", "max", "sd", "mean", and "var" (#259) and
   "gmean", "gsd", "gmeansd", "gmeanCI" (#260) and "Npct" (#263).
   
+* `tableby()` / `paired()`: Added a more informative error message when no summary statistic is computed. (#273)
+  
 * `modelsum()`: Fixed "statistic.F" for family="gaussian". (#262)
 
 * `modelsum()`: Fixed "Nevents" for family="survival". (#266)

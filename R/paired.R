@@ -326,6 +326,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           }
           statList[[statfun2]] <- bystatlist
         }
+        if(length(statList) == 0) stop(paste0("Nothing to show for variable '", names(xTerms)[eff], "'"))
 
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest
         testout <- if(control$test) {

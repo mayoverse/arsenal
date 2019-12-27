@@ -366,6 +366,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           }
           statList[[statfun2]] <- bystatlist
         }
+        if(length(statList) == 0) stop(paste0("Nothing to show for variable '", names(xTerms)[eff], "'"))
 
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest
         testout <- if(control$test) {

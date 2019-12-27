@@ -275,4 +275,8 @@ test_that("12/27/2019: changing the difference label (#271)", {
   )
 })
 
+test_that("12/27/2019: informative error when no stats are computed (#273)", {
+  expect_error(summary(paired(tp ~ Cat, data = dat2, id = id, cat.stats = "Nmiss")), "Nothing to show for variable")
+})
+
 
