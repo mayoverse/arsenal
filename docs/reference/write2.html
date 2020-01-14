@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -39,12 +41,12 @@
 
 
 
+
 <meta property="og:title" content="write2 — write2" />
-
 <meta property="og:description" content="Functions to output tables to a single document. (Also the S3 backbone behind the write2* functions.)" />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -98,7 +100,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/comparedf.html">The compare function</a>
+      <a href="../articles/comparedf.html">The comparedf function</a>
     </li>
     <li>
       <a href="../articles/freqlist.html">The freqlist function</a>
@@ -124,7 +126,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/eheinzen/arsenal">
@@ -151,9 +152,7 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Functions to output tables to a single document. (Also the S3 backbone behind the <code>write2*</code> functions.)</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>write2</span>(<span class='no'>object</span>, <span class='no'>file</span>, <span class='no'>...</span>, <span class='no'>output_format</span>)
@@ -210,7 +209,7 @@
   <span class='kw'>keep.rmd</span> <span class='kw'>=</span> !<span class='no'>render.</span>,
   <span class='kw'>output_format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -256,11 +255,10 @@ to append on. Used mostly for <code>write2.list</code>.</p></td>
 character string. It's expected that <code>FUN(object, ...)</code> looks "good" when put directly in a <code>.Rmd</code> file.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>object</code> is returned invisibly, and <code>file</code> is written.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>write2</code> is an S3 method. The default prints the object (using <code><a href='https://rdrr.io/r/base/print.html'>print</a></code>)
@@ -271,13 +269,11 @@ character string. It's expected that <code>FUN(object, ...)</code> looks "good" 
    results monospaced (as if they were in the terminal). To output multiple tables into a document, simply make a list of them
    and call the same function as before. Finally, to output code chunks to be evaluated, use <code><a href='write2.internal.html'>code.chunk</a></code>.</p>
 <p>For more information, see <code><a href='../articles/write2.html'>vignette("write2")</a></code>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='write2specific.html'>write2word</a></code>, <code><a href='write2specific.html'>write2pdf</a></code>, <code><a href='write2specific.html'>write2html</a></code>,
   <code><a href='https://rdrr.io/pkg/rmarkdown/man/render.html'>render</a></code>, <code><a href='https://rdrr.io/pkg/rmarkdown/man/word_document.html'>word_document</a></code>, <code><a href='https://rdrr.io/pkg/rmarkdown/man/html_document.html'>html_document</a></code>, <code><a href='https://rdrr.io/pkg/rmarkdown/man/pdf_document.html'>pdf_document</a></code>,
   <code><a href='https://rdrr.io/pkg/rmarkdown/man/rtf_document.html'>rtf_document</a></code>, <code><a href='https://rdrr.io/pkg/rmarkdown/man/md_document.html'>md_document</a></code>, <code><a href='https://rdrr.io/pkg/rmarkdown/man/odt_document.html'>odt_document</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
@@ -303,13 +299,9 @@ character string. It's expected that <code>FUN(object, ...)</code> looks "good" 
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

@@ -61,7 +61,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/comparedf.html">The compare function</a>
+      <a href="../articles/comparedf.html">The comparedf function</a>
     </li>
     <li>
       <a href="../articles/freqlist.html">The freqlist function</a>
@@ -232,16 +232,16 @@
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="dv">2</span>    bmi Body Mass <span class="kw">Index</span> (kg<span class="op">/</span>m<span class="op">^</span><span class="dv">2</span>)             unadjusted     <span class="dv">1</span>   sexFemale</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="dv">3</span>    bmi Body Mass <span class="kw">Index</span> (kg<span class="op">/</span>m<span class="op">^</span><span class="dv">2</span>)             unadjusted     <span class="dv">2</span> (Intercept)</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="dv">4</span>    bmi Body Mass <span class="kw">Index</span> (kg<span class="op">/</span>m<span class="op">^</span><span class="dv">2</span>)             unadjusted     <span class="dv">2</span>         age</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">         label term.type    estimate  std.error       p.value</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="dv">1</span>  (Intercept) Intercept <span class="fl">27.49147713</span> <span class="fl">0.18134740</span>  <span class="fl">0.000000e+00</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="dv">2</span>   sex Female      Term <span class="fl">-0.73105055</span> <span class="fl">0.29032223</span>  <span class="fl">1.190605e-02</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="dv">3</span>  (Intercept) Intercept <span class="fl">26.42372272</span> <span class="fl">0.75211474</span> <span class="fl">1.279109e-196</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="dv">4</span> Age <span class="cf">in</span> Years      Term  <span class="fl">0.01304859</span> <span class="fl">0.01231653</span>  <span class="fl">2.895753e-01</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">  adj.r.squared Nmiss</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="dv">1</span>  <span class="fl">3.632258e-03</span>    <span class="dv">33</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="dv">2</span>  <span class="fl">3.632258e-03</span>    <span class="dv">33</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="dv">3</span>  <span class="fl">8.354809e-05</span>    <span class="dv">33</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="dv">4</span>  <span class="fl">8.354809e-05</span>    <span class="dv">33</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-7" data-line-number="7">         label term.type    estimate  std.error       p.value adj.r.squared</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="dv">1</span>  (Intercept) Intercept <span class="fl">27.49147713</span> <span class="fl">0.18134740</span>  <span class="fl">0.000000e+00</span>  <span class="fl">3.632258e-03</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="dv">2</span>   sex Female      Term <span class="fl">-0.73105055</span> <span class="fl">0.29032223</span>  <span class="fl">1.190605e-02</span>  <span class="fl">3.632258e-03</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="dv">3</span>  (Intercept) Intercept <span class="fl">26.42372272</span> <span class="fl">0.75211474</span> <span class="fl">1.279109e-196</span>  <span class="fl">8.354809e-05</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="dv">4</span> Age <span class="cf">in</span> Years      Term  <span class="fl">0.01304859</span> <span class="fl">0.01231653</span>  <span class="fl">2.895753e-01</span>  <span class="fl">8.354809e-05</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12">  Nmiss</a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="dv">1</span>    <span class="dv">33</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="dv">2</span>    <span class="dv">33</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="dv">3</span>    <span class="dv">33</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="dv">4</span>    <span class="dv">33</span></a></code></pre></div>
 </div>
 <div id="add-an-adjustor-to-the-model" class="section level2">
 <h2 class="hasAnchor">
@@ -921,12 +921,12 @@
 <a class="sourceLine" id="cb23-9" data-line-number="9"><span class="op">&gt;</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb23-10" data-line-number="10"><span class="er">&gt;</span><span class="st"> </span><span class="kw">glance</span>(fit) <span class="co"># model summary statistics</span></a>
 <a class="sourceLine" id="cb23-11" data-line-number="11"><span class="co"># A tibble: 1 x 15</span></a>
-<a class="sourceLine" id="cb23-12" data-line-number="12">      n nevent statistic.log p.value.log statistic.sc p.value.sc</a>
-<a class="sourceLine" id="cb23-13" data-line-number="13">  <span class="op">&lt;</span>int<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">         </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">        </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb23-14" data-line-number="14"><span class="dv">1</span>  <span class="dv">1499</span>   <span class="dv">1356</span>          <span class="fl">56.2</span>    <span class="fl">1.81e-11</span>         <span class="fl">57.0</span>   <span class="fl">1.26e-11</span></a>
-<a class="sourceLine" id="cb23-15" data-line-number="15"><span class="co"># … with 9 more variables: statistic.wald &lt;dbl&gt;, p.value.wald &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb23-16" data-line-number="16"><span class="co">#   r.squared &lt;dbl&gt;, r.squared.max &lt;dbl&gt;, concordance &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb23-17" data-line-number="17"><span class="co">#   std.error.concordance &lt;dbl&gt;, logLik &lt;dbl&gt;, AIC &lt;dbl&gt;, BIC &lt;dbl&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb23-12" data-line-number="12">      n nevent statistic.log p.value.log statistic.sc p.value.sc statistic.wald</a>
+<a class="sourceLine" id="cb23-13" data-line-number="13">  <span class="op">&lt;</span>int<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">         </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">        </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">          </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb23-14" data-line-number="14"><span class="dv">1</span>  <span class="dv">1499</span>   <span class="dv">1356</span>          <span class="fl">56.2</span>    <span class="fl">1.81e-11</span>         <span class="fl">57.0</span>   <span class="fl">1.26e-11</span>           <span class="fl">56.3</span></a>
+<a class="sourceLine" id="cb23-15" data-line-number="15"><span class="co"># … with 8 more variables: p.value.wald &lt;dbl&gt;, r.squared &lt;dbl&gt;,</span></a>
+<a class="sourceLine" id="cb23-16" data-line-number="16"><span class="co">#   r.squared.max &lt;dbl&gt;, concordance &lt;dbl&gt;, std.error.concordance &lt;dbl&gt;,</span></a>
+<a class="sourceLine" id="cb23-17" data-line-number="17"><span class="co">#   logLik &lt;dbl&gt;, AIC &lt;dbl&gt;, BIC &lt;dbl&gt;</span></a></code></pre></div>
 </div>
 <div id="create-a-summary-table-using-modelsum-2" class="section level3">
 <h3 class="hasAnchor">
@@ -3977,6 +3977,7 @@ render("Test.md", pdf_document(keep_tex=TRUE))
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>

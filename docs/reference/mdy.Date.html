@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -39,12 +41,12 @@
 
 
 
+
 <meta property="og:title" content="Convert numeric dates to Date object, and vice versa — mdy.Date" />
-
 <meta property="og:description" content="Convert numeric dates for month, day, and year to Date object, and vice versa." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -98,7 +100,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/comparedf.html">The compare function</a>
+      <a href="../articles/comparedf.html">The comparedf function</a>
     </li>
     <li>
       <a href="../articles/freqlist.html">The freqlist function</a>
@@ -124,7 +126,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/eheinzen/arsenal">
@@ -151,9 +152,7 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Convert numeric dates for month, day, and year to Date object, and vice versa.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>mdy.Date</span>(<span class='no'>month</span>, <span class='no'>day</span>, <span class='no'>year</span>, <span class='kw'>yearcut</span> <span class='kw'>=</span> <span class='fl'>120</span>)
@@ -161,7 +160,7 @@
 <span class='fu'>Date.mdy</span>(<span class='no'>date</span>)
 
 <span class='fu'>is.Date</span>(<span class='no'>x</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -190,21 +189,18 @@
       <td><p>An object.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>mdy.Date</code> returns a Date object, and Date.mdy returns a list with integer values for month, day, and year.
   <code>is.Date</code> returns a single logical value.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Test if an object is a date.</p>
 <p>More work may need to be done with yearcut and 2-digit years. Best to give a full 4-digit year.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/Dates.html'>Date</a></code>, <code><a href='https://rdrr.io/r/base/DateTimeClasses.html'>DateTimeClasses</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>mdy.Date</span>(<span class='fl'>9</span>, <span class='fl'>2</span>, <span class='fl'>2013</span>)</div><div class='output co'>#&gt; [1] "2013-09-02"</div><div class='input'>
@@ -224,13 +220,9 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

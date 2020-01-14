@@ -1,12 +1,12 @@
 ---
-title: "The compare function"
+title: "The comparedf function"
 author: "Ethan Heinzen, Ryan Lennon, Andrew Hanson"
 output:
   rmarkdown::html_vignette:
     toc: yes
     toc_depth: 3
 vignette: |
-  %\VignetteIndexEntry{The compare function}
+  %\VignetteIndexEntry{The comparedf function}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
