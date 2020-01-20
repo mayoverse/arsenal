@@ -31,6 +31,8 @@
 
 * Fixed `tableby()` and `modelsum()` vignettes re: outputting to CSV. (#278)
 
+* Added to `tableby()` vignette describing `merge(all=TRUE)`.
+
 # arsenal v3.3.0
 
 * `tableby()` / `paired()`:

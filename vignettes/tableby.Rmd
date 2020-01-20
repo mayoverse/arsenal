@@ -486,6 +486,16 @@ class(tab12)
 summary(tab12)
 ```
 
+For tables with two different outcomes, consider the `all=TRUE` argument:
+
+```{r, results='asis'}
+summary(merge(
+  tableby(sex ~ age, data = mockstudy),
+  tableby(arm ~ bmi, data = mockstudy),
+  all = TRUE
+))
+```
+
 ## 12. Add a title to the table
 
 When creating a pdf the tables are automatically numbered and the title appears below the table.  In Word and HTML, the titles appear un-numbered and above the table.  

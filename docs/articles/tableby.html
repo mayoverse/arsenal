@@ -3135,13 +3135,95 @@
 </tr>
 </tbody>
 </table>
+<p>For tables with two different outcomes, consider the <code>all=TRUE</code> argument:</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/merge.html">merge</a></span>(</a>
+<a class="sourceLine" id="cb105-2" data-line-number="2">  <span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy),</a>
+<a class="sourceLine" id="cb105-3" data-line-number="3">  <span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span>bmi, <span class="dt">data =</span> mockstudy),</a>
+<a class="sourceLine" id="cb105-4" data-line-number="4">  <span class="dt">all =</span> <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="cb105-5" data-line-number="5">))</a></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left"></th>
+<th align="center">Male (N=916)</th>
+<th align="center">Female (N=583)</th>
+<th align="center">Total (N=1499)</th>
+<th align="right">p value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Age, yrs</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">0.048</td>
+</tr>
+<tr class="even">
+<td align="left">   Mean (SD)</td>
+<td align="center">60.455 (11.369)</td>
+<td align="center">59.247 (11.722)</td>
+<td align="center">59.985 (11.519)</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">   Range</td>
+<td align="center">19.000 - 88.000</td>
+<td align="center">22.000 - 88.000</td>
+<td align="center">19.000 - 88.000</td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<thead><tr class="header">
+<th align="left"></th>
+<th align="center">A: IFL (N=428)</th>
+<th align="center">F: FOLFOX (N=691)</th>
+<th align="center">G: IROX (N=380)</th>
+<th align="center">Total (N=1499)</th>
+<th align="right">p value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Body Mass Index (kg/m^2)</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="right">0.892</td>
+</tr>
+<tr class="even">
+<td align="left">   N-Miss</td>
+<td align="center">9</td>
+<td align="center">20</td>
+<td align="center">4</td>
+<td align="center">33</td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">   Mean (SD)</td>
+<td align="center">27.290 (5.552)</td>
+<td align="center">27.210 (5.173)</td>
+<td align="center">27.106 (5.751)</td>
+<td align="center">27.206 (5.432)</td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">   Range</td>
+<td align="center">14.053 - 53.008</td>
+<td align="center">16.649 - 49.130</td>
+<td align="center">15.430 - 60.243</td>
+<td align="center">14.053 - 60.243</td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="add-a-title-to-the-table" class="section level2">
 <h2 class="hasAnchor">
 <a href="#add-a-title-to-the-table" class="anchor"></a>12. Add a title to the table</h2>
 <p>When creating a pdf the tables are automatically numbered and the title appears below the table. In Word and HTML, the titles appear un-numbered and above the table.</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1">t1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</a>
-<a class="sourceLine" id="cb105-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(t1, <span class="dt">title=</span><span class="st">'Demographics'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1">t1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb106-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(t1, <span class="dt">title=</span><span class="st">'Demographics'</span>)</a></code></pre></div>
 <table class="table">
 <caption>Demographics</caption>
 <thead><tr class="header">
@@ -3214,15 +3296,15 @@
 <li><p>Show how many subjects are missing each variable only if there are any missing values</p></li>
 <li><p>Don’t indicate missing values at all</p></li>
 </ul>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1"><span class="co">## look at how many missing values there are for each variable</span></a>
-<a class="sourceLine" id="cb106-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(mockstudy),<span class="dv">2</span>,sum)</a></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1"><span class="co">## look at how many missing values there are for each variable</span></a>
+<a class="sourceLine" id="cb107-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(mockstudy),<span class="dv">2</span>,sum)</a></code></pre></div>
 <pre><code>##        case         age         arm         sex        race     fu.time     fu.stat          ps 
 ##           0           0           0           0           7           0           0         266 
 ##         hgb         bmi    alk.phos         ast mdquality.s     age.ord  age.ordnew     dtentry 
 ##         266          33         266         266         252           0           1           5</code></pre>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb108-1" data-line-number="1"><span class="co">## Show how many subjects have each variable (non-missing)</span></a>
-<a class="sourceLine" id="cb108-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</a>
-<a class="sourceLine" id="cb108-3" data-line-number="3">                <span class="dt">control=</span><span class="kw"><a href="../reference/tableby.control.html">tableby.control</a></span>(<span class="dt">numeric.stats=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"N"</span>,<span class="st">"median"</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1"><span class="co">## Show how many subjects have each variable (non-missing)</span></a>
+<a class="sourceLine" id="cb109-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</a>
+<a class="sourceLine" id="cb109-3" data-line-number="3">                <span class="dt">control=</span><span class="kw"><a href="../reference/tableby.control.html">tableby.control</a></span>(<span class="dt">numeric.stats=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"N"</span>,<span class="st">"median"</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -3269,9 +3351,9 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1"><span class="co">## Always list the number of missing values</span></a>
-<a class="sourceLine" id="cb109-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</a>
-<a class="sourceLine" id="cb109-3" data-line-number="3">                <span class="dt">control=</span><span class="kw"><a href="../reference/tableby.control.html">tableby.control</a></span>(<span class="dt">numeric.stats=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Nmiss2"</span>,<span class="st">"median"</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1"><span class="co">## Always list the number of missing values</span></a>
+<a class="sourceLine" id="cb110-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy,</a>
+<a class="sourceLine" id="cb110-3" data-line-number="3">                <span class="dt">control=</span><span class="kw"><a href="../reference/tableby.control.html">tableby.control</a></span>(<span class="dt">numeric.stats=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Nmiss2"</span>,<span class="st">"median"</span>), <span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -3318,9 +3400,9 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1"><span class="co">## Only show the missing values if there are some (default)</span></a>
-<a class="sourceLine" id="cb110-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, </a>
-<a class="sourceLine" id="cb110-3" data-line-number="3">                <span class="dt">control=</span><span class="kw"><a href="../reference/tableby.control.html">tableby.control</a></span>(<span class="dt">numeric.stats=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Nmiss"</span>,<span class="st">"mean"</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1"><span class="co">## Only show the missing values if there are some (default)</span></a>
+<a class="sourceLine" id="cb111-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, </a>
+<a class="sourceLine" id="cb111-3" data-line-number="3">                <span class="dt">control=</span><span class="kw"><a href="../reference/tableby.control.html">tableby.control</a></span>(<span class="dt">numeric.stats=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Nmiss"</span>,<span class="st">"mean"</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -3361,9 +3443,9 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1"><span class="co">## Don't show N at all</span></a>
-<a class="sourceLine" id="cb111-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, </a>
-<a class="sourceLine" id="cb111-3" data-line-number="3">                <span class="dt">control=</span><span class="kw"><a href="../reference/tableby.control.html">tableby.control</a></span>(<span class="dt">numeric.stats=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"mean"</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1"><span class="co">## Don't show N at all</span></a>
+<a class="sourceLine" id="cb112-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>ast <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy, </a>
+<a class="sourceLine" id="cb112-3" data-line-number="3">                <span class="dt">control=</span><span class="kw"><a href="../reference/tableby.control.html">tableby.control</a></span>(<span class="dt">numeric.stats=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"mean"</span>),<span class="dt">total=</span><span class="ot">FALSE</span>)))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -3399,9 +3481,9 @@
 </tbody>
 </table>
 <p>One might also consider the use of <code><a href="../reference/NA.operations.html">includeNA()</a></code> to include NAs in the counts and percents for categorical variables.</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1">mockstudy<span class="op">$</span>ps.cat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(mockstudy<span class="op">$</span>ps)</a>
-<a class="sourceLine" id="cb112-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(mockstudy<span class="op">$</span>ps.cat, <span class="st">"label"</span>) &lt;-<span class="st"> "ps"</span></a>
-<a class="sourceLine" id="cb112-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span><span class="kw"><a href="../reference/NA.operations.html">includeNA</a></span>(ps.cat), <span class="dt">data =</span> mockstudy, <span class="dt">cat.stats =</span> <span class="st">"countpct"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1">mockstudy<span class="op">$</span>ps.cat &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(mockstudy<span class="op">$</span>ps)</a>
+<a class="sourceLine" id="cb113-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(mockstudy<span class="op">$</span>ps.cat, <span class="st">"label"</span>) &lt;-<span class="st"> "ps"</span></a>
+<a class="sourceLine" id="cb113-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span><span class="kw"><a href="../reference/NA.operations.html">includeNA</a></span>(ps.cat), <span class="dt">data =</span> mockstudy, <span class="dt">cat.stats =</span> <span class="st">"countpct"</span>))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -3459,7 +3541,7 @@
 <li><p>digits.pct: controls the number of digits after the decimal point for percents</p></li>
 <li><p>digits.p: controls the number of digits after the decimal point for p-values</p></li>
 </ul>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time, <span class="dt">data=</span>mockstudy), <span class="dt">digits=</span><span class="dv">4</span>, <span class="dt">digits.p=</span><span class="dv">2</span>, <span class="dt">digits.pct=</span><span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time, <span class="dt">data=</span>mockstudy), <span class="dt">digits=</span><span class="dv">4</span>, <span class="dt">digits.p=</span><span class="dv">2</span>, <span class="dt">digits.pct=</span><span class="dv">1</span>)</a></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="23%">
@@ -3553,8 +3635,8 @@
 </tbody>
 </table>
 <p>With the exception of <code>digits.p</code>, all of these can be specified on a per-variable basis using the in-formula functions that specify which tests are run:</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">chisq</span>(sex, <span class="dt">digits.pct=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span>(age, <span class="dt">digits=</span><span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb114-2" data-line-number="2"><span class="st">                  </span><span class="kw"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span>(fu.time, <span class="dt">digits =</span> <span class="dv">1</span>), <span class="dt">data=</span>mockstudy))</a></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span><span class="kw">chisq</span>(sex, <span class="dt">digits.pct=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span>(age, <span class="dt">digits=</span><span class="dv">4</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb115-2" data-line-number="2"><span class="st">                  </span><span class="kw"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span>(fu.time, <span class="dt">digits =</span> <span class="dv">1</span>), <span class="dt">data=</span>mockstudy))</a></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="25%">
@@ -3652,13 +3734,13 @@
 <h2 class="hasAnchor">
 <a href="#create-a-user-defined-summary-statistic" class="anchor"></a>15. Create a user-defined summary statistic</h2>
 <p>For purposes of this example, the code below creates a trimmed mean function (trims 10%) and use that to summarize the data. Note the use of the <code>...</code> which tells R to pass extra arguments on - this is required for user-defined functions. In this case, <code>na.rm=T</code> is passed to <code>myfunc</code>. The <em>weights</em> argument is also required, even though it isn’t passed on to the internal function in this particular example.</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1">myfunc &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">weights=</span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="dv">1</span>,<span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(x)), ...){</a>
-<a class="sourceLine" id="cb115-2" data-line-number="2">  <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(x, <span class="dt">trim=</span>.<span class="dv">1</span>, ...)</a>
-<a class="sourceLine" id="cb115-3" data-line-number="3">}</a>
-<a class="sourceLine" id="cb115-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb115-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>hgb, <span class="dt">data=</span>mockstudy, </a>
-<a class="sourceLine" id="cb115-6" data-line-number="6">                <span class="dt">control=</span><span class="kw"><a href="../reference/tableby.control.html">tableby.control</a></span>(<span class="dt">numeric.stats=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Nmiss"</span>,<span class="st">"myfunc"</span>), <span class="dt">numeric.test=</span><span class="st">"kwt"</span>,</a>
-<a class="sourceLine" id="cb115-7" data-line-number="7">                    <span class="dt">stats.labels=</span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">Nmiss=</span><span class="st">'Missing values'</span>, <span class="dt">myfunc=</span><span class="st">"Trimmed Mean, 10%"</span>))))</a></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1">myfunc &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">weights=</span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="dv">1</span>,<span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(x)), ...){</a>
+<a class="sourceLine" id="cb116-2" data-line-number="2">  <span class="kw"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(x, <span class="dt">trim=</span>.<span class="dv">1</span>, ...)</a>
+<a class="sourceLine" id="cb116-3" data-line-number="3">}</a>
+<a class="sourceLine" id="cb116-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb116-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>hgb, <span class="dt">data=</span>mockstudy, </a>
+<a class="sourceLine" id="cb116-6" data-line-number="6">                <span class="dt">control=</span><span class="kw"><a href="../reference/tableby.control.html">tableby.control</a></span>(<span class="dt">numeric.stats=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Nmiss"</span>,<span class="st">"myfunc"</span>), <span class="dt">numeric.test=</span><span class="st">"kwt"</span>,</a>
+<a class="sourceLine" id="cb116-7" data-line-number="7">                    <span class="dt">stats.labels=</span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">Nmiss=</span><span class="st">'Missing values'</span>, <span class="dt">myfunc=</span><span class="st">"Trimmed Mean, 10%"</span>))))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -3696,17 +3778,17 @@
 <h2 class="hasAnchor">
 <a href="#use-case-weights-for-creating-summary-statistics" class="anchor"></a>16. Use case-weights for creating summary statistics</h2>
 <p>When comparing groups, they are often unbalanced when it comes to nuisances such as age and sex. The <code>tableby</code> function allows you to create weighted summary statistics. If this option us used then p-values are not calculated (<code>test=FALSE</code>).</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1"><span class="co">##create fake group that is not balanced by age/sex </span></a>
-<a class="sourceLine" id="cb116-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">200</span>)</a>
-<a class="sourceLine" id="cb116-3" data-line-number="3">mockstudy<span class="op">$</span>fake_arm &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(mockstudy<span class="op">$</span>age<span class="op">&gt;</span><span class="dv">60</span> <span class="op">&amp;</span><span class="st"> </span>mockstudy<span class="op">$</span>sex<span class="op">==</span><span class="st">'Female'</span>,<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'A'</span>,<span class="st">'B'</span>),<span class="dt">replace=</span>T, <span class="dt">prob=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">2</span>,.<span class="dv">8</span>)),</a>
-<a class="sourceLine" id="cb116-4" data-line-number="4">                            <span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'A'</span>,<span class="st">'B'</span>),<span class="dt">replace=</span>T, <span class="dt">prob=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">8</span>,.<span class="dv">4</span>)))</a>
-<a class="sourceLine" id="cb116-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb116-6" data-line-number="6">mockstudy<span class="op">$</span>agegp &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cut.html">cut</a></span>(mockstudy<span class="op">$</span>age, <span class="dt">breaks=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">18</span>,<span class="dv">50</span>,<span class="dv">60</span>,<span class="dv">70</span>,<span class="dv">90</span>), <span class="dt">right=</span><span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb116-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb116-8" data-line-number="8"><span class="co">## create weights based on agegp and sex distribution</span></a>
-<a class="sourceLine" id="cb116-9" data-line-number="9">tab1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/with.html">with</a></span>(mockstudy,<span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(agegp, sex))</a>
-<a class="sourceLine" id="cb116-10" data-line-number="10">tab2 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/with.html">with</a></span>(mockstudy, <span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(agegp, sex, fake_arm))</a>
-<a class="sourceLine" id="cb116-11" data-line-number="11">tab2</a></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1"><span class="co">##create fake group that is not balanced by age/sex </span></a>
+<a class="sourceLine" id="cb117-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb117-3" data-line-number="3">mockstudy<span class="op">$</span>fake_arm &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(mockstudy<span class="op">$</span>age<span class="op">&gt;</span><span class="dv">60</span> <span class="op">&amp;</span><span class="st"> </span>mockstudy<span class="op">$</span>sex<span class="op">==</span><span class="st">'Female'</span>,<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'A'</span>,<span class="st">'B'</span>),<span class="dt">replace=</span>T, <span class="dt">prob=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">2</span>,.<span class="dv">8</span>)),</a>
+<a class="sourceLine" id="cb117-4" data-line-number="4">                            <span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'A'</span>,<span class="st">'B'</span>),<span class="dt">replace=</span>T, <span class="dt">prob=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">8</span>,.<span class="dv">4</span>)))</a>
+<a class="sourceLine" id="cb117-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb117-6" data-line-number="6">mockstudy<span class="op">$</span>agegp &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cut.html">cut</a></span>(mockstudy<span class="op">$</span>age, <span class="dt">breaks=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">18</span>,<span class="dv">50</span>,<span class="dv">60</span>,<span class="dv">70</span>,<span class="dv">90</span>), <span class="dt">right=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb117-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb117-8" data-line-number="8"><span class="co">## create weights based on agegp and sex distribution</span></a>
+<a class="sourceLine" id="cb117-9" data-line-number="9">tab1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/with.html">with</a></span>(mockstudy,<span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(agegp, sex))</a>
+<a class="sourceLine" id="cb117-10" data-line-number="10">tab2 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/with.html">with</a></span>(mockstudy, <span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(agegp, sex, fake_arm))</a>
+<a class="sourceLine" id="cb117-11" data-line-number="11">tab2</a></code></pre></div>
 <pre><code>## , , fake_arm = A
 ## 
 ##          sex
@@ -3724,15 +3806,15 @@
 ##   [50,60)  130     84
 ##   [60,70)  156    166
 ##   [70,90)  109    122</code></pre>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" data-line-number="1">gpwts &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(tab1, <span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(mockstudy<span class="op">$</span>fake_arm)))<span class="op">/</span>tab2</a>
-<a class="sourceLine" id="cb118-2" data-line-number="2">gpwts[gpwts<span class="op">&gt;</span><span class="dv">50</span>] &lt;-<span class="st"> </span><span class="dv">30</span></a>
-<a class="sourceLine" id="cb118-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb118-4" data-line-number="4"><span class="co">## apply weights to subjects</span></a>
-<a class="sourceLine" id="cb118-5" data-line-number="5">index &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/with.html">with</a></span>(mockstudy, <span class="kw"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(agegp), <span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(sex), <span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(fake_arm)))) </a>
-<a class="sourceLine" id="cb118-6" data-line-number="6">mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]</a>
-<a class="sourceLine" id="cb118-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb118-8" data-line-number="8"><span class="co">## show weights by treatment arm group</span></a>
-<a class="sourceLine" id="cb118-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span>(mockstudy<span class="op">$</span>wts,mockstudy<span class="op">$</span>fake_arm, summary)</a></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1">gpwts &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(tab1, <span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(mockstudy<span class="op">$</span>fake_arm)))<span class="op">/</span>tab2</a>
+<a class="sourceLine" id="cb119-2" data-line-number="2">gpwts[gpwts<span class="op">&gt;</span><span class="dv">50</span>] &lt;-<span class="st"> </span><span class="dv">30</span></a>
+<a class="sourceLine" id="cb119-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb119-4" data-line-number="4"><span class="co">## apply weights to subjects</span></a>
+<a class="sourceLine" id="cb119-5" data-line-number="5">index &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/with.html">with</a></span>(mockstudy, <span class="kw"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(agegp), <span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(sex), <span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(fake_arm)))) </a>
+<a class="sourceLine" id="cb119-6" data-line-number="6">mockstudy<span class="op">$</span>wts &lt;-<span class="st"> </span>gpwts[index]</a>
+<a class="sourceLine" id="cb119-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb119-8" data-line-number="8"><span class="co">## show weights by treatment arm group</span></a>
+<a class="sourceLine" id="cb119-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span>(mockstudy<span class="op">$</span>wts,mockstudy<span class="op">$</span>fake_arm, summary)</a></code></pre></div>
 <pre><code>## $A
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.774   1.894   2.069   2.276   2.082  24.714 
@@ -3740,8 +3822,8 @@
 ## $B
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.000   1.042   1.924   1.677   1.985   2.292</code></pre>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1">orig &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.html">tableby</a></span>(fake_arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span>(fu.time<span class="op">/</span><span class="dv">365</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">test=</span><span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb120-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(orig, <span class="dt">title=</span><span class="st">'No Case Weights used'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1">orig &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.html">tableby</a></span>(fake_arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span>(fu.time<span class="op">/</span><span class="dv">365</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">test=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb121-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(orig, <span class="dt">title=</span><span class="st">'No Case Weights used'</span>)</a></code></pre></div>
 <table class="table">
 <caption>No Case Weights used</caption>
 <thead><tr class="header">
@@ -3807,8 +3889,8 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1">tab1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.html">tableby</a></span>(fake_arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span>(fu.time<span class="op">/</span><span class="dv">365</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">weights=</span>wts)</a>
-<a class="sourceLine" id="cb121-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(tab1, <span class="dt">title=</span><span class="st">'Case Weights used'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1">tab1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.html">tableby</a></span>(fake_arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span>(fu.time<span class="op">/</span><span class="dv">365</span>, fu.stat), <span class="dt">data=</span>mockstudy, <span class="dt">weights=</span>wts)</a>
+<a class="sourceLine" id="cb122-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(tab1, <span class="dt">title=</span><span class="st">'Case Weights used'</span>)</a></code></pre></div>
 <table class="table">
 <caption>Case Weights used</caption>
 <thead><tr class="header">
@@ -3880,14 +3962,14 @@
 <a href="#create-your-own-p-value-and-add-it-to-the-table" class="anchor"></a>17. Create your own p-value and add it to the table</h2>
 <p>When using weighted summary statistics, it is often desirable to then show a p-value from a model that corresponds to the weighted analysis. It is possible to add your own p-value and modify the column title for that new p-value. Another use for this would be to add standardized differences or confidence intervals instead of a p-value.</p>
 <p>To add the p-value, you simply need to create a data frame and use the function <code><a href="../reference/tableby.internal.html">modpval.tableby()</a></code>. The first few columns in the data.frame are required: (1) the by-variable, (2) the strata value (if the table has a strata term), (3) the x-variable, and (4) the new p-value (or test statistic). Another optional column can be used to indicate what method was used to calculate the p-value. If you specify <code>use.pname=TRUE</code> then the column name indicating the p-value will be also be used in the tableby summary.</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1">mypval &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(</a>
-<a class="sourceLine" id="cb122-2" data-line-number="2">  <span class="dt">byvar =</span> <span class="st">"fake_arm"</span>,</a>
-<a class="sourceLine" id="cb122-3" data-line-number="3">  <span class="dt">variable =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'age'</span>,<span class="st">'sex'</span>,<span class="st">'Surv(fu.time/365, fu.stat)'</span>), </a>
-<a class="sourceLine" id="cb122-4" data-line-number="4">  <span class="dt">adj.pvalue =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">953</span>,.<span class="dv">811</span>,.<span class="dv">01</span>), </a>
-<a class="sourceLine" id="cb122-5" data-line-number="5">  <span class="dt">method =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Age/Sex adjusted model results'</span>)</a>
-<a class="sourceLine" id="cb122-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb122-7" data-line-number="7">tab2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.internal.html">modpval.tableby</a></span>(tab1, mypval, <span class="dt">use.pname=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb122-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(tab2, <span class="dt">title=</span><span class="st">'Case Weights used, p-values added'</span>, <span class="dt">pfootnote=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1">mypval &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(</a>
+<a class="sourceLine" id="cb123-2" data-line-number="2">  <span class="dt">byvar =</span> <span class="st">"fake_arm"</span>,</a>
+<a class="sourceLine" id="cb123-3" data-line-number="3">  <span class="dt">variable =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'age'</span>,<span class="st">'sex'</span>,<span class="st">'Surv(fu.time/365, fu.stat)'</span>), </a>
+<a class="sourceLine" id="cb123-4" data-line-number="4">  <span class="dt">adj.pvalue =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">953</span>,.<span class="dv">811</span>,.<span class="dv">01</span>), </a>
+<a class="sourceLine" id="cb123-5" data-line-number="5">  <span class="dt">method =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Age/Sex adjusted model results'</span>)</a>
+<a class="sourceLine" id="cb123-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb123-7" data-line-number="7">tab2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.internal.html">modpval.tableby</a></span>(tab1, mypval, <span class="dt">use.pname=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb123-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(tab2, <span class="dt">title=</span><span class="st">'Case Weights used, p-values added'</span>, <span class="dt">pfootnote=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <table class="table">
 <caption>Case Weights used, p-values added</caption>
 <thead><tr class="header">
@@ -3974,8 +4056,8 @@
 <h2 class="hasAnchor">
 <a href="#for-two-level-categorical-variables-or-one-line-numeric-variables-simplify-the-output-" class="anchor"></a>18. For two-level categorical variables or one-line numeric variables, simplify the output.</h2>
 <p>If the <code>cat.simplify</code> option is set to <code>TRUE</code>, then only the second level of two-level categorical varialbes is shown. In the example below, <code>sex</code> has two levels, and “Female” is the second level, hence only the counts and percents for Female are shown. Similarly, “mdquality.s” was turned to a factor, and “1” is the second level, but since there are missings, the table ignores <code>cat.simplify</code> and displays all levels (since the output can no longer be displayed on one line).</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1">table2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm<span class="op">~</span>sex <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(mdquality.s), <span class="dt">data=</span>mockstudy, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb123-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(table2, <span class="dt">labelTranslations=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dt">sex=</span><span class="st">"Female"</span>, <span class="st">"factor(mdquality.s)"</span>=<span class="st">"MD Quality"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb124-1" data-line-number="1">table2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm<span class="op">~</span>sex <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(mdquality.s), <span class="dt">data=</span>mockstudy, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb124-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(table2, <span class="dt">labelTranslations=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dt">sex=</span><span class="st">"Female"</span>, <span class="st">"factor(mdquality.s)"</span>=<span class="st">"MD Quality"</span>))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -4029,8 +4111,8 @@
 </tbody>
 </table>
 <p>Similarly, if <code>numeric.simplify</code> is set to <code>TRUE</code>, then any numerics which only have one row of summary statistics are simplified into a single row. Note again that <code>ast</code> has missing values and so is not simplified to a single row.</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb124-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>ast, <span class="dt">data =</span> mockstudy,</a>
-<a class="sourceLine" id="cb124-2" data-line-number="2">                <span class="dt">numeric.simplify=</span><span class="ot">TRUE</span>, <span class="dt">numeric.stats=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Nmiss"</span>, <span class="st">"meansd"</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>ast, <span class="dt">data =</span> mockstudy,</a>
+<a class="sourceLine" id="cb125-2" data-line-number="2">                <span class="dt">numeric.simplify=</span><span class="ot">TRUE</span>, <span class="dt">numeric.stats=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Nmiss"</span>, <span class="st">"meansd"</span>)))</a></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="26%">
@@ -4084,8 +4166,8 @@
 </tbody>
 </table>
 <p>The in-formula functions to change which tests are run can also be used to specify these options for each variable at a time.</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span>(age, <span class="st">"meansd"</span>, <span class="dt">numeric.simplify=</span><span class="ot">TRUE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb125-2" data-line-number="2"><span class="st">                  </span><span class="kw">chisq</span>(sex, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>), <span class="dt">data =</span> mockstudy))</a></code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span>(age, <span class="st">"meansd"</span>, <span class="dt">numeric.simplify=</span><span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb126-2" data-line-number="2"><span class="st">                  </span><span class="kw">chisq</span>(sex, <span class="dt">cat.simplify=</span><span class="ot">TRUE</span>), <span class="dt">data =</span> mockstudy))</a></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="14%">
@@ -4160,8 +4242,8 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 <h2 class="hasAnchor">
 <a href="#export-tableby-object-to-a--csv-file" class="anchor"></a>20. Export <code>tableby</code> object to a .CSV file</h2>
 <p>When looking at multiple variables it is sometimes useful to export the results to a csv file. The <code>as.data.frame</code> function creates a data frame object that can be exported or further manipulated within R.</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" data-line-number="1">tab1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm<span class="op">~</span>sex<span class="op">+</span>age, <span class="dt">data=</span>mockstudy), <span class="dt">text =</span> <span class="ot">NULL</span>)</a>
-<a class="sourceLine" id="cb127-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>(tab1)</a></code></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb128-1" data-line-number="1">tab1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm<span class="op">~</span>sex<span class="op">+</span>age, <span class="dt">data=</span>mockstudy), <span class="dt">text =</span> <span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb128-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>(tab1)</a></code></pre></div>
 <pre><code>##              A: IFL (N=428) F: FOLFOX (N=691) G: IROX (N=380)  Total (N=1499) p value
 ## 1    Gender                                                                     0.190
 ## 2      Male     277 (64.7%)       411 (59.5%)     228 (60.0%)     916 (61.1%)        
@@ -4169,49 +4251,49 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 ## 4  Age, yrs                                                                     0.614
 ## 5 Mean (SD) 59.673 (11.365)   60.301 (11.632) 59.763 (11.499) 59.985 (11.519)        
 ## 6     Range 27.000 - 88.000   19.000 - 88.000 26.000 - 85.000 19.000 - 88.000</code></pre>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1"><span class="co"># write.csv(tab1, '/my/path/here/my_table.csv')</span></a></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" data-line-number="1"><span class="co"># write.csv(tab1, '/my/path/here/my_table.csv')</span></a></code></pre></div>
 </div>
 <div id="write-tableby-object-to-a-separate-word-or-html-file" class="section level2">
 <h2 class="hasAnchor">
 <a href="#write-tableby-object-to-a-separate-word-or-html-file" class="anchor"></a>21. Write <code>tableby</code> object to a separate Word or HTML file</h2>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" data-line-number="1"><span class="co">## write to an HTML document</span></a>
-<a class="sourceLine" id="cb130-2" data-line-number="2">tab1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</a>
-<a class="sourceLine" id="cb130-3" data-line-number="3"><span class="kw"><a href="../reference/write2specific.html">write2html</a></span>(tab1, <span class="st">"~/trash.html"</span>)</a>
-<a class="sourceLine" id="cb130-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb130-5" data-line-number="5"><span class="co">## write to a Word document</span></a>
-<a class="sourceLine" id="cb130-6" data-line-number="6"><span class="kw"><a href="../reference/write2specific.html">write2word</a></span>(tab1, <span class="st">"~/trash.doc"</span>, <span class="dt">title=</span><span class="st">"My table in Word"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1"><span class="co">## write to an HTML document</span></a>
+<a class="sourceLine" id="cb131-2" data-line-number="2">tab1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>age, <span class="dt">data=</span>mockstudy)</a>
+<a class="sourceLine" id="cb131-3" data-line-number="3"><span class="kw"><a href="../reference/write2specific.html">write2html</a></span>(tab1, <span class="st">"~/trash.html"</span>)</a>
+<a class="sourceLine" id="cb131-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb131-5" data-line-number="5"><span class="co">## write to a Word document</span></a>
+<a class="sourceLine" id="cb131-6" data-line-number="6"><span class="kw"><a href="../reference/write2specific.html">write2word</a></span>(tab1, <span class="st">"~/trash.doc"</span>, <span class="dt">title=</span><span class="st">"My table in Word"</span>)</a></code></pre></div>
 </div>
 <div id="use-tableby-in-r-shiny" class="section level2">
 <h2 class="hasAnchor">
 <a href="#use-tableby-in-r-shiny" class="anchor"></a>22. Use <code>tableby</code> in R Shiny</h2>
 <p>The easiest way to output a <code><a href="../reference/tableby.html">tableby()</a></code> object in an R Shiny app is to use the <code><a href="https://rdrr.io/pkg/shiny/man/tableOutput.html">tableOutput()</a></code> UI in combination with the <code><a href="https://rdrr.io/pkg/shiny/man/renderTable.html">renderTable()</a></code> server function and <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame(summary(tableby()))</a></code>:</p>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1"><span class="co"># A standalone shiny app</span></a>
-<a class="sourceLine" id="cb131-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(shiny)</a>
-<a class="sourceLine" id="cb131-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(arsenal)</a>
-<a class="sourceLine" id="cb131-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(mockstudy)</a>
-<a class="sourceLine" id="cb131-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb131-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(</a>
-<a class="sourceLine" id="cb131-7" data-line-number="7">  <span class="dt">ui =</span> <span class="kw"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/shiny/man/tableOutput.html">tableOutput</a></span>(<span class="st">"table"</span>)),</a>
-<a class="sourceLine" id="cb131-8" data-line-number="8">  <span class="dt">server =</span> <span class="cf">function</span>(input, output) {</a>
-<a class="sourceLine" id="cb131-9" data-line-number="9">    output<span class="op">$</span>table &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html">renderTable</a></span>({</a>
-<a class="sourceLine" id="cb131-10" data-line-number="10">      <span class="kw"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">text =</span> <span class="st">"html"</span>))</a>
-<a class="sourceLine" id="cb131-11" data-line-number="11">    }, <span class="dt">sanitize.text.function =</span> <span class="cf">function</span>(x) x)</a>
-<a class="sourceLine" id="cb131-12" data-line-number="12">  }</a>
-<a class="sourceLine" id="cb131-13" data-line-number="13">)</a></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" data-line-number="1"><span class="co"># A standalone shiny app</span></a>
+<a class="sourceLine" id="cb132-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(shiny)</a>
+<a class="sourceLine" id="cb132-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(arsenal)</a>
+<a class="sourceLine" id="cb132-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(mockstudy)</a>
+<a class="sourceLine" id="cb132-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb132-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(</a>
+<a class="sourceLine" id="cb132-7" data-line-number="7">  <span class="dt">ui =</span> <span class="kw"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/shiny/man/tableOutput.html">tableOutput</a></span>(<span class="st">"table"</span>)),</a>
+<a class="sourceLine" id="cb132-8" data-line-number="8">  <span class="dt">server =</span> <span class="cf">function</span>(input, output) {</a>
+<a class="sourceLine" id="cb132-9" data-line-number="9">    output<span class="op">$</span>table &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html">renderTable</a></span>({</a>
+<a class="sourceLine" id="cb132-10" data-line-number="10">      <span class="kw"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">text =</span> <span class="st">"html"</span>))</a>
+<a class="sourceLine" id="cb132-11" data-line-number="11">    }, <span class="dt">sanitize.text.function =</span> <span class="cf">function</span>(x) x)</a>
+<a class="sourceLine" id="cb132-12" data-line-number="12">  }</a>
+<a class="sourceLine" id="cb132-13" data-line-number="13">)</a></code></pre></div>
 <p>This can be especially powerful if you feed the selections from a <code><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput(multiple = TRUE)</a></code> into <code><a href="../reference/formulize.html">formulize()</a></code> to make the table dynamic!</p>
 </div>
 <div id="use-tableby-in-bookdown" class="section level2">
 <h2 class="hasAnchor">
 <a href="#use-tableby-in-bookdown" class="anchor"></a>23. Use <code>tableby</code> in bookdown</h2>
 <p>Since the backbone of <code><a href="../reference/tableby.html">tableby()</a></code> is <code><a href="https://rdrr.io/pkg/knitr/man/kable.html">knitr::kable()</a></code>, tables still render well in bookdown. However, <code>print.summary.tableby()</code> doesn’t use the <code>caption=</code> argument of <code><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable()</a></code>, so some tables may not have a properly numbered caption. To fix this, use the method described <a href="https://bookdown.org/yihui/bookdown/tables.html">on the bookdown site</a> to give the table a tag/ID.</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title=</span><span class="st">"(</span><span class="ch">\\</span><span class="st">#tab:mytableby) Caption here"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> mockstudy), <span class="dt">title=</span><span class="st">"(</span><span class="ch">\\</span><span class="st">#tab:mytableby) Caption here"</span>)</a></code></pre></div>
 </div>
 <div id="adjust-tableby-for-multiple-p-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#adjust-tableby-for-multiple-p-values" class="anchor"></a>24. Adjust <code>tableby</code> for multiple p-values</h2>
 <p>The <code><a href="../reference/padjust.html">padjust()</a></code> function is a new S3 generic piggybacking off of <code><a href="https://rdrr.io/r/stats/p.adjust.html">p.adjust()</a></code>. It works on both <code>tableby</code> and <code>summary.tableby</code> objects:</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1">tab &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time <span class="op">+</span><span class="st"> </span>bmi <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy))</a>
-<a class="sourceLine" id="cb133-2" data-line-number="2">tab</a></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1">tab &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(sex <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>fu.time <span class="op">+</span><span class="st"> </span>bmi <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy))</a>
+<a class="sourceLine" id="cb134-2" data-line-number="2">tab</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -4321,7 +4403,7 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1"><span class="kw"><a href="../reference/padjust.html">padjust</a></span>(tab, <span class="dt">method =</span> <span class="st">"bonferroni"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1"><span class="kw"><a href="../reference/padjust.html">padjust</a></span>(tab, <span class="dt">method =</span> <span class="st">"bonferroni"</span>)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -4436,7 +4518,7 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 <h2 class="hasAnchor">
 <a href="#tabulate-multiple-endpoints" class="anchor"></a>25. Tabulate multiple endpoints</h2>
 <p>You can now use <code><a href="https://rdrr.io/r/base/list.html">list()</a></code> on the left-hand side of <code><a href="../reference/tableby.html">tableby()</a></code> to give multiple endpoints.</p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(sex, mdquality.s, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data =</span> mockstudy))</a></code></pre></div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(sex, mdquality.s, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data =</span> mockstudy))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -4626,7 +4708,7 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 </tbody>
 </table>
 <p>To avoid confusion about which table is which endpoint, you can set <code>term.name=TRUE</code> in <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>. This takes the labels for each by-variable and puts them in the top-left of the table.</p>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(sex, mdquality.s, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data =</span> mockstudy), <span class="dt">term.name =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(sex, mdquality.s, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">data =</span> mockstudy), <span class="dt">term.name =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Gender</th>
@@ -4820,7 +4902,7 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 <h2 class="hasAnchor">
 <a href="#tabulate-data-by-a-non-test-group-strata" class="anchor"></a>26. Tabulate data by a non-test group (strata)</h2>
 <p>You can also specify a second grouping variable that doesn’t get tested (but instead separates results): a <em>strata</em> variable.</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(sex, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">strata =</span> arm, <span class="dt">data =</span> mockstudy))</a></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(sex, ps) <span class="op">~</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>bmi, <span class="dt">strata =</span> arm, <span class="dt">data =</span> mockstudy))</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Treatment Arm</th>
@@ -5313,7 +5395,7 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 <h2 class="hasAnchor">
 <a href="#tableby-control-settings" class="anchor"></a><code>tableby.control</code> settings</h2>
 <p>A quick way to see what arguments are possible to utilize in a function is to use the <code><a href="https://rdrr.io/r/base/args.html">args()</a></code> command. Settings involving the number of digits can be set in <code>tableby.control</code> or in <code>summary.tableby</code>.</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/args.html">args</a></span>(tableby.control)</a></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/args.html">args</a></span>(tableby.control)</a></code></pre></div>
 <pre><code>## function (test = TRUE, total = TRUE, test.pname = NULL, numeric.simplify = FALSE, 
 ##     cat.simplify = FALSE, ordered.simplify = FALSE, date.simplify = FALSE, 
 ##     numeric.test = "anova", cat.test = "chisq", ordered.test = "trend", 
@@ -5340,7 +5422,7 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 <h2 class="hasAnchor">
 <a href="#summary-tableby-settings" class="anchor"></a><code>summary.tableby</code> settings</h2>
 <p>The <code>summary.tableby</code> function has options that modify how the table appears (such as adding a title or modifying labels).</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/args.html">args</a></span>(arsenal<span class="op">:::</span>summary.tableby)</a></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/args.html">args</a></span>(arsenal<span class="op">:::</span>summary.tableby)</a></code></pre></div>
 <pre><code>## function (object, ..., labelTranslations = NULL, text = FALSE, 
 ##     title = NULL, pfootnote = FALSE, term.name = "") 
 ## NULL</code></pre>
