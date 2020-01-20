@@ -29,6 +29,8 @@
 
 * Updated "labels" vignette. (#267)
 
+* Fixed `tableby()` and `modelsum()` vignettes re: outputting to CSV. (#278)
+
 # arsenal v3.3.0
 
 * `tableby()` / `paired()`:

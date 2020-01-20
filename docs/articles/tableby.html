@@ -4160,30 +4160,16 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 <h2 class="hasAnchor">
 <a href="#export-tableby-object-to-a--csv-file" class="anchor"></a>20. Export <code>tableby</code> object to a .CSV file</h2>
 <p>When looking at multiple variables it is sometimes useful to export the results to a csv file. The <code>as.data.frame</code> function creates a data frame object that can be exported or further manipulated within R.</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" data-line-number="1">tab1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm<span class="op">~</span>sex<span class="op">+</span>age, <span class="dt">data=</span>mockstudy)</a>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" data-line-number="1">tab1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/tableby.html">tableby</a></span>(arm<span class="op">~</span>sex<span class="op">+</span>age, <span class="dt">data=</span>mockstudy), <span class="dt">text =</span> <span class="ot">NULL</span>)</a>
 <a class="sourceLine" id="cb127-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>(tab1)</a></code></pre></div>
-<pre><code>##   group.term   group.label strata.term variable     term     label variable.type
-## 1        arm Treatment Arm                  sex      sex    Gender   categorical
-## 2        arm Treatment Arm                  sex countpct      Male   categorical
-## 3        arm Treatment Arm                  sex countpct    Female   categorical
-## 4        arm Treatment Arm                  age      age  Age, yrs       numeric
-## 5        arm Treatment Arm                  age   meansd Mean (SD)       numeric
-## 6        arm Treatment Arm                  age    range     Range       numeric
-##                A: IFL           F: FOLFOX            G: IROX              Total
-## 1                                                                              
-## 2 277.00000, 64.71963 411.00000, 59.47902            228, 60  916.0000, 61.1074
-## 3 151.00000, 35.28037 280.00000, 40.52098            152, 40  583.0000, 38.8926
-## 4                                                                              
-## 5  59.67290, 11.36454  60.30101, 11.63225 59.76316, 11.49930 59.98532, 11.51877
-## 6              27, 88              19, 88             26, 85             19, 88
-##                         test   p.value
-## 1 Pearson's Chi-squared test 0.1904388
-## 2 Pearson's Chi-squared test 0.1904388
-## 3 Pearson's Chi-squared test 0.1904388
-## 4         Linear Model ANOVA 0.6143859
-## 5         Linear Model ANOVA 0.6143859
-## 6         Linear Model ANOVA 0.6143859</code></pre>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1"><span class="co"># write.csv(tmp, '/my/path/here/mymodel.csv')</span></a></code></pre></div>
+<pre><code>##              A: IFL (N=428) F: FOLFOX (N=691) G: IROX (N=380)  Total (N=1499) p value
+## 1    Gender                                                                     0.190
+## 2      Male     277 (64.7%)       411 (59.5%)     228 (60.0%)     916 (61.1%)        
+## 3    Female     151 (35.3%)       280 (40.5%)     152 (40.0%)     583 (38.9%)        
+## 4  Age, yrs                                                                     0.614
+## 5 Mean (SD) 59.673 (11.365)   60.301 (11.632) 59.763 (11.499) 59.985 (11.519)        
+## 6     Range 27.000 - 88.000   19.000 - 88.000 26.000 - 85.000 19.000 - 88.000</code></pre>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1"><span class="co"># write.csv(tab1, '/my/path/here/my_table.csv')</span></a></code></pre></div>
 </div>
 <div id="write-tableby-object-to-a-separate-word-or-html-file" class="section level2">
 <h2 class="hasAnchor">

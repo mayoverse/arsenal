@@ -725,7 +725,7 @@ The `as.data.frame` function creates a data frame object that can be exported or
 
 ```{r}
 summary(tab2, text=T)
-tmp <- as.data.frame(tab2)
+tmp <- as.data.frame(summary(tab2, text = TRUE))
 tmp
 # write.csv(tmp, '/my/path/here/mymodel.csv')
 ```

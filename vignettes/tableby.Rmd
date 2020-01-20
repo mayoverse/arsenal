@@ -712,10 +712,10 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 When looking at multiple variables it is sometimes useful to export the results to a csv file. The `as.data.frame` function creates a data frame object that can be exported or further manipulated within R.
 
 ```{r}
-tab1 <- tableby(arm~sex+age, data=mockstudy)
+tab1 <- summary(tableby(arm~sex+age, data=mockstudy), text = NULL)
 as.data.frame(tab1)
 
-# write.csv(tmp, '/my/path/here/mymodel.csv')
+# write.csv(tab1, '/my/path/here/my_table.csv')
 ```
 
 ## 21. Write `tableby` object to a separate Word or HTML file
