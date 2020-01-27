@@ -2,6 +2,7 @@
 % Please edit documentation in R/tableby.stats.R
 \name{tableby.stats}
 \alias{tableby.stats}
+\alias{arsenal_sum}
 \alias{arsenal_min}
 \alias{arsenal_max}
 \alias{arsenal_mean}
@@ -39,6 +40,8 @@
 \alias{rowbinomCI}
 \title{tableby Summary Statistics Functions}
 \usage{
+arsenal_sum(x, na.rm = TRUE, ...)
+
 arsenal_min(x, na.rm = TRUE, ...)
 
 arsenal_max(x, na.rm = TRUE, ...)

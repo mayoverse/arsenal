@@ -26,7 +26,17 @@
 NULL
 #> NULL
 
-get_stat_function <- function(x) switch(x, min = , max = , range = , mean = , sd = , var = , median = paste0("arsenal_", x), x)
+get_stat_function <- function(x) switch(x, sum = , min = , max = , range = , mean = , sd = , var = , median = paste0("arsenal_", x), x)
+
+#' @rdname tableby.stats
+arsenal_sum <- function(x, na.rm=TRUE, ...) {
+  y <- if(na.rm && allNA(x)) {
+    NA_real_
+  } else {
+    sum(x, na.rm=na.rm)
+  }
+  as.tbstat(y) # unclear what the sum of dates should be?
+}
 
 #' @rdname tableby.stats
 arsenal_min <- function(x, na.rm=TRUE, ...) {
