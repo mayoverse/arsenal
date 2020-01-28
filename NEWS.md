@@ -33,6 +33,8 @@
 
 * Added to `tableby()` vignette describing `merge(all=TRUE)`.
 
+* Added `escape =` argument to `formulize()`. (#282)
+
 # arsenal v3.3.0
 
 * `tableby()` / `paired()`:

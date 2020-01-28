@@ -8,6 +8,8 @@
 #' @param collapse How should terms be collapsed? Default is addition.
 #' @param collapse.y How should the y-terms be collapsed? Default is addition. Also accepts the special string "list",
 #'   which combines them into a multiple-left-hand-side formula, for use in other functions.
+#' @param escape A logical indicating whether character vectors should be coerced to names (that is, whether names with spaces should
+#'   be surrounded with backticks or not)
 #' @seealso \code{\link[stats]{reformulate}}
 #' @author Ethan Heinzen
 #' @examples
@@ -46,12 +48,13 @@
 #'
 #' ## using non-syntactic names or calls (like reformulate example)
 #' f12 <- formulize(as.name("+-"), c("`P/E`", "`% Growth`"))
+#' f12 <- formulize("+-", c("P/E", "% Growth"), escape = TRUE)
 #'
 #' f <- Surv(ft, case) ~ a + b
 #' f13 <- formulize(f[[2]], f[[3]])
+#'
 #' @export
-
-formulize <- function(y = "", x = "", ..., data = NULL, collapse = "+", collapse.y = collapse)
+formulize <- function(y = "", x = "", ..., data = NULL, collapse = "+", collapse.y = collapse, escape = FALSE)
 {
   dots <- list(y = y, x = x, ...)
   if(!is.null(data))
@@ -60,7 +63,7 @@ formulize <- function(y = "", x = "", ..., data = NULL, collapse = "+", collapse
     dots <- lapply(dots, function(elt, cn) if(is.numeric(elt)) lapply(cn[elt], as.name) else elt, cn = colnames(data))
   }
   name.or.call <- function(elt) is.name(elt) || is.call(elt)
-  dots <- lapply(dots, function(elt) if(name.or.call(elt)) list(elt) else elt)
+  dots <- lapply(dots, function(elt) if(name.or.call(elt)) list(elt) else if(is.character(elt) && all(nzchar(elt)) && escape) lapply(elt, as.name) else elt)
   is.ok <- function(x) is.character(x) || (is.list(x) && all(vapply(x, name.or.call, NA)))
   trash <- lapply(dots, function(elt) if(!is.ok(elt))
     stop("One or more argument isn't a character vector, numeric vector, list of names, or list of calls"))

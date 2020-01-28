@@ -112,6 +112,10 @@ test_that("List formula, names and non-syntactic variables", {
       "|-  Mean (SD) |  1.100 (NA)   |  1.200 (NA)   | 1.150 (0.071) |",
       "|-  Range     | 1.100 - 1.100 | 1.200 - 1.200 | 1.100 - 1.200 |")
   )
+  expect_identical(
+    capture.kable(summary(tableby(formulize(y, x, collapse.y = "list"), data = d, test = FALSE), text = TRUE)),
+    capture.kable(summary(tableby(formulize(c("+-", "-+"), gsub("`", "", x), collapse.y = "list", escape = TRUE), data = d, test = FALSE), text = TRUE))
+  )
 })
 
 ###########################################################################################################
@@ -133,9 +137,11 @@ test_that("06/04/2018: non-syntactic names", {
   check_form(formulize(1:2, ".", data = dat), "`:)` + `log(hi)` ~ .")
 })
 
-test_that("11/06/2018: passing names or calls (#152, #153)", {
+test_that("11/06/2018: passing names or calls (#152, #153, #282)", {
   expect_identical(stats::reformulate(c("`P/E`", "`% Growth`"), response = as.name("+-")), formulize(c("`P/E`", "`% Growth`"), y = as.name("+-")))
-  f <- Surv(ft, case) ~ `hi there`
+  expect_identical(stats::reformulate(c("`P/E`", "`% Growth`"), response = as.name("+-")), formulize(c("P/E", "% Growth"), y = "+-", escape = TRUE))
+
+    f <- Surv(ft, case) ~ `hi there`
   expect_identical(stats::reformulate("`hi there`", f[[2]]), formulize(f[[2]], f[[3]])) # can't pass call as first arg of reformulate
   expect_identical(f, formulize(f[[2]], f[[3]]))
   f <- Surv(ft, case) ~ `hi there` + b

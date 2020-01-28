@@ -10,7 +10,8 @@ formulize(
   ...,
   data = NULL,
   collapse = "+",
-  collapse.y = collapse
+  collapse.y = collapse,
+  escape = FALSE
 )
 }
 \arguments{
@@ -23,6 +24,9 @@ If \code{data} is supplied, these can also be numeric, denoting which column nam
 
 \item{collapse.y}{How should the y-terms be collapsed? Default is addition. Also accepts the special string "list",
 which combines them into a multiple-left-hand-side formula, for use in other functions.}
+
+\item{escape}{A logical indicating whether character vectors should be coerced to names (that is, whether names with spaces should
+be surrounded with backticks or not)}
 }
 \description{
 A shortcut to generate one-, two-, or many-sided formulas from vectors of variable names.
@@ -63,9 +67,11 @@ summary(lm(f11, data = mockstudy))
 
 ## using non-syntactic names or calls (like reformulate example)
 f12 <- formulize(as.name("+-"), c("`P/E`", "`\% Growth`"))
+f12 <- formulize("+-", c("P/E", "\% Growth"), escape = TRUE)
 
 f <- Surv(ft, case) ~ a + b
 f13 <- formulize(f[[2]], f[[3]])
+
 }
 \seealso{
 \code{\link[stats]{reformulate}}
