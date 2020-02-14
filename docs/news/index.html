@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.2.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.0</span>
       </span>
     </div>
 
@@ -149,27 +149,50 @@
       <small>Source: <a href='https://github.com/eheinzen/arsenal/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="arsenal-v3-3-2-9005" class="section level1">
+    <div id="arsenal-v3-4-0" class="section level1">
 <h1 class="page-header">
-<a href="#arsenal-v3-3-2-9005" class="anchor"></a>arsenal v3.3.2.9005<small> Unreleased </small>
+<a href="#arsenal-v3-4-0" class="anchor"></a>arsenal v3.4.0<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>Added a <code>pkgdown</code> site: <a href="https://eheinzen.github.io/arsenal/" class="uri">https://eheinzen.github.io/arsenal/</a></p></li>
 <li><p>Moved knitr to an import. (<a href='https://github.com/eheinzen/arsenal/issues/255'>#255</a>)</p></li>
 <li><p><code><a href="../reference/comparedf.html">comparedf()</a></code>: Added support for tolerances by variable. (<a href='https://github.com/eheinzen/arsenal/issues/167'>#167</a>)</p></li>
-<li><p><code><a href="../reference/tableby.html">tableby()</a></code>: Allowed for changing of “Overall” and “Total” labels. (<a href='https://github.com/eheinzen/arsenal/issues/253'>#253</a>, <a href='https://github.com/eheinzen/arsenal/issues/261'>#261</a>)</p></li>
-<li><p><code><a href="../reference/paired.html">paired()</a></code>: Allowed for changing of “Difference” label. (<a href='https://github.com/eheinzen/arsenal/issues/271'>#271</a>)</p></li>
-<li><p><code><a href="../reference/tableby.html">tableby()</a></code>: Allowed for suppression of N’s in the header. (<a href='https://github.com/eheinzen/arsenal/issues/256'>#256</a>, <a href='https://github.com/eheinzen/arsenal/issues/36'>#36</a>)</p></li>
-<li><p><code><a href="../reference/tableby.html">tableby()</a></code>: Allowed for digits formatting of N’s in the header. (<a href='https://github.com/eheinzen/arsenal/issues/257'>#257</a>)</p></li>
-<li><p><code><a href="../reference/tableby.html">tableby()</a></code>: Escaped <code>%</code> for <code>text="latex"</code>. (<a href='https://github.com/eheinzen/arsenal/issues/258'>#258</a>)</p></li>
-<li><p><code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code>: Added support for “min”, “max”, “sd”, “mean”, and “var” (<a href='https://github.com/eheinzen/arsenal/issues/259'>#259</a>) and “gmean”, “gsd”, “gmeansd”, “gmeanCI” (<a href='https://github.com/eheinzen/arsenal/issues/260'>#260</a>) and “Npct” (<a href='https://github.com/eheinzen/arsenal/issues/263'>#263</a>).</p></li>
-<li><p><code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code>: Added a more informative error message when no summary statistic is computed. (<a href='https://github.com/eheinzen/arsenal/issues/273'>#273</a>)</p></li>
-<li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: Fixed “statistic.F” for family=“gaussian”. (<a href='https://github.com/eheinzen/arsenal/issues/262'>#262</a>)</p></li>
-<li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: Fixed “Nevents” for family=“survival”. (<a href='https://github.com/eheinzen/arsenal/issues/266'>#266</a>)</p></li>
-<li><p>Updated <code><a href="../reference/freqlist.internal.html">head.summary.freqlist()</a></code> and <code><a href="../reference/freqlist.internal.html">tail.summary.freqlist()</a></code> to comply with new R-devel definitions.</p></li>
+<li>
+<p><code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code>:</p>
+<ul>
+<li>
+<p><code><a href="../reference/tableby.html">tableby()</a></code>:</p>
+<ul>
+<li><p>Allowed for changing of “Overall” and “Total” labels. (<a href='https://github.com/eheinzen/arsenal/issues/253'>#253</a>, <a href='https://github.com/eheinzen/arsenal/issues/261'>#261</a>)</p></li>
+<li><p>Allowed for suppression of N’s in the header. (<a href='https://github.com/eheinzen/arsenal/issues/256'>#256</a>, <a href='https://github.com/eheinzen/arsenal/issues/36'>#36</a>)</p></li>
+<li><p>Allowed for digits formatting of N’s in the header. (<a href='https://github.com/eheinzen/arsenal/issues/257'>#257</a>)</p></li>
+<li><p>Escaped <code>%</code> for <code>text="latex"</code>. (<a href='https://github.com/eheinzen/arsenal/issues/258'>#258</a>)</p></li>
+<li><p>Added to vignette describing <code><a href="https://rdrr.io/r/base/merge.html">merge(all=TRUE)</a></code>.</p></li>
+<li><p>Fixed vignette re: outputting to CSV. (<a href='https://github.com/eheinzen/arsenal/issues/278'>#278</a>)</p></li>
+</ul>
+</li>
+<li>
+<p><code><a href="../reference/paired.html">paired()</a></code>:</p>
+<ul>
+<li><p>Allowed for changing of “Difference” label. (<a href='https://github.com/eheinzen/arsenal/issues/271'>#271</a>)</p></li>
+<li><p>Removed “…” from the documentation for <code>paired.internal</code> per CRAN’s request (PR<a href='https://github.com/eheinzen/arsenal/issues/16223'>#16223</a> for R-devel).</p></li>
+</ul>
+</li>
+<li><p>Added support for “min”, “max”, “sd”, “mean”, and “var” (<a href='https://github.com/eheinzen/arsenal/issues/259'>#259</a>) and “gmean”, “gsd”, “gmeansd”, “gmeanCI” (<a href='https://github.com/eheinzen/arsenal/issues/260'>#260</a>) and “Npct” (<a href='https://github.com/eheinzen/arsenal/issues/263'>#263</a>) and “sum” (<a href='https://github.com/eheinzen/arsenal/issues/281'>#281</a>).</p></li>
+<li><p>Added a more informative error message when no summary statistic is computed. (<a href='https://github.com/eheinzen/arsenal/issues/273'>#273</a>)</p></li>
+</ul>
+</li>
+<li>
+<p><code><a href="../reference/modelsum.html">modelsum()</a></code>:</p>
+<ul>
+<li><p>Fixed “statistic.F” for family=“gaussian”. (<a href='https://github.com/eheinzen/arsenal/issues/262'>#262</a>)</p></li>
+<li><p>Fixed “Nevents” for family=“survival”. (<a href='https://github.com/eheinzen/arsenal/issues/266'>#266</a>)</p></li>
+<li><p>Fixed vignette re: outputting to CSV. (<a href='https://github.com/eheinzen/arsenal/issues/278'>#278</a>)</p></li>
+</ul>
+</li>
+<li><p><code><a href="../reference/freqlist.html">freqlist()</a></code>: Updated <code><a href="../reference/freqlist.internal.html">head.summary.freqlist()</a></code> and <code><a href="../reference/freqlist.internal.html">tail.summary.freqlist()</a></code> to comply with new R-devel definitions.</p></li>
 <li><p>Updated “labels” vignette. (<a href='https://github.com/eheinzen/arsenal/issues/267'>#267</a>)</p></li>
-<li><p>Fixed <code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/modelsum.html">modelsum()</a></code> vignettes re: outputting to CSV. (<a href='https://github.com/eheinzen/arsenal/issues/278'>#278</a>)</p></li>
-<li><p>Added to <code><a href="../reference/tableby.html">tableby()</a></code> vignette describing <code><a href="https://rdrr.io/r/base/merge.html">merge(all=TRUE)</a></code>.</p></li>
+<li><p>Added <code>escape =</code> argument to <code><a href="../reference/formulize.html">formulize()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/282'>#282</a>)</p></li>
 </ul>
 </div>
     <div id="arsenal-v3-3-0" class="section level1">
@@ -881,7 +904,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#arsenal-v3-3-2-9005">3.3.2.9005</a></li>
+        <li><a href="#arsenal-v3-4-0">3.4.0</a></li>
         <li><a href="#arsenal-v3-3-0">3.3.0</a></li>
         <li><a href="#arsenal-v3-2-0">3.2.0</a></li>
         <li><a href="#arsenal-v3-1-0">3.1.0</a></li>

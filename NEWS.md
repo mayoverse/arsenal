@@ -1,6 +1,4 @@
-# arsenal v3.3.2.9005
-
-* Removed "..." from the documentation for `paired.internal` per CRAN's request (PR#16223 for R-devel).
+# arsenal v3.4.0
 
 * Added a `pkgdown` site: https://eheinzen.github.io/arsenal/
 
@@ -8,32 +6,44 @@
 
 * `comparedf()`: Added support for tolerances by variable. (#167)
 
-* `tableby()`: Allowed for changing of "Overall" and "Total" labels. (#253, #261)
+* `tableby()` / `paired()`:
 
-* `paired()`: Allowed for changing of "Difference" label. (#271)
+    - `tableby()`:
+    
+        * Allowed for changing of "Overall" and "Total" labels. (#253, #261)
+        
+        * Allowed for suppression of N's in the header. (#256, #36)
+        
+        * Allowed for digits formatting of N's in the header. (#257)
+        
+        * Escaped `%` for `text="latex"`. (#258)
+        
+        * Added to vignette describing `merge(all=TRUE)`.
+        
+        * Fixed vignette re: outputting to CSV. (#278)
 
-* `tableby()`: Allowed for suppression of N's in the header. (#256, #36)
+    - `paired()`:
+    
+        * Allowed for changing of "Difference" label. (#271)
+        
+        * Removed "..." from the documentation for `paired.internal` per CRAN's request (PR#16223 for R-devel).
 
-* `tableby()`: Allowed for digits formatting of N's in the header. (#257)
-
-* `tableby()`: Escaped `%` for `text="latex"`. (#258)
-
-* `tableby()` / `paired()`: Added support for "min", "max", "sd", "mean", and "var" (#259) and
-  "gmean", "gsd", "gmeansd", "gmeanCI" (#260) and "Npct" (#263) and "sum" (#281).
+    - Added support for "min", "max", "sd", "mean", and "var" (#259) and
+      "gmean", "gsd", "gmeansd", "gmeanCI" (#260) and "Npct" (#263) and "sum" (#281).
   
-* `tableby()` / `paired()`: Added a more informative error message when no summary statistic is computed. (#273)
+    - Added a more informative error message when no summary statistic is computed. (#273)
   
-* `modelsum()`: Fixed "statistic.F" for family="gaussian". (#262)
+* `modelsum()`:
 
-* `modelsum()`: Fixed "Nevents" for family="survival". (#266)
+    - Fixed "statistic.F" for family="gaussian". (#262)
 
-* Updated `head.summary.freqlist()` and `tail.summary.freqlist()` to comply with new R-devel definitions.
+    - Fixed "Nevents" for family="survival". (#266)
+    
+    - Fixed vignette re: outputting to CSV. (#278)
+
+* `freqlist()`: Updated `head.summary.freqlist()` and `tail.summary.freqlist()` to comply with new R-devel definitions.
 
 * Updated "labels" vignette. (#267)
-
-* Fixed `tableby()` and `modelsum()` vignettes re: outputting to CSV. (#278)
-
-* Added to `tableby()` vignette describing `merge(all=TRUE)`.
 
 * Added `escape =` argument to `formulize()`. (#282)
 
