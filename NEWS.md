@@ -1,5 +1,7 @@
 # arsenal v3.3.2.9005
 
+* Removed "..." from the documentation for `paired.internal` per CRAN's request (PR#16223 for R-devel).
+
 * Added a `pkgdown` site: https://eheinzen.github.io/arsenal/
 
 * Moved knitr to an import. (#255)

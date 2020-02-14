@@ -4,7 +4,6 @@
 #' A set of helper functions for \code{\link{paired}}.
 #'
 #' @param missings A character string denoting which action to take. See "Details", below.
-#' @param ... Other arguments, or a vector of indices for extracting.
 #' @return \code{na.paired} returns a function used to subset data.frames in \code{\link{paired}}.
 #' @details
 #'   All methods subset out any NA time points or IDs.

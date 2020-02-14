@@ -9,8 +9,6 @@ na.paired(missings = c("in.both", "fill", "asis"))
 }
 \arguments{
 \item{missings}{A character string denoting which action to take. See "Details", below.}
-
-\item{...}{Other arguments, or a vector of indices for extracting.}
 }
 \value{
 \code{na.paired} returns a function used to subset data.frames in \code{\link{paired}}.
