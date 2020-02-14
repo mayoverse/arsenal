@@ -16,7 +16,7 @@ This is a new version. In this version:
 
 * local Linux install: R 3.6.2
 * ubuntu 16.04 (on travis-ci): R devel, R 3.6.0 (release), R 3.5.3 (oldrel), R 3.4.2, R 3.3.1, R 3.2.3
-* win-builder (devel and release)
+* Local Windows install (devel and release)
 
 ## R CMD check results
 
