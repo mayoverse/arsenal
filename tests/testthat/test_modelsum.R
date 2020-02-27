@@ -130,6 +130,7 @@ test_that("strata() works", {
   skip_if_not(getRversion() >= "3.3.0")
   skip_if_not_installed("survival", "2.41-3")
   require(survival)
+
   expect_identical(
     capture.kable(summary(modelsum(Surv(time, status) ~ ethan, adjust = ~strata(Sex), data = mdat, family="survival"), text = TRUE)),
     c("|              |HR    |CI.lower.HR |CI.upper.HR |p.value |concordance |Nmiss |",
@@ -137,6 +138,32 @@ test_that("strata() works", {
       "|ethan Heinzen |1.051 |0.549       |2.014       |0.880   |0.499       |3     |"
     )
   )
+
+  # borrowed from help page for ?clogit
+  data("logan")
+  resp <- levels(logan$occupation)
+  n <- nrow(logan)
+  indx <- rep(1:n, length(resp))
+  logan2 <- data.frame(logan[indx,], id = indx, tocc = factor(rep(resp, each=n)))
+  logan2$case <- (logan2$occupation == logan2$tocc)
+
+  expect_identical(
+    capture.kable(summary(modelsum(case ~ tocc, adjust = ~ tocc:education + strata(id),
+                                   data = set_labels(logan2, list(education = "edu")), family = "clog"))),
+    c("|                          |OR    |CI.lower.OR |CI.upper.OR |p.value |concordance |",
+      "|:-------------------------|:-----|:-----------|:-----------|:-------|:-----------|",
+      "|**tocc farm**             |0.150 |0.010       |2.248       |0.170   |0.766       |",
+      "|**tocc operatives**       |3.212 |1.060       |9.732       |0.039   |            |",
+      "|**tocc professional**     |0.000 |0.000       |0.001       |< 0.001 |            |",
+      "|**tocc sales**            |0.007 |0.001       |0.030       |< 0.001 |            |",
+      "|**tocc craftsmen:edu**    |0.717 |0.642       |0.802       |< 0.001 |            |",
+      "|**tocc farm:edu**         |0.691 |0.550       |0.868       |0.001   |            |",
+      "|**tocc operatives:edu**   |0.656 |0.585       |0.735       |< 0.001 |            |",
+      "|**tocc professional:edu** |1.321 |1.195       |1.460       |< 0.001 |            |",
+      "|**tocc sales:edu**        |NA    |NA          |NA          |        |            |"
+    )
+  )
+
 })
 
 test_that("'weights=' works", {

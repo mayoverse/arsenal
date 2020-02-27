@@ -4,12 +4,13 @@
 #' Fit and summarize models for each independent (x) variable with a response variable (y), with options to adjust by variables for each model.
 #'
 #' @param formula an object of class \code{\link{formula}}; a symbolic description of the variables to be modeled.  See "Details" for more information.
-#' @param adjust an object of class \code{\link{formula}}, listing variables to adjust by in all models. Specify as a one-sided formula,
-#'   like: \code{~Age+ Sex}.
+#' @param adjust an object of class \code{\link{formula}} or a list of formulas, listing variables to adjust by in all models.
+#'  Specify as a one-sided formula, like: \code{~Age+ Sex}. If a list, the names are used for the summary function. Unadjusted models
+#'  can be specified as \code{~ 1} or as a list: \code{list(Unadjusted = NULL)}.
 #' @param family similar mechanism to \code{\link[stats]{glm}}, where the model to be fit is driven by the family.
-#'   Options include: binomial, gaussian, survival, poisson, negbin, and ordinal. These can be passed as a string, as a function,
+#'   Options include: binomial, gaussian, survival, poisson, negbin, clog, and ordinal. These can be passed as a string, as a function,
 #'   or as a list resulting from a call to one of the functions. See \code{\link{modelsum.family}} for details on
-#'   survival and ordinal families.
+#'   survival, ordinal, negbin, and clog families.
 #' @param data an optional data.frame, list or environment (or object coercible by \code{\link[base]{as.data.frame}} to a data frame) containing the
 #'   variables in the model. If not found in \code{data}, the variables are taken from \code{environment(formula)}, typically
 #'   the environment from which \code{modelsum} is called.
@@ -59,7 +60,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   ## Here, we force quotes to simplify in for loop below
   family.list <- if(is.function(family) || is.character(family)) match.fun(family)() else family
 
-  if(family.list$family %nin% c("survival", "gaussian", "binomial", "poisson", "quasibinomial", "quasipoisson", "ordinal", "negbin"))
+  if(family.list$family %nin% c("survival", "gaussian", "binomial", "poisson", "quasibinomial", "quasipoisson", "ordinal", "negbin", "clog"))
     stop("Family ", family.list$family, " not supported.\n")
 
   if(family.list$family != "survival" && any(grepl("Surv\\(", formula))) {

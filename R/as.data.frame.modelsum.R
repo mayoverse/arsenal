@@ -13,8 +13,8 @@ get_ms_part <- function(msList, modelnum, xList, yList, aList, sList, sValue, fa
     fam,
     quasibinomial = cntrl$binomial.stats, binomial = cntrl$binomial.stats,
     quasipoisson = cntrl$poisson.stats, poisson = cntrl$poisson.stats,
-    negbin = cntrl$negbin.stats, survival = cntrl$survival.stats,
-    ordinal = cntrl$ordinal.stats, gaussian = cntrl$gaussian.stats
+    negbin = cntrl$negbin.stats, clog = cntrl$clog.stats, survival = cntrl$survival.stats,
+    ordinal = cntrl$ordinal.stats, gaussian = cntrl$gaussian.stats,
   )
 
   OUT <- NULL
