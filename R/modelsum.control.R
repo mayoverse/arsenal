@@ -160,7 +160,7 @@ modelsum.control <- function(
     poisson.stats <- unique(c(poisson.stats[poisson.stats != "CI.RR"], "CI.lower.RR", "CI.upper.RR"))
   }
   if(any(poisson.stats == "CI.estimate")) {
-    poisson.stats <- unique(c(poisson.stats[poisson.stats == "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
+    poisson.stats <- unique(c(poisson.stats[poisson.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
 
   ##########################
@@ -182,7 +182,7 @@ modelsum.control <- function(
     negbin.stats <- unique(c(negbin.stats[negbin.stats != "CI.RR"], "CI.lower.RR", "CI.upper.RR"))
   }
   if(any(negbin.stats == "CI.estimate")) {
-    negbin.stats <- unique(c(negbin.stats[negbin.stats == "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
+    negbin.stats <- unique(c(negbin.stats[negbin.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
 
   ##########################
