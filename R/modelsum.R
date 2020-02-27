@@ -92,7 +92,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   #### Set up "adjustment" dataset ####
   if(is.null(adjust))
   {
-    adjust <- list(unadjusted = ~ 1)
+    adjust <- list(unadjusted = NULL)
     adjustdf <- NULL
     adjTerms <- NULL
     adjLabels <- NULL

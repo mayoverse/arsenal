@@ -800,11 +800,15 @@ summary(modelsum(list(age, hgb) ~ bmi + sex, strata = arm, data = mockstudy))
 
 ## 26. Add multiple sets of adjustors to the model
 
-By putting multiple formulas into a list, you can use multiple sets of adjustors. Use `~ 1` for an "unadjusted" model. By using the 
+By putting multiple formulas into a list, you can use multiple sets of adjustors. Use `~ 1` or `NULL` for an "unadjusted" model. By using the 
 `adjustment.names=TRUE` argument and giving names to your adjustor sets in the list, you can name the various analyses.
 
 ```{r}
-multi.adjust <- modelsum(list(age, bmi) ~ fu.time + ast, adjust = list(Unadjusted = ~ 1, "Adjusted for Arm" = ~ arm), data = mockstudy)
+adj.list <- list(
+  Unadjusted = ~ 1, # can also specify NULL here
+  "Adjusted for Arm" = ~ arm
+)
+multi.adjust <- modelsum(list(age, bmi) ~ fu.time + ast, adjust = adj.list, data = mockstudy)
 summary(multi.adjust, adjustment.names = TRUE)
 summary(multi.adjust, adjustment.names = TRUE, show.intercept = FALSE, show.adjust = FALSE)
 ```
