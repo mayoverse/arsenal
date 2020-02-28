@@ -293,7 +293,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           statfun <- if(is.null(tmp)) get(statfun, parent.frame(), mode = "function") else tmp
 
           bystatlist <- list()
-          if(statfun %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct"))
+          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct"))
           {
             bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                                 by = by.col, by.levels = by.levels, na.rm = TRUE))
@@ -305,20 +305,20 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
               bystatlist[[bylev]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, conf.level = control$conf.level))
             }
           }
-          if(statfun %in% c("countpct", "countrowpct", "countcellpct"))
+          if(statfun2 %in% c("countpct", "countrowpct", "countcellpct"))
           {
             # countrowpct to get the right percentages
             bystatlist[[difflab]] <- countrowpct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
                                                  by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
-          } else if(statfun == "count")
+          } else if(statfun2 == "count")
           {
             # this doesn't have percentages
             bystatlist[[difflab]] <- count(replace(TP1.eff, TP1.eff == TP2.eff, NA), levels = xlevels, na.rm = TRUE)
-          } else if(statfun %in% c("binomCI", "rowbinomCI"))
+          } else if(statfun2 %in% c("binomCI", "rowbinomCI"))
           {
             bystatlist[[difflab]] <- rowbinomCI(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
                                                 by.levels = c(TRUE, FALSE), na.rm = TRUE, conf.level = control$conf.level)[[2]]
-          } else if(statfun == "Npct")
+          } else if(statfun2 == "Npct")
           {
             # get the right percentages
             bystatlist[[difflab]] <- Npct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff, by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]

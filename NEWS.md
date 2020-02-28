@@ -14,6 +14,8 @@
   
 * `tableby()` / `paired()`: removed checks for existance of stat functions (the check wasn't working anyway)
   and search both the enclosing environment as well as `parent.frame()` (for custom stat functions).
+  
+* `paired()`: fixed a bug with detecting stat functions.
 
 # arsenal v3.4.0
 
