@@ -22,12 +22,10 @@ freqlist(object, ...)
   data,
   subset,
   na.action,
+  na.options = c("include", "showexclude", "remove"),
   strata = NULL,
   labelTranslations = NULL,
   control = NULL,
-  addNA,
-  exclude,
-  drop.unused.levels,
   ...
 )
 }
