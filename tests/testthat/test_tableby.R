@@ -1429,3 +1429,36 @@ test_that("12/20/2019: Npct (#263)", {
 test_that("12/27/2019: informative error when no stats are computed (#273)", {
   expect_error(summary(tableby(~ sex, data = mockstudy, cat.stats = "Nmiss")), "Nothing to show for variable")
 })
+
+test_that("02/28/2020: as.tbstat and as.countpct are better described (#283)", {
+  trim510bracket <- function(x, weights=rep(1,length(x)), ...){
+    tmp <- c(mean(x, trim = 0.05, ...), mean(x, trim = 0.1, ...))
+    as.tbstat(tmp, sep = " ", parens = c("[", "]"))
+  }
+  trim10pct <- function(x, weights=rep(1,length(x)), ...){
+    tmp <- mean(x, trim = 0.05, ...)
+    as.countpct(c(tmp, 10), sep = " ", parens = c("(", ")"), which.count = 0, which.pct = 2, pct = "%")
+  }
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510bracket"),
+                                  stats.labels = list(Nmiss = "N-Missing", trim510bracket = "Trimmed means"),
+                                  digits.count = 0, digits = 2), text = TRUE)),
+    c("|                 | Male (N=916)  | Female (N=583) | Total (N=1499) | p value|",
+      "|:----------------|:-------------:|:--------------:|:--------------:|-------:|",
+      "|hgb              |               |                |                | < 0.001|",
+      "|-  N-Missing     |      162      |      104       |      266       |        |",
+      "|-  Trimmed means | 12.57 [12.56] | 11.92 [11.91]  | 12.31 [12.29]  |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim10pct"),
+                                  digits = 2, digits.pct = 0, digits.count = 1), text = TRUE)),
+    c("|             | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
+      "|:------------|:------------:|:--------------:|:--------------:|-------:|",
+      "|hgb          |              |                |                | < 0.001|",
+      "|-  N-Miss    |    162.0     |     104.0      |     266.0      |        |",
+      "|-  trim10pct | 12.57 (10%)  |  11.92 (10%)   |  12.31 (10%)   |        |"
+    )
+  )
+
+})

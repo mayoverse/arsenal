@@ -17,7 +17,12 @@ as.tbstat(
   ...
 )
 
-as.countpct(x, ..., which.pct = 0L)
+as.countpct(
+  x,
+  ...,
+  which.count = setdiff(seq_along(x), which.pct),
+  which.pct = 0L
+)
 
 as.tbstat_multirow(x)
 }
@@ -32,9 +37,12 @@ as.tbstat_multirow(x)
 
 \item{sep2}{The separator between \code{x[2]} and \code{x[3]}.}
 
-\item{pct}{The symbol to use after percents.}
+\item{pct}{For statistics of length 2, the symbol to use after the second one. (It's called
+"pct" because usually the first statistic is never a percent, but the second often is.)}
 
 \item{...}{arguments to pass to \code{as.tbstat}.}
+
+\item{which.count}{Which statistics are counts? The default is everything except the things that are percents.}
 
 \item{which.pct}{Which statistics are percents? The default is 0, indicating that none are.}
 }
@@ -42,9 +50,12 @@ as.tbstat_multirow(x)
 A collection of functions that may help users create custom functions that are formatted correctly.
 }
 \details{
-\code{as.tbstat} defines a tableby statistic with its appropriate formatting.
+The vignette has an example on how to use these.
 
-  \code{as.countpct} adds another class to \code{as.tbstat} to use different "digits" arguments. See \code{\link{tableby.control}}.
+  \code{as.tbstat} defines a tableby statistic with its appropriate formatting.
+
+  \code{as.countpct} adds another class to \code{as.tbstat} to use different "digits" arguments
+  (i.e., \code{digits.count} or \code{digits.pct}). See \code{\link{tableby.control}}.
 
   \code{as.tbstat_multirow} marks an object (usually a list) for multiple-row printing.
 }

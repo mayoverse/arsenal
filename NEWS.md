@@ -9,6 +9,9 @@
 
 * `modelsum()`: Expanded the statistic list for survival models.
 
+* `tableby()`: better described `as.tbstat()` and `as.countpct()` in the vignette, and make `as.countpct()`
+  slightly more flexible. (#283)
+
 # arsenal v3.4.0
 
 * Added a `pkgdown` site: https://eheinzen.github.io/arsenal/

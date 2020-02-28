@@ -581,13 +581,43 @@ for user-defined functions.  In this case, `na.rm=T` is passed to `myfunc`.  The
 it isn't passed on to the internal function in this particular example.   
 
 ```{r, results='asis'}
-myfunc <- function(x, weights=rep(1,length(x)), ...){
+trim10 <- function(x, weights=rep(1,length(x)), ...){
   mean(x, trim=.1, ...)
 }
 
 summary(tableby(sex ~ hgb, data=mockstudy, 
-                control=tableby.control(numeric.stats=c("Nmiss","myfunc"), numeric.test="kwt",
-                    stats.labels=list(Nmiss='Missing values', myfunc="Trimmed Mean, 10%"))))
+                control=tableby.control(numeric.stats=c("Nmiss","trim10"), numeric.test="kwt",
+                    stats.labels=list(Nmiss='Missing values', trim10="Trimmed Mean, 10%"))))
+```
+
+For statistics to be formatted appropriately, you may want to use `as.tbstat()` or `as.countpct()`.
+For example, suppose you want to create a trimmed mean function that trims by both 5 and 10 percent.
+The first example shows them separated by a comma; the second puts the 10% trimmed mean in brackets
+
+```{r, results='asis'}
+trim510comma <- function(x, weights=rep(1,length(x)), ...){
+  tmp <- c(mean(x, trim = 0.05, ...), mean(x, trim = 0.1, ...))
+  as.tbstat(tmp, sep = ", ")
+}
+trim510bracket <- function(x, weights=rep(1,length(x)), ...){
+  tmp <- c(mean(x, trim = 0.05, ...), mean(x, trim = 0.1, ...))
+  as.tbstat(tmp, sep = " ", parens = c("[", "]"))
+}
+
+summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510comma"), test = FALSE))
+summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510bracket"), test = FALSE))
+```
+
+Or perhaps it's useful to put the amount of trimming in parentheses. Since it is a percent, we can
+flag it as such:
+
+```{r results='asis'}
+trim10pct <- function(x, weights=rep(1,length(x)), ...){
+  tmp <- mean(x, trim = 0.05, ...)
+  as.countpct(c(tmp, 10), sep = " ", parens = c("(", ")"), which.count = 0, which.pct = 2, pct = "%")
+}
+summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim10pct"),
+                digits = 2, digits.pct = 0, test = FALSE))
 
 ```
 
