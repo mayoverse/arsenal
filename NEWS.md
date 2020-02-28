@@ -17,6 +17,8 @@
   
 * `paired()`: fixed a bug with detecting stat functions.
 
+* `tableby()`: added an error if reserved terms are used in the by-variable. (#277)
+
 # arsenal v3.4.0
 
 * Added a `pkgdown` site: https://eheinzen.github.io/arsenal/

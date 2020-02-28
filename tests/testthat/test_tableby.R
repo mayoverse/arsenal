@@ -1460,5 +1460,22 @@ test_that("02/28/2020: as.tbstat and as.countpct are better described (#283)", {
       "|-  trim10pct | 12.57 (10%)  |  11.92 (10%)   |  12.31 (10%)   |        |"
     )
   )
-
 })
+
+test_that("Warn if reserved word is used in tableby by-variable (#277)", {
+  for(v in c("group.term", "group.label", "strata.term", "strata.value", "variable", "term",
+             "label", "variable.type", "test", "p.value"))
+  {
+    expect_error(tableby(y ~ x, data = data.frame(y = rep(c("hi", v), each = 5), x = 1:10)), v)
+  }
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = data.frame(y = rep(c("hi", "test "), each = 5), x = 1:10)), text = TRUE)),
+    c("|             |   hi (N=5)    |  test  (N=5)   |  Total (N=10)  | p value|",
+      "|:------------|:-------------:|:--------------:|:--------------:|-------:|",
+      "|x            |               |                |                |   0.001|",
+      "|-  Mean (SD) | 3.000 (1.581) | 8.000 (1.581)  | 5.500 (3.028)  |        |",
+      "|-  Range     | 1.000 - 5.000 | 6.000 - 10.000 | 1.000 - 10.000 |        |"
+    )
+  )
+})
+
