@@ -1,3 +1,8 @@
+# arsenal v3.4.0.9000
+
+* `freqlist()`: Changed the default for `addNA` to be `TRUE` in the formula method, so that you
+  only have to specify `na.options` like in the table method.
+
 # arsenal v3.4.0
 
 * Added a `pkgdown` site: https://eheinzen.github.io/arsenal/
