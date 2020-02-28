@@ -125,40 +125,6 @@ tableby.control <- function(
     digits.n <- 0L
   }
 
-  ## validate all test names
-  if(!exists(numeric.test)) {
-    stop("numeric test does not exist: ", numeric.test, "\n")
-  }
-  if(!exists(cat.test)) {
-    stop("categorical test does not exist: ", cat.test, "\n")
-  }
-  if(!exists(ordered.test)) {
-    stop("ordinal test does not exist: ", ordered.test, "\n")
-  }
-  if(!exists(surv.test)) {
-    stop("survival test does not exist: ", surv.test, "\n")
-  }
-  if(!exists(date.test)) {
-    stop("date test does not exist: ", date.test, "\n")
-  }
-  ## validate summary stat function names
-
-  if(any(!exists(numeric.stats))) {
-    stop("One or more numeric summary statistic functions do not exist.\n")
-  }
-  if(any(!exists(cat.stats))) {
-    stop("One or more categorical summary statistic functions do not exist.\n")
-  }
-  if(any(!exists(ordered.stats))) {
-    stop("One or more ordered summary statistic functions do not exist.\n")
-  }
-  if(any(!exists(surv.stats))) {
-    stop("One or more survival summary statistic functions do not exist.\n")
-  }
-  if(any(!exists(date.stats))) {
-    stop("One or more date summary statistic functions do not exist.\n")
-  }
-
   list(test=test, total=total, test.pname=test.pname,
        numeric.simplify=numeric.simplify, cat.simplify=cat.simplify, ordered.simplify=ordered.simplify, date.simplify=date.simplify,
        numeric.test=numeric.test, cat.test=cat.test, ordered.test=ordered.test, surv.test=surv.test, date.test=date.test, test.always=test.always,

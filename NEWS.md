@@ -11,6 +11,9 @@
 
 * `tableby()`: better described `as.tbstat()` and `as.countpct()` in the vignette, and make `as.countpct()`
   slightly more flexible. (#283)
+  
+* `tableby()` / `paired()`: removed checks for existance of stat functions (the check wasn't working anyway)
+  and search both the enclosing environment as well as `parent.frame()` (for custom stat functions).
 
 # arsenal v3.4.0
 
