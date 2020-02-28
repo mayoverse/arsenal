@@ -43,7 +43,7 @@ Suggests:
     rpart,
     yaml
 Depends:
-    R (>= 3.2.0),
+    R (>= 3.4.0),
     stats (>= 3.2.0)
 Imports:
     knitr,

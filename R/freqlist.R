@@ -15,8 +15,7 @@
 #' @param control control parameters to handle optional settings within \code{freqlist}. See \code{\link{freq.control}}
 #' @param ... additional arguments. In the formula method, these are passed to the table method. These are also passed to
 #'   \code{\link{freq.control}}
-#' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}. Note
-#'   that \code{addNA=} only works in R >= 3.4.0.
+#' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}.
 #' @return An object of class \code{c("freqlist", "arsenal_table")}
 #' @seealso \code{\link{arsenal_table}}, \code{\link{summary.freqlist}}, \code{\link{freq.control}}, \code{\link{freqlist.internal}},
 #'   \code{\link[base]{table}}, \code{\link[stats]{xtabs}}
@@ -124,17 +123,16 @@ freqlist.table <- function(object, na.options = c("include", "showexclude", "rem
 
 #' @rdname freqlist
 #' @export
-freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, labelTranslations = NULL, control = NULL,
+freqlist.formula <- function(formula, data, subset, na.action, na.options = c("include", "showexclude", "remove"),
+                             strata = NULL, labelTranslations = NULL, control = NULL,
                              addNA, exclude, drop.unused.levels, ...)
 {
   control <- c(list(...), control)
   control <- do.call("freq.control", control[!duplicated(names(control))])
 
   Call <- match.call()
-  if(!missing(addNA) && "addNA" %nin% names(formals(stats::xtabs)))
-  {
-    stop("The 'addNA' argument only works in R >=3.4.0. Consider using addNA() in 'formula' instead.")
-  }
+  na.options <- match.arg(na.options)
+
   if("groupBy" %in% names(list(...)))
   {
     if(is.null(strata)) strata <- list(...)$groupBy
@@ -150,6 +148,7 @@ freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, la
     temp.call <- Call[c(1, indx[1:4])]
     temp.call[[1L]] <- quote(stats::model.frame)
     temp.call$formula <- FORM
+
     if(!missing(data)) temp.call$data <- as.call(list(keep.labels, temp.call$data))
     modeldf <- loosen.labels(eval(temp.call, parent.frame()))
     Terms <- stats::terms(modeldf)
@@ -189,7 +188,9 @@ freqlist.formula <- function(formula, data, subset, na.action, strata = NULL, la
     temp.call <- Call[c(1, indx)]
     temp.call[[1L]] <- quote(stats::xtabs)
     temp.call$formula <- FORM
-    tab <- freqlist(eval(temp.call, parent.frame()), strata = strata, ...)$tables[[1]]
+    if(indx[5] == 0) temp.call$addNA <- TRUE
+
+    tab <- freqlist(eval(temp.call, parent.frame()), strata = strata, na.options = na.options, ...)$tables[[1]]
     tab$hasWeights <- hasWeights
     tab$y <- yList
     tab$strata <- strataList
