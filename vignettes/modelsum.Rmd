@@ -800,11 +800,15 @@ summary(modelsum(list(age, hgb) ~ bmi + sex, strata = arm, data = mockstudy))
 
 ## 26. Add multiple sets of adjustors to the model
 
-By putting multiple formulas into a list, you can use multiple sets of adjustors. Use `~ 1` for an "unadjusted" model. By using the 
+By putting multiple formulas into a list, you can use multiple sets of adjustors. Use `~ 1` or `NULL` for an "unadjusted" model. By using the 
 `adjustment.names=TRUE` argument and giving names to your adjustor sets in the list, you can name the various analyses.
 
 ```{r}
-multi.adjust <- modelsum(list(age, bmi) ~ fu.time + ast, adjust = list(Unadjusted = ~ 1, "Adjusted for Arm" = ~ arm), data = mockstudy)
+adj.list <- list(
+  Unadjusted = ~ 1, # can also specify NULL here
+  "Adjusted for Arm" = ~ arm
+)
+multi.adjust <- modelsum(list(age, bmi) ~ fu.time + ast, adjust = adj.list, data = mockstudy)
 summary(multi.adjust, adjustment.names = TRUE)
 summary(multi.adjust, adjustment.names = TRUE, show.intercept = FALSE, show.adjust = FALSE)
 ```
@@ -837,11 +841,16 @@ The available summary statistics, by varible type, are:
   +  default: `RR, CI.lower.RR, CI.upper.RR, p.value, Nmiss`
   +  optional: `CI.RR, CI.estimate, CI.lower.estimate, CI.upper.estimate, CI.RR, Nmiss2, std.error, estimate,`
         `statistic, endpoint, AIC, BIC, logLik, dispersion, null.deviance, deviance, df.residual, df.null, theta, SE.theta, p.value.lrt`
-* `survival`: Cox models 
+* `clog`: Conditional Logistic models
+  + default: `OR, CI.lower.OR, CI.upper.OR, p.value, concordance, Nmiss`
+  + optional: `CI.OR, CI.estimate, CI.lower.estimate, CI.upper.estimate, N, Nmiss2, estimate, std.error, endpoint, Nevents, statistic,`
+        `r.squared, r.squared.max, logLik, AIC, BIC, statistic.log, p.value.log, statistic.sc, p.value.sc,`
+        `statistic.wald, p.value.wald, N, std.error.concordance, p.value.lrt`
+* `survival`: Cox models
   +  default: `HR, CI.lower.HR, CI.upper.HR, p.value, concordance, Nmiss`
   +  optional: `CI.HR, CI.estimate, CI.lower.estimate, CI.upper.estimate, N, Nmiss2, estimate, std.error, endpoint,`
-        `Nevents, statistic, r.squared, logLik, AIC, BIC, statistic.sc, p.value.sc, p.value.log,`
-        `p.value.wald, N, std.error.concordance, p.value.lrt`
+        `Nevents, statistic, r.squared, r.squared.max, logLik, AIC, BIC, statistic.log, p.value.log, statistic.sc, p.value.sc,`
+        `statistic.wald, p.value.wald, N, std.error.concordance, p.value.lrt`
 
 The full description of these parameters that can be shown for models include:
 
@@ -856,7 +865,7 @@ The full description of these parameters that can be shown for models include:
 * `p.value.lrt`: print the likelihood ratio p-value for *the main effect only* (not the adjustors)
 * `r.squared`: print the model R-square 
 * `adj.r.squared`: print the model adjusted R-square 
-* `r.squared`: print the model R-square
+* `r.squared.max`: print the model R-square
 * `concordance`: print the model C statistic (which is the AUC for logistic models)
 * `logLik`: print the loglikelihood value
 * `p.value.log`: print the p-value for the overall model likelihood test
@@ -870,6 +879,8 @@ The full description of these parameters that can be shown for models include:
 * `df.null`: degrees of freedom for the null model
 * `dispersion`: This is used in Poisson models and is defined as the deviance/df.residual
 * `statistic.sc`: overall model score statistic
+* `statistic.wald`: overall model score statistic
+* `statistic.log`: overall model score statistic
 * `std.error.concordance`: standard error for the C statistic
 * `HR`: print the hazard ratio (for survival models), i.e. exp(beta)
 * `CI.lower.HR, CI.upper.HR`: print the confidence interval for the HR 

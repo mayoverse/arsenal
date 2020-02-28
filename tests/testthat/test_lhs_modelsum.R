@@ -71,6 +71,14 @@ test_that("Multiple adjustments work (#240)", {
   tmp.ms <- modelsum(list(age, bmi) ~ fu.time + ast, adjust = list(Unadjusted = ~ 1, "Adjusted for Arm" = ~ arm, "HGB + PS" = ~ hgb + ps),
                      data = set_labels(mockstudy, list(ast = "AST", ps = "PS")), strata = sex,
                      gaussian.stats = c("estimate", "std.error", "p.value", "adj.r.squared", "Nmiss", "N"))
+  tmp.ms2 <- modelsum(list(age, bmi) ~ fu.time + ast, adjust = list(Unadjusted = ~ NULL, "Adjusted for Arm" = ~ arm, "HGB + PS" = ~ hgb + ps),
+                      data = set_labels(mockstudy, list(ast = "AST", ps = "PS")), strata = sex,
+                      gaussian.stats = c("estimate", "std.error", "p.value", "adj.r.squared", "Nmiss", "N"))
+  expect_identical(
+    capture.kable(summary(tmp.ms, adjustment.names = TRUE, term.name = TRUE)),
+    capture.kable(summary(tmp.ms2, adjustment.names = TRUE, term.name = TRUE))
+  )
+
   expect_identical(
     capture.kable(summary(tmp.ms, adjustment.names = TRUE, term.name = TRUE)),
     c("|sex    |adjustment       |Age in Years                |estimate |std.error |p.value |adj.r.squared |Nmiss |N   |",
@@ -159,6 +167,17 @@ test_that("Multiple adjustments work (#240)", {
       "|       |                 |**AST**                     |0.012    |0.010     |0.255   |              |      |    |",
       "|       |                 |**hgb**                     |-0.064   |0.196     |0.743   |              |      |    |",
       "|       |                 |**PS**                      |-0.103   |0.454     |0.821   |              |      |    |"
+    )
+  )
+
+  expect_identical(
+    capture.kable(summary(modelsum(Age ~ Sex + time, data = mdat), text = TRUE, adjustment.names = TRUE)),
+    c("|adjustment |            |estimate |std.error |p.value |adj.r.squared |",
+      "|:----------|:-----------|:--------|:---------|:-------|:-------------|",
+      "|unadjusted |(Intercept) |39.826   |0.779     |< 0.001 |-0.011        |",
+      "|           |Sex Male    |-0.258   |1.115     |0.818   |              |",
+      "|unadjusted |(Intercept) |41.130   |1.197     |< 0.001 |0.009         |",
+      "|           |time        |-0.371   |0.275     |0.182   |              |"
     )
   )
 })

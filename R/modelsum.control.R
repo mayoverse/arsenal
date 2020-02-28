@@ -13,7 +13,7 @@
 #' @param show.adjust Logical, denoting whether to show adjustment terms.
 #' @param show.intercept Logical, denoting whether to show intercept terms.
 #' @param conf.level Numeric, giving the confidence level.
-#' @param ordinal.stats,binomial.stats,survival.stats,gaussian.stats,poisson.stats,negbin.stats
+#' @param ordinal.stats,binomial.stats,survival.stats,gaussian.stats,poisson.stats,negbin.stats,clog.stats
 #'   Character vectors denoting which stats to show for the various model types.
 #' @param stat.labels A named list of labels for all the stats used above.
 #' @param ... Other arguments (not in use at this time).
@@ -33,6 +33,7 @@ modelsum.control <- function(
   gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
   poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","Nmiss"),
   negbin.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","Nmiss"),
+  clog.stats=c("OR", "CI.lower.OR", "CI.upper.OR", "p.value", "concordance", "Nmiss"),
   survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),
   stat.labels = list(), ...
 ) {
@@ -159,7 +160,7 @@ modelsum.control <- function(
     poisson.stats <- unique(c(poisson.stats[poisson.stats != "CI.RR"], "CI.lower.RR", "CI.upper.RR"))
   }
   if(any(poisson.stats == "CI.estimate")) {
-    poisson.stats <- unique(c(poisson.stats[poisson.stats == "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
+    poisson.stats <- unique(c(poisson.stats[poisson.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
 
   ##########################
@@ -181,7 +182,29 @@ modelsum.control <- function(
     negbin.stats <- unique(c(negbin.stats[negbin.stats != "CI.RR"], "CI.lower.RR", "CI.upper.RR"))
   }
   if(any(negbin.stats == "CI.estimate")) {
-    negbin.stats <- unique(c(negbin.stats[negbin.stats == "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
+    negbin.stats <- unique(c(negbin.stats[negbin.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
+  }
+
+  ##########################
+  ## clog stats:
+  ##########################
+  clog.stats.valid <- c(
+    "OR", "CI.lower.OR", "CI.upper.OR", "p.value", "concordance", "Nmiss", # default
+    "CI.OR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "N", "Nmiss2", "estimate", "std.error", "endpoint", "Nevents", "statistic",
+    "r.squared", "r.squared.max", "logLik", "AIC", "BIC", "statistic.log", "p.value.log", "statistic.sc", "p.value.sc",
+    "statistic.wald", "p.value.wald", "N", "std.error.concordance", "p.value.lrt"
+  )
+
+  if(any(clog.stats %nin% clog.stats.valid)) {
+    stop("Invalid clog stats: ",
+         paste(clog.stats[clog.stats %nin% clog.stats.valid],collapse=","), "\n")
+  }
+  ## let CI.OR decode to CI.lower.OR and CI.upper.OR
+  if(any(clog.stats == "CI.OR")) {
+    clog.stats <- unique(c(clog.stats[clog.stats != "CI.OR"], "CI.lower.OR", "CI.upper.OR"))
+  }
+  if(any(clog.stats == "CI.estimate")) {
+    clog.stats <- unique(c(clog.stats[clog.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
   }
 
   ##########################
@@ -193,7 +216,8 @@ modelsum.control <- function(
   surv.stats.valid <- c(
     "HR", "CI.lower.HR", "CI.upper.HR", "p.value", "concordance", "Nmiss", # default
     "CI.HR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "N", "Nmiss2", "estimate", "std.error", "endpoint", "Nevents", "statistic",
-    "r.squared", "logLik", "AIC", "BIC", "statistic.sc", "p.value.sc", "p.value.log", "p.value.wald", "N", "std.error.concordance", "p.value.lrt"
+    "r.squared", "r.squared.max", "logLik", "AIC", "BIC", "statistic.log", "p.value.log", "statistic.sc", "p.value.sc",
+    "statistic.wald", "p.value.wald", "N", "std.error.concordance", "p.value.lrt"
   )
 
   if(any(survival.stats %nin% surv.stats.valid)) {
@@ -211,5 +235,6 @@ modelsum.control <- function(
   list(digits=digits, digits.ratio=digits.ratio, digits.p = digits.p, format.p = format.p,
        show.adjust=show.adjust, show.intercept=show.intercept, conf.level=conf.level,
        ordinal.stats=ordinal.stats, binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
-       poisson.stats=poisson.stats, negbin.stats = negbin.stats, survival.stats=survival.stats, stat.labels = stat.labels)
+       poisson.stats=poisson.stats, negbin.stats = negbin.stats, clog.stats=clog.stats,
+       survival.stats=survival.stats, stat.labels = stat.labels)
 }

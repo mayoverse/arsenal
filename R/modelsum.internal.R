@@ -104,7 +104,8 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
   try_lrt <- function(f, s, a)
   {
     if(a) return(NA_real_)
-    setdiff(stats::drop1(f, scope = s, test = "Chisq")[["Pr(>Chi)"]], NA_real_)
+    out <- setdiff(stats::drop1(f, scope = s, test = "Chisq")[["Pr(>Chi)"]], NA_real_)
+    if(length(out) == 1) out else NA_real_
   }
 
   ## y is ordered factor
@@ -190,6 +191,18 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     modelGlance <- broom::glance(fit)
     modelGlance$theta <- fit$theta
     modelGlance$SE.theta <- fit$SE.theta
+    modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
+
+  } else if(fam$family == "clog") {
+
+    temp.call[[1]] <- quote(survival::clogit)
+    fit <- eval(temp.call, envir)
+    ## use tidy to get both CIs, merge
+    coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=conf.level)
+    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=conf.level)
+    coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
+    modelGlance <-  broom::glance(fit)
+    names(modelGlance)[names(modelGlance) == "nevent"] <- "Nevents"
     modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
 
   } else if(fam$family == "survival") {
