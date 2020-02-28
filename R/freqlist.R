@@ -15,8 +15,7 @@
 #' @param control control parameters to handle optional settings within \code{freqlist}. See \code{\link{freq.control}}
 #' @param ... additional arguments. In the formula method, these are passed to the table method. These are also passed to
 #'   \code{\link{freq.control}}
-#' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}. Note
-#'   that \code{addNA=} only works in R >= 3.4.0.
+#' @param formula,data,subset,na.action,addNA,exclude,drop.unused.levels Arguments passed to \code{\link[stats]{xtabs}}.
 #' @return An object of class \code{c("freqlist", "arsenal_table")}
 #' @seealso \code{\link{arsenal_table}}, \code{\link{summary.freqlist}}, \code{\link{freq.control}}, \code{\link{freqlist.internal}},
 #'   \code{\link[base]{table}}, \code{\link[stats]{xtabs}}
@@ -125,7 +124,8 @@ freqlist.table <- function(object, na.options = c("include", "showexclude", "rem
 #' @rdname freqlist
 #' @export
 freqlist.formula <- function(formula, data, subset, na.action, na.options = c("include", "showexclude", "remove"),
-                             strata = NULL, labelTranslations = NULL, control = NULL, ...)
+                             strata = NULL, labelTranslations = NULL, control = NULL,
+                             addNA, exclude, drop.unused.levels, ...)
 {
   control <- c(list(...), control)
   control <- do.call("freq.control", control[!duplicated(names(control))])

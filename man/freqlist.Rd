@@ -26,6 +26,9 @@ freqlist(object, ...)
   strata = NULL,
   labelTranslations = NULL,
   control = NULL,
+  addNA,
+  exclude,
+  drop.unused.levels,
   ...
 )
 }
@@ -49,8 +52,7 @@ Names will be matched appropriately.}
 
 \item{control}{control parameters to handle optional settings within \code{freqlist}. See \code{\link{freq.control}}}
 
-\item{formula, data, subset, na.action, addNA, exclude, drop.unused.levels}{Arguments passed to \code{\link[stats]{xtabs}}. Note
-that \code{addNA=} only works in R >= 3.4.0.}
+\item{formula, data, subset, na.action, addNA, exclude, drop.unused.levels}{Arguments passed to \code{\link[stats]{xtabs}}.}
 }
 \value{
 An object of class \code{c("freqlist", "arsenal_table")}
