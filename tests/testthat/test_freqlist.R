@@ -429,7 +429,8 @@ test_that("03/20/2019: freqlist still works with all zero counts (#194, #186).",
 
 test_that("03/21/2019: freqlist doesn't lose labels when subsetting (#196)", {
   expect_identical(
-    capture.kable(summary(freqlist(~ sex + ps + arm, data = mockstudy, strata = "arm", subset = arm == "F: FOLFOX")[c(1:2, 4)])),
+    capture.kable(summary(freqlist(~ sex + ps + arm, data = mockstudy, strata = "arm",
+                                   subset = arm == "F: FOLFOX" & !is.na(ps))[c(1:2, 4)])),
     c("|Treatment Arm |sex    | Freq|",
       "|:-------------|:------|----:|",
       "|F: FOLFOX     |Male   |  168|",
@@ -439,5 +440,26 @@ test_that("03/21/2019: freqlist doesn't lose labels when subsetting (#196)", {
       "|              |       |   95|",
       "|              |       |   13|"
     )
+  )
+})
+
+test_that("02/28/2020: freqlist.formula works without needing addNA AND na.option (#265)", {
+  expect_identical(
+    capture.kable(summary(freqlist(~ sex + ps, data = mockstudy))),
+    c("|sex    |ps | Freq| Cumulative Freq| Percent| Cumulative Percent|",
+      "|:------|:--|----:|---------------:|-------:|------------------:|",
+      "|Male   |0  |  391|             391|   26.08|              26.08|",
+      "|       |1  |  329|             720|   21.95|              48.03|",
+      "|       |2  |   34|             754|    2.27|              50.30|",
+      "|       |NA |  162|             916|   10.81|              61.11|",
+      "|Female |0  |  244|            1160|   16.28|              77.38|",
+      "|       |1  |  202|            1362|   13.48|              90.86|",
+      "|       |2  |   33|            1395|    2.20|              93.06|",
+      "|       |NA |  104|            1499|    6.94|             100.00|"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(freqlist(~ sex + ps, data = mockstudy, addNA = FALSE))),
+    capture.kable(summary(freqlist(~ sex + ps, data = mockstudy, na.options = "remove")))
   )
 })
