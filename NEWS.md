@@ -3,6 +3,12 @@
 * `freqlist()`: Changed the default for `addNA` to be `TRUE` in the formula method, so that you
   only have to specify `na.options` like in the table method.
 
+* `modelsum()`: Added support for conditional logistic regressions. (#275)
+
+* `modelsum()`: Fixed a bug in `modelsum.control()` with confidence interval specification.
+
+* `modelsum()`: Expanded the statistic list for survival models.
+
 # arsenal v3.4.0
 
 * Added a `pkgdown` site: https://eheinzen.github.io/arsenal/

@@ -5,6 +5,7 @@
 \alias{survival}
 \alias{ordinal}
 \alias{negbin}
+\alias{clog}
 \title{Family functions for modelsum}
 \usage{
 survival()
@@ -12,6 +13,8 @@ survival()
 ordinal(method = c("logistic", "probit", "loglog", "cloglog", "cauchit"))
 
 negbin(link = c("log", "identity", "sqrt"))
+
+clog()
 }
 \arguments{
 \item{method}{See \code{MASS::\link[MASS]{polr}}.}

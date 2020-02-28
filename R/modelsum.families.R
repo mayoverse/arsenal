@@ -27,3 +27,11 @@ negbin <- function(link = c("log", "identity", "sqrt"))
 {
   list(family = "negbin", method = if(is.function(link)) link else match.arg(link))
 }
+
+#' @rdname modelsum.family
+#' @export
+clog <- function()
+{
+  list(family = "clog")
+}
+
