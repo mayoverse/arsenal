@@ -76,20 +76,8 @@ If no LHS variable exists, then a mean is required for a univariate test.}
 \item{test.always}{Should the test be performed even if one or more by-group has 0 observations? Relevant
 for kwt and anova.}
 
-\item{numeric.stats}{summary statistics to include for numeric RHS variables within the levels of the group LHS variable.
-Options are N, Nmiss, Nmiss2, mean, meansd, median, q1q3, medianq1q3, iqr, range, medianrange, or other R built-in or user-written functions.}
-
-\item{cat.stats}{summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
-Options are N, Nmiss, Nmiss2, count, countpct, countrowpct, countcellpct, or other R built-in or user-written functions.}
-
-\item{ordered.stats}{summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
-Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.}
-
-\item{surv.stats}{summary statistics to include for time-to-event (survival) RHS variables within the levels of the group LHS variable.
-Options are Nevents, medsurv, NeventsSurv, NriskSurv, medTime, rangeTime.}
-
-\item{date.stats}{stats functions to perform for Date variables: Nmiss, median, range, medianrange, q1q3, medianq1q3,
-or other R built-in or user-written functions.}
+\item{numeric.stats, cat.stats, ordered.stats, surv.stats, date.stats}{summary statistics to include for the respective class of RHS variables
+within the levels of the group LHS variable.}
 
 \item{stats.labels}{A named list of labels for all the statistics function names, where the function name is the named element in the list
 and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
@@ -134,6 +122,8 @@ If \code{format.p} is \code{FALSE}, \code{digits.p} denotes the number of signif
   p-values will be in exponential notation if necessary. If \code{format.p} is \code{TRUE},
   \code{digits.p} will determine the number of digits after the decimal point to show. If the p-value
   is less than the resulting number of places, it will be formatted to show so.
+
+Options for statistics are described more thoroughly in the vignette and are listed in \link{tableby.stats}
 }
 \examples{
 set.seed(100)

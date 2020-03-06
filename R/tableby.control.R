@@ -16,23 +16,15 @@
 #'   In particular, if \code{Nmiss} is specified and there are missings, then the output is not simplified.
 #' @param numeric.test name of test for numeric RHS variables in \code{tableby}: anova, kwt (Kruskal-Wallis).
 #'   If no LHS variable exists, then a mean is required for a univariate test.
-#' @param numeric.stats summary statistics to include for numeric RHS variables within the levels of the group LHS variable.
-#'   Options are N, Nmiss, Nmiss2, mean, meansd, median, q1q3, medianq1q3, iqr, range, medianrange, or other R built-in or user-written functions.
+#' @param numeric.stats,cat.stats,ordered.stats,surv.stats,date.stats summary statistics to include for the respective class of RHS variables
+#'  within the levels of the group LHS variable.
 #' @param cat.test name of test for categorical variables: chisq, fe (Fisher's Exact)
-#' @param cat.stats summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
-#'   Options are N, Nmiss, Nmiss2, count, countpct, countrowpct, countcellpct, or other R built-in or user-written functions.
 #' @param chisq.correct logical, correction factor for chisq.test
 #' @param simulate.p.value logical, simulate p-value for categorical tests (fe and chisq)
 #' @param B number of simulations to perform for simulation-based p-value
 #' @param ordered.test name of test for ordered variables: trend
-#' @param ordered.stats summary statistics to include for categorical RHS variables within the levels of the group LHS variable.
-#'   Options are N, Nmiss, count, countpct, or other R built-in or user-written functions.
 #' @param surv.test name of test for survival variables: logrank
-#' @param surv.stats summary statistics to include for time-to-event (survival) RHS variables within the levels of the group LHS variable.
-#'   Options are Nevents, medsurv, NeventsSurv, NriskSurv, medTime, rangeTime.
 #' @param date.test name of test for date variables: kwt
-#' @param date.stats stats functions to perform for Date variables: Nmiss, median, range, medianrange, q1q3, medianq1q3,
-#'   or other R built-in or user-written functions.
 #' @param stats.labels A named list of labels for all the statistics function names, where the function name is the named element in the list
 #'   and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
 #'   e.g., \code{list(countpct="Count (Pct)")}.
@@ -56,6 +48,10 @@
 #'   p-values will be in exponential notation if necessary. If \code{format.p} is \code{TRUE},
 #'   \code{digits.p} will determine the number of digits after the decimal point to show. If the p-value
 #'   is less than the resulting number of places, it will be formatted to show so.
+#'
+#' Options for statistics are described more thoroughly in the vignette and are listed in \link{tableby.stats}
+#'
+#'
 #' @return A list with settings to be used within the \code{tableby} function.
 #'
 #' @seealso \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby}}, \code{\link{summary.tableby}},

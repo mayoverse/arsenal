@@ -866,12 +866,14 @@ There are a number of extra functions defined specifically for the tableby funct
 * `q1q3`: print the 25th and 75th quantiles `Q1, Q3`
 * `iqr`: print the inter-quartile range.
 * `medianrange`: print the median, minimum and maximum values `median (minimum, maximum)`
+* `medianmad`: print the median and median absolute deviation (mad)
 * `Nevents`: print number of events for a survival object within each grouping level
-* `medsurv`: print the median survival
+* `medSurv`: print the median survival
 * `NeventsSurv`: print number of events and survival at given times
 * `NriskSurv`: print the number still at risk and survival at given times
 * `Nrisk`: print the number still at risk at given times
 * `medTime`: print the median follow-up time
+* `sum`
 * `max`
 * `min`
 * `mean`
