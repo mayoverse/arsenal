@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.0.9000</span>
       </span>
     </div>
 
@@ -585,26 +585,13 @@
 <a href="#using-a-formula-with-freqlist" class="anchor"></a>Using a formula with <code>freqlist</code>
 </h1>
 <p>Instead of passing a pre-computed table to <code><a href="../reference/freqlist.html">freqlist()</a></code>, you can instead pass a formula, which will be in turn passed to the <code><a href="https://rdrr.io/r/stats/xtabs.html">xtabs()</a></code> function. Additional <code><a href="../reference/freqlist.html">freqlist()</a></code> arguments are passed through the <code>...</code> to the <code><a href="../reference/freqlist.html">freqlist()</a></code> table method.</p>
-<p>Note that the <code>addNA=</code> argument was added to <code><a href="https://rdrr.io/r/stats/xtabs.html">xtabs()</a></code> in R 3.4.0. In previous versions, NAs have to be added to relevant columns using <code><a href="https://rdrr.io/r/base/factor.html">addNA()</a></code>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">### this works in R &gt;= 3.4.0 summary(freqlist(~ arm + sex + mdquality.s, data =</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">### mockstudy, addNA = TRUE))</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">### This one is backwards-compatible</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/freqlist.html">freqlist</a></span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">addNA</a></span>(mdquality.s), <span class="dt">data =</span> mockstudy))</a></code></pre></div>
+<p>Note that <code><a href="../reference/freqlist.html">freqlist()</a></code> sets the <code>addNA=TRUE</code> argument by default:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/freqlist.html">freqlist</a></span>(<span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy))</a></code></pre></div>
 <table class="table">
-<colgroup>
-<col width="15%">
-<col width="7%">
-<col width="21%">
-<col width="5%">
-<col width="18%">
-<col width="9%">
-<col width="21%">
-</colgroup>
 <thead><tr class="header">
 <th align="left">Treatment Arm</th>
 <th align="left">sex</th>
-<th align="left">addNA(mdquality.s)</th>
+<th align="left">mdquality.s</th>
 <th align="right">Freq</th>
 <th align="right">Cumulative Freq</th>
 <th align="right">Percent</th>
@@ -1747,7 +1734,7 @@
 <td align="right">16</td>
 <td align="right">65</td>
 <td align="right">1.1</td>
-<td align="right">4.4</td>
+<td align="right">4.3</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -1765,7 +1752,7 @@
 <td align="right">25</td>
 <td align="right">104</td>
 <td align="right">1.7</td>
-<td align="right">7.0</td>
+<td align="right">6.9</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -1792,7 +1779,7 @@
 <td align="right">10</td>
 <td align="right">125</td>
 <td align="right">0.7</td>
-<td align="right">8.4</td>
+<td align="right">8.3</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -1819,7 +1806,7 @@
 <td align="right">4</td>
 <td align="right">131</td>
 <td align="right">0.3</td>
-<td align="right">8.8</td>
+<td align="right">8.7</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -1836,8 +1823,8 @@
 <td align="left">A: IFL</td>
 <td align="right">240</td>
 <td align="right">373</td>
-<td align="right">16.1</td>
-<td align="right">25.0</td>
+<td align="right">16.0</td>
+<td align="right">24.9</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -1845,8 +1832,8 @@
 <td align="left">F: FOLFOX</td>
 <td align="right">352</td>
 <td align="right">725</td>
-<td align="right">23.6</td>
-<td align="right">48.6</td>
+<td align="right">23.5</td>
+<td align="right">48.4</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -1854,8 +1841,8 @@
 <td align="left">G: IROX</td>
 <td align="right">195</td>
 <td align="right">920</td>
-<td align="right">13.1</td>
-<td align="right">61.7</td>
+<td align="right">13.0</td>
+<td align="right">61.4</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -1863,8 +1850,8 @@
 <td align="left">A: IFL</td>
 <td align="right">131</td>
 <td align="right">1051</td>
-<td align="right">8.8</td>
-<td align="right">70.4</td>
+<td align="right">8.7</td>
+<td align="right">70.1</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -1872,8 +1859,8 @@
 <td align="left">F: FOLFOX</td>
 <td align="right">234</td>
 <td align="right">1285</td>
-<td align="right">15.7</td>
-<td align="right">86.1</td>
+<td align="right">15.6</td>
+<td align="right">85.7</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -1882,7 +1869,7 @@
 <td align="right">136</td>
 <td align="right">1421</td>
 <td align="right">9.1</td>
-<td align="right">95.2</td>
+<td align="right">94.8</td>
 </tr>
 <tr class="odd">
 <td align="left">Hawaii/Pacific</td>
@@ -1891,7 +1878,7 @@
 <td align="right">1</td>
 <td align="right">1422</td>
 <td align="right">0.1</td>
-<td align="right">95.3</td>
+<td align="right">94.9</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -1900,7 +1887,7 @@
 <td align="right">1</td>
 <td align="right">1423</td>
 <td align="right">0.1</td>
-<td align="right">95.4</td>
+<td align="right">94.9</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -1909,7 +1896,7 @@
 <td align="right">0</td>
 <td align="right">1423</td>
 <td align="right">0.0</td>
-<td align="right">95.4</td>
+<td align="right">94.9</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -1918,7 +1905,7 @@
 <td align="right">0</td>
 <td align="right">1423</td>
 <td align="right">0.0</td>
-<td align="right">95.4</td>
+<td align="right">94.9</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -1927,7 +1914,7 @@
 <td align="right">2</td>
 <td align="right">1425</td>
 <td align="right">0.1</td>
-<td align="right">95.5</td>
+<td align="right">95.1</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -1936,7 +1923,7 @@
 <td align="right">1</td>
 <td align="right">1426</td>
 <td align="right">0.1</td>
-<td align="right">95.6</td>
+<td align="right">95.1</td>
 </tr>
 <tr class="odd">
 <td align="left">Hispanic</td>
@@ -1945,7 +1932,7 @@
 <td align="right">8</td>
 <td align="right">1434</td>
 <td align="right">0.5</td>
-<td align="right">96.1</td>
+<td align="right">95.7</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -1954,7 +1941,7 @@
 <td align="right">17</td>
 <td align="right">1451</td>
 <td align="right">1.1</td>
-<td align="right">97.3</td>
+<td align="right">96.8</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -1963,7 +1950,7 @@
 <td align="right">12</td>
 <td align="right">1463</td>
 <td align="right">0.8</td>
-<td align="right">98.1</td>
+<td align="right">97.6</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -1972,7 +1959,7 @@
 <td align="right">4</td>
 <td align="right">1467</td>
 <td align="right">0.3</td>
-<td align="right">98.3</td>
+<td align="right">97.9</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -1981,7 +1968,7 @@
 <td align="right">11</td>
 <td align="right">1478</td>
 <td align="right">0.7</td>
-<td align="right">99.1</td>
+<td align="right">98.6</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -1990,7 +1977,7 @@
 <td align="right">2</td>
 <td align="right">1480</td>
 <td align="right">0.1</td>
-<td align="right">99.2</td>
+<td align="right">98.7</td>
 </tr>
 <tr class="odd">
 <td align="left">Native-Am/Alaska</td>
@@ -1999,7 +1986,7 @@
 <td align="right">1</td>
 <td align="right">1481</td>
 <td align="right">0.1</td>
-<td align="right">99.3</td>
+<td align="right">98.8</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -2008,7 +1995,7 @@
 <td align="right">0</td>
 <td align="right">1481</td>
 <td align="right">0.0</td>
-<td align="right">99.3</td>
+<td align="right">98.8</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -2017,7 +2004,7 @@
 <td align="right">2</td>
 <td align="right">1483</td>
 <td align="right">0.1</td>
-<td align="right">99.4</td>
+<td align="right">98.9</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -2026,7 +2013,7 @@
 <td align="right">1</td>
 <td align="right">1484</td>
 <td align="right">0.1</td>
-<td align="right">99.5</td>
+<td align="right">99.0</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -2035,7 +2022,7 @@
 <td align="right">1</td>
 <td align="right">1485</td>
 <td align="right">0.1</td>
-<td align="right">99.5</td>
+<td align="right">99.1</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -2044,7 +2031,7 @@
 <td align="right">0</td>
 <td align="right">1485</td>
 <td align="right">0.0</td>
-<td align="right">99.5</td>
+<td align="right">99.1</td>
 </tr>
 <tr class="odd">
 <td align="left">Other</td>
@@ -2053,7 +2040,7 @@
 <td align="right">2</td>
 <td align="right">1487</td>
 <td align="right">0.1</td>
-<td align="right">99.7</td>
+<td align="right">99.2</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -2062,7 +2049,7 @@
 <td align="right">2</td>
 <td align="right">1489</td>
 <td align="right">0.1</td>
-<td align="right">99.8</td>
+<td align="right">99.3</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -2071,7 +2058,7 @@
 <td align="right">1</td>
 <td align="right">1490</td>
 <td align="right">0.1</td>
-<td align="right">99.9</td>
+<td align="right">99.4</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -2080,7 +2067,7 @@
 <td align="right">0</td>
 <td align="right">1490</td>
 <td align="right">0.0</td>
-<td align="right">99.9</td>
+<td align="right">99.4</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -2089,7 +2076,7 @@
 <td align="right">2</td>
 <td align="right">1492</td>
 <td align="right">0.1</td>
-<td align="right">100.0</td>
+<td align="right">99.5</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
@@ -2097,6 +2084,60 @@
 <td align="left">G: IROX</td>
 <td align="right">0</td>
 <td align="right">1492</td>
+<td align="right">0.0</td>
+<td align="right">99.5</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="left">Male</td>
+<td align="left">A: IFL</td>
+<td align="right">0</td>
+<td align="right">1492</td>
+<td align="right">0.0</td>
+<td align="right">99.5</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">F: FOLFOX</td>
+<td align="right">5</td>
+<td align="right">1497</td>
+<td align="right">0.3</td>
+<td align="right">99.9</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">G: IROX</td>
+<td align="right">1</td>
+<td align="right">1498</td>
+<td align="right">0.1</td>
+<td align="right">99.9</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Female</td>
+<td align="left">A: IFL</td>
+<td align="right">0</td>
+<td align="right">1498</td>
+<td align="right">0.0</td>
+<td align="right">99.9</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">F: FOLFOX</td>
+<td align="right">1</td>
+<td align="right">1499</td>
+<td align="right">0.1</td>
+<td align="right">100.0</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">G: IROX</td>
+<td align="right">0</td>
+<td align="right">1499</td>
 <td align="right">0.0</td>
 <td align="right">100.0</td>
 </tr>
@@ -3849,7 +3890,7 @@ arm         Male Female
   A: IFL      34     21
   F: FOLFOX   95     61
   G: IROX     24     17</code></pre>
-<p><code><a href="https://rdrr.io/r/stats/xtabs.html">xtabs()</a></code> is similar to <code><a href="https://rdrr.io/r/base/table.html">table()</a></code>, but uses a formula-based syntax. However, NAs must be explicitly added to each factor using the <code><a href="https://rdrr.io/r/base/factor.html">addNA()</a></code> function, or (in R &gt;= 3.4.0) using the argument <code>addNA = TRUE</code>.</p>
+<p><code><a href="https://rdrr.io/r/stats/xtabs.html">xtabs()</a></code> is similar to <code><a href="https://rdrr.io/r/base/table.html">table()</a></code>, but uses a formula-based syntax. However, NAs must be explicitly added to each factor using the <code><a href="https://rdrr.io/r/base/factor.html">addNA()</a></code> function or using the argument <code>addNA = TRUE</code>.</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="co"># without specifying addNA</span></a>
 <a class="sourceLine" id="cb32-2" data-line-number="2">tab.d2 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/xtabs.html">xtabs</a></span>(<span class="dt">formula =</span> <span class="op">~</span>arm <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>mdquality.s, <span class="dt">data =</span> mockstudy)</a>
 <a class="sourceLine" id="cb32-3" data-line-number="3">tab.d2</a></code></pre></div>

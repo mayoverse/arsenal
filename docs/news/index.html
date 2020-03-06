@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.0.9000</span>
       </span>
     </div>
 
@@ -149,6 +149,21 @@
       <small>Source: <a href='https://github.com/eheinzen/arsenal/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="arsenal-v3-4-0-9000" class="section level1">
+<h1 class="page-header">
+<a href="#arsenal-v3-4-0-9000" class="anchor"></a>arsenal v3.4.0.9000<small> Unreleased </small>
+</h1>
+<ul>
+<li><p><code><a href="../reference/freqlist.html">freqlist()</a></code>: Changed the default for <code>addNA</code> to be <code>TRUE</code> in the formula method, so that you only have to specify <code>na.options</code> like in the table method.</p></li>
+<li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: Added support for conditional logistic regressions. (<a href='https://github.com/eheinzen/arsenal/issues/275'>#275</a>)</p></li>
+<li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: Fixed a bug in <code><a href="../reference/modelsum.control.html">modelsum.control()</a></code> with confidence interval specification.</p></li>
+<li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: Expanded the statistic list for survival models.</p></li>
+<li><p><code><a href="../reference/tableby.html">tableby()</a></code>: better described <code><a href="../reference/tableby.stats.internal.html">as.tbstat()</a></code> and <code><a href="../reference/tableby.stats.internal.html">as.countpct()</a></code> in the vignette, and make <code><a href="../reference/tableby.stats.internal.html">as.countpct()</a></code> slightly more flexible. (<a href='https://github.com/eheinzen/arsenal/issues/283'>#283</a>)</p></li>
+<li><p><code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code>: removed checks for existance of stat functions (the check wasn’t working anyway) and search both the enclosing environment as well as <code><a href="https://rdrr.io/r/base/sys.parent.html">parent.frame()</a></code> (for custom stat functions).</p></li>
+<li><p><code><a href="../reference/paired.html">paired()</a></code>: fixed a bug with detecting stat functions.</p></li>
+<li><p><code><a href="../reference/tableby.html">tableby()</a></code>: added an error if reserved terms are used in the by-variable. (<a href='https://github.com/eheinzen/arsenal/issues/277'>#277</a>)</p></li>
+</ul>
+</div>
     <div id="arsenal-v3-4-0" class="section level1">
 <h1 class="page-header">
 <a href="#arsenal-v3-4-0" class="anchor"></a>arsenal v3.4.0<small> 2020-02-15 </small>
@@ -904,6 +919,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#arsenal-v3-4-0-9000">3.4.0.9000</a></li>
         <li><a href="#arsenal-v3-4-0">3.4.0</a></li>
         <li><a href="#arsenal-v3-3-0">3.3.0</a></li>
         <li><a href="#arsenal-v3-2-0">3.2.0</a></li>
