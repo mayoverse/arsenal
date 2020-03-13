@@ -48,8 +48,8 @@ Depends:
 Imports:
     knitr,
     utils (>= 3.2.0)
-URL: https://github.com/eheinzen/arsenal, https://cran.r-project.org/package=arsenal, https://eheinzen.github.io/arsenal/
-BugReports: https://github.com/eheinzen/arsenal/issues
+URL: https://github.com/mayoverse/arsenal, https://cran.r-project.org/package=arsenal, https://mayoverse.github.io/arsenal/
+BugReports: https://github.com/mayoverse/arsenal/issues
 VignetteBuilder: knitr
 License: GPL (>= 2)
 RoxygenNote: 7.0.2

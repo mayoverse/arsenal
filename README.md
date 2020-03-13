@@ -1,11 +1,11 @@
 
-# The `arsenal` Package <a href="https://eheinzen.github.io/arsenal/"><img src="man/figures/logo.png" alt="Arsenal logo" style="float:right;height:232.25px" align="right" height="232.25"></a>
+# The `arsenal` Package <a href="https://mayoverse.github.io/arsenal/"><img src="man/figures/logo.png" alt="Arsenal logo" style="float:right;height:232.25px" align="right" height="232.25"></a>
 
 <!-- badges: start -->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/arsenal)](https://CRAN.R-project.org/package=arsenal)
 [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/arsenal)](https://CRAN.R-project.org/package=arsenal)
 [![Downloads](http://cranlogs.r-pkg.org/badges/arsenal)](https://CRAN.R-project.org/package=arsenal)
-[![Travis-CI Build Status](https://travis-ci.org/eheinzen/arsenal.svg?branch=master)](https://travis-ci.org/eheinzen/arsenal)
+[![Travis-CI Build Status](https://travis-ci.org/mayoverse/arsenal.svg?branch=master)](https://travis-ci.org/mayoverse/arsenal)
 <!-- badges: end -->
 
 ## Overview
@@ -17,7 +17,7 @@ motivated by a local SAS macro or procedure of similar functionality.
 Note that `arsenal` v3.0.0 is not backwards compatible with previous versions (mainly because `compare()` got renamed to `comparedf()`).
 See the `NEWS` file for more details.
 
-`arsenal` now has a `pkgdown` site: https://eheinzen.github.io/arsenal/
+`arsenal` now has a `pkgdown` site: https://mayoverse.github.io/arsenal/
 
 ## The `tableby()` Function
 

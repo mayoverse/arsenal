@@ -1,5 +1,8 @@
 # arsenal v3.4.0.9000
 
+* The GitHub repository was moved from https://github.com/eheinzen/arsenal/ to https://github.com/mayoverse/arsenal/.
+  The corresponding `pkgdown` site is now at https://mayoverse.github.io/arsenal/
+
 * `freqlist()`: Changed the default for `addNA` to be `TRUE` in the formula method, so that you
   only have to specify `na.options` like in the table method.
 

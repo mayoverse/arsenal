@@ -127,7 +127,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/eheinzen/arsenal">
+  <a href="https://github.com/mayoverse/arsenal">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -146,7 +146,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/eheinzen/arsenal/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+      <small>Source: <a href='https://github.com/mayoverse/arsenal/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
     <div id="arsenal-v3-4-0-9000" class="section level1">
@@ -154,14 +154,15 @@
 <a href="#arsenal-v3-4-0-9000" class="anchor"></a>arsenal v3.4.0.9000<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>The GitHub repository was moved from <a href="https://github.com/eheinzen/arsenal/" class="uri">https://github.com/eheinzen/arsenal/</a> to <a href="https://github.com/mayoverse/arsenal/" class="uri">https://github.com/mayoverse/arsenal/</a>. The corresponding <code>pkgdown</code> site is now at <a href="https://mayoverse.github.io/arsenal/" class="uri">https://mayoverse.github.io/arsenal/</a></p></li>
 <li><p><code><a href="../reference/freqlist.html">freqlist()</a></code>: Changed the default for <code>addNA</code> to be <code>TRUE</code> in the formula method, so that you only have to specify <code>na.options</code> like in the table method.</p></li>
-<li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: Added support for conditional logistic regressions. (<a href='https://github.com/eheinzen/arsenal/issues/275'>#275</a>)</p></li>
+<li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: Added support for conditional logistic regressions. (<a href='https://github.com/mayoverse/arsenal/issues/275'>#275</a>)</p></li>
 <li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: Fixed a bug in <code><a href="../reference/modelsum.control.html">modelsum.control()</a></code> with confidence interval specification.</p></li>
 <li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: Expanded the statistic list for survival models.</p></li>
-<li><p><code><a href="../reference/tableby.html">tableby()</a></code>: better described <code><a href="../reference/tableby.stats.internal.html">as.tbstat()</a></code> and <code><a href="../reference/tableby.stats.internal.html">as.countpct()</a></code> in the vignette, and make <code><a href="../reference/tableby.stats.internal.html">as.countpct()</a></code> slightly more flexible. (<a href='https://github.com/eheinzen/arsenal/issues/283'>#283</a>)</p></li>
+<li><p><code><a href="../reference/tableby.html">tableby()</a></code>: better described <code><a href="../reference/tableby.stats.internal.html">as.tbstat()</a></code> and <code><a href="../reference/tableby.stats.internal.html">as.countpct()</a></code> in the vignette, and make <code><a href="../reference/tableby.stats.internal.html">as.countpct()</a></code> slightly more flexible. (<a href='https://github.com/mayoverse/arsenal/issues/283'>#283</a>)</p></li>
 <li><p><code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code>: removed checks for existance of stat functions (the check wasn’t working anyway) and search both the enclosing environment as well as <code><a href="https://rdrr.io/r/base/sys.parent.html">parent.frame()</a></code> (for custom stat functions).</p></li>
 <li><p><code><a href="../reference/paired.html">paired()</a></code>: fixed a bug with detecting stat functions.</p></li>
-<li><p><code><a href="../reference/tableby.html">tableby()</a></code>: added an error if reserved terms are used in the by-variable. (<a href='https://github.com/eheinzen/arsenal/issues/277'>#277</a>)</p></li>
+<li><p><code><a href="../reference/tableby.html">tableby()</a></code>: added an error if reserved terms are used in the by-variable. (<a href='https://github.com/mayoverse/arsenal/issues/277'>#277</a>)</p></li>
 </ul>
 </div>
     <div id="arsenal-v3-4-0" class="section level1">
@@ -170,44 +171,44 @@
 </h1>
 <ul>
 <li><p>Added a <code>pkgdown</code> site: <a href="https://eheinzen.github.io/arsenal/" class="uri">https://eheinzen.github.io/arsenal/</a></p></li>
-<li><p>Moved knitr to an import. (<a href='https://github.com/eheinzen/arsenal/issues/255'>#255</a>)</p></li>
-<li><p><code><a href="../reference/comparedf.html">comparedf()</a></code>: Added support for tolerances by variable. (<a href='https://github.com/eheinzen/arsenal/issues/167'>#167</a>)</p></li>
+<li><p>Moved knitr to an import. (<a href='https://github.com/mayoverse/arsenal/issues/255'>#255</a>)</p></li>
+<li><p><code><a href="../reference/comparedf.html">comparedf()</a></code>: Added support for tolerances by variable. (<a href='https://github.com/mayoverse/arsenal/issues/167'>#167</a>)</p></li>
 <li>
 <p><code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code>:</p>
 <ul>
 <li>
 <p><code><a href="../reference/tableby.html">tableby()</a></code>:</p>
 <ul>
-<li><p>Allowed for changing of “Overall” and “Total” labels. (<a href='https://github.com/eheinzen/arsenal/issues/253'>#253</a>, <a href='https://github.com/eheinzen/arsenal/issues/261'>#261</a>)</p></li>
-<li><p>Allowed for suppression of N’s in the header. (<a href='https://github.com/eheinzen/arsenal/issues/256'>#256</a>, <a href='https://github.com/eheinzen/arsenal/issues/36'>#36</a>)</p></li>
-<li><p>Allowed for digits formatting of N’s in the header. (<a href='https://github.com/eheinzen/arsenal/issues/257'>#257</a>)</p></li>
-<li><p>Escaped <code>%</code> for <code>text="latex"</code>. (<a href='https://github.com/eheinzen/arsenal/issues/258'>#258</a>)</p></li>
+<li><p>Allowed for changing of “Overall” and “Total” labels. (<a href='https://github.com/mayoverse/arsenal/issues/253'>#253</a>, <a href='https://github.com/mayoverse/arsenal/issues/261'>#261</a>)</p></li>
+<li><p>Allowed for suppression of N’s in the header. (<a href='https://github.com/mayoverse/arsenal/issues/256'>#256</a>, <a href='https://github.com/mayoverse/arsenal/issues/36'>#36</a>)</p></li>
+<li><p>Allowed for digits formatting of N’s in the header. (<a href='https://github.com/mayoverse/arsenal/issues/257'>#257</a>)</p></li>
+<li><p>Escaped <code>%</code> for <code>text="latex"</code>. (<a href='https://github.com/mayoverse/arsenal/issues/258'>#258</a>)</p></li>
 <li><p>Added to vignette describing <code><a href="https://rdrr.io/r/base/merge.html">merge(all=TRUE)</a></code>.</p></li>
-<li><p>Fixed vignette re: outputting to CSV. (<a href='https://github.com/eheinzen/arsenal/issues/278'>#278</a>)</p></li>
+<li><p>Fixed vignette re: outputting to CSV. (<a href='https://github.com/mayoverse/arsenal/issues/278'>#278</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/paired.html">paired()</a></code>:</p>
 <ul>
-<li><p>Allowed for changing of “Difference” label. (<a href='https://github.com/eheinzen/arsenal/issues/271'>#271</a>)</p></li>
-<li><p>Removed “…” from the documentation for <code>paired.internal</code> per CRAN’s request (PR<a href='https://github.com/eheinzen/arsenal/issues/16223'>#16223</a> for R-devel).</p></li>
+<li><p>Allowed for changing of “Difference” label. (<a href='https://github.com/mayoverse/arsenal/issues/271'>#271</a>)</p></li>
+<li><p>Removed “…” from the documentation for <code>paired.internal</code> per CRAN’s request (PR<a href='https://github.com/mayoverse/arsenal/issues/16223'>#16223</a> for R-devel).</p></li>
 </ul>
 </li>
-<li><p>Added support for “min”, “max”, “sd”, “mean”, and “var” (<a href='https://github.com/eheinzen/arsenal/issues/259'>#259</a>) and “gmean”, “gsd”, “gmeansd”, “gmeanCI” (<a href='https://github.com/eheinzen/arsenal/issues/260'>#260</a>) and “Npct” (<a href='https://github.com/eheinzen/arsenal/issues/263'>#263</a>) and “sum” (<a href='https://github.com/eheinzen/arsenal/issues/281'>#281</a>).</p></li>
-<li><p>Added a more informative error message when no summary statistic is computed. (<a href='https://github.com/eheinzen/arsenal/issues/273'>#273</a>)</p></li>
+<li><p>Added support for “min”, “max”, “sd”, “mean”, and “var” (<a href='https://github.com/mayoverse/arsenal/issues/259'>#259</a>) and “gmean”, “gsd”, “gmeansd”, “gmeanCI” (<a href='https://github.com/mayoverse/arsenal/issues/260'>#260</a>) and “Npct” (<a href='https://github.com/mayoverse/arsenal/issues/263'>#263</a>) and “sum” (<a href='https://github.com/mayoverse/arsenal/issues/281'>#281</a>).</p></li>
+<li><p>Added a more informative error message when no summary statistic is computed. (<a href='https://github.com/mayoverse/arsenal/issues/273'>#273</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/modelsum.html">modelsum()</a></code>:</p>
 <ul>
-<li><p>Fixed “statistic.F” for family=“gaussian”. (<a href='https://github.com/eheinzen/arsenal/issues/262'>#262</a>)</p></li>
-<li><p>Fixed “Nevents” for family=“survival”. (<a href='https://github.com/eheinzen/arsenal/issues/266'>#266</a>)</p></li>
-<li><p>Fixed vignette re: outputting to CSV. (<a href='https://github.com/eheinzen/arsenal/issues/278'>#278</a>)</p></li>
+<li><p>Fixed “statistic.F” for family=“gaussian”. (<a href='https://github.com/mayoverse/arsenal/issues/262'>#262</a>)</p></li>
+<li><p>Fixed “Nevents” for family=“survival”. (<a href='https://github.com/mayoverse/arsenal/issues/266'>#266</a>)</p></li>
+<li><p>Fixed vignette re: outputting to CSV. (<a href='https://github.com/mayoverse/arsenal/issues/278'>#278</a>)</p></li>
 </ul>
 </li>
 <li><p><code><a href="../reference/freqlist.html">freqlist()</a></code>: Updated <code><a href="../reference/freqlist.internal.html">head.summary.freqlist()</a></code> and <code><a href="../reference/freqlist.internal.html">tail.summary.freqlist()</a></code> to comply with new R-devel definitions.</p></li>
-<li><p>Updated “labels” vignette. (<a href='https://github.com/eheinzen/arsenal/issues/267'>#267</a>)</p></li>
-<li><p>Added <code>escape =</code> argument to <code><a href="../reference/formulize.html">formulize()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/282'>#282</a>)</p></li>
+<li><p>Updated “labels” vignette. (<a href='https://github.com/mayoverse/arsenal/issues/267'>#267</a>)</p></li>
+<li><p>Added <code>escape =</code> argument to <code><a href="../reference/formulize.html">formulize()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/282'>#282</a>)</p></li>
 </ul>
 </div>
     <div id="arsenal-v3-3-0" class="section level1">
@@ -219,37 +220,37 @@
 <p><code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code>:</p>
 <ul>
 <li><p>Redid how weights are handled. The only user-visible changes should be that standard deviations on length-1 groups are now reported as <code>NA</code> instead of <code>NaN</code>.</p></li>
-<li><p>Fixed a bug with <code><a href="../reference/tableby.internal.html">modpval.tableby()</a></code> when factors are involved. (<a href='https://github.com/eheinzen/arsenal/issues/239'>#239</a>)</p></li>
-<li><p>Added <code><a href="../reference/tableby.stats.html">meanCI()</a></code> and <code><a href="../reference/tableby.stats.html">medianmad()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/230'>#230</a>, <a href='https://github.com/eheinzen/arsenal/issues/232'>#232</a>)</p></li>
+<li><p>Fixed a bug with <code><a href="../reference/tableby.internal.html">modpval.tableby()</a></code> when factors are involved. (<a href='https://github.com/mayoverse/arsenal/issues/239'>#239</a>)</p></li>
+<li><p>Added <code><a href="../reference/tableby.stats.html">meanCI()</a></code> and <code><a href="../reference/tableby.stats.html">medianmad()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/230'>#230</a>, <a href='https://github.com/mayoverse/arsenal/issues/232'>#232</a>)</p></li>
 <li><p>Added the units for <code>difftime</code> statistics when using dates (e.g., <code>meansd</code>, <code>medianmad</code>, <code>iqr</code>).</p></li>
-<li><p>Fixed Chi-square and Fisher’s Exact test for one-level categorical variables. (<a href='https://github.com/eheinzen/arsenal/issues/227'>#227</a>, <a href='https://github.com/eheinzen/arsenal/issues/228'>#228</a>)</p></li>
-<li><p>Fixed the n’s in the header when using weights. (<a href='https://github.com/eheinzen/arsenal/issues/229'>#229</a>)</p></li>
-<li><p>Fixed a bug with confidence levels supplied through the control argument. (<a href='https://github.com/eheinzen/arsenal/issues/234'>#234</a>)</p></li>
-<li><p><code><a href="../reference/paired.html">paired()</a></code>: fixed a bug when using <code><a href="../reference/tableby.stats.html">count()</a></code> with factors. (<a href='https://github.com/eheinzen/arsenal/issues/235'>#235</a>)</p></li>
+<li><p>Fixed Chi-square and Fisher’s Exact test for one-level categorical variables. (<a href='https://github.com/mayoverse/arsenal/issues/227'>#227</a>, <a href='https://github.com/mayoverse/arsenal/issues/228'>#228</a>)</p></li>
+<li><p>Fixed the n’s in the header when using weights. (<a href='https://github.com/mayoverse/arsenal/issues/229'>#229</a>)</p></li>
+<li><p>Fixed a bug with confidence levels supplied through the control argument. (<a href='https://github.com/mayoverse/arsenal/issues/234'>#234</a>)</p></li>
+<li><p><code><a href="../reference/paired.html">paired()</a></code>: fixed a bug when using <code><a href="../reference/tableby.stats.html">count()</a></code> with factors. (<a href='https://github.com/mayoverse/arsenal/issues/235'>#235</a>)</p></li>
 <li><p><code><a href="../reference/tableby.control.html">tableby.control()</a></code>: added explicit <code>times=</code> argument for survival summaries.</p></li>
-<li><p>Added option to run statistical tests even if one by-group has 0 observations. (<a href='https://github.com/eheinzen/arsenal/issues/233'>#233</a>, <a href='https://github.com/eheinzen/arsenal/issues/250'>#250</a>, <a href='https://github.com/eheinzen/arsenal/issues/251'>#251</a>)</p></li>
-<li><p>Stopped the formatting of p-values when they’re not numeric (if, say, they’re pre-formatted by the user). (<a href='https://github.com/eheinzen/arsenal/issues/249'>#249</a>)</p></li>
+<li><p>Added option to run statistical tests even if one by-group has 0 observations. (<a href='https://github.com/mayoverse/arsenal/issues/233'>#233</a>, <a href='https://github.com/mayoverse/arsenal/issues/250'>#250</a>, <a href='https://github.com/mayoverse/arsenal/issues/251'>#251</a>)</p></li>
+<li><p>Stopped the formatting of p-values when they’re not numeric (if, say, they’re pre-formatted by the user). (<a href='https://github.com/mayoverse/arsenal/issues/249'>#249</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/modelsum.html">modelsum()</a></code>:</p>
 <ul>
-<li><p>Added functionality for multiple adjustor sets. (<a href='https://github.com/eheinzen/arsenal/issues/240'>#240</a>)</p></li>
-<li><p>Fixed “Nmiss” and “N” when used with strata, which now both report the missings for the entire fit. (<a href='https://github.com/eheinzen/arsenal/issues/241'>#241</a>, <a href='https://github.com/eheinzen/arsenal/issues/242'>#242</a>, <a href='https://github.com/eheinzen/arsenal/issues/243'>#243</a>)</p></li>
-<li><p>Suppressed messages from <code><a href="https://rdrr.io/pkg/pROC/man/auc.html">pROC::auc()</a></code> when calculating AUC. (<a href='https://github.com/eheinzen/arsenal/issues/244'>#244</a>)</p></li>
-<li><p>Fixed confidence level for survival models. (<a href='https://github.com/eheinzen/arsenal/issues/245'>#245</a>)</p></li>
-<li><p>Added an option for the likelihood ratio test for the main effect (but not the adjustors): <code>p.value.lrt</code> (<a href='https://github.com/eheinzen/arsenal/issues/238'>#238</a>)</p></li>
-<li><p>Blanked out p-values that are NA. (<a href='https://github.com/eheinzen/arsenal/issues/246'>#246</a>)</p></li>
+<li><p>Added functionality for multiple adjustor sets. (<a href='https://github.com/mayoverse/arsenal/issues/240'>#240</a>)</p></li>
+<li><p>Fixed “Nmiss” and “N” when used with strata, which now both report the missings for the entire fit. (<a href='https://github.com/mayoverse/arsenal/issues/241'>#241</a>, <a href='https://github.com/mayoverse/arsenal/issues/242'>#242</a>, <a href='https://github.com/mayoverse/arsenal/issues/243'>#243</a>)</p></li>
+<li><p>Suppressed messages from <code><a href="https://rdrr.io/pkg/pROC/man/auc.html">pROC::auc()</a></code> when calculating AUC. (<a href='https://github.com/mayoverse/arsenal/issues/244'>#244</a>)</p></li>
+<li><p>Fixed confidence level for survival models. (<a href='https://github.com/mayoverse/arsenal/issues/245'>#245</a>)</p></li>
+<li><p>Added an option for the likelihood ratio test for the main effect (but not the adjustors): <code>p.value.lrt</code> (<a href='https://github.com/mayoverse/arsenal/issues/238'>#238</a>)</p></li>
+<li><p>Blanked out p-values that are NA. (<a href='https://github.com/mayoverse/arsenal/issues/246'>#246</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/write2.internal.html">code.chunk()</a></code>:</p>
 <ul>
 <li><p>Fixed logic checking the length of <code>chunk.opts=</code>.</p></li>
-<li><p>Allowed for empty code chunks. (<a href='https://github.com/eheinzen/arsenal/issues/236'>#236</a>)</p></li>
+<li><p>Allowed for empty code chunks. (<a href='https://github.com/mayoverse/arsenal/issues/236'>#236</a>)</p></li>
 </ul>
 </li>
-<li><p><code><a href="../reference/write2.internal.html">verbatim()</a></code>: removed named argument in favor of the dots; reworked the object structure to fix edge case printing oddities. (<a href='https://github.com/eheinzen/arsenal/issues/248'>#248</a>)</p></li>
+<li><p><code><a href="../reference/write2.internal.html">verbatim()</a></code>: removed named argument in favor of the dots; reworked the object structure to fix edge case printing oddities. (<a href='https://github.com/mayoverse/arsenal/issues/248'>#248</a>)</p></li>
 <li><p>Removed defunct functions.</p></li>
 </ul>
 </div>
@@ -261,26 +262,26 @@
 <li>
 <p><code><a href="../reference/comparedf.html">comparedf()</a></code>:</p>
 <ul>
-<li><p>Fixed a bug when “row.names” was used in combination with other by-variables. (<a href='https://github.com/eheinzen/arsenal/issues/212'>#212</a>)</p></li>
-<li><p>Allowed for comparison of variables which have any class in common. (<a href='https://github.com/eheinzen/arsenal/issues/216'>#216</a>)</p></li>
+<li><p>Fixed a bug when “row.names” was used in combination with other by-variables. (<a href='https://github.com/mayoverse/arsenal/issues/212'>#212</a>)</p></li>
+<li><p>Allowed for comparison of variables which have any class in common. (<a href='https://github.com/mayoverse/arsenal/issues/216'>#216</a>)</p></li>
 <li>
 <p><code><a href="../reference/summary.comparedf.html">summary.comparedf()</a></code>:</p>
 <ul>
-<li><p>Removed the “comparedf.frame.summary” class from the first element to allow it to print. (<a href='https://github.com/eheinzen/arsenal/issues/211'>#211</a>)</p></li>
-<li><p>Fixed a bug with reporting blank by-variables. (<a href='https://github.com/eheinzen/arsenal/issues/213'>#213</a>)</p></li>
-<li><p>Fixed a bug with reporting by-variables as variables in common. (<a href='https://github.com/eheinzen/arsenal/issues/214'>#214</a>)</p></li>
+<li><p>Removed the “comparedf.frame.summary” class from the first element to allow it to print. (<a href='https://github.com/mayoverse/arsenal/issues/211'>#211</a>)</p></li>
+<li><p>Fixed a bug with reporting blank by-variables. (<a href='https://github.com/mayoverse/arsenal/issues/213'>#213</a>)</p></li>
+<li><p>Fixed a bug with reporting by-variables as variables in common. (<a href='https://github.com/mayoverse/arsenal/issues/214'>#214</a>)</p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: added Wald confidence intervals to <code>binom.stats=</code>. (<a href='https://github.com/eheinzen/arsenal/issues/219'>#219</a>)</p></li>
+<li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: added Wald confidence intervals to <code>binom.stats=</code>. (<a href='https://github.com/mayoverse/arsenal/issues/219'>#219</a>)</p></li>
 <li>
 <p><code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code>:</p>
 <ul>
-<li><p>Fixed a bug with <code><a href="../reference/arsenal_table.html">merge.arsenal_table()</a></code> losing control parameters for <code><a href="../reference/tableby.html">tableby()</a></code> objects. (<a href='https://github.com/eheinzen/arsenal/issues/221'>#221</a>)</p></li>
-<li><p>Allowed for variable-name-only <code>labelTranslations=</code> assignment for terms with inline statistical test specification. Backward compatibility should be maintained here. (<a href='https://github.com/eheinzen/arsenal/issues/220'>#220</a>)</p></li>
-<li><p>Fixed a bug with assigning <code>NULL</code> labels with inline statistical test specifications. (<a href='https://github.com/eheinzen/arsenal/issues/222'>#222</a>)</p></li>
-<li><p><code><a href="../reference/summary.tableby.html">summary.tableby()</a></code>: fixed a bug with formatting when strata aren’t in alphabetical order and have different number of elements (e.g., if only one includes missing values). (<a href='https://github.com/eheinzen/arsenal/issues/215'>#215</a>)</p></li>
+<li><p>Fixed a bug with <code><a href="../reference/arsenal_table.html">merge.arsenal_table()</a></code> losing control parameters for <code><a href="../reference/tableby.html">tableby()</a></code> objects. (<a href='https://github.com/mayoverse/arsenal/issues/221'>#221</a>)</p></li>
+<li><p>Allowed for variable-name-only <code>labelTranslations=</code> assignment for terms with inline statistical test specification. Backward compatibility should be maintained here. (<a href='https://github.com/mayoverse/arsenal/issues/220'>#220</a>)</p></li>
+<li><p>Fixed a bug with assigning <code>NULL</code> labels with inline statistical test specifications. (<a href='https://github.com/mayoverse/arsenal/issues/222'>#222</a>)</p></li>
+<li><p><code><a href="../reference/summary.tableby.html">summary.tableby()</a></code>: fixed a bug with formatting when strata aren’t in alphabetical order and have different number of elements (e.g., if only one includes missing values). (<a href='https://github.com/mayoverse/arsenal/issues/215'>#215</a>)</p></li>
 </ul>
 </li>
 </ul>
@@ -294,11 +295,11 @@
 <p><code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code>:</p>
 <ul>
 <li><p>Added “Nmiss” to default <code>surv.stats=</code> in <code><a href="../reference/tableby.control.html">tableby.control()</a></code>.</p></li>
-<li><p>Fixed a bug when some <code>Surv()</code> elements are NA. (<a href='https://github.com/eheinzen/arsenal/issues/208'>#208</a>)</p></li>
-<li><p><code><a href="../reference/tableby.control.html">tableby.control()</a></code>: fixed a bug with simplifying categorical and numeric output. (<a href='https://github.com/eheinzen/arsenal/issues/199'>#199</a>, <a href='https://github.com/eheinzen/arsenal/issues/203'>#203</a>) This fix also allows for simplification of custom statistics. (<a href='https://github.com/eheinzen/arsenal/issues/200'>#200</a>)</p></li>
-<li><p><code><a href="../reference/tableby.control.html">tableby.control()</a></code>: added <code>date.simplify=</code> and <code>ordered.simplify=</code> arguments. (<a href='https://github.com/eheinzen/arsenal/issues/202'>#202</a>) The order of arguments has changed slightly for consistency.</p></li>
+<li><p>Fixed a bug when some <code>Surv()</code> elements are NA. (<a href='https://github.com/mayoverse/arsenal/issues/208'>#208</a>)</p></li>
+<li><p><code><a href="../reference/tableby.control.html">tableby.control()</a></code>: fixed a bug with simplifying categorical and numeric output. (<a href='https://github.com/mayoverse/arsenal/issues/199'>#199</a>, <a href='https://github.com/mayoverse/arsenal/issues/203'>#203</a>) This fix also allows for simplification of custom statistics. (<a href='https://github.com/mayoverse/arsenal/issues/200'>#200</a>)</p></li>
+<li><p><code><a href="../reference/tableby.control.html">tableby.control()</a></code>: added <code>date.simplify=</code> and <code>ordered.simplify=</code> arguments. (<a href='https://github.com/mayoverse/arsenal/issues/202'>#202</a>) The order of arguments has changed slightly for consistency.</p></li>
 <li><p><code><a href="../reference/paired.control.html">paired.control()</a></code>: took away the arguments that should be the same as <code><a href="../reference/tableby.control.html">tableby.control()</a></code>, and only included arguments with new defaults or which don’t appear in <code><a href="../reference/tableby.control.html">tableby.control()</a></code>.</p></li>
-<li><p>Added the functions <code><a href="../reference/tableby.stats.html">countN()</a></code> and <code><a href="../reference/tableby.stats.html">Nrisk()</a></code> (<a href='https://github.com/eheinzen/arsenal/issues/201'>#201</a>). <code><a href="../reference/tableby.stats.html">Nrisk()</a></code> now outputs what <code><a href="../reference/tableby.stats.html">NriskSurv()</a></code> used to; <code><a href="../reference/tableby.stats.html">NriskSurv()</a></code> now outputs what its name suggests: the number at risk, and the survival. Additionally, <code><a href="../reference/tableby.stats.internal.html">as.countpct()</a></code> gains the <code>which.pct=</code> argument, whose default of <code>0</code> may break the formatting of percents (<code>digits.pct=</code>).</p></li>
+<li><p>Added the functions <code><a href="../reference/tableby.stats.html">countN()</a></code> and <code><a href="../reference/tableby.stats.html">Nrisk()</a></code> (<a href='https://github.com/mayoverse/arsenal/issues/201'>#201</a>). <code><a href="../reference/tableby.stats.html">Nrisk()</a></code> now outputs what <code><a href="../reference/tableby.stats.html">NriskSurv()</a></code> used to; <code><a href="../reference/tableby.stats.html">NriskSurv()</a></code> now outputs what its name suggests: the number at risk, and the survival. Additionally, <code><a href="../reference/tableby.stats.internal.html">as.countpct()</a></code> gains the <code>which.pct=</code> argument, whose default of <code>0</code> may break the formatting of percents (<code>digits.pct=</code>).</p></li>
 </ul>
 </li>
 <li>
@@ -306,8 +307,8 @@
 <ul>
 <li><p>Added additional summary table to the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> output.</p></li>
 <li><p>Moved the <code>max.print...=</code> arguments to <code><a href="../reference/comparedf.control.html">comparedf.control()</a></code>. <code>max.print.diff=</code> is now deprecated and is replaced by <code>max.print.diffs.per.var=</code>. <code>max.print.diffs=</code> was also added to control overall number of differences printed.</p></li>
-<li><p>Fixed a bug with numeric percent tolerances when both values being compared are 0. (<a href='https://github.com/eheinzen/arsenal/issues/206'>#206</a>)</p></li>
-<li><p>Fixed a bug in <code><a href="../reference/diffs.html">diffs()</a></code> (and hence <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>) when no variables are compared (<a href='https://github.com/eheinzen/arsenal/issues/207'>#207</a>). Note that this change also included a change to the by-variables reported in the <code><a href="../reference/comparedf.html">comparedf()</a></code> object when merging over row.names.</p></li>
+<li><p>Fixed a bug with numeric percent tolerances when both values being compared are 0. (<a href='https://github.com/mayoverse/arsenal/issues/206'>#206</a>)</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/diffs.html">diffs()</a></code> (and hence <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>) when no variables are compared (<a href='https://github.com/mayoverse/arsenal/issues/207'>#207</a>). Note that this change also included a change to the by-variables reported in the <code><a href="../reference/comparedf.html">comparedf()</a></code> object when merging over row.names.</p></li>
 </ul>
 </li>
 </ul>
@@ -319,8 +320,8 @@
 <p><strong>There are a few non-backwards-compatible updates.</strong></p>
 <p>Major changes:</p>
 <ul>
-<li><p>Renamed <code>compare()</code> -&gt; <code><a href="../reference/comparedf.html">comparedf()</a></code> and <code>comparison.control()</code> -&gt; <code><a href="../reference/comparedf.control.html">comparedf.control()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/179'>#179</a>)</p></li>
-<li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: Fixed bug(s) with interaction terms. (<a href='https://github.com/eheinzen/arsenal/issues/173'>#173</a>, <a href='https://github.com/eheinzen/arsenal/issues/177'>#177</a>)</p></li>
+<li><p>Renamed <code>compare()</code> -&gt; <code><a href="../reference/comparedf.html">comparedf()</a></code> and <code>comparison.control()</code> -&gt; <code><a href="../reference/comparedf.control.html">comparedf.control()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/179'>#179</a>)</p></li>
+<li><p><code><a href="../reference/modelsum.html">modelsum()</a></code>: Fixed bug(s) with interaction terms. (<a href='https://github.com/mayoverse/arsenal/issues/173'>#173</a>, <a href='https://github.com/mayoverse/arsenal/issues/177'>#177</a>)</p></li>
 <li><p>Added a new function <code><a href="../reference/keep.labels.html">loosen.labels()</a></code> which removes the classes added by <code><a href="../reference/keep.labels.html">keep.labels()</a></code> and thereby speeds up subsetting when labels are no longer needed. This is now used in <code><a href="../reference/tableby.html">tableby()</a></code>, <code><a href="../reference/modelsum.html">modelsum()</a></code>, <code><a href="../reference/freqlist.html">freqlist()</a></code>, and <code><a href="../reference/paired.html">paired()</a></code>.</p></li>
 </ul>
 <p>Smaller changes:</p>
@@ -328,29 +329,29 @@
 <li>
 <p><code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code>:</p>
 <ul>
-<li><p>Fixed two bugs relating to <code><a href="../reference/tableby.internal.html">modpval.tableby()</a></code>: one which didn’t properly assign the p-value name (<a href='https://github.com/eheinzen/arsenal/issues/174'>#174</a>), and one which broke <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code> when assigning custom p-values for only one strata (<a href='https://github.com/eheinzen/arsenal/issues/175'>#175</a>).</p></li>
-<li><p>These now issue informative error when class isn’t recognized. (<a href='https://github.com/eheinzen/arsenal/issues/180'>#180</a>)</p></li>
-<li><p>Fixed two bugs in the <code><a href="../reference/tableby.html">tableby()</a></code> vignette: <code><a href="../reference/tableby.internal.html">modpval.tableby()</a></code> wasn’t working properly (<a href='https://github.com/eheinzen/arsenal/issues/170'>#170</a>), and <code>pfootnote=TRUE</code> was commented out (<a href='https://github.com/eheinzen/arsenal/issues/169'>#169</a>).</p></li>
-<li><p>Fixed a bug with per-variable stats and digit specifications being lost when using the <code>subset=</code> argument. (<a href='https://github.com/eheinzen/arsenal/issues/182'>#182</a>, <a href='https://github.com/eheinzen/arsenal/issues/183'>#183</a>)</p></li>
-<li><p>Made all-NA summaries prettier. (<a href='https://github.com/eheinzen/arsenal/issues/190'>#190</a>)</p></li>
-<li><p>This now issues a warning when <code>coin</code> isn’t available for the trend test. (<a href='https://github.com/eheinzen/arsenal/issues/193'>#193</a>)</p></li>
+<li><p>Fixed two bugs relating to <code><a href="../reference/tableby.internal.html">modpval.tableby()</a></code>: one which didn’t properly assign the p-value name (<a href='https://github.com/mayoverse/arsenal/issues/174'>#174</a>), and one which broke <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code> when assigning custom p-values for only one strata (<a href='https://github.com/mayoverse/arsenal/issues/175'>#175</a>).</p></li>
+<li><p>These now issue informative error when class isn’t recognized. (<a href='https://github.com/mayoverse/arsenal/issues/180'>#180</a>)</p></li>
+<li><p>Fixed two bugs in the <code><a href="../reference/tableby.html">tableby()</a></code> vignette: <code><a href="../reference/tableby.internal.html">modpval.tableby()</a></code> wasn’t working properly (<a href='https://github.com/mayoverse/arsenal/issues/170'>#170</a>), and <code>pfootnote=TRUE</code> was commented out (<a href='https://github.com/mayoverse/arsenal/issues/169'>#169</a>).</p></li>
+<li><p>Fixed a bug with per-variable stats and digit specifications being lost when using the <code>subset=</code> argument. (<a href='https://github.com/mayoverse/arsenal/issues/182'>#182</a>, <a href='https://github.com/mayoverse/arsenal/issues/183'>#183</a>)</p></li>
+<li><p>Made all-NA summaries prettier. (<a href='https://github.com/mayoverse/arsenal/issues/190'>#190</a>)</p></li>
+<li><p>This now issues a warning when <code>coin</code> isn’t available for the trend test. (<a href='https://github.com/mayoverse/arsenal/issues/193'>#193</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/comparedf.html">comparedf()</a></code>:</p>
 <ul>
-<li><p>This now allows for zero-row data.frames. (<a href='https://github.com/eheinzen/arsenal/issues/166'>#166</a>)</p></li>
-<li><p><code><a href="../reference/comparedf.control.html">comparedf.control()</a></code> now allows for named <code>tol.vars=</code> argument to manually match column names. (<a href='https://github.com/eheinzen/arsenal/issues/165'>#165</a>)</p></li>
+<li><p>This now allows for zero-row data.frames. (<a href='https://github.com/mayoverse/arsenal/issues/166'>#166</a>)</p></li>
+<li><p><code><a href="../reference/comparedf.control.html">comparedf.control()</a></code> now allows for named <code>tol.vars=</code> argument to manually match column names. (<a href='https://github.com/mayoverse/arsenal/issues/165'>#165</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/freqlist.html">freqlist()</a></code>:</p>
 <ul>
-<li><p>Fixed a bug where labels would get dropped when using the <code>subset=</code> argument. (<a href='https://github.com/eheinzen/arsenal/issues/184'>#184</a>)</p></li>
-<li><p>Fixed a bug where labels were lost when subsetting the table and using strata terms. (<a href='https://github.com/eheinzen/arsenal/issues/196'>#196</a>)</p></li>
-<li><p><code><a href="../reference/freqlist.html">freqlist()</a></code>: implemented a <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> method to sort tables on frequency. (<a href='https://github.com/eheinzen/arsenal/issues/187'>#187</a>)</p></li>
-<li><p><code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code>: Implemented <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> and <code><a href="https://rdrr.io/r/utils/head.html">tail()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/188'>#188</a>)</p></li>
-<li><p><code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code>: fixed a bug when all table counts are 0 and <code>sparse=FALSE</code>. (<a href='https://github.com/eheinzen/arsenal/issues/186'>#186</a>, <a href='https://github.com/eheinzen/arsenal/issues/194'>#194</a>)</p></li>
+<li><p>Fixed a bug where labels would get dropped when using the <code>subset=</code> argument. (<a href='https://github.com/mayoverse/arsenal/issues/184'>#184</a>)</p></li>
+<li><p>Fixed a bug where labels were lost when subsetting the table and using strata terms. (<a href='https://github.com/mayoverse/arsenal/issues/196'>#196</a>)</p></li>
+<li><p><code><a href="../reference/freqlist.html">freqlist()</a></code>: implemented a <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code> method to sort tables on frequency. (<a href='https://github.com/mayoverse/arsenal/issues/187'>#187</a>)</p></li>
+<li><p><code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code>: Implemented <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> and <code><a href="https://rdrr.io/r/utils/head.html">tail()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/188'>#188</a>)</p></li>
+<li><p><code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code>: fixed a bug when all table counts are 0 and <code>sparse=FALSE</code>. (<a href='https://github.com/mayoverse/arsenal/issues/186'>#186</a>, <a href='https://github.com/mayoverse/arsenal/issues/194'>#194</a>)</p></li>
 </ul>
 </li>
 <li>
@@ -360,7 +361,7 @@
 <li><p>Fixed a bug with replacement for objects of class <code>"keep_labels"</code>.</p></li>
 </ul>
 </li>
-<li><p><code><a href="../reference/formulize.html">formulize()</a></code>: added the <code>collapse=</code> and <code>collapse.y=</code> arguments. (<a href='https://github.com/eheinzen/arsenal/issues/197'>#197</a>)</p></li>
+<li><p><code><a href="../reference/formulize.html">formulize()</a></code>: added the <code>collapse=</code> and <code>collapse.y=</code> arguments. (<a href='https://github.com/mayoverse/arsenal/issues/197'>#197</a>)</p></li>
 </ul>
 </div>
     <div id="arsenal-v2-0-0" class="section level1">
@@ -437,24 +438,24 @@
 <li>
 <p><code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/paired.html">paired()</a></code>:</p>
 <ul>
-<li><p>fixed a bug with specifying individual statistics for character and logical vectors. (<a href='https://github.com/eheinzen/arsenal/issues/142'>#142</a>)</p></li>
-<li><p><code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/paired.html">paired()</a></code>: added a function (<code>notest()</code>) to prevent performing a test on an individual variable. (<a href='https://github.com/eheinzen/arsenal/issues/144'>#144</a>)</p></li>
-<li><p><code><a href="../reference/summary.tableby.html">summary.tableby()</a></code>: changed NA p-values to blanks. (<a href='https://github.com/eheinzen/arsenal/issues/145'>#145</a>)</p></li>
-<li><p><code><a href="../reference/summary.tableby.html">summary.tableby()</a></code>: added documentation on <code>bookdown</code>. (<a href='https://github.com/eheinzen/arsenal/issues/147'>#147</a>)</p></li>
-<li><p>Wrote <code><a href="../reference/padjust.html">padjust()</a></code>, an S3 wrapper for <code><a href="https://rdrr.io/r/stats/p.adjust.html">p.adjust()</a></code>, which can also adjust <code><a href="../reference/tableby.html">tableby()</a></code> (and hence <code><a href="../reference/paired.html">paired()</a></code>) objects. (<a href='https://github.com/eheinzen/arsenal/issues/146'>#146</a>)</p></li>
+<li><p>fixed a bug with specifying individual statistics for character and logical vectors. (<a href='https://github.com/mayoverse/arsenal/issues/142'>#142</a>)</p></li>
+<li><p><code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/paired.html">paired()</a></code>: added a function (<code>notest()</code>) to prevent performing a test on an individual variable. (<a href='https://github.com/mayoverse/arsenal/issues/144'>#144</a>)</p></li>
+<li><p><code><a href="../reference/summary.tableby.html">summary.tableby()</a></code>: changed NA p-values to blanks. (<a href='https://github.com/mayoverse/arsenal/issues/145'>#145</a>)</p></li>
+<li><p><code><a href="../reference/summary.tableby.html">summary.tableby()</a></code>: added documentation on <code>bookdown</code>. (<a href='https://github.com/mayoverse/arsenal/issues/147'>#147</a>)</p></li>
+<li><p>Wrote <code><a href="../reference/padjust.html">padjust()</a></code>, an S3 wrapper for <code><a href="https://rdrr.io/r/stats/p.adjust.html">p.adjust()</a></code>, which can also adjust <code><a href="../reference/tableby.html">tableby()</a></code> (and hence <code><a href="../reference/paired.html">paired()</a></code>) objects. (<a href='https://github.com/mayoverse/arsenal/issues/146'>#146</a>)</p></li>
 <li><p><code>print.summary.tableby()</code>, <code><a href="../reference/summary.tableby.html">as.data.frame.summary.tableby()</a></code>: added <code>width=</code> and <code>min.split=</code> as formal arguments.</p></li>
-<li><p>Fixed <code><a href="../reference/tableby.stats.html">medSurv()</a></code> which was calculating the median survival incorrectly, and removed <code>rangeTime()</code>, an ambiguous survival statistic. (<a href='https://github.com/eheinzen/arsenal/issues/32'>#32</a>)</p></li>
+<li><p>Fixed <code><a href="../reference/tableby.stats.html">medSurv()</a></code> which was calculating the median survival incorrectly, and removed <code>rangeTime()</code>, an ambiguous survival statistic. (<a href='https://github.com/mayoverse/arsenal/issues/32'>#32</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/modelsum.html">modelsum()</a></code>:</p>
 <ul>
-<li><p><code><a href="../reference/summary.modelsum.html">summary.modelsum()</a></code>: added documentation on <code>bookdown</code>. (<a href='https://github.com/eheinzen/arsenal/issues/147'>#147</a>)</p></li>
+<li><p><code><a href="../reference/summary.modelsum.html">summary.modelsum()</a></code>: added documentation on <code>bookdown</code>. (<a href='https://github.com/mayoverse/arsenal/issues/147'>#147</a>)</p></li>
 <li><p><code>print.summary.modelsum()</code>, <code><a href="../reference/summary.modelsum.html">as.data.frame.summary.modelsum()</a></code>: added <code>width=</code> and <code>min.split=</code> as formal arguments.</p></li>
 </ul>
 </li>
-<li><p><code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code>: added documentation on <code>bookdown</code>. (<a href='https://github.com/eheinzen/arsenal/issues/147'>#147</a>)</p></li>
-<li><p><code><a href="../reference/formulize.html">formulize()</a></code>: added support for names and calls. (<a href='https://github.com/eheinzen/arsenal/issues/152'>#152</a>, <a href='https://github.com/eheinzen/arsenal/issues/153'>#153</a>)</p></li>
+<li><p><code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code>: added documentation on <code>bookdown</code>. (<a href='https://github.com/mayoverse/arsenal/issues/147'>#147</a>)</p></li>
+<li><p><code><a href="../reference/formulize.html">formulize()</a></code>: added support for names and calls. (<a href='https://github.com/mayoverse/arsenal/issues/152'>#152</a>, <a href='https://github.com/mayoverse/arsenal/issues/153'>#153</a>)</p></li>
 </ul>
 </div>
     <div id="arsenal-v1-4-0" class="section level1">
@@ -467,19 +468,19 @@
 <li>
 <p><code><a href="../reference/modelsum.html">modelsum()</a></code>:</p>
 <ul>
-<li><p>Added <code>family="ordinal"</code> to do ordinal logistic regression using <code><a href="https://rdrr.io/pkg/MASS/man/polr.html">MASS::polr()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/130'>#130</a>)</p></li>
-<li><p>Added <code>family="negbin"</code> to do negative binomial regression using <code><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">MASS::glm.nb()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/15'>#15</a>)</p></li>
-<li><p>Added support for ordinal regressors and adjustment terms (by adding support for their associated contrasts). (<a href='https://github.com/eheinzen/arsenal/issues/133'>#133</a>)</p></li>
-<li><p>Allowed for LaTeX formatting. NOTE: this changes (hence possibly breaking old code) the formatting behavior when specifying <code>text="html"</code>. (<a href='https://github.com/eheinzen/arsenal/issues/123'>#123</a>)</p></li>
+<li><p>Added <code>family="ordinal"</code> to do ordinal logistic regression using <code><a href="https://rdrr.io/pkg/MASS/man/polr.html">MASS::polr()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/130'>#130</a>)</p></li>
+<li><p>Added <code>family="negbin"</code> to do negative binomial regression using <code><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">MASS::glm.nb()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/15'>#15</a>)</p></li>
+<li><p>Added support for ordinal regressors and adjustment terms (by adding support for their associated contrasts). (<a href='https://github.com/mayoverse/arsenal/issues/133'>#133</a>)</p></li>
+<li><p>Allowed for LaTeX formatting. NOTE: this changes (hence possibly breaking old code) the formatting behavior when specifying <code>text="html"</code>. (<a href='https://github.com/mayoverse/arsenal/issues/123'>#123</a>)</p></li>
 </ul>
 </li>
-<li><p><code>summary.compare.data.frame()</code>: Added a small summary of the input data.frames as the first table. (<a href='https://github.com/eheinzen/arsenal/issues/126'>#126</a>) NOTE: this changes the structure and printed output of <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>!</p></li>
+<li><p><code>summary.compare.data.frame()</code>: Added a small summary of the input data.frames as the first table. (<a href='https://github.com/mayoverse/arsenal/issues/126'>#126</a>) NOTE: this changes the structure and printed output of <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>!</p></li>
 <li>
 <p><code><a href="../reference/tableby.html">tableby()</a></code>:</p>
 <ul>
-<li><p>Allowed for LaTeX formatting. NOTE: this changes (hence possibly breaking old code) the formatting behavior when specifying <code>text="html"</code>. (<a href='https://github.com/eheinzen/arsenal/issues/123'>#123</a>)</p></li>
+<li><p>Allowed for LaTeX formatting. NOTE: this changes (hence possibly breaking old code) the formatting behavior when specifying <code>text="html"</code>. (<a href='https://github.com/mayoverse/arsenal/issues/123'>#123</a>)</p></li>
 <li>
-<p>Added functionality to in-formula functions to allow the specification of <code>digits=</code> (etc.), <code>numeric.simplify=</code>, and <code>cat.simplify=</code> for a single variable. (<a href='https://github.com/eheinzen/arsenal/issues/107'>#107</a>, <a href='https://github.com/eheinzen/arsenal/issues/134'>#134</a>, <a href='https://github.com/eheinzen/arsenal/issues/139'>#139</a>) NB: this has the following breaking changes:</p>
+<p>Added functionality to in-formula functions to allow the specification of <code>digits=</code> (etc.), <code>numeric.simplify=</code>, and <code>cat.simplify=</code> for a single variable. (<a href='https://github.com/mayoverse/arsenal/issues/107'>#107</a>, <a href='https://github.com/mayoverse/arsenal/issues/134'>#134</a>, <a href='https://github.com/mayoverse/arsenal/issues/139'>#139</a>) NB: this has the following breaking changes:</p>
 <ul>
 <li><p>There is no longer a “name” element in the “tableby” object’s x-specifications; instead it’s now called “term”</p></li>
 <li><p>An element for “variable”, containing the variable name, was added to the “tableby” object’s x-specifications.</p></li>
@@ -497,34 +498,34 @@
 <p><code><a href="../reference/modelsum.html">modelsum()</a></code>:</p>
 <ul>
 <li><p>Added support for <em>calls</em> to the family functions, in case a different link function (for example) is required.</p></li>
-<li><p>Properly propogated “term.name” to the <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code> method. (<a href='https://github.com/eheinzen/arsenal/issues/128'>#128</a>)</p></li>
+<li><p>Properly propogated “term.name” to the <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code> method. (<a href='https://github.com/mayoverse/arsenal/issues/128'>#128</a>)</p></li>
 <li><p>Fixed formatting of error about unsupported families.</p></li>
 <li><p>Removed “concordance” from the list of supported statistics for Poisson regression. This shouldn’t break much code, as specifying “concordance” wouldn’t have shown anything anyway.</p></li>
-<li><p>Fixed a bug with formatting one-per-model p-values. (<a href='https://github.com/eheinzen/arsenal/issues/140'>#140</a>)</p></li>
+<li><p>Fixed a bug with formatting one-per-model p-values. (<a href='https://github.com/mayoverse/arsenal/issues/140'>#140</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/tableby.html">tableby()</a></code>:</p>
 <ul>
-<li><p>Added a warning for when by-variable contains empty string. (<a href='https://github.com/eheinzen/arsenal/issues/121'>#121</a>)</p></li>
-<li><p>Properly propogated “term.name” to the <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code> method. (<a href='https://github.com/eheinzen/arsenal/issues/127'>#127</a>)</p></li>
-<li><p>Fixed an error that sometimes occured when using categorical statistics on numeric variables. (<a href='https://github.com/eheinzen/arsenal/issues/137'>#137</a>)</p></li>
-<li><p>Added an argument to <code><a href="../reference/tableby.control.html">tableby.control()</a></code> to simplify one-line numeric output. (<a href='https://github.com/eheinzen/arsenal/issues/139'>#139</a>)</p></li>
+<li><p>Added a warning for when by-variable contains empty string. (<a href='https://github.com/mayoverse/arsenal/issues/121'>#121</a>)</p></li>
+<li><p>Properly propogated “term.name” to the <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code> method. (<a href='https://github.com/mayoverse/arsenal/issues/127'>#127</a>)</p></li>
+<li><p>Fixed an error that sometimes occured when using categorical statistics on numeric variables. (<a href='https://github.com/mayoverse/arsenal/issues/137'>#137</a>)</p></li>
+<li><p>Added an argument to <code><a href="../reference/tableby.control.html">tableby.control()</a></code> to simplify one-line numeric output. (<a href='https://github.com/mayoverse/arsenal/issues/139'>#139</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/paired.html">paired()</a></code>:</p>
 <ul>
-<li><p>Added a warning for when by-variable contains empty string. (<a href='https://github.com/eheinzen/arsenal/issues/121'>#121</a>)</p></li>
+<li><p>Added a warning for when by-variable contains empty string. (<a href='https://github.com/mayoverse/arsenal/issues/121'>#121</a>)</p></li>
 <li><p>Added error to <code><a href="../reference/paired.internal.html">na.paired("in.both")</a></code> when there are more than two time points.</p></li>
 </ul>
 </li>
 <li>
 <p><code>compare.data.frame()</code>:</p>
 <ul>
-<li><p>Implemented <code><a href="../reference/diffs.html">n.diff.obs()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/124'>#124</a>)</p></li>
-<li><p>Added an argument to <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> to allow for the display of attributes. (<a href='https://github.com/eheinzen/arsenal/issues/125'>#125</a>)</p></li>
-<li><p>Fixed <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> to now return the object passed it. (<a href='https://github.com/eheinzen/arsenal/issues/141'>#141</a>)</p></li>
+<li><p>Implemented <code><a href="../reference/diffs.html">n.diff.obs()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/124'>#124</a>)</p></li>
+<li><p>Added an argument to <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> to allow for the display of attributes. (<a href='https://github.com/mayoverse/arsenal/issues/125'>#125</a>)</p></li>
+<li><p>Fixed <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> to now return the object passed it. (<a href='https://github.com/mayoverse/arsenal/issues/141'>#141</a>)</p></li>
 </ul>
 </li>
 <li><p>Updated documentation where appropriate.</p></li>
@@ -542,42 +543,42 @@
 </ul>
 <p>Smaller changes:</p>
 <ul>
-<li><p>Added the a default method for label assignment (<code>labels&lt;-</code>). (<a href='https://github.com/eheinzen/arsenal/issues/118'>#118</a>)</p></li>
-<li><p>Update <code><a href="../reference/formulize.html">formulize()</a></code> to handle non-syntactic names in the <code>data=</code> argument. (<a href='https://github.com/eheinzen/arsenal/issues/105'>#105</a>)</p></li>
+<li><p>Added the a default method for label assignment (<code>labels&lt;-</code>). (<a href='https://github.com/mayoverse/arsenal/issues/118'>#118</a>)</p></li>
+<li><p>Update <code><a href="../reference/formulize.html">formulize()</a></code> to handle non-syntactic names in the <code>data=</code> argument. (<a href='https://github.com/mayoverse/arsenal/issues/105'>#105</a>)</p></li>
 <li>
 <p><code><a href="../reference/tableby.html">tableby()</a></code>:</p>
 <ul>
-<li><p>Implemented <code><a href="../reference/tableby.internal.html">is.tableby()</a></code> and <code><a href="../reference/tableby.internal.html">is.summary.tableby()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/112'>#112</a>)</p></li>
+<li><p>Implemented <code><a href="../reference/tableby.internal.html">is.tableby()</a></code> and <code><a href="../reference/tableby.internal.html">is.summary.tableby()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/112'>#112</a>)</p></li>
 <li><p>Changed how arguments are passed to stat tests.</p></li>
-<li><p>Issue a warning if statistical tests are requested when there are fewer than two by-levels. (<a href='https://github.com/eheinzen/arsenal/issues/108'>#108</a>)</p></li>
+<li><p>Issue a warning if statistical tests are requested when there are fewer than two by-levels. (<a href='https://github.com/mayoverse/arsenal/issues/108'>#108</a>)</p></li>
 <li><p>Fixed <code>trend()</code> and <code><a href="https://rdrr.io/r/stats/anova.html">anova()</a></code> to return an object instead of the object being invisible.</p></li>
-<li><p>Implemented the stat functions <code><a href="../reference/tableby.stats.html">binomCI()</a></code> and <code><a href="../reference/tableby.stats.html">rowbinomCI()</a></code> for binomial confidence intervals. (<a href='https://github.com/eheinzen/arsenal/issues/117'>#117</a>)</p></li>
+<li><p>Implemented the stat functions <code><a href="../reference/tableby.stats.html">binomCI()</a></code> and <code><a href="../reference/tableby.stats.html">rowbinomCI()</a></code> for binomial confidence intervals. (<a href='https://github.com/mayoverse/arsenal/issues/117'>#117</a>)</p></li>
 <li><p><code><a href="../reference/summary.tableby.html">summary.tableby()</a></code>: ignore row.names when printing summary objects.</p></li>
-<li><p><code><a href="../reference/summary.tableby.html">summary.tableby()</a></code> and <code><a href="../reference/summary.tableby.html">as.data.frame.summary.tableby()</a></code>: added a <code>term.name=</code> argument. (<a href='https://github.com/eheinzen/arsenal/issues/110'>#110</a>)</p></li>
-<li><p><code><a href="../reference/summary.tableby.html">summary.tableby()</a></code>: pass <code>text="html"</code> to get better formatting in R shiny. (<a href='https://github.com/eheinzen/arsenal/issues/114'>#114</a>)</p></li>
-<li><p>Implemented <code><a href="../reference/tableby.internal.html">Ops.tableby()</a></code> to compare tableby objects to a number (p-value). (<a href='https://github.com/eheinzen/arsenal/issues/96'>#96</a>)</p></li>
-<li><p>Implemented <code><a href="../reference/tableby.internal.html">xtfrm.tableby()</a></code>, so that tableby objects can be sorted by p-value. (<a href='https://github.com/eheinzen/arsenal/issues/96'>#96</a>)</p></li>
-<li><p>Implemented <code>length.tableby()</code>, so that <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> and <code><a href="https://rdrr.io/r/utils/head.html">tail()</a></code> also work. (<a href='https://github.com/eheinzen/arsenal/issues/97'>#97</a>)</p></li>
-<li><p>Implemented <code><a href="../reference/tableby.stats.html">countcellpct()</a></code> for counts and cell percentages. (<a href='https://github.com/eheinzen/arsenal/issues/106'>#106</a>)</p></li>
+<li><p><code><a href="../reference/summary.tableby.html">summary.tableby()</a></code> and <code><a href="../reference/summary.tableby.html">as.data.frame.summary.tableby()</a></code>: added a <code>term.name=</code> argument. (<a href='https://github.com/mayoverse/arsenal/issues/110'>#110</a>)</p></li>
+<li><p><code><a href="../reference/summary.tableby.html">summary.tableby()</a></code>: pass <code>text="html"</code> to get better formatting in R shiny. (<a href='https://github.com/mayoverse/arsenal/issues/114'>#114</a>)</p></li>
+<li><p>Implemented <code><a href="../reference/tableby.internal.html">Ops.tableby()</a></code> to compare tableby objects to a number (p-value). (<a href='https://github.com/mayoverse/arsenal/issues/96'>#96</a>)</p></li>
+<li><p>Implemented <code><a href="../reference/tableby.internal.html">xtfrm.tableby()</a></code>, so that tableby objects can be sorted by p-value. (<a href='https://github.com/mayoverse/arsenal/issues/96'>#96</a>)</p></li>
+<li><p>Implemented <code>length.tableby()</code>, so that <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> and <code><a href="https://rdrr.io/r/utils/head.html">tail()</a></code> also work. (<a href='https://github.com/mayoverse/arsenal/issues/97'>#97</a>)</p></li>
+<li><p>Implemented <code><a href="../reference/tableby.stats.html">countcellpct()</a></code> for counts and cell percentages. (<a href='https://github.com/mayoverse/arsenal/issues/106'>#106</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/modelsum.html">modelsum()</a></code>:</p>
 <ul>
-<li><p>Implemented <code><a href="../reference/modelsum.internal.html">is.modelsum()</a></code> and <code><a href="../reference/modelsum.internal.html">is.summary.modelsum()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/111'>#111</a>)</p></li>
+<li><p>Implemented <code><a href="../reference/modelsum.internal.html">is.modelsum()</a></code> and <code><a href="../reference/modelsum.internal.html">is.summary.modelsum()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/111'>#111</a>)</p></li>
 <li><p><code><a href="../reference/summary.modelsum.html">summary.modelsum()</a></code>: ignore row.names when printing summary objects.</p></li>
-<li><p><code><a href="../reference/summary.modelsum.html">summary.modelsum()</a></code> and <code><a href="../reference/summary.modelsum.html">as.data.frame.summary.modelsum()</a></code>: added a <code>term.name=</code> argument. (<a href='https://github.com/eheinzen/arsenal/issues/109'>#109</a>)</p></li>
-<li><p>Allow for <code>weights=</code> and <code>na.action=</code>. (<a href='https://github.com/eheinzen/arsenal/issues/99'>#99</a>)</p></li>
-<li><p>Fixed problem with column names which are prefixes of other column names. (<a href='https://github.com/eheinzen/arsenal/issues/98'>#98</a>)</p></li>
-<li><p>Fixed problem with column labels overwriting categorical levels which also match. (<a href='https://github.com/eheinzen/arsenal/issues/100'>#100</a>)</p></li>
-<li><p><code><a href="../reference/summary.modelsum.html">summary.modelsum()</a></code>: pass <code>text="html"</code> to get better formatting in R shiny. (<a href='https://github.com/eheinzen/arsenal/issues/115'>#115</a>)</p></li>
+<li><p><code><a href="../reference/summary.modelsum.html">summary.modelsum()</a></code> and <code><a href="../reference/summary.modelsum.html">as.data.frame.summary.modelsum()</a></code>: added a <code>term.name=</code> argument. (<a href='https://github.com/mayoverse/arsenal/issues/109'>#109</a>)</p></li>
+<li><p>Allow for <code>weights=</code> and <code>na.action=</code>. (<a href='https://github.com/mayoverse/arsenal/issues/99'>#99</a>)</p></li>
+<li><p>Fixed problem with column names which are prefixes of other column names. (<a href='https://github.com/mayoverse/arsenal/issues/98'>#98</a>)</p></li>
+<li><p>Fixed problem with column labels overwriting categorical levels which also match. (<a href='https://github.com/mayoverse/arsenal/issues/100'>#100</a>)</p></li>
+<li><p><code><a href="../reference/summary.modelsum.html">summary.modelsum()</a></code>: pass <code>text="html"</code> to get better formatting in R shiny. (<a href='https://github.com/mayoverse/arsenal/issues/115'>#115</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/freqlist.html">freqlist()</a></code>:</p>
 <ul>
-<li><p>Implemented <code><a href="../reference/freqlist.internal.html">is.freqlist()</a></code> and <code><a href="../reference/freqlist.internal.html">is.summary.freqlist()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/113'>#113</a>)</p></li>
-<li><p>Fixed a problem with a column named “method”. (<a href='https://github.com/eheinzen/arsenal/issues/95'>#95</a>)</p></li>
+<li><p>Implemented <code><a href="../reference/freqlist.internal.html">is.freqlist()</a></code> and <code><a href="../reference/freqlist.internal.html">is.summary.freqlist()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/113'>#113</a>)</p></li>
+<li><p>Fixed a problem with a column named “method”. (<a href='https://github.com/mayoverse/arsenal/issues/95'>#95</a>)</p></li>
 <li><p><code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code>: ignore row.names when printing summary objects.</p></li>
 </ul>
 </li>
@@ -589,8 +590,8 @@
 <a href="#arsenal-1-2-0" class="anchor"></a>arsenal 1.2.0<small> 2018-04-16 </small>
 </h1>
 <ul>
-<li><p>Implemented <code><a href="../reference/write2.html">write2()</a></code> methods for <code>"summary.tableby"</code>, <code>"summary.modelsum"</code>, and <code>"summary.freqlist"</code> objects. (<a href='https://github.com/eheinzen/arsenal/issues/89'>#89</a>, <a href='https://github.com/eheinzen/arsenal/issues/90'>#90</a>, <a href='https://github.com/eheinzen/arsenal/issues/91'>#91</a>)</p></li>
-<li><p>Center-aligned <code><a href="../reference/tableby.html">tableby()</a></code> grouping columns in the summary output. (<a href='https://github.com/eheinzen/arsenal/issues/93'>#93</a>)</p></li>
+<li><p>Implemented <code><a href="../reference/write2.html">write2()</a></code> methods for <code>"summary.tableby"</code>, <code>"summary.modelsum"</code>, and <code>"summary.freqlist"</code> objects. (<a href='https://github.com/mayoverse/arsenal/issues/89'>#89</a>, <a href='https://github.com/mayoverse/arsenal/issues/90'>#90</a>, <a href='https://github.com/mayoverse/arsenal/issues/91'>#91</a>)</p></li>
+<li><p>Center-aligned <code><a href="../reference/tableby.html">tableby()</a></code> grouping columns in the summary output. (<a href='https://github.com/mayoverse/arsenal/issues/93'>#93</a>)</p></li>
 </ul>
 </div>
     <div id="arsenal-1-1-0" class="section level1">
@@ -601,50 +602,50 @@
 <p>Major changes:</p>
 <ul>
 <li>
-<code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code> now returns an object. <code>print.summary.freqlist()</code> prints the resulting object. (<a href='https://github.com/eheinzen/arsenal/issues/76'>#76</a>)</li>
+<code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code> now returns an object. <code>print.summary.freqlist()</code> prints the resulting object. (<a href='https://github.com/mayoverse/arsenal/issues/76'>#76</a>)</li>
 </ul>
 <p>Smaller changes:</p>
 <ul>
 <li>
 <p><code><a href="../reference/tableby.html">tableby()</a></code>:</p>
 <ul>
-<li><p>Fixed a bug in <code>print.summary.tableby()</code> involving the lack of wrapping for long labels. (<a href='https://github.com/eheinzen/arsenal/issues/59'>#59</a>)</p></li>
-<li><p><code><a href="../reference/summary.tableby.html">as.data.frame.summary.tableby()</a></code> has been implemented, and <code>print.summary.tableby()</code> updated accordingly. (<a href='https://github.com/eheinzen/arsenal/issues/60'>#60</a>)</p></li>
-<li><p>Fixed a bug with assigning labels for tableby objects when some value names are unmatched. (<a href='https://github.com/eheinzen/arsenal/issues/64'>#64</a>)</p></li>
-<li><p>Fixed a bug in <code>print.summary.tableby()</code> with regards to knitting in R Markdown with plots immediately following. (<a href='https://github.com/eheinzen/arsenal/issues/65'>#65</a>)</p></li>
-<li><p>Fixed a bug in <code>print.summary.tableby()</code> with regards to PDF output in bookdown. (<a href='https://github.com/eheinzen/arsenal/issues/69'>#69</a>)</p></li>
+<li><p>Fixed a bug in <code>print.summary.tableby()</code> involving the lack of wrapping for long labels. (<a href='https://github.com/mayoverse/arsenal/issues/59'>#59</a>)</p></li>
+<li><p><code><a href="../reference/summary.tableby.html">as.data.frame.summary.tableby()</a></code> has been implemented, and <code>print.summary.tableby()</code> updated accordingly. (<a href='https://github.com/mayoverse/arsenal/issues/60'>#60</a>)</p></li>
+<li><p>Fixed a bug with assigning labels for tableby objects when some value names are unmatched. (<a href='https://github.com/mayoverse/arsenal/issues/64'>#64</a>)</p></li>
+<li><p>Fixed a bug in <code>print.summary.tableby()</code> with regards to knitting in R Markdown with plots immediately following. (<a href='https://github.com/mayoverse/arsenal/issues/65'>#65</a>)</p></li>
+<li><p>Fixed a bug in <code>print.summary.tableby()</code> with regards to PDF output in bookdown. (<a href='https://github.com/mayoverse/arsenal/issues/69'>#69</a>)</p></li>
 <li><p>Changed <code><a href="../reference/tableby.internal.html">tests.tableby()</a></code> to return a data.frame without factors.</p></li>
-<li><p>Fixed a bug in <code><a href="../reference/tableby.stats.html">meansd()</a></code> when all inputs are NA. (<a href='https://github.com/eheinzen/arsenal/issues/80'>#80</a>)</p></li>
-<li><p>Fixed a bug with <code>kwt()</code>, <code><a href="https://rdrr.io/r/stats/anova.html">anova()</a></code>, and <code><a href="../reference/summary.tableby.html">summary.tableby()</a></code> formatting when all inputs are NA. (<a href='https://github.com/eheinzen/arsenal/issues/81'>#81</a>)</p></li>
-<li><p>Fixed a bug with survival statistics when all inputs are NA. (<a href='https://github.com/eheinzen/arsenal/issues/82'>#82</a>)</p></li>
-<li><p>Fixed a bug with <code>logrank()</code> when all inputs are NA. (<a href='https://github.com/eheinzen/arsenal/issues/83'>#83</a>)</p></li>
-<li><p>Fixed how arguments get passed to stats functions in <code><a href="../reference/tableby.html">tableby()</a></code>. In particular, this affected the <code>times=</code> option. (<a href='https://github.com/eheinzen/arsenal/issues/84'>#84</a>)</p></li>
-<li><p>Added <code><a href="../reference/tableby.stats.html">iqr()</a></code> as a tableby stat option. (<a href='https://github.com/eheinzen/arsenal/issues/86'>#86</a>)</p></li>
-<li><p>Fixed quantile functions <code><a href="../reference/tableby.stats.html">q1q3()</a></code> and <code><a href="../reference/tableby.stats.html">medianq1q3()</a></code> for dates. (<a href='https://github.com/eheinzen/arsenal/issues/87'>#87</a>)</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/tableby.stats.html">meansd()</a></code> when all inputs are NA. (<a href='https://github.com/mayoverse/arsenal/issues/80'>#80</a>)</p></li>
+<li><p>Fixed a bug with <code>kwt()</code>, <code><a href="https://rdrr.io/r/stats/anova.html">anova()</a></code>, and <code><a href="../reference/summary.tableby.html">summary.tableby()</a></code> formatting when all inputs are NA. (<a href='https://github.com/mayoverse/arsenal/issues/81'>#81</a>)</p></li>
+<li><p>Fixed a bug with survival statistics when all inputs are NA. (<a href='https://github.com/mayoverse/arsenal/issues/82'>#82</a>)</p></li>
+<li><p>Fixed a bug with <code>logrank()</code> when all inputs are NA. (<a href='https://github.com/mayoverse/arsenal/issues/83'>#83</a>)</p></li>
+<li><p>Fixed how arguments get passed to stats functions in <code><a href="../reference/tableby.html">tableby()</a></code>. In particular, this affected the <code>times=</code> option. (<a href='https://github.com/mayoverse/arsenal/issues/84'>#84</a>)</p></li>
+<li><p>Added <code><a href="../reference/tableby.stats.html">iqr()</a></code> as a tableby stat option. (<a href='https://github.com/mayoverse/arsenal/issues/86'>#86</a>)</p></li>
+<li><p>Fixed quantile functions <code><a href="../reference/tableby.stats.html">q1q3()</a></code> and <code><a href="../reference/tableby.stats.html">medianq1q3()</a></code> for dates. (<a href='https://github.com/mayoverse/arsenal/issues/87'>#87</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/modelsum.html">modelsum()</a></code>:</p>
 <ul>
-<li><p>Fixed a bug in <code>print.summary.modelsum()</code> involving the lack of wrapping for long labels. (<a href='https://github.com/eheinzen/arsenal/issues/59'>#59</a>)</p></li>
-<li><p>Fixed a bug in <code>print.summary.modelsum()</code> with regards to knitting in R Markdown with plots immediately following. (<a href='https://github.com/eheinzen/arsenal/issues/66'>#66</a>)</p></li>
-<li><p>Fixed a bug in <code>print.summary.modelsum()</code> with regards to PDF output in bookdown. (<a href='https://github.com/eheinzen/arsenal/issues/70'>#70</a>)</p></li>
-<li><p><code><a href="../reference/summary.modelsum.html">as.data.frame.summary.modelsum()</a></code> has been implemented, and <code>print.summary.modelsum()</code> updated accordingly. (<a href='https://github.com/eheinzen/arsenal/issues/74'>#74</a>)</p></li>
+<li><p>Fixed a bug in <code>print.summary.modelsum()</code> involving the lack of wrapping for long labels. (<a href='https://github.com/mayoverse/arsenal/issues/59'>#59</a>)</p></li>
+<li><p>Fixed a bug in <code>print.summary.modelsum()</code> with regards to knitting in R Markdown with plots immediately following. (<a href='https://github.com/mayoverse/arsenal/issues/66'>#66</a>)</p></li>
+<li><p>Fixed a bug in <code>print.summary.modelsum()</code> with regards to PDF output in bookdown. (<a href='https://github.com/mayoverse/arsenal/issues/70'>#70</a>)</p></li>
+<li><p><code><a href="../reference/summary.modelsum.html">as.data.frame.summary.modelsum()</a></code> has been implemented, and <code>print.summary.modelsum()</code> updated accordingly. (<a href='https://github.com/mayoverse/arsenal/issues/74'>#74</a>)</p></li>
 </ul>
 </li>
 <li>
 <p><code><a href="../reference/freqlist.html">freqlist()</a></code>:</p>
 <ul>
-<li><p>Fixed a bug in <code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code> with regards to knitting in R Markdown with plots immediately following. (<a href='https://github.com/eheinzen/arsenal/issues/67'>#67</a>)</p></li>
-<li><p>Fixed a bug in <code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code> with regards to PDF output in bookdown. (<a href='https://github.com/eheinzen/arsenal/issues/71'>#71</a>)</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code> with regards to knitting in R Markdown with plots immediately following. (<a href='https://github.com/mayoverse/arsenal/issues/67'>#67</a>)</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code> with regards to PDF output in bookdown. (<a href='https://github.com/mayoverse/arsenal/issues/71'>#71</a>)</p></li>
 </ul>
 </li>
 <li>
 <p>Other:</p>
 <ul>
-<li><p><code><a href="../reference/NA.operations.html">includeNA()</a></code> now has dots, and the factor method gained a <code>first=</code> argument. (<a href='https://github.com/eheinzen/arsenal/issues/62'>#62</a>)</p></li>
-<li><p><code><a href="../reference/NA.operations.html">includeNA()</a></code> also gained a numeric method, especially for use in <code><a href="../reference/freqlist.html">freqlist.formula()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/78'>#78</a>)</p></li>
-<li><p>Fixed a bug in <code>print.summary.compare.data.frame()</code> with regards to PDF output in bookdown. (<a href='https://github.com/eheinzen/arsenal/issues/72'>#72</a>)</p></li>
+<li><p><code><a href="../reference/NA.operations.html">includeNA()</a></code> now has dots, and the factor method gained a <code>first=</code> argument. (<a href='https://github.com/mayoverse/arsenal/issues/62'>#62</a>)</p></li>
+<li><p><code><a href="../reference/NA.operations.html">includeNA()</a></code> also gained a numeric method, especially for use in <code><a href="../reference/freqlist.html">freqlist.formula()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/78'>#78</a>)</p></li>
+<li><p>Fixed a bug in <code>print.summary.compare.data.frame()</code> with regards to PDF output in bookdown. (<a href='https://github.com/mayoverse/arsenal/issues/72'>#72</a>)</p></li>
 </ul>
 </li>
 </ul>
@@ -659,10 +660,10 @@
 <li>
 <p><code><a href="../reference/freqlist.html">freqlist()</a></code>:</p>
 <ul>
-<li><p><code><a href="../reference/freqlist.html">freqlist()</a></code> is now an S3 generic. (<a href='https://github.com/eheinzen/arsenal/issues/35'>#35</a>)</p></li>
-<li><p>The first argument to <code><a href="../reference/freqlist.html">freqlist()</a></code> has changed from <code>tab=</code> to <code>object=</code>, for S3 consistency. (<a href='https://github.com/eheinzen/arsenal/issues/35'>#35</a>)</p></li>
-<li><p><code><a href="../reference/freqlist.html">freqlist.formula()</a></code> was implemented, piggybacking off of <code><a href="https://rdrr.io/r/stats/xtabs.html">stats::xtabs()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/35'>#35</a>)</p></li>
-<li><p>The <code>title=</code> argument was added to <code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code>. Passing <code>caption=</code> through the dots to <code><a href="https://rdrr.io/pkg/knitr/man/kable.html">knitr::kable()</a></code> will now throw an error. (<a href='https://github.com/eheinzen/arsenal/issues/34'>#34</a>)</p></li>
+<li><p><code><a href="../reference/freqlist.html">freqlist()</a></code> is now an S3 generic. (<a href='https://github.com/mayoverse/arsenal/issues/35'>#35</a>)</p></li>
+<li><p>The first argument to <code><a href="../reference/freqlist.html">freqlist()</a></code> has changed from <code>tab=</code> to <code>object=</code>, for S3 consistency. (<a href='https://github.com/mayoverse/arsenal/issues/35'>#35</a>)</p></li>
+<li><p><code><a href="../reference/freqlist.html">freqlist.formula()</a></code> was implemented, piggybacking off of <code><a href="https://rdrr.io/r/stats/xtabs.html">stats::xtabs()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/35'>#35</a>)</p></li>
+<li><p>The <code>title=</code> argument was added to <code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code>. Passing <code>caption=</code> through the dots to <code><a href="https://rdrr.io/pkg/knitr/man/kable.html">knitr::kable()</a></code> will now throw an error. (<a href='https://github.com/mayoverse/arsenal/issues/34'>#34</a>)</p></li>
 </ul>
 </li>
 <li>
@@ -673,7 +674,7 @@
 <p><code><a href="../reference/summary.tableby.html">summary.tableby()</a></code> has been totally overhauled.</p>
 <ul>
 <li><p>Most arguments are no longer named, but passed through the dots.</p></li>
-<li><p>It now returns an object, abusing in the process <code><a href="../reference/as.data.frame.tableby.html">as.data.frame.tableby()</a></code>. <code>print.summary.tableby()</code> prints the resulting object. (<a href='https://github.com/eheinzen/arsenal/issues/8'>#8</a>)</p></li>
+<li><p>It now returns an object, abusing in the process <code><a href="../reference/as.data.frame.tableby.html">as.data.frame.tableby()</a></code>. <code>print.summary.tableby()</code> prints the resulting object. (<a href='https://github.com/mayoverse/arsenal/issues/8'>#8</a>)</p></li>
 <li><p><code>print.summary.tableby()</code> now uses <code><a href="https://rdrr.io/pkg/knitr/man/kable.html">knitr::kable()</a></code> to print results, instead of internal functions. As such, non-exported helper functions have all been removed.</p></li>
 </ul>
 </li>
@@ -687,9 +688,9 @@
 <li><p><code>q1q3</code> is no longer a default continuous statistic.</p></li>
 </ul>
 </li>
-<li><p>NAs can be included in percents using <code><a href="../reference/NA.operations.html">includeNA()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/57'>#57</a>)</p></li>
-<li><p>Some additional survival summary functions are now available. (<a href='https://github.com/eheinzen/arsenal/issues/32'>#32</a>)</p></li>
-<li><p>It is now possible to report row-percents using <code><a href="../reference/tableby.stats.html">countrowpct()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/9'>#9</a>)</p></li>
+<li><p>NAs can be included in percents using <code><a href="../reference/NA.operations.html">includeNA()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/57'>#57</a>)</p></li>
+<li><p>Some additional survival summary functions are now available. (<a href='https://github.com/mayoverse/arsenal/issues/32'>#32</a>)</p></li>
+<li><p>It is now possible to report row-percents using <code><a href="../reference/tableby.stats.html">countrowpct()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/9'>#9</a>)</p></li>
 </ul>
 </li>
 <li>
@@ -699,7 +700,7 @@
 <p><code><a href="../reference/modelsum.html">modelsum()</a></code> has been totally overhauled:</p>
 <ul>
 <li><p>It now uses <code><a href="https://rdrr.io/r/stats/model.frame.html">stats::model.frame()</a></code> and unevaluated calls instead of custom-creating data.frames.</p></li>
-<li><p>It now allows for non-syntactic names (<a href='https://github.com/eheinzen/arsenal/issues/44'>#44</a>, <a href='https://github.com/eheinzen/arsenal/issues/45'>#45</a>).</p></li>
+<li><p>It now allows for non-syntactic names (<a href='https://github.com/mayoverse/arsenal/issues/44'>#44</a>, <a href='https://github.com/mayoverse/arsenal/issues/45'>#45</a>).</p></li>
 </ul>
 </li>
 <li><p><code><a href="../reference/as.data.frame.modelsum.html">as.data.frame.modelsum()</a></code> has been totally overhauled. It now gives exact values instead of formatted values.</p></li>
@@ -707,9 +708,9 @@
 <p><code><a href="../reference/summary.modelsum.html">summary.modelsum()</a></code> has been totally overhauled.</p>
 <ul>
 <li><p>Most arguments are no longer named, but passed through the dots.</p></li>
-<li><p>It now returns an object, abusing in the process <code><a href="../reference/as.data.frame.modelsum.html">as.data.frame.modelsum()</a></code>. <code>print.summary.modelsum()</code> prints the resulting object. (<a href='https://github.com/eheinzen/arsenal/issues/37'>#37</a>)</p></li>
+<li><p>It now returns an object, abusing in the process <code><a href="../reference/as.data.frame.modelsum.html">as.data.frame.modelsum()</a></code>. <code>print.summary.modelsum()</code> prints the resulting object. (<a href='https://github.com/mayoverse/arsenal/issues/37'>#37</a>)</p></li>
 <li><p><code>print.summary.modelsum()</code> now uses <code><a href="https://rdrr.io/pkg/knitr/man/kable.html">knitr::kable()</a></code> to print results, instead of internal functions. As such, non-exported helper functions have all been removed.</p></li>
-<li><p><code>print.summary.modelsum()</code> now strips leading and trailing whitespace from labels to fix formatting with <code>text=FALSE</code>. (<a href='https://github.com/eheinzen/arsenal/issues/48'>#48</a>)</p></li>
+<li><p><code>print.summary.modelsum()</code> now strips leading and trailing whitespace from labels to fix formatting with <code>text=FALSE</code>. (<a href='https://github.com/mayoverse/arsenal/issues/48'>#48</a>)</p></li>
 <li><p><code>labelTranslations=</code> no longer accepts labels for the statistics columns. Use <code><a href="../reference/modelsum.control.html">modelsum.control(stat.labels=)</a></code> for this instead.</p></li>
 </ul>
 </li>
@@ -739,12 +740,12 @@
 <p><code><a href="../reference/tableby.html">tableby()</a></code>:</p>
 <ul>
 <li><p><code><a href="../reference/tableby.html">tableby()</a></code> has also been made slightly more concise and easier to read.</p></li>
-<li><p>A bug was fixed when trying to specify “stats” attributes for categorical variables. (<a href='https://github.com/eheinzen/arsenal/issues/39'>#39</a>)</p></li>
-<li><p>A bug was fixed relating to unnamed passing of arguments for <code><a href="../reference/tableby.stats.html">medianrange()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/49'>#49</a>)</p></li>
-<li><p><code><a href="../reference/as.data.frame.tableby.html">as.data.frame.tableby()</a></code> no longer breaks with date ranges. (<a href='https://github.com/eheinzen/arsenal/issues/10'>#10</a>)</p></li>
-<li><p><code><a href="../reference/as.data.frame.tableby.html">as.data.frame.tableby()</a></code> no longer breaks with both <code><a href="../reference/tableby.stats.html">count()</a></code> and <code><a href="../reference/tableby.stats.html">countpct()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/51'>#51</a>)</p></li>
-<li><p><code>labels&lt;-.tableby()</code> no longer breaks for unmatched variables. (<a href='https://github.com/eheinzen/arsenal/issues/53'>#53</a>)</p></li>
-<li><p><code>labels&lt;-.tableby()</code> now accepts <code>NULL</code> to set all labels to NULL. (<a href='https://github.com/eheinzen/arsenal/issues/52'>#52</a>)</p></li>
+<li><p>A bug was fixed when trying to specify “stats” attributes for categorical variables. (<a href='https://github.com/mayoverse/arsenal/issues/39'>#39</a>)</p></li>
+<li><p>A bug was fixed relating to unnamed passing of arguments for <code><a href="../reference/tableby.stats.html">medianrange()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/49'>#49</a>)</p></li>
+<li><p><code><a href="../reference/as.data.frame.tableby.html">as.data.frame.tableby()</a></code> no longer breaks with date ranges. (<a href='https://github.com/mayoverse/arsenal/issues/10'>#10</a>)</p></li>
+<li><p><code><a href="../reference/as.data.frame.tableby.html">as.data.frame.tableby()</a></code> no longer breaks with both <code><a href="../reference/tableby.stats.html">count()</a></code> and <code><a href="../reference/tableby.stats.html">countpct()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/51'>#51</a>)</p></li>
+<li><p><code>labels&lt;-.tableby()</code> no longer breaks for unmatched variables. (<a href='https://github.com/mayoverse/arsenal/issues/53'>#53</a>)</p></li>
+<li><p><code>labels&lt;-.tableby()</code> now accepts <code>NULL</code> to set all labels to NULL. (<a href='https://github.com/mayoverse/arsenal/issues/52'>#52</a>)</p></li>
 <li><p>The function <code><a href="../reference/tableby.stats.html">Nmiss2()</a></code> is now exported for <code><a href="../reference/tableby.html">tableby()</a></code>. Note that it is exactly the same as <code><a href="../reference/tableby.stats.html">Nmiss()</a></code>, but is interpreted differently in <code><a href="../reference/tableby.html">tableby()</a></code>.</p></li>
 </ul>
 </li>
@@ -753,11 +754,11 @@
 <ul>
 <li><p><code><a href="../reference/modelsum.html">modelsum()</a></code> has been made slightly more concise.</p></li>
 <li><p>“Nmiss2” has been added to the <code><a href="../reference/modelsum.html">modelsum()</a></code> object and no longer replaces “Nmiss”.</p></li>
-<li><p><code><a href="../reference/as.data.frame.modelsum.html">as.data.frame.modelsum()</a></code> no longer turns “&lt;0.001” into <code>NA</code>. (<a href='https://github.com/eheinzen/arsenal/issues/31'>#31</a>)</p></li>
-<li><p><code><a href="../reference/as.data.frame.modelsum.html">as.data.frame.modelsum()</a></code> no longer breaks if there are too many adjustment variables. (<a href='https://github.com/eheinzen/arsenal/issues/12'>#12</a>)</p></li>
-<li><p><code><a href="../reference/summary.modelsum.html">summary.modelsum()</a></code> now has working labels for factors. (<a href='https://github.com/eheinzen/arsenal/issues/13'>#13</a>)</p></li>
+<li><p><code><a href="../reference/as.data.frame.modelsum.html">as.data.frame.modelsum()</a></code> no longer turns “&lt;0.001” into <code>NA</code>. (<a href='https://github.com/mayoverse/arsenal/issues/31'>#31</a>)</p></li>
+<li><p><code><a href="../reference/as.data.frame.modelsum.html">as.data.frame.modelsum()</a></code> no longer breaks if there are too many adjustment variables. (<a href='https://github.com/mayoverse/arsenal/issues/12'>#12</a>)</p></li>
+<li><p><code><a href="../reference/summary.modelsum.html">summary.modelsum()</a></code> now has working labels for factors. (<a href='https://github.com/mayoverse/arsenal/issues/13'>#13</a>)</p></li>
 <li><p><code>"labels&lt;-.modelsum"()</code> has been tweaked slightly. The results shouldn’t change.</p></li>
-<li><p><code>print.modelsum()</code> has been fixed to show its y-variable. (<a href='https://github.com/eheinzen/arsenal/issues/33'>#33</a>)</p></li>
+<li><p><code>print.modelsum()</code> has been fixed to show its y-variable. (<a href='https://github.com/mayoverse/arsenal/issues/33'>#33</a>)</p></li>
 </ul>
 </li>
 <li><p>Documentation and vignettes have been re-reviewed and updated where appropriate.</p></li>
@@ -770,7 +771,7 @@
 </h1>
 <p>This is a patch to fix an error appearing with R-devel. We anticipate releasing v1.0.0 soon, which will not be backwards-compatible.</p>
 <ul>
-<li>Re-fix trailing whitespace problem in tableby. (<a href='https://github.com/eheinzen/arsenal/issues/3'>#3</a>)</li>
+<li>Re-fix trailing whitespace problem in tableby. (<a href='https://github.com/mayoverse/arsenal/issues/3'>#3</a>)</li>
 </ul>
 </div>
     <div id="arsenal-0-6-0" class="section level1">
@@ -778,17 +779,17 @@
 <a href="#arsenal-0-6-0" class="anchor"></a>arsenal 0.6.0<small> 2017-09-20 </small>
 </h1>
 <ul>
-<li><p>Updated <code><a href="../reference/freqlist.html">freqlist()</a></code> to be more efficient. (<a href='https://github.com/eheinzen/arsenal/issues/20'>#20</a>)</p></li>
+<li><p>Updated <code><a href="../reference/freqlist.html">freqlist()</a></code> to be more efficient. (<a href='https://github.com/mayoverse/arsenal/issues/20'>#20</a>)</p></li>
 <li><p><code><a href="../reference/freqlist.html">freqlist()</a></code> now allows named labels.</p></li>
-<li><p>Fixed one-sided formula detection in <code><a href="../reference/tableby.html">tableby()</a></code> when used with <code><a href="../reference/formulize.html">formulize()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/21'>#21</a>)</p></li>
+<li><p>Fixed one-sided formula detection in <code><a href="../reference/tableby.html">tableby()</a></code> when used with <code><a href="../reference/formulize.html">formulize()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/21'>#21</a>)</p></li>
 <li><p>Changed environment of formula returned by <code><a href="../reference/formulize.html">formulize()</a></code>.</p></li>
 <li><p>Added variable-name subsetting to <code>[.tableby()</code>. One can now subset by logicals, numerics, or character vectors.</p></li>
-<li><p>Fixed a bug in <code><a href="../reference/tableby.html">tableby()</a></code> related to zero-length factor levels. (<a href='https://github.com/eheinzen/arsenal/issues/22'>#22</a>)</p></li>
-<li><p>Fixed a bug in <code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/modelsum.html">modelsum()</a></code> when calling them without loading the package. (<a href='https://github.com/eheinzen/arsenal/issues/25'>#25</a>)</p></li>
-<li><p>Allowed <code>nsmall =</code> and <code>digits =</code> to be 0, for rounding to integers. (<a href='https://github.com/eheinzen/arsenal/issues/23'>#23</a>)</p></li>
-<li><p>Added <code><a href="../reference/yaml.html">yaml()</a></code> function to use with <code><a href="../reference/write2.html">write2()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/28'>#28</a>)</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/tableby.html">tableby()</a></code> related to zero-length factor levels. (<a href='https://github.com/mayoverse/arsenal/issues/22'>#22</a>)</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/modelsum.html">modelsum()</a></code> when calling them without loading the package. (<a href='https://github.com/mayoverse/arsenal/issues/25'>#25</a>)</p></li>
+<li><p>Allowed <code>nsmall =</code> and <code>digits =</code> to be 0, for rounding to integers. (<a href='https://github.com/mayoverse/arsenal/issues/23'>#23</a>)</p></li>
+<li><p>Added <code><a href="../reference/yaml.html">yaml()</a></code> function to use with <code><a href="../reference/write2.html">write2()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/28'>#28</a>)</p></li>
 <li><p>Added the <code>yaml</code> package as a suggested package.</p></li>
-<li><p>Added <code><a href="../reference/write2.html">write2()</a></code> methods for <code>compare.data.frame()</code> objects. (<a href='https://github.com/eheinzen/arsenal/issues/27'>#27</a>)</p></li>
+<li><p>Added <code><a href="../reference/write2.html">write2()</a></code> methods for <code>compare.data.frame()</code> objects. (<a href='https://github.com/mayoverse/arsenal/issues/27'>#27</a>)</p></li>
 <li><p>Updated documentation.</p></li>
 </ul>
 </div>
@@ -798,10 +799,10 @@
 </h1>
 <ul>
 <li><p>Code all now in GitHub; issues can now be submitted there. Checking is now performed automatically on Travis-CI.</p></li>
-<li><p>Included documentation for getting a caption with <code><a href="../reference/write2.html">write2()</a></code> and <code><a href="../reference/freqlist.html">freqlist()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/16'>#16</a>)</p></li>
-<li><p>Fixed subsetting in <code><a href="../reference/modelsum.html">modelsum()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/14'>#14</a>)</p></li>
-<li><p>Fixed multiple class errors in <code><a href="../reference/tableby.html">tableby()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/17'>#17</a>)</p></li>
-<li><p>Fixed subset dropping labels in <code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/modelsum.html">modelsum()</a></code> with new function <code><a href="../reference/keep.labels.html">keep.labels()</a></code> to make labels “stick”. (<a href='https://github.com/eheinzen/arsenal/issues/1'>#1</a>)</p></li>
+<li><p>Included documentation for getting a caption with <code><a href="../reference/write2.html">write2()</a></code> and <code><a href="../reference/freqlist.html">freqlist()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/16'>#16</a>)</p></li>
+<li><p>Fixed subsetting in <code><a href="../reference/modelsum.html">modelsum()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/14'>#14</a>)</p></li>
+<li><p>Fixed multiple class errors in <code><a href="../reference/tableby.html">tableby()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/17'>#17</a>)</p></li>
+<li><p>Fixed subset dropping labels in <code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/modelsum.html">modelsum()</a></code> with new function <code><a href="../reference/keep.labels.html">keep.labels()</a></code> to make labels “stick”. (<a href='https://github.com/mayoverse/arsenal/issues/1'>#1</a>)</p></li>
 <li><p>Added a vignette discussing labels.</p></li>
 <li><p>Add <code>compare.data.frame()</code>, with an accompanying vignette.</p></li>
 </ul>
@@ -830,14 +831,14 @@
 </h1>
 <ul>
 <li><p>Tweaked <code><a href="../reference/freqlist.html">freqlist()</a></code> to behave better with data.frame subsetting and the infamous <code>drop=TRUE</code>.</p></li>
-<li><p>Added <code>dupLabels=</code> argument to <code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/6'>#6</a>)</p></li>
-<li><p>Added a label for <code><a href="../reference/tableby.stats.html">medianq1q3()</a></code> in <code><a href="../reference/tableby.control.html">tableby.control()</a></code>. (<a href='https://github.com/eheinzen/arsenal/issues/4'>#4</a>)</p></li>
-<li><p>Changed the <code>...</code> vs. <code>control=</code> action in <code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/modelsum.html">modelsum()</a></code> to fix which arguments are used over which other arguments. (<a href='https://github.com/eheinzen/arsenal/issues/5'>#5</a>)</p></li>
+<li><p>Added <code>dupLabels=</code> argument to <code><a href="../reference/summary.freqlist.html">summary.freqlist()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/6'>#6</a>)</p></li>
+<li><p>Added a label for <code><a href="../reference/tableby.stats.html">medianq1q3()</a></code> in <code><a href="../reference/tableby.control.html">tableby.control()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/4'>#4</a>)</p></li>
+<li><p>Changed the <code>...</code> vs. <code>control=</code> action in <code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/modelsum.html">modelsum()</a></code> to fix which arguments are used over which other arguments. (<a href='https://github.com/mayoverse/arsenal/issues/5'>#5</a>)</p></li>
 <li><p>Moved import <code>broom</code> and <code>stringr</code> to “Suggests”, adding <code>magrittr</code> for piping.</p></li>
 <li><p>Added piping to <code>write2*()</code> vignette.</p></li>
 <li><p>Several <code><a href="../reference/tableby.html">tableby()</a></code> fixes for counts and percents.</p></li>
-<li><p>New options in <code><a href="../reference/tableby.control.html">tableby.control()</a></code> to modify the statistical tests performed. (<a href='https://github.com/eheinzen/arsenal/issues/2'>#2</a>)</p></li>
-<li><p>Fixed trailing whitespace issue in <code><a href="../reference/tableby.html">tableby()</a></code> (<a href='https://github.com/eheinzen/arsenal/issues/3'>#3</a>)</p></li>
+<li><p>New options in <code><a href="../reference/tableby.control.html">tableby.control()</a></code> to modify the statistical tests performed. (<a href='https://github.com/mayoverse/arsenal/issues/2'>#2</a>)</p></li>
+<li><p>Fixed trailing whitespace issue in <code><a href="../reference/tableby.html">tableby()</a></code> (<a href='https://github.com/mayoverse/arsenal/issues/3'>#3</a>)</p></li>
 </ul>
 </div>
     <div id="arsenal-0-3-0" class="section level1">
