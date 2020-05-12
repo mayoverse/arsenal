@@ -5,7 +5,8 @@
 \alias{mockstudy}
 \alias{muck_up_mockstudy}
 \title{Mock study data for examples}
-\format{A data frame with 1499 observations on the following 15 variables:
+\format{
+A data frame with 1499 observations on the following 15 variables:
   \describe{
     \item{\code{case}}{a numeric identifier-patient ID}
     \item{\code{age}}{age in years}
@@ -23,7 +24,10 @@
     \item{\code{age.ord}}{an ordered factor split of age, with levels
       \code{10-19} < \code{20-29} < \code{30-39} < \code{40-49} <
         \code{50-59} < \code{60-69} < \code{70-79} < \code{80-89}}
-  }}
+  }
+
+An object of class \code{data.frame} with 1499 rows and 14 columns.
+}
 \usage{
 mockstudy
 

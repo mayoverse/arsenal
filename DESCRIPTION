@@ -52,6 +52,6 @@ URL: https://github.com/mayoverse/arsenal, https://cran.r-project.org/package=ar
 BugReports: https://github.com/mayoverse/arsenal/issues
 VignetteBuilder: knitr
 License: GPL (>= 2)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 LazyData: true
 Encoding: UTF-8

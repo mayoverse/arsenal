@@ -42,7 +42,8 @@ If \code{strata} is missing, this works as vector of logicals or an index; other
 
 \item{weights}{an optional vector specifying the weights to apply to each data observation (rows of \code{data})}
 
-\item{strata}{a vector of strata to separate model summaries by an additional group.}
+\item{strata}{a vector of strata to separate model summaries by an additional group. Note that for families like "clog",
+the "usual" strata term to indicate subject groupings should be given in the \code{adjust} argument.}
 
 \item{control}{control parameters to handle optional settings within \code{modelsum}.  Arguments for \code{modelsum.control}
 can be passed to \code{modelsum} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,

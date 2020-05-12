@@ -17,7 +17,8 @@
 #' @param subset an optional vector specifying a subset of observations (rows of \code{data}) to be used in the results.
 #'   If \code{strata} is missing, this works as vector of logicals or an index; otherwise, it should be a logical vector.
 #' @param weights an optional vector specifying the weights to apply to each data observation (rows of \code{data})
-#' @param strata a vector of strata to separate model summaries by an additional group.
+#' @param strata a vector of strata to separate model summaries by an additional group. Note that for families like "clog",
+#'   the "usual" strata term to indicate subject groupings should be given in the \code{adjust} argument.
 #' @param na.action a function which indicates what should happen when the data contain \code{NA}s.
 #'   The default (\code{NULL}) is to use the defaults of \code{\link[stats]{lm}}, \code{\link[stats]{glm}}, or \code{\link[survival]{coxph}},
 #'   depending on the \code{family} specifications.
