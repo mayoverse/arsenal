@@ -1,5 +1,7 @@
 # arsenal v3.4.0.9000
 
+* Change R requirement to >= 3.4.0.
+
 * The GitHub repository was moved from https://github.com/eheinzen/arsenal/ to https://github.com/mayoverse/arsenal/.
   The corresponding `pkgdown` site is now at https://mayoverse.github.io/arsenal/
 

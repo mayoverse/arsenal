@@ -44,10 +44,10 @@ Suggests:
     yaml
 Depends:
     R (>= 3.4.0),
-    stats (>= 3.2.0)
+    stats (>= 3.4.0)
 Imports:
     knitr,
-    utils (>= 3.2.0)
+    utils (>= 3.4.0)
 URL: https://github.com/mayoverse/arsenal, https://cran.r-project.org/package=arsenal, https://mayoverse.github.io/arsenal/
 BugReports: https://github.com/mayoverse/arsenal/issues
 VignetteBuilder: knitr
