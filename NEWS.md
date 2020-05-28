@@ -14,6 +14,8 @@
 
 * `modelsum()`: Expanded the statistic list for survival models.
 
+* `modelsum()`: eliminated call to `broom::confint_tidy()`. (#296)
+
 * `tableby()`: better described `as.tbstat()` and `as.countpct()` in the vignette, and make `as.countpct()`
   slightly more flexible. (#283)
   
