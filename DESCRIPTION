@@ -55,3 +55,4 @@ License: GPL (>= 2)
 RoxygenNote: 7.1.0
 LazyData: true
 Encoding: UTF-8
+Remotes: yihui/knitr
