@@ -604,11 +604,11 @@ test_that("Summary output with attributes and max.print options", {
       ""                                                                             ,
       "Table: Non-identical attributes (3 not shown)"                                ,
       ""                                                                             ,
-      "var.x   var.y   name     attr.x                attr.y              "          ,
-      "------  ------  -------  --------------------  --------------------"          ,
-      "sex     sex     label    NA                    Sex (M/F)           "          ,
-      "sex     sex     levels   c(\"Male\", \"Female\")   c(\"Female\", \"Male\") "  ,
-      "race    race    class    NA                    factor              "
+      "var.x   var.y   name     attr.x           attr.y       "                      ,
+      "------  ------  -------  ---------------  -------------"                      ,
+      "sex     sex     label    NA               Sex (M/F)    "                      ,
+      "sex     sex     levels   Male  , Female   Female, Male "                      ,
+      "race    race    class    NA               factor       "
     )
   )
 })
