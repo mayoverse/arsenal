@@ -9,7 +9,7 @@
 \seealso{
 \code{\link[utils]{head}}
 
-\code{\link[utils]{tail}}
+\code{\link[utils:head]{tail}}
 }
 \keyword{internal}
 \description{

@@ -22,7 +22,7 @@ is.summary.freqlist(x)
 \arguments{
 \item{x}{A \code{freqlist} object.}
 
-\item{n}{A single integer. See \code{\link[utils]{head}} or \code{\link[utils]{tail}} for more details}
+\item{n}{A single integer. See \code{\link[utils]{head}} or \code{\link[utils:head]{tail}} for more details}
 
 \item{...}{Other arguments.}
 

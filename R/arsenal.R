@@ -61,7 +61,7 @@ NULL
 utils::head
 
 #' @importFrom utils tail
-#' @seealso \code{\link[utils]{tail}}
+#' @seealso \code{\link[utils:head]{tail}}
 #' @export
 utils::tail
 

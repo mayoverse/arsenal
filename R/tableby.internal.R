@@ -161,13 +161,13 @@ extract2_tbstat <- function(x, ...)
 #' @param e1,e2 \code{\link{tableby}} objects, or numbers to compare them to.
 #' @param use.pname Logical, denoting whether the column name in \code{pdata} corresponding to the p-values should be used
 #'   in the output of the object.
-#' @param n A single integer. See \code{\link[utils]{head}} or \code{\link[utils]{tail}} for more details
+#' @param n A single integer. See \code{\link[utils]{head}} or \code{\link[utils:head]{tail}} for more details
 #' @param lhs Logical, denoting whether to remove \code{NA}s from the first column of the data.frame (the "left-hand side")
 #' @return \code{na.tableby} returns a subsetted version of \code{object} (with attributes). \code{Ops.tableby} returns
 #'   a logical vector. \code{xtfrm.tableby} returns the p-values (which are ordered by \code{\link{order}} to \code{\link{sort}}).
 #' @details
 #' Logical comparisons are implemented for \code{Ops.tableby}.
-#' @seealso \code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}},
+#' @seealso \code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils:head]{tail}},
 #'   \code{\link{tableby}}, \code{\link{summary.tableby}}, \code{\link{tableby.control}}
 #' @name tableby.internal
 NULL

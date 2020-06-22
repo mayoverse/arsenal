@@ -74,7 +74,7 @@ f13 <- formulize(f[[2]], f[[3]])
 
 }
 \seealso{
-\code{\link[stats]{reformulate}}
+\code{\link[stats:delete.response]{reformulate}}
 }
 \author{
 Ethan Heinzen

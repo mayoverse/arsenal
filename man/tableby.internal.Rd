@@ -52,7 +52,7 @@ in the output of the object.}
 
 \item{e1, e2}{\code{\link{tableby}} objects, or numbers to compare them to.}
 
-\item{n}{A single integer. See \code{\link[utils]{head}} or \code{\link[utils]{tail}} for more details}
+\item{n}{A single integer. See \code{\link[utils]{head}} or \code{\link[utils:head]{tail}} for more details}
 }
 \value{
 \code{na.tableby} returns a subsetted version of \code{object} (with attributes). \code{Ops.tableby} returns
@@ -65,6 +65,6 @@ A set of helper functions for \code{\link{tableby}}.
 Logical comparisons are implemented for \code{Ops.tableby}.
 }
 \seealso{
-\code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils]{tail}},
+\code{\link{arsenal_table}}, \code{\link{sort}}, \code{\link[utils]{head}}, \code{\link[utils:head]{tail}},
   \code{\link{tableby}}, \code{\link{summary.tableby}}, \code{\link{tableby.control}}
 }

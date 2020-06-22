@@ -10,7 +10,7 @@
 #'   which combines them into a multiple-left-hand-side formula, for use in other functions.
 #' @param escape A logical indicating whether character vectors should be coerced to names (that is, whether names with spaces should
 #'   be surrounded with backticks or not)
-#' @seealso \code{\link[stats]{reformulate}}
+#' @seealso \code{\link[stats:delete.response]{reformulate}}
 #' @author Ethan Heinzen
 #' @examples
 #' ## two-sided formula
