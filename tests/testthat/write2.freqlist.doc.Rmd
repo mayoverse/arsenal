@@ -1,3 +1,9 @@
+---
+title: Test title
+---
+
+
+
 
 Table: My cool title
 
@@ -21,4 +27,6 @@ Table: My cool title
 |          |Female |0           |   14|      14|        9.21|       9.21|
 |          |       |1           |  121|     135|       79.61|      88.82|
 |          |       |NA          |   17|     152|       11.18|     100.00|
+
+
 

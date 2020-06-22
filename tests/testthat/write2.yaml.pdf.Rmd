@@ -1,4 +1,10 @@
 ---
+title: Test title
+---
+
+
+
+---
 title: My title
 author: Ethan P Heinzen
 header-includes:
@@ -59,6 +65,8 @@ b <- 2
 a + b
 a - b
 ```
+
+
 
 
 

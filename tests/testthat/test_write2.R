@@ -14,7 +14,7 @@ expect_write2_worked <- function(FUN, object, reference, ...)
   if(!file.exists(reference)) skip("Couldn't find the reference file.")
   if(!file.create(paste0(filename, ".Rmd"))) skip("Couldn't create the temporary file.")
 
-  expect_error(FUN(object, file = filename, ..., render. = TRUE, keep.rmd = TRUE, append. = FALSE, quiet = TRUE), NA)
+  expect_error(FUN(list(object, yaml(title = "Test title")), file = filename, ..., render. = TRUE, keep.rmd = TRUE, append. = FALSE, quiet = TRUE), NA)
   # on.exit(expect_true(file.remove(filename)), add = TRUE)
 
   generated <- readLines(paste0(filename, ".Rmd"))
@@ -132,7 +132,7 @@ test_that("Writing HTML from PDF works (#162)", {
   expect_write2_worked(write2pdf, list(
     "hi there",
     code.chunk(
-      arsenal::write2html("hi there", "hi_there.html", clean = TRUE)
+      arsenal::write2html(list("hi there", yaml(title = "hi there")), "hi_there.html", clean = TRUE)
     )
   ), reference = "write2.render.html.Rmd")
 })

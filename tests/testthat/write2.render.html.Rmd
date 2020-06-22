@@ -1,3 +1,9 @@
+---
+title: Test title
+---
+
+
+
 
 
 
@@ -6,8 +12,11 @@ hi there
 
 
 ```{r}
-arsenal::write2html("hi there", "hi_there.html", clean = TRUE)
+arsenal::write2html(list("hi there", yaml(title = "hi there")), 
+    "hi_there.html", clean = TRUE)
 ```
+
+
 
 
 
