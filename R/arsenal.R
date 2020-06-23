@@ -55,16 +55,6 @@
 #'
 NULL
 
-#' @importFrom utils head
-#' @seealso \code{\link{head}}
-#' @export
-utils::head
-
-#' @importFrom utils tail
-#' @seealso \code{\link{tail}}
-#' @export
-utils::tail
-
 #### commands to build the package using devtools
 # devtools::check_man()
 # devtools::test()
