@@ -7,8 +7,8 @@
 #'
 #' The not-in operator for R.
 #'
-#' @param vector or \code{NULL}: the values to be matched.
-#' @param vector or \code{NULL}: the values to be matched against.
+#' @param x vector or \code{NULL}: the values to be matched.
+#' @param table vector or \code{NULL}: the values to be matched against.
 #' @return The negation of \code{\link[base:match]{\%in\%}}.
 #' @examples
 #' 1 %nin% 2:10

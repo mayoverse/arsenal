@@ -8,7 +8,9 @@
 x \%nin\% table
 }
 \arguments{
-\item{vector}{or \code{NULL}: the values to be matched against.}
+\item{x}{vector or \code{NULL}: the values to be matched.}
+
+\item{table}{vector or \code{NULL}: the values to be matched against.}
 }
 \value{
 The negation of \code{\link[base:match]{\%in\%}}.
