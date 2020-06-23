@@ -52,8 +52,10 @@
 #'
 #' @docType package
 #' @name arsenal
+#' @importFrom utils head tail
 #'
 NULL
+
 
 #### commands to build the package using devtools
 # devtools::check_man()
