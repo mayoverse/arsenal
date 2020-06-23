@@ -56,12 +56,12 @@
 NULL
 
 #' @importFrom utils head
-#' @seealso \code{\link[utils]{head}}
+#' @seealso \code{\link{head}}
 #' @export
 utils::head
 
 #' @importFrom utils tail
-#' @seealso \code{\link[utils:head]{tail}}
+#' @seealso \code{\link{tail}}
 #' @export
 utils::tail
 

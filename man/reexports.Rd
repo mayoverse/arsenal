@@ -7,9 +7,9 @@
 \alias{tail}
 \title{Objects exported from other packages}
 \seealso{
-\code{\link[utils]{head}}
+\code{\link{head}}
 
-\code{\link[utils:head]{tail}}
+\code{\link{tail}}
 }
 \keyword{internal}
 \description{
