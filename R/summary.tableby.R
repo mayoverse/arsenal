@@ -18,7 +18,8 @@
 #'		the latter avoiding all formatting.
 #'		\code{"html"} uses the HTML tag \code{<strong>} instead of the markdown formatting, and \code{"latex"} uses
 #'		the LaTeX command \code{\\textbf}.
-#' @param pfootnote Logical, denoting whether to put footnotes describing the tests used to generate the p-values.
+#' @param pfootnote Logical, denoting whether to put footnotes describing the tests used to generate the p-values. Alternatively,
+#'   "html" to surround the outputted footnotes with \code{<li>}.
 #' @param term.name A character vector denoting the column name for the "terms" column. It should be the same length
 #'   as the number of tables or less (it will get recycled if needed). The special value \code{TRUE} will
 #'   use the y-variable's label for each table.
@@ -97,11 +98,13 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, cont
   if(!is.null(df$p.value)) df$p.value[grepl("^\\s*NA$", df$p.value) | is.na(df$p.value)] <- ""
 
   tests.used <- NULL
-  if(control$test && pfootnote)
+  if(control$test && (isTRUE(pfootnote) || identical(pfootnote, "html")))
   {
     tests.used <- unique(df$test[df$test != "No test"])
-    df$p.value <- ifelse(df$p.value == "", "", paste0(df$p.value, "^", as.integer(factor(df[["test"]], levels = tests.used)), "^"))
-    tests.used <- paste0(seq_along(tests.used), ". ", tests.used)
+    sup <- if(!is.null(text) && identical(text, "html")) c("<sup>", "</sup>") else if(isTRUE(text)) c(" (", ")") else c("^", "^")
+
+    df$p.value <- ifelse(df$p.value == "", "", paste0(df$p.value, sup[1], as.integer(factor(df[["test"]], levels = tests.used)), sup[2]))
+    tests.used <- if(identical(pfootnote, "html")) c("<ol>", paste0("<li>", tests.used, "</li>"), "</ol>") else paste0(seq_along(tests.used), ". ", tests.used)
   }
 
   #### don't show the same statistics more than once ####

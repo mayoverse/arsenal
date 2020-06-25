@@ -26,6 +26,10 @@
 
 * `tableby()`: added an error if reserved terms are used in the by-variable. (#277)
 
+* Fixed a bug to conform with new `knitr` publication.
+
+* Added an option for HTML footnotes (and superscripts) in `summary.tableby()`. (#298)
+
 # arsenal v3.4.0
 
 * Added a `pkgdown` site: https://eheinzen.github.io/arsenal/
