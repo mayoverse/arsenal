@@ -46,7 +46,7 @@ Depends:
     R (>= 3.4.0),
     stats (>= 3.4.0)
 Imports:
-    knitr,
+    knitr (>= 1.29),
     utils (>= 3.4.0)
 URL: https://github.com/mayoverse/arsenal, https://cran.r-project.org/package=arsenal, https://mayoverse.github.io/arsenal/
 BugReports: https://github.com/mayoverse/arsenal/issues
@@ -56,5 +56,4 @@ RoxygenNote: 7.1.0
 LazyData: true
 Encoding: UTF-8
 Remotes:
-    yihui/knitr,
     tidymodels/broom

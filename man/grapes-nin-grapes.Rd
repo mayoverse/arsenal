@@ -8,11 +8,9 @@
 x \%nin\% table
 }
 \arguments{
-\item{x}{vector or \code{NULL}: the values to be matched.
-    \link[base]{Long vectors} are supported.}
+\item{x}{vector or \code{NULL}: the values to be matched.}
 
-\item{table}{vector or \code{NULL}: the values to be matched against.
-    \link[base]{Long vectors} are not supported.}
+\item{table}{vector or \code{NULL}: the values to be matched against.}
 }
 \value{
 The negation of \code{\link[base:match]{\%in\%}}.
