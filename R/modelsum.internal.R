@@ -110,7 +110,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     temp.call$method <- fam$method
     fit <- eval(temp.call, envir)
     coeffORTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
-    coeffORTidy[coeffORTidy$coef.type != "coefficient", names(coeffORTidy) %nin% c("term", "coefficient_type")] <- NA
+    coeffORTidy[coeffORTidy$coef.type != "coefficient", names(coeffORTidy) %nin% c("term", "coef.type")] <- NA
     coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
     coeffTidy$p.value <- 2*stats::pnorm(abs(coeffTidy$statistic), lower.tail = FALSE)
     coeffTidy <- cbind(coeffTidy, OR=coeffORTidy$estimate, CI.lower.OR=coeffORTidy$conf.low, CI.upper.OR=coeffORTidy$conf.high)
