@@ -2,20 +2,16 @@
 
 This is a new version. In this version:
 
-* Fixed the warning in R-devel for PR#16223 (per Kurt's email).
+* Updated the R requirement to >= 3.4.0, and updated several dependencies' version requirements.
 
-* Closed about 20 bugs/feature requests.
+* Closed about 12 bugs/feature requests.
 
-* Moved knitr to "imports" instead of "suggests".
-
-* Added a website.
-
-* We updated documentation where appropriate.
+* Updated documentation where appropriate.
 
 ## Test environments
 
 * local Linux install: R 3.6.2
-* ubuntu 16.04 (on travis-ci): R devel, R 3.6.0 (release), R 3.5.3 (oldrel), R 3.4.2, R 3.3.1, R 3.2.3
+* ubuntu 16.04 (on travis-ci): R devel, R 4.0.0, R 3.6.3 (oldrel), R 3.6.2, R 3.4.2, R 3.4.0
 * Local Windows install (devel and release)
 
 ## R CMD check results

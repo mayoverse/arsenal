@@ -45,7 +45,8 @@ the LaTeX command \code{\\textbf}.}
 
 \item{title}{Title for the table, defaulting to \code{NULL} (no title)}
 
-\item{pfootnote}{Logical, denoting whether to put footnotes describing the tests used to generate the p-values.}
+\item{pfootnote}{Logical, denoting whether to put footnotes describing the tests used to generate the p-values. Alternatively,
+"html" to surround the outputted footnotes with \code{<li>}.}
 
 \item{term.name}{A character vector denoting the column name for the "terms" column. It should be the same length
 as the number of tables or less (it will get recycled if needed). The special value \code{TRUE} will

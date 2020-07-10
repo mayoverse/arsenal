@@ -1,6 +1,10 @@
-# arsenal v3.4.0.9000
+# arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.
+
+* Fixed a bug to conform with new `broom` publication, and change `broom` requirement to >= 0.7.0. (#296)
+
+* Fixed a bug to conform with new `knitr` publication, and change `knitr` requirement to >= 1.29. (#299, #300, #301)
 
 * The GitHub repository was moved from https://github.com/eheinzen/arsenal/ to https://github.com/mayoverse/arsenal/.
   The corresponding `pkgdown` site is now at https://mayoverse.github.io/arsenal/
@@ -8,27 +12,29 @@
 * `freqlist()`: Changed the default for `addNA` to be `TRUE` in the formula method, so that you
   only have to specify `na.options` like in the table method.
 
-* `modelsum()`: Added support for conditional logistic regressions. (#275)
+* `modelsum()`:
 
-* `modelsum()`: Fixed a bug in `modelsum.control()` with confidence interval specification.
+    - Added support for conditional logistic regressions. (#275)
 
-* `modelsum()`: Expanded the statistic list for survival models.
+    - Fixed a bug in `modelsum.control()` with confidence interval specification.
 
-* `modelsum()`: eliminated call to `broom::confint_tidy()`. (#296)
+    - Expanded the statistic list for survival models.
 
-* `tableby()`: better described `as.tbstat()` and `as.countpct()` in the vignette, and make `as.countpct()`
-  slightly more flexible. (#283)
+    - Eliminated call to `broom::confint_tidy()`. (#296)
+
+* `tableby()` / `paired()`:
+
+    - Removed checks for existance of stat functions (the check wasn't working anyway)
+      and search both the enclosing environment as well as `parent.frame()` (for custom stat functions).
+      
+    - `tableby()`: better described `as.tbstat()` and `as.countpct()` in the vignette, and make `as.countpct()`
+      slightly more flexible. (#283)
   
-* `tableby()` / `paired()`: removed checks for existance of stat functions (the check wasn't working anyway)
-  and search both the enclosing environment as well as `parent.frame()` (for custom stat functions).
-  
-* `paired()`: fixed a bug with detecting stat functions.
+    - `paired()`: fixed a bug with detecting stat functions.
 
-* `tableby()`: added an error if reserved terms are used in the by-variable. (#277)
+    - `tableby()`: added an error if reserved terms are used in the by-variable. (#277)
 
-* Fixed a bug to conform with new `knitr` publication.
-
-* Added an option for HTML footnotes (and superscripts) in `summary.tableby()`. (#298)
+    - Added an option for HTML footnotes (and superscripts) in `summary.tableby()`. (#298)
 
 # arsenal v3.4.0
 

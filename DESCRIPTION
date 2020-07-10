@@ -1,7 +1,7 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical Summaries
-Version: 3.4.0.9000
-Date: 2020-02-14
+Version: 3.5.0
+Date: 2020-07-10
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
     person("Jason", "Sinnwell", role="aut"),
@@ -55,5 +55,3 @@ License: GPL (>= 2)
 RoxygenNote: 7.1.0
 LazyData: true
 Encoding: UTF-8
-Remotes:
-    tidymodels/broom
