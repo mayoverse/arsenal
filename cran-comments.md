@@ -12,7 +12,7 @@ This is a new version. In this version:
 
 * local Linux install: R 3.6.2
 * ubuntu 16.04 (on travis-ci): R devel, R 4.0.0, R 3.6.3 (oldrel), R 3.6.2, R 3.4.2, R 3.4.0
-* Local Windows install (devel and release)
+* Win builder (devel and release)
 
 ## R CMD check results
 
