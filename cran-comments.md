@@ -1,8 +1,10 @@
-## Submission for arsenal 3.4.0
+## Submission for arsenal 3.5.0
 
 This is a new version. In this version:
 
 * Updated the R requirement to >= 3.4.0, and updated several dependencies' version requirements.
+
+* Fixed the bugs from the new versions of `broom` and `knitr`
 
 * Closed about 12 bugs/feature requests.
 
@@ -20,6 +22,4 @@ This is a new version. In this version:
 
 ## Reverse dependencies
 
-There are no reverse dependencies.
-
-
+sdglinkage: OK
