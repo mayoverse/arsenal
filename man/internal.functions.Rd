@@ -4,7 +4,7 @@
 \alias{internal.functions}
 \alias{smart.split}
 \alias{replace2}
-\title{Split a string into pieces intelligently}
+\title{Internal Functions}
 \usage{
 smart.split(string, width = Inf, min.split = -Inf)
 
@@ -32,7 +32,7 @@ For \code{smart.split}, a list of the same length as \code{string}, with each el
   For \code{replace2}, a vector with the proper values replaced.
 }
 \description{
-Split a string into pieces intelligently
+Internal Functions
 }
 \seealso{
 \code{\link[base]{replace}}

@@ -12,7 +12,7 @@ smartsplit <- function(string, width, min.split)
   c(stringr::str_sub(string, 1L, splt), smartsplit(stringr::str_sub(string, splt+1L), width = width, min.split = min.split))
 }
 
-#' Split a string into pieces intelligently
+#' Internal Functions
 #'
 #' @param string A character vector
 #' @param width Either \code{Inf} or \code{NULL} to specify no splitting,
