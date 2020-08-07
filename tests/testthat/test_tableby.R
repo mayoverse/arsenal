@@ -1554,3 +1554,38 @@ test_that("HTML footnotes (#298)", {
   )
 })
 
+
+test_that("selectall", {
+  d <- data.frame(
+    grp = rep(c("A", "B"), each = 5),
+    option1 = c(rep(1, 4), rep(0, 6)),
+    option2 = c(0, 1, 0, 0, 0, 1, 1, 1, 0, 0),
+    option3 = 1,
+    option4 = c(rep(0, 9), NA)
+  )
+  d$s <- selectall(`Option 1` = d$option1, `Option 2` = d$option2, `Option 3` = d$option3, `Option 4` = d$option4)
+  expect_identical(
+    capture.kable(summary(tableby(grp ~ s, data = d[1:9, ]), text = TRUE)),
+    c("|            |  A (N=5)   |  B (N=4)   | Total (N=9) | p value|",
+      "|:-----------|:----------:|:----------:|:-----------:|-------:|",
+      "|s           |            |            |             |        |",
+      "|-  Option 1 | 4 (80.0%)  |  0 (0.0%)  |  4 (44.4%)  |        |",
+      "|-  Option 2 | 1 (20.0%)  | 3 (75.0%)  |  4 (44.4%)  |        |",
+      "|-  Option 3 | 5 (100.0%) | 4 (100.0%) | 9 (100.0%)  |        |",
+      "|-  Option 4 |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)   |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(grp ~ notest(s, "count", "Nmiss"), data = d), text = TRUE)),
+    c("|            | A (N=5) | B (N=5) | Total (N=10) | p value|",
+      "|:-----------|:-------:|:-------:|:------------:|-------:|",
+      "|s           |         |         |              |        |",
+      "|-  Option 1 |    4    |    0    |      4       |        |",
+      "|-  Option 2 |    1    |    3    |      4       |        |",
+      "|-  Option 3 |    5    |    4    |      9       |        |",
+      "|-  Option 4 |    0    |    0    |      0       |        |",
+      "|-  N-Miss   |    0    |    1    |      1       |        |"
+    )
+  )
+})
+

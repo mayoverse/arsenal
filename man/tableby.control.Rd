@@ -17,12 +17,14 @@ tableby.control(
   ordered.test = "trend",
   surv.test = "logrank",
   date.test = "kwt",
+  selectall.test = "notest",
   test.always = FALSE,
   numeric.stats = c("Nmiss", "meansd", "range"),
   cat.stats = c("Nmiss", "countpct"),
   ordered.stats = c("Nmiss", "countpct"),
   surv.stats = c("Nmiss", "Nevents", "medSurv"),
   date.stats = c("Nmiss", "median", "range"),
+  selectall.stats = c("Nmiss", "countpct"),
   stats.labels = list(Nmiss = "N-Miss", Nmiss2 = "N-Miss", meansd = "Mean (SD)",
     medianrange = "Median (Range)", median = "Median", medianq1q3 = "Median (Q1, Q3)",
     q1q3 = "Q1, Q3", iqr = "IQR", mean = "Mean", sd = "SD", var = "Var", max = "Max", min
@@ -73,10 +75,12 @@ If no LHS variable exists, then a mean is required for a univariate test.}
 
 \item{date.test}{name of test for date variables: kwt}
 
+\item{selectall.test}{name of test for date variables: notest}
+
 \item{test.always}{Should the test be performed even if one or more by-group has 0 observations? Relevant
 for kwt and anova.}
 
-\item{numeric.stats, cat.stats, ordered.stats, surv.stats, date.stats}{summary statistics to include for the respective class of RHS variables
+\item{numeric.stats, cat.stats, ordered.stats, surv.stats, date.stats, selectall.stats}{summary statistics to include for the respective class of RHS variables
 within the levels of the group LHS variable.}
 
 \item{stats.labels}{A named list of labels for all the statistics function names, where the function name is the named element in the list

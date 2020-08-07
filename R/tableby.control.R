@@ -16,7 +16,7 @@
 #'   In particular, if \code{Nmiss} is specified and there are missings, then the output is not simplified.
 #' @param numeric.test name of test for numeric RHS variables in \code{tableby}: anova, kwt (Kruskal-Wallis).
 #'   If no LHS variable exists, then a mean is required for a univariate test.
-#' @param numeric.stats,cat.stats,ordered.stats,surv.stats,date.stats summary statistics to include for the respective class of RHS variables
+#' @param numeric.stats,cat.stats,ordered.stats,surv.stats,date.stats,selectall.stats summary statistics to include for the respective class of RHS variables
 #'  within the levels of the group LHS variable.
 #' @param cat.test name of test for categorical variables: chisq, fe (Fisher's Exact)
 #' @param chisq.correct logical, correction factor for chisq.test
@@ -25,6 +25,7 @@
 #' @param ordered.test name of test for ordered variables: trend
 #' @param surv.test name of test for survival variables: logrank
 #' @param date.test name of test for date variables: kwt
+#' @param selectall.test name of test for date variables: notest
 #' @param stats.labels A named list of labels for all the statistics function names, where the function name is the named element in the list
 #'   and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
 #'   e.g., \code{list(countpct="Count (Pct)")}.
@@ -76,9 +77,10 @@
 #' @export
 tableby.control <- function(
   test=TRUE,total=TRUE, test.pname=NULL, numeric.simplify=FALSE, cat.simplify=FALSE, ordered.simplify=FALSE, date.simplify=FALSE,
-  numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt", test.always = FALSE,
+  numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt", selectall.test="notest", test.always = FALSE,
   numeric.stats=c("Nmiss","meansd","range"), cat.stats=c("Nmiss","countpct"),
   ordered.stats=c("Nmiss", "countpct"), surv.stats=c("Nmiss", "Nevents","medSurv"), date.stats=c("Nmiss", "median","range"),
+  selectall.stats=c("Nmiss", "countpct"),
   stats.labels=list(Nmiss="N-Miss", Nmiss2="N-Miss", meansd="Mean (SD)", medianrange="Median (Range)",
                     median="Median", medianq1q3="Median (Q1, Q3)", q1q3="Q1, Q3", iqr = "IQR",
                     mean = "Mean", sd = "SD", var = "Var", max = "Max", min = "Min", meanCI = "Mean (CI)", sum = "Sum",
@@ -123,8 +125,9 @@ tableby.control <- function(
 
   list(test=test, total=total, test.pname=test.pname,
        numeric.simplify=numeric.simplify, cat.simplify=cat.simplify, ordered.simplify=ordered.simplify, date.simplify=date.simplify,
-       numeric.test=numeric.test, cat.test=cat.test, ordered.test=ordered.test, surv.test=surv.test, date.test=date.test, test.always=test.always,
-       numeric.stats=numeric.stats, cat.stats=cat.stats, ordered.stats=ordered.stats, surv.stats=surv.stats, date.stats=date.stats,
+       numeric.test=numeric.test, cat.test=cat.test, ordered.test=ordered.test, surv.test=surv.test, date.test=date.test, selectall.test=selectall.test,
+       test.always=test.always,
+       numeric.stats=numeric.stats, cat.stats=cat.stats, ordered.stats=ordered.stats, surv.stats=surv.stats, date.stats=date.stats, selectall.stats=selectall.stats,
        stats.labels=stats.labels,
        digits=digits, digits.p=digits.p, digits.count = digits.count, digits.pct = digits.pct, format.p = format.p, digits.n = digits.n,
        conf.level=conf.level, chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B, times=times)

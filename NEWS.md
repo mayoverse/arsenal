@@ -1,3 +1,7 @@
+# arsenal v3.5.0.9000
+
+* Added `selectall()`.
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.

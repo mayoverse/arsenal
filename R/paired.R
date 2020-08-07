@@ -40,7 +40,7 @@
 #'     \code{notest}: no test is performed.
 #'   }
 #' }
-#' @seealso \code{\link{arsenal_table}}, \code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}
+#' @seealso \code{\link{arsenal_table}}, \code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}, \code{\link{selectall}}
 #' @author Jason Sinnwell, Beth Atkinson, Ryan Lennon, and Ethan Heinzen
 #' @name paired
 NULL
@@ -258,6 +258,13 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           currtest <- control$date.test
           vartype <- "Date"
 
+        } else if(is.selectall(currcol)) {
+          xlevels <- colnames(currcol)
+
+          currstats <- control$selectall.stats
+          currtest <- control$selectall.test
+          vartype <- "selectall"
+
         } else if(survival::is.Surv(currcol)) {
           ##### Survival (time to event) #######
           stop("Sorry, survival objects don't work in this function.")
@@ -305,7 +312,12 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
               bystatlist[[bylev]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE, conf.level = control$conf.level))
             }
           }
-          if(statfun2 %in% c("countpct", "countrowpct", "countcellpct"))
+
+          if(is.selectall(currcol))
+          {
+            tmp <- as.selectall(TP1.eff != TP2.eff)
+            bystatlist[[difflab]] <- do.call(statfun, list(tmp, levels=xlevels, na.rm=TRUE, conf.level = control$conf.level))
+          } else if(statfun2 %in% c("countpct", "countrowpct", "countcellpct"))
           {
             # countrowpct to get the right percentages
             bystatlist[[difflab]] <- countrowpct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,

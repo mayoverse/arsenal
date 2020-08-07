@@ -353,7 +353,7 @@ iqr <- function(x, na.rm=TRUE, weights = NULL, ...) {
 #' @rdname tableby.stats
 #' @export
 Nmiss <- function(x, na.rm=TRUE, weights = NULL, ...) {
-  if(is.null(weights)) weights <- rep(1, length(x))
+  if(is.null(weights)) weights <- rep(1, NROW(x))
   as.countpct(sum(weights[is.na(x)]))
 }
 
@@ -367,7 +367,7 @@ Nmiss2 <- Nmiss
 #' @rdname tableby.stats
 #' @export
 N <- function(x, na.rm=TRUE, weights = NULL, ...) {
-  if(is.null(weights)) weights <- rep(1, length(x))
+  if(is.null(weights)) weights <- rep(1, NROW(x))
   as.countpct(sum(weights[!is.na(x)]))
 }
 
@@ -393,7 +393,19 @@ Npct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, wei
 #' @rdname tableby.stats
 count <- function (x, levels=NULL, na.rm = TRUE, weights = NULL, ...)  {
   if(is.null(levels)) levels <- sort(unique(x))
-  as.tbstat_multirow(lapply(as.list(wtd.table(factor(x[!is.na(x)], levels = levels), weights = weights[!is.na(x)])), as.countpct))
+  if(na.rm)
+  {
+    idx <- !is.na(x)
+    if(!is.null(weights)) idx <- idx & !is.na(weights)
+    x <- x[idx]
+    weights <- weights[idx]
+  }
+  if(is.selectall(x))
+  {
+    if(is.null(weights)) weights <- rep(1, nrow(x))
+    wtbl <- apply(as.matrix(x) == 1, 2, function(y) sum(weights[y]))
+  } else wtbl <- wtd.table(factor(x, levels=levels), weights=weights)
+  as.tbstat_multirow(lapply(as.list(wtbl), as.countpct))
 }
 
 ## count (pct) where pct is within group variable total
@@ -401,8 +413,24 @@ count <- function (x, levels=NULL, na.rm = TRUE, weights = NULL, ...)  {
 #' @export
 countpct <- function(x, levels=NULL, na.rm=TRUE, weights = NULL, ...) {
   if(is.null(levels)) levels <- sort(unique(x))
-  wtbl <- wtd.table(factor(x[!is.na(x)], levels=levels), weights=weights[!is.na(x)])
-  as.tbstat_multirow(lapply(Map(c, wtbl, if(any(wtbl > 0)) 100*wtbl/sum(wtbl) else rep(list(NULL), times = length(wtbl))),
+  if(na.rm)
+  {
+    idx <- !is.na(x)
+    if(!is.null(weights)) idx <- idx & !is.na(weights)
+    x <- x[idx]
+    weights <- weights[idx]
+  }
+  if(is.selectall(x))
+  {
+    if(is.null(weights)) weights <- rep(1, nrow(x))
+    wtbl <- apply(as.matrix(x) == 1, 2, function(y) sum(weights[y]))
+    denom <- sum(weights)
+  } else
+  {
+    wtbl <- wtd.table(factor(x, levels=levels), weights=weights)
+    denom <- sum(wtbl)
+  }
+  as.tbstat_multirow(lapply(Map(c, wtbl, if(any(wtbl > 0)) 100*wtbl/denom else rep(list(NULL), times = length(wtbl))),
                             as.countpct, parens = c("(", ")"), pct = "%", which.pct = 2L))
 }
 

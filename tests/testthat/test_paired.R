@@ -14,6 +14,7 @@ dat <- data.frame(
   Dat = as.Date("2018-05-01") + c(1, 1, 2, 2, 3, 4, 5, 6, 3, 4),
   stringsAsFactors = FALSE
 )
+dat$s <- selectall(a = c(1, 1, 0, 0, 0, 1, 0, 1, 0, 0), b = c(0, 0, 1, 1, 1, 0, 1, 0, 1, 1))
 dat2 <- dat
 
 ###########################################################################################################
@@ -25,7 +26,7 @@ for(i in 1:3)
   if(i == 2) dat$id <- as.character(dat$id) else if(i == 3) dat$id <- as.factor(dat$id)
   test_that(paste0("Basic paired call; class(id) = ", class(dat$id), "; na.paired('asis')"), {
     expect_identical(
-      capture.kable(summary(paired(tp ~ Cat + Fac + Num + Ord + Lgl + Dat, data = dat, id = id,
+      capture.kable(summary(paired(tp ~ Cat + Fac + Num + Ord + Lgl + Dat + s, data = dat, id = id,
                                    signed.rank.exact = FALSE, na.action = na.paired("asis")), text = TRUE)),
       c("|             |         1 (N=5)         |         2 (N=5)         | Difference (N=4) | p value|",
         "|:------------|:-----------------------:|:-----------------------:|:----------------:|-------:|",
@@ -50,7 +51,10 @@ for(i in 1:3)
         "|-  TRUE      |        2 (40.0%)        |        3 (60.0%)        |    1 (50.0%)     |        |",
         "|Dat          |                         |                         |                  |   0.182|",
         "|-  Median    |       2018-05-04        |       2018-05-05        |      0.500       |        |",
-        "|-  Range     | 2018-05-02 - 2018-05-06 | 2018-05-02 - 2018-05-07 |  0.000 - 1.000   |        |"
+        "|-  Range     | 2018-05-02 - 2018-05-06 | 2018-05-02 - 2018-05-07 |  0.000 - 1.000   |        |",
+        "|s            |                         |                         |                  |        |",
+        "|-  a         |        1 (20.0%)        |        3 (60.0%)        |    2 (50.0%)     |        |",
+        "|-  b         |        4 (80.0%)        |        2 (40.0%)        |    2 (50.0%)     |        |"
       )
     )
   })

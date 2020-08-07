@@ -74,7 +74,7 @@ These tests are accepted:
 }
 }
 \seealso{
-\code{\link{arsenal_table}}, \code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}
+\code{\link{arsenal_table}}, \code{\link{paired.control}}, \code{\link{tableby}}, \code{\link{formulize}}, \code{\link{selectall}}
 }
 \author{
 Jason Sinnwell, Beth Atkinson, Ryan Lennon, and Ethan Heinzen

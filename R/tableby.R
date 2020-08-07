@@ -86,7 +86,7 @@
 #'
 #' @return An object with class \code{c("tableby", "arsenal_table")}
 #' @seealso \code{\link{arsenal_table}}, \code{\link[stats]{anova}}, \code{\link[stats]{chisq.test}}, \code{\link{tableby.control}},
-#'   \code{\link{summary.tableby}}, \code{\link{tableby.internal}}, \code{\link{formulize}}
+#'   \code{\link{summary.tableby}}, \code{\link{tableby.internal}}, \code{\link{formulize}}, \code{\link{selectall}}
 #'
 #' @examples
 #' data(mockstudy)
@@ -321,6 +321,13 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           currstats <- control$date.stats
           currtest <- control$date.test
           vartype <- "Date"
+
+        } else if(is.selectall(currcol)) {
+          xlevels <- colnames(currcol)
+
+          currstats <- control$selectall.stats
+          currtest <- control$selectall.test
+          vartype <- "selectall"
 
         } else if(survival::is.Surv(currcol)) {
           ##### Survival (time to event) #######
