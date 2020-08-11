@@ -12,6 +12,7 @@ modelsum(
   na.action = NULL,
   subset = NULL,
   weights = NULL,
+  id,
   strata,
   control = NULL,
   ...
@@ -41,6 +42,8 @@ depending on the \code{family} specifications.}
 If \code{strata} is missing, this works as vector of logicals or an index; otherwise, it should be a logical vector.}
 
 \item{weights}{an optional vector specifying the weights to apply to each data observation (rows of \code{data})}
+
+\item{id}{Used for \code{\link[geepack]{geeglm}}.}
 
 \item{strata}{a vector of strata to separate model summaries by an additional group. Note that for families like "clog",
 the "usual" strata term to indicate subject groupings should be given in the \code{adjust} argument.}

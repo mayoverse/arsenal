@@ -2,6 +2,8 @@
 
 * Added `selectall()`.
 
+* Added `relrisk()` to `modelsum()` families (with corresponding addition of `geepack` package to "Suggests"). (#279)
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.

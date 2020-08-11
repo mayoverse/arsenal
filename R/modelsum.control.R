@@ -13,7 +13,7 @@
 #' @param show.adjust Logical, denoting whether to show adjustment terms.
 #' @param show.intercept Logical, denoting whether to show intercept terms.
 #' @param conf.level Numeric, giving the confidence level.
-#' @param ordinal.stats,binomial.stats,survival.stats,gaussian.stats,poisson.stats,negbin.stats,clog.stats
+#' @param ordinal.stats,binomial.stats,survival.stats,gaussian.stats,poisson.stats,negbin.stats,clog.stats,relrisk.stats
 #'   Character vectors denoting which stats to show for the various model types.
 #' @param stat.labels A named list of labels for all the stats used above.
 #' @param ... Other arguments (not in use at this time).
@@ -33,6 +33,7 @@ modelsum.control <- function(
   gaussian.stats=c("estimate","std.error","p.value","adj.r.squared","Nmiss"),
   poisson.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","Nmiss"),
   negbin.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","Nmiss"),
+  relrisk.stats=c("RR","CI.lower.RR", "CI.upper.RR","p.value","Nmiss"),
   clog.stats=c("OR", "CI.lower.OR", "CI.upper.OR", "p.value", "concordance", "Nmiss"),
   survival.stats=c("HR","CI.lower.HR","CI.upper.HR","p.value","concordance","Nmiss"),
   stat.labels = list(), ...
@@ -208,6 +209,31 @@ modelsum.control <- function(
   }
 
   ##########################
+  ## relrisk stats:
+  ##########################
+  ##(quasi)/poisson.stats=c("Nmiss","RR","CI.RR", "p.value","concordance"),
+  ##Other coeff columns: CI.estimate, CI.RR  (ci for relrisk),N,Nmiss2, std.error, estimate, z.stat, endpoint
+  ##Other model fits: AIC,BIC,logLik, dispersion
+  ##  dispersion = deviance/df.residual
+  relrisk.stats.valid <- c(
+    "RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss", # default
+    "CI.RR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate", "CI.RR", "Nmiss2", "std.error", "estimate", "statistic", "endpoint",
+    "AIC", "BIC", "logLik", "dispersion", "null.deviance", "deviance", "df.residual", "df.null"
+  )
+
+  if(any(relrisk.stats %nin% relrisk.stats.valid)) {
+    stop("Invalid relrisk stats: ",
+         paste(relrisk.stats[relrisk.stats %nin% relrisk.stats.valid],collapse=","), "\n")
+  }
+  ## let CI.RR decode to CI.lower.RR and CI.upper.RR
+  if(any(relrisk.stats == "CI.RR")) {
+    relrisk.stats <- unique(c(relrisk.stats[relrisk.stats != "CI.RR"], "CI.lower.RR", "CI.upper.RR"))
+  }
+  if(any(relrisk.stats == "CI.estimate")) {
+    relrisk.stats <- unique(c(relrisk.stats[relrisk.stats != "CI.estimate"], "CI.lower.estimate", "CI.upper.estimate"))
+  }
+
+  ##########################
   ## Survival stats:
   ##########################
   ##surv.stats=c(Nmiss,HR,CI.HR,p.value,concorance)
@@ -235,6 +261,6 @@ modelsum.control <- function(
   list(digits=digits, digits.ratio=digits.ratio, digits.p = digits.p, format.p = format.p,
        show.adjust=show.adjust, show.intercept=show.intercept, conf.level=conf.level,
        ordinal.stats=ordinal.stats, binomial.stats=binomial.stats, gaussian.stats=gaussian.stats,
-       poisson.stats=poisson.stats, negbin.stats = negbin.stats, clog.stats=clog.stats,
+       poisson.stats=poisson.stats, negbin.stats = negbin.stats, clog.stats=clog.stats, relrisk.stats=relrisk.stats,
        survival.stats=survival.stats, stat.labels = stat.labels)
 }

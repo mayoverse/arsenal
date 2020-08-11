@@ -35,3 +35,11 @@ clog <- function()
   list(family = "clog")
 }
 
+
+#' @rdname modelsum.family
+#' @export
+relrisk <- function(link = "log")
+{
+  list(family = "relrisk", link = link)
+}
+

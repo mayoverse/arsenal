@@ -202,6 +202,17 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     names(modelGlance)[names(modelGlance) == "nevent"] <- "Nevents"
     modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
 
+  } else if (fam$family == "relrisk") {
+    temp.call[[1]] <- quote(geepack::geeglm)
+    temp.call$family <- stats::poisson(fam$link)
+    temp.call$corstr <- "independence"
+    fit <- eval(temp.call, envir)
+    coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
+    coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
+    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
+    coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
+    modelGlance <- broom::glance(fit)
+
   } else if(fam$family == "survival") {
 
     temp.call[[1]] <- quote(survival::coxph)

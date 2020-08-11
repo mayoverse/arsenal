@@ -41,7 +41,8 @@ Suggests:
     MASS,
     gam,
     rpart,
-    yaml
+    yaml,
+    geepack
 Depends:
     R (>= 3.4.0),
     stats (>= 3.4.0)

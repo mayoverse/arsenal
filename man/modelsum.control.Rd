@@ -18,6 +18,7 @@ modelsum.control(
   gaussian.stats = c("estimate", "std.error", "p.value", "adj.r.squared", "Nmiss"),
   poisson.stats = c("RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss"),
   negbin.stats = c("RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss"),
+  relrisk.stats = c("RR", "CI.lower.RR", "CI.upper.RR", "p.value", "Nmiss"),
   clog.stats = c("OR", "CI.lower.OR", "CI.upper.OR", "p.value", "concordance", "Nmiss"),
   survival.stats = c("HR", "CI.lower.HR", "CI.upper.HR", "p.value", "concordance",
     "Nmiss"),
@@ -40,7 +41,7 @@ modelsum.control(
 
 \item{conf.level}{Numeric, giving the confidence level.}
 
-\item{ordinal.stats, binomial.stats, survival.stats, gaussian.stats, poisson.stats, negbin.stats, clog.stats}{Character vectors denoting which stats to show for the various model types.}
+\item{ordinal.stats, binomial.stats, survival.stats, gaussian.stats, poisson.stats, negbin.stats, clog.stats, relrisk.stats}{Character vectors denoting which stats to show for the various model types.}
 
 \item{stat.labels}{A named list of labels for all the stats used above.}
 

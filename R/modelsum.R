@@ -22,6 +22,7 @@
 #' @param na.action a function which indicates what should happen when the data contain \code{NA}s.
 #'   The default (\code{NULL}) is to use the defaults of \code{\link[stats]{lm}}, \code{\link[stats]{glm}}, or \code{\link[survival]{coxph}},
 #'   depending on the \code{family} specifications.
+#' @param id Used for \code{\link[geepack]{geeglm}}.
 #' @param control control parameters to handle optional settings within \code{modelsum}.  Arguments for \code{modelsum.control}
 #'   can be passed to \code{modelsum} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,
 #'   the latter are used. See \code{\link{modelsum.control}} for other details.
@@ -54,14 +55,14 @@ NULL
 #' @export
 
 modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action = NULL,
-                     subset=NULL, weights=NULL, strata, control = NULL, ...) {
+                     subset=NULL, weights=NULL, id, strata, control = NULL, ...) {
   Call <- match.call()
 
   ## Allow family parameter to passed with or without quotes
   ## Here, we force quotes to simplify in for loop below
   family.list <- if(is.function(family) || is.character(family)) match.fun(family)() else family
 
-  if(family.list$family %nin% c("survival", "gaussian", "binomial", "poisson", "quasibinomial", "quasipoisson", "ordinal", "negbin", "clog"))
+  if(family.list$family %nin% c("survival", "gaussian", "binomial", "poisson", "quasibinomial", "quasipoisson", "ordinal", "negbin", "clog", "relrisk"))
     stop("Family ", family.list$family, " not supported.\n")
 
   if(family.list$family != "survival" && any(grepl("Surv\\(", formula))) {
@@ -73,7 +74,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
   control <- do.call("modelsum.control", control[!duplicated(names(control))])
 
   ## Tell user if they passed an argument that was not expected, either here or in control
-  expectArgs <- c("formula", "family", "adjust", "data", "na.action", "subset", "weights", "strata", "control", names(control))
+  expectArgs <- c("formula", "family", "adjust", "data", "na.action", "subset", "weights", "id", "strata", "control", names(control))
   match.idx <- match(names(Call)[-1], expectArgs)
   if(anyNA(match.idx)) warning("Unused arguments: ", paste(names(Call)[c(FALSE, is.na(match.idx))], collapse=", "), "\n")
 
@@ -183,7 +184,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
           curr.formula <- stats::drop.terms(Terms, if(length(effCols) > 1) setdiff(effCols, eff) else NULL, keep.response = TRUE)
           adj.formula <- join_formula(curr.formula, adjust[[adj.i]])
 
-          temp.call <- Call[c(1, match(c("data", "subset", "na.action", "weights"), names(Call), 0L))]
+          temp.call <- Call[c(1, match(c("data", "subset", "na.action", "weights", "id"), names(Call), 0L))]
           temp.call$formula <- adj.formula
           if(hasStrata)
           {
