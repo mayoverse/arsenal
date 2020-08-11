@@ -675,6 +675,7 @@ test_that("Nevents works (#266)", {
 })
 
 test_that("relrisk works (#279)", {
+  skip_if_not(getRversion() >= "3.5.0")
   opts <- options()
   expect_identical(
     capture.kable(summary(modelsum(mdquality.s ~ arm + sex, data = mockstudy, id = case, family = "relrisk"))),
