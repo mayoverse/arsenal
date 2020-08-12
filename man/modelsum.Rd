@@ -43,7 +43,7 @@ If \code{strata} is missing, this works as vector of logicals or an index; other
 
 \item{weights}{an optional vector specifying the weights to apply to each data observation (rows of \code{data})}
 
-\item{id}{Used for \code{\link[geepack]{geeglm}}.}
+\item{id}{A vector to identify clusters. Only used for \code{\link{relrisk}} at this time.}
 
 \item{strata}{a vector of strata to separate model summaries by an additional group. Note that for families like "clog",
 the "usual" strata term to indicate subject groupings should be given in the \code{adjust} argument.}

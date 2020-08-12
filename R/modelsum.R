@@ -22,7 +22,7 @@
 #' @param na.action a function which indicates what should happen when the data contain \code{NA}s.
 #'   The default (\code{NULL}) is to use the defaults of \code{\link[stats]{lm}}, \code{\link[stats]{glm}}, or \code{\link[survival]{coxph}},
 #'   depending on the \code{family} specifications.
-#' @param id Used for \code{\link[geepack]{geeglm}}.
+#' @param id A vector to identify clusters. Only used for \code{\link{relrisk}} at this time.
 #' @param control control parameters to handle optional settings within \code{modelsum}.  Arguments for \code{modelsum.control}
 #'   can be passed to \code{modelsum} via the \code{...} argument, but if a control object and \code{...} arguments are both supplied,
 #'   the latter are used. See \code{\link{modelsum.control}} for other details.
