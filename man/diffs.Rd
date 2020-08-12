@@ -26,14 +26,28 @@ n.diffs(object, ...)
 
 diffs(object, ...)
 
-\method{diffs}{comparedf}(object, vars = NULL, ..., by.var = FALSE)
+\method{diffs}{comparedf}(
+  object,
+  what = c("differences", "observations"),
+  vars = NULL,
+  ...,
+  by.var = FALSE
+)
 
-\method{diffs}{summary.comparedf}(object, vars = NULL, ..., by.var = FALSE)
+\method{diffs}{summary.comparedf}(
+  object,
+  what = c("differences", "observations"),
+  vars = NULL,
+  ...,
+  by.var = FALSE
+)
 }
 \arguments{
 \item{object}{An object of class \code{comparedf} or \code{summary.comparedf}.}
 
 \item{...}{Other arguments (not in use at this time).}
+
+\item{what}{Should differences or the not-shared observations be returned?}
 
 \item{vars}{A character vector of variable names to subset the results to.}
 

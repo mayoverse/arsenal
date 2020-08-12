@@ -71,12 +71,8 @@ summary.comparedf <- function(object, ..., show.attrs = FALSE)
                                                c("var.x", "pos.x", "class.x", "var.y", "pos.y", "class.y"), drop = FALSE])
 
   #### Now for the observations which aren't shared ####
-  get.obs.not.shared <- function(n)
-  {
-    obs.ns <- object$frame.summary$unique[[n]]
-    cbind(version = rep(object$frame.summary$version[[n]], times = nrow(obs.ns)), obs.ns, stringsAsFactors = FALSE)
-  }
-  obs.ns <- rbind(get.obs.not.shared(1), get.obs.not.shared(2))
+
+  obs.ns <- diffs(object, what = "observations")
 
   #### Now for the actual differences ####
 

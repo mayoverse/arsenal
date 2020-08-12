@@ -4,6 +4,8 @@
 
 * Added `relrisk()` to `modelsum()` families (with corresponding addition of `geepack` package to "Suggests"). (#279)
 
+* Added option to `diffs()` for extracting not-shared observations. (#305)
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.

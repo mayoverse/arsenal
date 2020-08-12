@@ -385,6 +385,10 @@ test_that("helper functions are working correctly", {
 
 })
 
+test_that("diff.obs() works (#305)", {
+  expect_identical(diffs(comparedf(df1, df2, by = "id"), what = "observations"), diffs(summary(comparedf(df1, df2, by = "id")), what = "observations"))
+})
+
 ###########################################################################################################
 #### Summary output
 ###########################################################################################################

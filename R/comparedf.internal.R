@@ -197,6 +197,7 @@ idx_var_sum <- function(object, which = c("vars.not.shared", "nonby.vars.shared"
 #' or number of not-shared observations (\code{n.diff.obs()}) from a \code{comparedf} object.
 #'
 #' @param object An object of class \code{comparedf} or \code{summary.comparedf}.
+#' @param what Should differences or the not-shared observations be returned?
 #' @param vars A character vector of variable names to subset the results to.
 #' @param ... Other arguments (not in use at this time).
 #' @param by.var Logical: should the number of differences by variable be reported, or should
@@ -259,8 +260,19 @@ diffs <- function(object, ...)
 
 #' @rdname diffs
 #' @export
-diffs.comparedf <- function(object, vars = NULL, ..., by.var = FALSE)
+diffs.comparedf <- function(object, what = c("differences", "observations"), vars = NULL, ..., by.var = FALSE)
 {
+  what <- match.arg(what)
+  if(what == "observations")
+  {
+    get.obs.not.shared <- function(n)
+    {
+      obs.ns <- object$frame.summary$unique[[n]]
+      cbind(version = rep(object$frame.summary$version[[n]], times = nrow(obs.ns)), obs.ns, stringsAsFactors = FALSE)
+    }
+    return(rbind(get.obs.not.shared(1), get.obs.not.shared(2)))
+  }
+
   if(!is.logical(by.var) || length(by.var) != 1) stop("'by.var' must be a single logical value.")
   diffs <- as.data.frame(object$vars.summary[idx_var_sum(object, "vars.compared"), c("var.x", "var.y", "values")])
   diffs$n <- vapply(diffs$values, nrow, numeric(1))
@@ -298,8 +310,11 @@ diffs.comparedf <- function(object, vars = NULL, ..., by.var = FALSE)
 
 #' @rdname diffs
 #' @export
-diffs.summary.comparedf <- function(object, vars = NULL, ..., by.var = FALSE)
+diffs.summary.comparedf <- function(object, what = c("differences", "observations"), vars = NULL, ..., by.var = FALSE)
 {
+  what <- match.arg(what)
+  if(what == "observations") return(object$obs.table)
+
   tmp <- if(by.var) object$diffs.byvar.table else object$diffs.table
 
   if(is.null(vars)) vars <- unique(tmp$var.x, tmp$var.y) else if(!is.character(vars)) stop("'vars' should be NULL or a character vector.")
