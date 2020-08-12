@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Keep Labels — keep.labels • arsenal</title>
+<title>Make a column for "select all" input — selectall • arsenal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,8 @@
 
 
 
-<meta property="og:title" content="Keep Labels — keep.labels" />
-<meta property="og:description" content="Keep the 'label' attribute on an R object when subsetting. loosen.labels allows the 'label'
-  attribute to be lost again." />
+<meta property="og:title" content="Make a column for "select all" input — selectall" />
+<meta property="og:description" content="Make a column for &quot;select all&quot; input" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -147,75 +146,78 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Keep Labels</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mayoverse/arsenal/blob/master/R/keep.labels.R'><code>R/keep.labels.R</code></a></small>
-    <div class="hidden name"><code>keep.labels.Rd</code></div>
+    <h1>Make a column for "select all" input</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mayoverse/arsenal/blob/master/R/selectall.R'><code>R/selectall.R</code></a></small>
+    <div class="hidden name"><code>selectall.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Keep the <code>'label'</code> attribute on an R object when subsetting. <code>loosen.labels</code> allows the <code>'label'</code>
-  attribute to be lost again.</p>
+    <p>Make a column for "select all" input</p>
     </div>
 
-    <pre class="usage">keep.labels(x, ...)
+    <pre class="usage">selectall(...)
 
-# S3 method for data.frame
-keep.labels(x, ...)
+as.selectall(x)
 
-# S3 method for default
-keep.labels(x, ...)
+# S3 method for selectall
+as.matrix(x, ...)
 
-# S3 method for keep_labels
-[(x, ...)
+# S3 method for selectall
+[(x, i, j, drop = FALSE)
 
-# S3 method for keep_labels
-[(x, i) <- value
+# S3 method for selectall
+is.na(x)
 
-loosen.labels(x, ...)
-
-# S3 method for data.frame
-loosen.labels(x, ...)
-
-# S3 method for default
-loosen.labels(x, ...)</pre>
+is.selectall(x)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>An R object</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>Other arguments (not in use at this time).</p></td>
+      <td><p>Named arguments of the same length. These should be logical, numeric (0/1) or a factor with two levels.</p></td>
     </tr>
     <tr>
-      <th>i, value</th>
-      <td><p>See <code>[&lt;-</code>.</p></td>
+      <th>x</th>
+      <td><p>An object of class "selectall"</p></td>
+    </tr>
+    <tr>
+      <th>i, j, drop</th>
+      <td><p>Arguments to `[.matrix`</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A copy of <code>x</code> with a "keep_labels" class appended on or removed. Note that for the <code>data.frame</code> method,
-  only classes on the columns are changed; the <code>data.frame</code> won't have an extra class appended. This is different from previous
-  versions of <code>arsenal</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='labels.html'>labels</a></code></p></div>
+    <div class='dont-index'><p><code><a href='tableby.html'>tableby</a></code>, <code><a href='paired.html'>paired</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>grp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>), <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>5</span>))
+<span class='no'>d</span>$<span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'>selectall</span>(
+  <span class='kw'>`Option 1`</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span>, <span class='fl'>6</span>)),
+  <span class='kw'>`Option 2`</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>),
+  <span class='kw'>`Option 3`</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>`Option 4`</span> <span class='kw'>=</span> <span class='fl'>0</span>
+)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='tableby.html'>tableby</a></span>(<span class='no'>grp</span> ~ <span class='no'>s</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>d</span>), <span class='kw'>text</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
+#&gt; 
+#&gt; |            |  A (N=5)   |  B (N=5)   | Total (N=10) | p value|
+#&gt; |:-----------|:----------:|:----------:|:------------:|-------:|
+#&gt; |s           |            |            |              |        |
+#&gt; |-  Option 1 | 4 (80.0%)  |  0 (0.0%)  |  4 (40.0%)   |        |
+#&gt; |-  Option 2 | 1 (20.0%)  | 3 (60.0%)  |  4 (40.0%)   |        |
+#&gt; |-  Option 3 | 5 (100.0%) | 5 (100.0%) | 10 (100.0%)  |        |
+#&gt; |-  Option 4 |  0 (0.0%)  |  0 (0.0%)  |   0 (0.0%)   |        |
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
       <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
-    <h2>Author</h2>
-    <p>Ethan Heinzen</p>
   </div>
 </div>
 
