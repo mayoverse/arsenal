@@ -80,22 +80,29 @@ as_data_frame_tableby <- function(byList, control)
 
   f <- function(elt, whch) if(is.null(elt[[whch]])) control[[whch]] else elt[[whch]]
   simp.num <- vapply(byList$control.list, f, NA, "numeric.simplify")
-  simp.cat <- vapply(byList$control.list, f, NA, "cat.simplify")
-  simp.ord <- vapply(byList$control.list, f, NA, "ordered.simplify")
+  simp.cat <- lapply(byList$control.list, f, "cat.simplify")
+  simp.ord <- lapply(byList$control.list, f, "ordered.simplify")
   simp.dat <- vapply(byList$control.list, f, NA, "date.simplify")
 
-  if(any(simp.cat) || any(simp.num) || any(simp.ord) || any(simp.dat))
+  if(!all(vapply(simp.cat, isFALSE, NA)) || any(simp.num) || !all(vapply(simp.ord, isFALSE, NA)) || any(simp.dat))
   {
     simplify <- function(x)
     {
       ## make sure there's only two lines of (the same) summary statistic, and that it's categorical
-      if((simp.cat[x$variable[1]] && all(x$variable.type == "categorical") ||
-          simp.ord[x$variable[1]] && all(x$variable.type == "ordinal")) &&
+      if(!isFALSE(simp.cat[[x$variable[1]]]) && all(x$variable.type == "categorical") &&
          (nrow(x) == 2 || nrow(x) == 3 && x$term[2] == x$term[3]))
       {
         y <- x[nrow(x), , drop = FALSE]
         y$term[1] <- x$term[1]
-        y$label[1] <- x$label[1]
+        y$label[1] <- paste0(x$label[1], if(identical(simp.cat[[x$variable[1]]], "label")) paste0(" (", y$label[1], ")"))
+
+      } else if(!isFALSE(simp.ord[[x$variable[1]]]) && all(x$variable.type == "ordinal") &&
+                (nrow(x) == 2 || nrow(x) == 3 && x$term[2] == x$term[3]))
+      {
+        y <- x[nrow(x), , drop = FALSE]
+        y$term[1] <- x$term[1]
+        y$label[1] <- paste0(x$label[1], if(identical(simp.ord[[x$variable[1]]], "label")) paste0(" (", y$label[1], ")"))
+
       } else if((simp.num[x$variable[1]] && all(x$variable.type == "numeric") ||
                  simp.dat[x$variable[1]] && all(x$variable.type == "Date")) && nrow(x) == 2)
       {

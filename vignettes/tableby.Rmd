@@ -712,6 +712,13 @@ summary(tableby(arm ~ anova(age, "meansd", numeric.simplify=TRUE) +
                   chisq(sex, cat.simplify=TRUE), data = mockstudy))
 ```
 
+The `cat.simplify` and `ord.simplify` argument also accept the special string `"label"`, which appends the shown level's label to the overall label:
+
+```{r results='asis'}
+summary(tableby(arm ~ sex, cat.simplify = "label", data = mockstudy))
+```
+
+
 ## 19. Use `tableby` within an Sweave document
 
 For those users who wish to create tables within an Sweave document, the following code seems to work.

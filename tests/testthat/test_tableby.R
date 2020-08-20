@@ -1589,3 +1589,22 @@ test_that("selectall", {
   )
 })
 
+test_that("Labels work for cat.simplify and ord.simplify (#288)", {
+  expect_identical(
+    capture.kable(summary(tableby(arm ~ sex + as.character(fu.stat), data = mockstudy, cat.simplify = "label"), text = TRUE)),
+    c("|                          | A: IFL (N=428) | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499) | p value|",
+      "|:-------------------------|:--------------:|:-----------------:|:---------------:|:--------------:|-------:|",
+      "|sex (Female)              |  151 (35.3%)   |    280 (40.5%)    |   152 (40.0%)   |  583 (38.9%)   |   0.190|",
+      "|as.character(fu.stat) (2) |  410 (95.8%)   |    592 (85.7%)    |   354 (93.2%)   |  1356 (90.5%)  | < 0.001|"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(arm ~ sex + notest(as.character(fu.stat), cat.simplify = "label"), data = mockstudy, cat.simplify = TRUE), text = TRUE)),
+    c("|                          | A: IFL (N=428) | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499) | p value|",
+      "|:-------------------------|:--------------:|:-----------------:|:---------------:|:--------------:|-------:|",
+      "|sex                       |  151 (35.3%)   |    280 (40.5%)    |   152 (40.0%)   |  583 (38.9%)   |   0.190|",
+      "|as.character(fu.stat) (2) |  410 (95.8%)   |    592 (85.7%)    |   354 (93.2%)   |  1356 (90.5%)  |        |"
+    )
+  )
+})
+

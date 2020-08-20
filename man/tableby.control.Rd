@@ -61,6 +61,7 @@ In particular, if \code{Nmiss} is specified and there are missings, then the out
 
 \item{cat.simplify, ordered.simplify}{logical, tell \code{tableby} whether to remove the first level of the categorical/ordinal variable if binary.
 If \code{TRUE}, only the summary stats of the second level are reported (unless there's only one level, in which case it's reported).
+If \code{"label"}, the second level's label is additionally appended to the label.
 NOTE: this only simplifies to one line if there is only one statistic reported, such as \code{countpct}.
 In particular, if \code{Nmiss} is specified and there are missings, then the output is not simplified.}
 

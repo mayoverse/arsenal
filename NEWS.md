@@ -6,6 +6,8 @@
 
 * Added option to `diffs()` for extracting not-shared observations. (#305)
 
+* Added "label" option to `cat.simplify=` and `ord.simplify=` for `tableby()`/`paired()`. (#288)
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.
