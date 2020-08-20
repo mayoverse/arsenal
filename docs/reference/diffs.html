@@ -176,10 +176,22 @@ or number of not-shared observations (<code>n.diff.obs()</code>) from a <code>co
 <span class='fu'>diffs</span>(<span class='no'>object</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for comparedf</span>
-<span class='fu'>diffs</span>(<span class='no'>object</span>, <span class='kw'>vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>by.var</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>diffs</span>(
+  <span class='no'>object</span>,
+  <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"differences"</span>, <span class='st'>"observations"</span>),
+  <span class='kw'>vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>by.var</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
 
 <span class='co'># S3 method for summary.comparedf</span>
-<span class='fu'>diffs</span>(<span class='no'>object</span>, <span class='kw'>vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>by.var</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>diffs</span>(
+  <span class='no'>object</span>,
+  <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"differences"</span>, <span class='st'>"observations"</span>),
+  <span class='kw'>vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>by.var</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -191,6 +203,10 @@ or number of not-shared observations (<code>n.diff.obs()</code>) from a <code>co
     <tr>
       <th>...</th>
       <td><p>Other arguments (not in use at this time).</p></td>
+    </tr>
+    <tr>
+      <th>what</th>
+      <td><p>Should differences or the not-shared observations be returned?</p></td>
     </tr>
     <tr>
       <th>vars</th>
