@@ -78,7 +78,7 @@ object into a publication-quality results table in R Markdown, and can render we
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.0.9001</span>
       </span>
     </div>
 
@@ -209,7 +209,8 @@ the LaTeX command <code>\textbf</code>.</p></td>
     </tr>
     <tr>
       <th>title</th>
-      <td><p>Title for the table, defaulting to <code>NULL</code> (no title)</p></td>
+      <td><p>Title/caption for the table, defaulting to <code>NULL</code> (no title). Passed to <code><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></code>.
+Can be length &gt; 1 if the more than one table is being printed.</p></td>
     </tr>
     <tr>
       <th>pfootnote</th>

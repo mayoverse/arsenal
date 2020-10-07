@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.0.9001</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
 <p>The <code><a href="../reference/comparedf.html">comparedf()</a></code> function can be used to determine and report differences between two data.frames. It was written in the spirit of replacing <code>PROC COMPARE</code> from SAS.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(arsenal)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(arsenal)</span></code></pre></div>
 <p>Why “comparedf”? We originally called this function <code>compare.data.frame()</code>, using <code><a href="https://testthat.r-lib.org/reference/compare.html">testthat::compare()</a></code> as our S3 generic, but that ended up getting us in trouble because of conflicting object structures. Why this didn’t occur to us at the time remains a mystery. To replace it, we brainstormed several ideas (<code><a href="../reference/comparedf.html">comparedf()</a></code>, <code>dfcompare()</code>, <code>collate()</code>, <code>comparison()</code>) but settled on the former for three reasons:</p>
 <ol style="list-style-type: decimal">
 <li><p>There were no other objects with that generic or class (see <code><a href="https://testthat.r-lib.org/reference/compare.html">testthat::compare()</a></code> and <code>compare::compare()</code>).</p></li>
@@ -134,20 +134,20 @@
 <h1 class="hasAnchor">
 <a href="#basic-examples" class="anchor"></a>Basic examples</h1>
 <p>We first build two similar data.frames to compare.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">df1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">id =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"person"</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">                  <span class="dt">a =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>),</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">                  <span class="dt">b =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>),</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">                  <span class="dt">c =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"f"</span>, <span class="st">"e"</span>, <span class="st">"d"</span>),</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">                  <span class="dt">row.names =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"rn"</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">                  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">df2 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">id =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"person"</span>, <span class="dv">3</span><span class="op">:</span><span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">                  <span class="dt">a =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"c"</span>, <span class="st">"b"</span>, <span class="st">"a"</span>),</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">                  <span class="dt">b =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>),</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">                  <span class="dt">d =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"rn"</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">                  <span class="dt">row.names =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"rn"</span>, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)),</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">                  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>df1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">id =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"person"</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),</span>
+<span id="cb2-2"><a href="#cb2-2"></a>                  <span class="dt">a =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>),</span>
+<span id="cb2-3"><a href="#cb2-3"></a>                  <span class="dt">b =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>),</span>
+<span id="cb2-4"><a href="#cb2-4"></a>                  <span class="dt">c =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"f"</span>, <span class="st">"e"</span>, <span class="st">"d"</span>),</span>
+<span id="cb2-5"><a href="#cb2-5"></a>                  <span class="dt">row.names =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"rn"</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),</span>
+<span id="cb2-6"><a href="#cb2-6"></a>                  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb2-7"><a href="#cb2-7"></a>df2 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">id =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"person"</span>, <span class="dv">3</span><span class="op">:</span><span class="dv">1</span>),</span>
+<span id="cb2-8"><a href="#cb2-8"></a>                  <span class="dt">a =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"c"</span>, <span class="st">"b"</span>, <span class="st">"a"</span>),</span>
+<span id="cb2-9"><a href="#cb2-9"></a>                  <span class="dt">b =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>),</span>
+<span id="cb2-10"><a href="#cb2-10"></a>                  <span class="dt">d =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"rn"</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>),</span>
+<span id="cb2-11"><a href="#cb2-11"></a>                  <span class="dt">row.names =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"rn"</span>, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">2</span>)),</span>
+<span id="cb2-12"><a href="#cb2-12"></a>                  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p>To compare these datasets, simply pass them to the <code><a href="../reference/comparedf.html">comparedf()</a></code> function:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(df1, df2)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(df1, df2)</span></code></pre></div>
 <pre><code>Compare Object
 
 Function Call: 
@@ -159,7 +159,7 @@ Not shared: 2 variables and 0 observations.
 Differences found in 2/3 variables compared.
 0 variables compared have non-identical attributes.</code></pre>
 <p>Use <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> to get a more detailed summary</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(df1, df2))</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(df1, df2))</span></code></pre></div>
 <table class="table">
 <caption>Summary of data.frames</caption>
 <thead><tr class="header">
@@ -365,7 +365,7 @@ Differences found in 2/3 variables compared.
 </tr></tbody>
 </table>
 <p>By default, the datasets are compared row-by-row. To change this, use the <code>by=</code> or <code>by.x=</code> and <code>by.y=</code> arguments:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(df1, df2, <span class="dt">by =</span> <span class="st">"id"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(df1, df2, <span class="dt">by =</span> <span class="st">"id"</span>))</span></code></pre></div>
 <table class="table">
 <caption>Summary of data.frames</caption>
 <thead><tr class="header">
@@ -551,10 +551,10 @@ Differences found in 2/3 variables compared.
 <h1 class="hasAnchor">
 <a href="#a-larger-example" class="anchor"></a>A larger example</h1>
 <p>Let’s muck up the <code>mockstudy</code> data.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(mockstudy)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">mockstudy2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mockstudy.html">muck_up_mockstudy</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(mockstudy)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>mockstudy2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mockstudy.html">muck_up_mockstudy</a></span>()</span></code></pre></div>
 <p>We’ve changed row order, so let’s compare by the case ID:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>))</span></code></pre></div>
 <table class="table">
 <caption>Summary of data.frames</caption>
 <thead><tr class="header">
@@ -1057,9 +1057,9 @@ Differences found in 2/3 variables compared.
 <a href="#ignoring-case" class="anchor"></a>Ignoring case</h2>
 <p>For example, to ignore case in variable names (so that <code>Arm</code> and <code>arm</code> are considered the same), pass <code>tol.vars = "case"</code>.</p>
 <p>You can do this using <code><a href="../reference/comparedf.control.html">comparedf.control()</a></code></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>, <span class="dt">control =</span> <span class="kw"><a href="../reference/comparedf.control.html">comparedf.control</a></span>(<span class="dt">tol.vars =</span> <span class="st">"case"</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>, <span class="dt">control =</span> <span class="kw"><a href="../reference/comparedf.control.html">comparedf.control</a></span>(<span class="dt">tol.vars =</span> <span class="st">"case"</span>)))</span></code></pre></div>
 <p>or pass it through the <code>...</code> arguments.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>, <span class="dt">tol.vars =</span> <span class="st">"case"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>, <span class="dt">tol.vars =</span> <span class="st">"case"</span>))</span></code></pre></div>
 <table class="table">
 <caption>Summary of data.frames</caption>
 <thead><tr class="header">
@@ -1559,9 +1559,9 @@ Differences found in 2/3 variables compared.
 <p>In short, each string in the vector is split into single characters, and the resulting set of characters is replaced by the first character in the string. For example, passing <code><a href="https://rdrr.io/r/base/c.html">c("._")</a></code> would replace all underscores with dots in the column names of both datasets. Similarly, passing <code><a href="https://rdrr.io/r/base/c.html">c("aA", "BbCc")</a></code> would replace all instances of <code>"A"</code> with <code>"a"</code> and all instances of <code>"b"</code>, <code>"C"</code>, or <code>"c"</code> with <code>"B"</code>. This is one way to ignore case for certain letters. Otherwise, it’s possible to combine the equivalence classes with ignoring case, by passing (e.g.) <code><a href="https://rdrr.io/r/base/c.html">c("._", "case")</a></code>.</p>
 <p>Passing a single character as an element this vector will replace that character with the empty string. For example, passing c(" “,”.") would remove all spaces and dots from the column names.</p>
 <p>For mockstudy, let’s treat dots, underscores, and spaces as the same, and ignore case:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>) <span class="co"># dots=underscores=spaces, ignore case</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</span>
+<span id="cb11-2"><a href="#cb11-2"></a>                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>) <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>))</span></code></pre></div>
 <table class="table">
 <caption>Summary of data.frames</caption>
 <thead><tr class="header">
@@ -2045,9 +2045,9 @@ Differences found in 2/3 variables compared.
 <a href="#manually-specifying-columns-to-match-together" class="anchor"></a>Manually specifying columns to match together</h2>
 <p>If you pass a named vector to the <code>tol.vars=</code> argument, <code><a href="../reference/comparedf.html">comparedf()</a></code> will line up the names of that vector to the column names of <code>x</code> and the values of that vector to the column names of <code>y</code>. In this way, you can manually specify which non-identically-named columns to compare.</p>
 <p>For mockstudy, let’s specify our variables manually in this way:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dt">arm =</span> <span class="st">"Arm"</span>, <span class="dt">fu.stat =</span> <span class="st">"fu stat"</span>, <span class="dt">fu.time =</span> <span class="st">"fu_time"</span>)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">))</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</span>
+<span id="cb12-2"><a href="#cb12-2"></a>                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dt">arm =</span> <span class="st">"Arm"</span>, <span class="dt">fu.stat =</span> <span class="st">"fu stat"</span>, <span class="dt">fu.time =</span> <span class="st">"fu_time"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3"></a>))</span></code></pre></div>
 <table class="table">
 <caption>Summary of data.frames</caption>
 <thead><tr class="header">
@@ -2540,10 +2540,10 @@ Differences found in 2/3 variables compared.
 <a href="#numeric-tolerance" class="anchor"></a>Numeric tolerance</h2>
 <p>To allow numeric differences of a certain tolerance, use the <code>tol.num=</code> and <code>tol.num.val=</code> options. <code>tol.num.val=</code> determines the maximum (unsigned) difference tolerated if <code>tol.num="absolute"</code> (default), and determines the maximum (unsigned) percent difference tolerated if <code>tol.num="percent"</code>.</p>
 <p>Also note the option <code>int.as.num=</code>, which determines whether integers and numerics should be compared despite their class difference. If <code>TRUE</code>, the integers are coerced to numeric. Note that <code>mockstudy$ast</code> is integer, while <code>mockstudy2$ast</code> is numeric:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="co"># dots=underscores=spaces, ignore case</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>            <span class="co"># compare integers and numerics</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4">))</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</span>
+<span id="cb13-2"><a href="#cb13-2"></a>                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>            <span class="co"># compare integers and numerics</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>))</span></code></pre></div>
 <table class="table">
 <caption>Summary of data.frames</caption>
 <thead><tr class="header">
@@ -3045,11 +3045,11 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <p>Suppose a tolerance of up to 10 is allowed for <code>ast</code>:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="co"># dots=underscores=spaces, ignore case</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">                <span class="dt">tol.num.val =</span> <span class="dv">10</span>             <span class="co"># allow absolute differences &lt;= 10</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">))</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</span>
+<span id="cb14-2"><a href="#cb14-2"></a>                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>                <span class="dt">tol.num.val =</span> <span class="dv">10</span>             <span class="co"># allow absolute differences &lt;= 10</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>))</span></code></pre></div>
 <table class="table">
 <caption>Summary of data.frames</caption>
 <thead><tr class="header">
@@ -3537,12 +3537,12 @@ Differences found in 2/3 variables compared.
 <h2 class="hasAnchor">
 <a href="#factor-tolerance" class="anchor"></a>Factor tolerance</h2>
 <p>By default, factors are compared to each other based on both the labels and the underlying numeric levels. Set <code>tol.factor="levels"</code> to match only the numeric levels, or set <code>tol.factor="labels"</code> to match only the labels.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="co"># dots=underscores=spaces, ignore case</span></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">                <span class="dt">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">                <span class="dt">tol.factor =</span> <span class="st">"labels"</span>        <span class="co"># match only factor labels</span></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">))</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</span>
+<span id="cb15-2"><a href="#cb15-2"></a>                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>                <span class="dt">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>                <span class="dt">tol.factor =</span> <span class="st">"labels"</span>        <span class="co"># match only factor labels</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a>))</span></code></pre></div>
 <table class="table">
 <caption>Summary of data.frames</caption>
 <thead><tr class="header">
@@ -3936,13 +3936,13 @@ Differences found in 2/3 variables compared.
 </tbody>
 </table>
 <p>Also note the option <code>factor.as.char=</code>, which determines whether factors and characters should be compared despite their class difference. If <code>TRUE</code>, the factors are coerced to characters. Note that <code>mockstudy$race</code> is a character, while <code>mockstudy2$race</code> is a factor:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="co"># dots=underscores=spaces, ignore case</span></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">                <span class="dt">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5">                <span class="dt">tol.factor =</span> <span class="st">"labels"</span>,       <span class="co"># match only factor labels</span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6">                <span class="dt">factor.as.char =</span> <span class="ot">TRUE</span>        <span class="co"># compare factors and characters</span></a>
-<a class="sourceLine" id="cb16-7" data-line-number="7">))</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</span>
+<span id="cb16-2"><a href="#cb16-2"></a>                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a>                <span class="dt">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>                <span class="dt">tol.factor =</span> <span class="st">"labels"</span>,       <span class="co"># match only factor labels</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a>                <span class="dt">factor.as.char =</span> <span class="ot">TRUE</span>        <span class="co"># compare factors and characters</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a>))</span></code></pre></div>
 <table class="table">
 <caption>Summary of data.frames</caption>
 <thead><tr class="header">
@@ -4423,14 +4423,14 @@ Differences found in 2/3 variables compared.
 <h2 class="hasAnchor">
 <a href="#character-tolerance" class="anchor"></a>Character tolerance</h2>
 <p>Use the <code>tol.char=</code> argument to change how character variables are compared. By default, they are compared as-is, but they can be compared after ignoring case or trimming whitespace or both.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="co"># dots=underscores=spaces, ignore case</span></a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">                <span class="dt">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></a>
-<a class="sourceLine" id="cb17-5" data-line-number="5">                <span class="dt">tol.factor =</span> <span class="st">"labels"</span>,       <span class="co"># match only factor labels</span></a>
-<a class="sourceLine" id="cb17-6" data-line-number="6">                <span class="dt">factor.as.char =</span> <span class="ot">TRUE</span>,       <span class="co"># compare factors and characters</span></a>
-<a class="sourceLine" id="cb17-7" data-line-number="7">                <span class="dt">tol.char =</span> <span class="st">"case"</span>            <span class="co"># ignore case in character vectors</span></a>
-<a class="sourceLine" id="cb17-8" data-line-number="8">))</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</span>
+<span id="cb17-2"><a href="#cb17-2"></a>                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a>                <span class="dt">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>                <span class="dt">tol.factor =</span> <span class="st">"labels"</span>,       <span class="co"># match only factor labels</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a>                <span class="dt">factor.as.char =</span> <span class="ot">TRUE</span>,       <span class="co"># compare factors and characters</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a>                <span class="dt">tol.char =</span> <span class="st">"case"</span>            <span class="co"># ignore case in character vectors</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a>))</span></code></pre></div>
 <table class="table">
 <caption>Summary of data.frames</caption>
 <thead><tr class="header">
@@ -4831,11 +4831,11 @@ Differences found in 2/3 variables compared.
 <h2 class="hasAnchor">
 <a href="#specifying-tolerances-for-each-variable" class="anchor"></a>Specifying tolerances for each variable</h2>
 <p>You can also provide a list of tolerance functions to <code><a href="../reference/comparedf.html">comparedf()</a></code>:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="../reference/comparedf.control.html">comparedf.control</a></span>(<span class="dt">tol.char =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">  <span class="st">"none"</span>,      <span class="co"># the default</span></a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">  <span class="dt">x1 =</span> <span class="st">"case"</span>, <span class="co"># be case-insensitive for the variable "x1"</span></a>
-<a class="sourceLine" id="cb18-4" data-line-number="4">  <span class="dt">x2 =</span> <span class="cf">function</span>(x, y) <span class="kw"><a href="../reference/comparedf.tolerances.html">tol.NA</a></span>(x, y, x <span class="op">!=</span><span class="st"> </span>y <span class="op">|</span><span class="st"> </span>y <span class="op">==</span><span class="st"> "NA"</span>) <span class="co"># a custom-defined tolerance</span></a>
-<a class="sourceLine" id="cb18-5" data-line-number="5">))</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw"><a href="../reference/comparedf.control.html">comparedf.control</a></span>(<span class="dt">tol.char =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</span>
+<span id="cb18-2"><a href="#cb18-2"></a>  <span class="st">"none"</span>,      <span class="co"># the default</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a>  <span class="dt">x1 =</span> <span class="st">"case"</span>, <span class="co"># be case-insensitive for the variable "x1"</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a>  <span class="dt">x2 =</span> <span class="cf">function</span>(x, y) <span class="kw"><a href="../reference/comparedf.tolerances.html">tol.NA</a></span>(x, y, x <span class="op">!=</span><span class="st"> </span>y <span class="op">|</span><span class="st"> </span>y <span class="op">==</span><span class="st"> "NA"</span>) <span class="co"># a custom-defined tolerance</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a>))</span></code></pre></div>
 </div>
 <div id="user-defined-tolerance-functions" class="section level2">
 <h2 class="hasAnchor">
@@ -4852,18 +4852,18 @@ Differences found in 2/3 variables compared.
 <h3 class="hasAnchor">
 <a href="#example-1" class="anchor"></a>Example 1</h3>
 <p>Suppose we want to ignore any dates which are later in the second dataset than the first. We define a custom tolerance function.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">my.tol &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, tol)</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">{</a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">  <span class="kw"><a href="../reference/comparedf.tolerances.html">tol.NA</a></span>(x, y, x <span class="op">&gt;</span><span class="st"> </span>y)</a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">}</a>
-<a class="sourceLine" id="cb19-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb19-6" data-line-number="6">date.df1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">dt =</span> <span class="kw"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"2017-09-07"</span>, <span class="st">"2017-08-08"</span>, <span class="st">"2017-07-09"</span>, <span class="ot">NA</span>)))</a>
-<a class="sourceLine" id="cb19-7" data-line-number="7">date.df2 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">dt =</span> <span class="kw"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"2017-10-01"</span>, <span class="st">"2017-08-08"</span>, <span class="st">"2017-07-10"</span>, <span class="st">"2017-01-01"</span>)))</a>
-<a class="sourceLine" id="cb19-8" data-line-number="8"><span class="kw"><a href="../reference/diffs.html">n.diffs</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(date.df1, date.df2)) <span class="co"># default finds any differences</span></a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>my.tol &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, tol)</span>
+<span id="cb19-2"><a href="#cb19-2"></a>{</span>
+<span id="cb19-3"><a href="#cb19-3"></a>  <span class="kw"><a href="../reference/comparedf.tolerances.html">tol.NA</a></span>(x, y, x <span class="op">&gt;</span><span class="st"> </span>y)</span>
+<span id="cb19-4"><a href="#cb19-4"></a>}</span>
+<span id="cb19-5"><a href="#cb19-5"></a></span>
+<span id="cb19-6"><a href="#cb19-6"></a>date.df1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">dt =</span> <span class="kw"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"2017-09-07"</span>, <span class="st">"2017-08-08"</span>, <span class="st">"2017-07-09"</span>, <span class="ot">NA</span>)))</span>
+<span id="cb19-7"><a href="#cb19-7"></a>date.df2 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">dt =</span> <span class="kw"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"2017-10-01"</span>, <span class="st">"2017-08-08"</span>, <span class="st">"2017-07-10"</span>, <span class="st">"2017-01-01"</span>)))</span>
+<span id="cb19-8"><a href="#cb19-8"></a><span class="kw"><a href="../reference/diffs.html">n.diffs</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(date.df1, date.df2)) <span class="co"># default finds any differences</span></span></code></pre></div>
 <pre><code>[1] 3</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw"><a href="../reference/diffs.html">n.diffs</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(date.df1, date.df2, <span class="dt">tol.date =</span> my.tol)) <span class="co"># our function identifies only the NA as different...</span></a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw"><a href="../reference/diffs.html">n.diffs</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(date.df1, date.df2, <span class="dt">tol.date =</span> my.tol)) <span class="co"># our function identifies only the NA as different...</span></span></code></pre></div>
 <pre><code>[1] 1</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw"><a href="../reference/diffs.html">n.diffs</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(date.df2, date.df1, <span class="dt">tol.date =</span> my.tol)) <span class="co"># ... until we change the argument order</span></a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw"><a href="../reference/diffs.html">n.diffs</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(date.df2, date.df1, <span class="dt">tol.date =</span> my.tol)) <span class="co"># ... until we change the argument order</span></span></code></pre></div>
 <pre><code>[1] 3</code></pre>
 </div>
 <div id="example-2" class="section level3">
@@ -4871,22 +4871,22 @@ Differences found in 2/3 variables compared.
 <a href="#example-2" class="anchor"></a>Example 2</h3>
 <p>(Continuing our mockstudy example)</p>
 <p>Suppose we’re okay with NAs getting replaced by -9.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">tol.minus9 &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, tol)</a>
-<a class="sourceLine" id="cb25-2" data-line-number="2">{</a>
-<a class="sourceLine" id="cb25-3" data-line-number="3">  idx1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(x) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(y) <span class="op">&amp;</span><span class="st"> </span>y <span class="op">==</span><span class="st"> </span><span class="dv">-9</span></a>
-<a class="sourceLine" id="cb25-4" data-line-number="4">  idx2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/comparedf.tolerances.html">tol.num.absolute</a></span>(x, y, tol) <span class="co"># find other absolute differences</span></a>
-<a class="sourceLine" id="cb25-5" data-line-number="5">  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="op">!</span>idx1 <span class="op">&amp;</span><span class="st"> </span>idx2)</a>
-<a class="sourceLine" id="cb25-6" data-line-number="6">}</a>
-<a class="sourceLine" id="cb25-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb25-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</a>
-<a class="sourceLine" id="cb25-9" data-line-number="9">                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="co"># dots=underscores=spaces, ignore case</span></a>
-<a class="sourceLine" id="cb25-10" data-line-number="10">                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></a>
-<a class="sourceLine" id="cb25-11" data-line-number="11">                <span class="dt">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></a>
-<a class="sourceLine" id="cb25-12" data-line-number="12">                <span class="dt">tol.factor =</span> <span class="st">"labels"</span>,       <span class="co"># match only factor labels</span></a>
-<a class="sourceLine" id="cb25-13" data-line-number="13">                <span class="dt">factor.as.char =</span> <span class="ot">TRUE</span>,       <span class="co"># compare factors and characters</span></a>
-<a class="sourceLine" id="cb25-14" data-line-number="14">                <span class="dt">tol.char =</span> <span class="st">"case"</span>,           <span class="co"># ignore case in character vectors</span></a>
-<a class="sourceLine" id="cb25-15" data-line-number="15">                <span class="dt">tol.num =</span> tol.minus9         <span class="co"># ignore NA -&gt; -9 changes</span></a>
-<a class="sourceLine" id="cb25-16" data-line-number="16">))</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>tol.minus9 &lt;-<span class="st"> </span><span class="cf">function</span>(x, y, tol)</span>
+<span id="cb25-2"><a href="#cb25-2"></a>{</span>
+<span id="cb25-3"><a href="#cb25-3"></a>  idx1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(x) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(y) <span class="op">&amp;</span><span class="st"> </span>y <span class="op">==</span><span class="st"> </span><span class="dv">-9</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a>  idx2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/comparedf.tolerances.html">tol.num.absolute</a></span>(x, y, tol) <span class="co"># find other absolute differences</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="op">!</span>idx1 <span class="op">&amp;</span><span class="st"> </span>idx2)</span>
+<span id="cb25-6"><a href="#cb25-6"></a>}</span>
+<span id="cb25-7"><a href="#cb25-7"></a></span>
+<span id="cb25-8"><a href="#cb25-8"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>,</span>
+<span id="cb25-9"><a href="#cb25-9"></a>                <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="co"># dots=underscores=spaces, ignore case</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a>                <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>,           <span class="co"># compare integers and numerics</span></span>
+<span id="cb25-11"><a href="#cb25-11"></a>                <span class="dt">tol.num.val =</span> <span class="dv">10</span>,            <span class="co"># allow absolute differences &lt;= 10</span></span>
+<span id="cb25-12"><a href="#cb25-12"></a>                <span class="dt">tol.factor =</span> <span class="st">"labels"</span>,       <span class="co"># match only factor labels</span></span>
+<span id="cb25-13"><a href="#cb25-13"></a>                <span class="dt">factor.as.char =</span> <span class="ot">TRUE</span>,       <span class="co"># compare factors and characters</span></span>
+<span id="cb25-14"><a href="#cb25-14"></a>                <span class="dt">tol.char =</span> <span class="st">"case"</span>,           <span class="co"># ignore case in character vectors</span></span>
+<span id="cb25-15"><a href="#cb25-15"></a>                <span class="dt">tol.num =</span> tol.minus9         <span class="co"># ignore NA -&gt; -9 changes</span></span>
+<span id="cb25-16"><a href="#cb25-16"></a>))</span></code></pre></div>
 <table class="table">
 <caption>Summary of data.frames</caption>
 <thead><tr class="header">
@@ -5189,10 +5189,10 @@ Differences found in 2/3 variables compared.
 <h1 class="hasAnchor">
 <a href="#extract-differences" class="anchor"></a>Extract Differences</h1>
 <p>Differences can be easily extracted using the <code><a href="../reference/diffs.html">diffs()</a></code> function. If you only want to determine how many differences were found, use the <code><a href="../reference/diffs.html">n.diffs()</a></code> function.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">cmp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>, <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="kw"><a href="../reference/diffs.html">n.diffs</a></span>(cmp)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>cmp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>, <span class="dt">tol.vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"._ "</span>, <span class="st">"case"</span>), <span class="dt">int.as.num =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="kw"><a href="../reference/diffs.html">n.diffs</a></span>(cmp)</span></code></pre></div>
 <pre><code>[1] 1765</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="../reference/diffs.html">diffs</a></span>(cmp))</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="../reference/diffs.html">diffs</a></span>(cmp))</span></code></pre></div>
 <pre><code>  var.x var.y  case values.x values.y row.x row.y
 1   sex   sex 76170     Male     Male    26    20
 2   sex   sex 76240     Male     Male    27    21
@@ -5201,7 +5201,7 @@ Differences found in 2/3 variables compared.
 5   sex   sex 76780   Female   Female    30    24
 6   sex   sex 77066   Female   Female    31    25</code></pre>
 <p>Differences can also be summarized by variable.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw"><a href="../reference/diffs.html">diffs</a></span>(cmp, <span class="dt">by.var =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw"><a href="../reference/diffs.html">diffs</a></span>(cmp, <span class="dt">by.var =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>         var.x       var.y    n NAs
 1          arm         Arm    0   0
 2          sex         sex 1495   0
@@ -5215,11 +5215,11 @@ Differences found in 2/3 variables compared.
 10 mdquality.s mdquality.s    0   0
 11     age.ord     age.ord    0   0</code></pre>
 <p>To report differences from only a few variables, one can pass a list of variable names to <code><a href="../reference/diffs.html">diffs()</a></code>.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw"><a href="../reference/diffs.html">diffs</a></span>(cmp, <span class="dt">vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"ps"</span>, <span class="st">"ast"</span>), <span class="dt">by.var =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="kw"><a href="../reference/diffs.html">diffs</a></span>(cmp, <span class="dt">vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"ps"</span>, <span class="st">"ast"</span>), <span class="dt">by.var =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>  var.x var.y n NAs
 5    ps    ps 1   1
 9   ast   ast 3   0</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw"><a href="../reference/diffs.html">diffs</a></span>(cmp, <span class="dt">vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"ps"</span>, <span class="st">"ast"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="kw"><a href="../reference/diffs.html">diffs</a></span>(cmp, <span class="dt">vars =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"ps"</span>, <span class="st">"ast"</span>))</span></code></pre></div>
 <pre><code>     var.x var.y   case values.x values.y row.x row.y
 1496    ps    ps  86205        0       NA     6     3
 1763   ast   ast  86205       27       36     6     3
@@ -5233,7 +5233,7 @@ Differences found in 2/3 variables compared.
 <h2 class="hasAnchor">
 <a href="#stucture-of-the-object" class="anchor"></a>Stucture of the Object</h2>
 <p>(This section is just as much for my use as for yours!)</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">obj &lt;-<span class="st"> </span><span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>obj &lt;-<span class="st"> </span><span class="kw"><a href="../reference/comparedf.html">comparedf</a></span>(mockstudy, mockstudy2, <span class="dt">by =</span> <span class="st">"case"</span>)</span></code></pre></div>
 <p>There are two main objects in the <code>"comparedf"</code> object, each with its own print method.</p>
 <p>The <code>frame.summary</code> contains:</p>
 <ul>
@@ -5244,7 +5244,7 @@ Differences found in 2/3 variables compared.
 <li><p>a data.frame of by-variables and row numbers of observations not shared between datasets</p></li>
 <li><p>the number of shared observations</p></li>
 </ul>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(obj<span class="op">$</span>frame.summary)</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(obj<span class="op">$</span>frame.summary)</span></code></pre></div>
 <pre><code>  version        arg ncol nrow   by        attrs       unique n.shared
 1       x  mockstudy   14 1499 case 3 attributes 4 unique obs     1495
 2       y mockstudy2   13 1495 case 3 attributes 0 unique obs     1495</code></pre>
@@ -5268,7 +5268,7 @@ Differences found in 2/3 variables compared.
 </ul>
 </li>
 </ul>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(obj<span class="op">$</span>vars.summary)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(obj<span class="op">$</span>vars.summary)</span></code></pre></div>
 <pre><code>         var.x pos.x         class.x       var.y pos.y         class.y           values        attrs
 1         case     1         integer        case     1         integer      by-variable 0 attributes
 2          sex     4          factor         sex     2          factor 1495 differences 2 attributes
