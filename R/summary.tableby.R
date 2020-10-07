@@ -9,7 +9,8 @@
 #' @param ... For \code{summary.tableby}, other arguments passed to \code{\link{as.data.frame.tableby}}.
 #'   For \code{print}ing the summary object, these are passed to both \code{as.data.frame.summary.tableby} and
 #'   \code{\link[knitr]{kable}}.
-#' @param title	Title for the table, defaulting to \code{NULL} (no title)
+#' @param title	Title/caption for the table, defaulting to \code{NULL} (no title). Passed to \code{\link[knitr]{kable}}.
+#'   Can be length > 1 if the more than one table is being printed.
 #' @param labelTranslations  A named list (or vector) where the name is the label in the
 #'        output to be replaced in the pretty rendering by the character string
 #'        value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.

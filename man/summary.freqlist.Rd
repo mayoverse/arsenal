@@ -20,7 +20,8 @@ additional arguments passed to the \code{\link[knitr]{kable}} function.}
 output to be replaced in the pretty rendering by the character string
 value for the named element of the list, e.g., \code{list(age = "Age(Years)", meansd = "Mean(SD)")}.}
 
-\item{title}{Title for the table, defaulting to \code{NULL} (no title)}
+\item{title}{Title/caption for the table, defaulting to \code{NULL} (no title). Passed to \code{\link[knitr]{kable}}.
+Can be length > 1 if the more than one table is being printed.}
 
 \item{x}{An object of class \code{summary.freqlist}.}
 

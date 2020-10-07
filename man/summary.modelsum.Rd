@@ -44,7 +44,8 @@ the latter avoiding all formatting.
 \code{"html"} uses the HTML tag \code{<strong>} instead of the markdown formatting, and \code{"latex"} uses
 the LaTeX command \code{\\textbf}.}
 
-\item{title}{Title for the table, defaulting to \code{NULL} (no title)}
+\item{title}{Title/caption for the table, defaulting to \code{NULL} (no title). Passed to \code{\link[knitr]{kable}}.
+Can be length > 1 if the more than one table is being printed.}
 
 \item{term.name}{A character vector denoting the column name for the "terms" column. It should be the same length
 as the number of tables or less (it will get recycled if needed). The special value \code{TRUE} will

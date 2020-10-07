@@ -43,7 +43,8 @@ the latter avoiding all formatting.
 \code{"html"} uses the HTML tag \code{<strong>} instead of the markdown formatting, and \code{"latex"} uses
 the LaTeX command \code{\\textbf}.}
 
-\item{title}{Title for the table, defaulting to \code{NULL} (no title)}
+\item{title}{Title/caption for the table, defaulting to \code{NULL} (no title). Passed to \code{\link[knitr]{kable}}.
+Can be length > 1 if the more than one table is being printed.}
 
 \item{pfootnote}{Logical, denoting whether to put footnotes describing the tests used to generate the p-values. Alternatively,
 "html" to surround the outputted footnotes with \code{<li>}.}

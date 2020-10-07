@@ -8,6 +8,7 @@ title: Test title
 
 
 
+
 Table: A Title for tableby
 
 |                            |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|
@@ -20,12 +21,14 @@ Table: A Title for tableby
 
 
 
+
 Table: A Title for modelsum
 
 |               |estimate |std.error |p.value |adj.r.squared |
 |:--------------|:--------|:---------|:-------|:-------------|
 |(Intercept)    |60.455   |0.380     |< 0.001 |0.002         |
 |**sex Female** |-1.208   |0.610     |0.048   |              |
+
 
 
 

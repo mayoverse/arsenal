@@ -8,6 +8,9 @@
 
 * Added "label" option to `cat.simplify=` and `ord.simplify=` for `tableby()`/`paired()`. (#288)
 
+* Possible breaking change: `tableby()`, `modelsum()`, and `freqlist()` now use the `caption=` argument in `knitr::kable()`
+  to generate captions (`comparedf()` already does). (#310)
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.

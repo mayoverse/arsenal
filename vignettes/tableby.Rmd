@@ -505,6 +505,12 @@ t1 <- tableby(arm ~ sex + age, data=mockstudy)
 summary(t1, title='Demographics')
 ```
 
+With multiple left-hand sides, you can pass a vector or list to determine labels for each table:
+
+```{r, results='asis'}
+summary(tableby(list(arm, sex) ~ age, data = mockstudy), title = c("arm table", "sex table"))
+```
+
 ## 13. Modify how missing values are displayed
 
 Depending on the report you are writing you have the following options:

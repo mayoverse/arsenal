@@ -1608,3 +1608,37 @@ test_that("Labels work for cat.simplify and ord.simplify (#288)", {
   )
 })
 
+
+test_that("Titles work with knitr::kable(caption=) (#310)", {
+  expect_identical(
+    capture.kable(summary(tableby(arm ~ sex + age, data = mockstudy), title = "My cool table", text = TRUE)),
+    c("Table: My cool table"                                                                              ,
+      ""                                                                                                  ,
+      "|             | A: IFL (N=428)  | F: FOLFOX (N=691) | G: IROX (N=380) | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:-----------------:|:---------------:|:---------------:|-------:|",
+      "|sex          |                 |                   |                 |                 |   0.190|",
+      "|-  Male      |   277 (64.7%)   |    411 (59.5%)    |   228 (60.0%)   |   916 (61.1%)   |        |",
+      "|-  Female    |   151 (35.3%)   |    280 (40.5%)    |   152 (40.0%)   |   583 (38.9%)   |        |",
+      "|Age in Years |                 |                   |                 |                 |   0.614|",
+      "|-  Mean (SD) | 59.673 (11.365) |  60.301 (11.632)  | 59.763 (11.499) | 59.985 (11.519) |        |",
+      "|-  Range     | 27.000 - 88.000 |  19.000 - 88.000  | 26.000 - 85.000 | 19.000 - 88.000 |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(print(summary(tableby(arm ~ sex + age, data = mockstudy), title = "My cool table", text = TRUE), format = "pandoc")),
+    c("Table: My cool table"                                                                                 ,
+      ""                                                                                                     ,
+      "                A: IFL (N=428)     F: FOLFOX (N=691)    G: IROX (N=380)    Total (N=1499)     p value",
+      "-------------  -----------------  -------------------  -----------------  -----------------  --------",
+      "sex                                                                                             0.190",
+      "-  Male           277 (64.7%)         411 (59.5%)         228 (60.0%)        916 (61.1%)             ",
+      "-  Female         151 (35.3%)         280 (40.5%)         152 (40.0%)        583 (38.9%)             ",
+      "Age in Years                                                                                    0.614",
+      "-  Mean (SD)    59.673 (11.365)     60.301 (11.632)     59.763 (11.499)    59.985 (11.519)           ",
+      "-  Range        27.000 - 88.000     19.000 - 88.000     26.000 - 85.000    19.000 - 88.000           "
+    )
+  )
+  expect_true(any(grepl("<caption>", capture.output(print(summary(tableby(arm ~ sex, data = mockstudy), title = "hi"), format = "html")))))
+  expect_true(any(grepl("\\\\caption", capture.output(print(summary(tableby(arm ~ sex, data = mockstudy), title = "hi"), format = "latex")))))
+})
+

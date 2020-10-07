@@ -253,18 +253,18 @@ merge.freqlist <- function(x, y, all = TRUE, ...)
 #' @rdname arsenal_table
 #' @export
 print.summary.arsenal_table <- function(x, ..., format = if(!is.null(x$text) && x$text %in% c("html", "latex")) x$text else "markdown",
-                                     escape = x$text %nin% c("html", "latex"), width = NULL, min.split = NULL)
+                                        escape = x$text %nin% c("html", "latex"), width = NULL, min.split = NULL)
 {
   df <- as.data.frame(x, ..., width = width, min.split = min.split, list.ok = TRUE)
 
   #### finally print it out ####
-  if(!is.null(x$title)) cat("\nTable: ", x$title, sep = "")
   shown <- FALSE
   for(i in seq_along(df))
   {
     if(nrow(df[[i]]) == 0) next
     shown <- TRUE
-    print(knitr::kable(df[[i]], caption = NULL, align = attr(df[[i]], "align"), format = format, row.names = FALSE, escape = escape, ...))
+    cap <- if(length(x$title) < i) NULL else x$title[[i]]
+    print(knitr::kable(df[[i]], caption = cap, align = attr(df[[i]], "align"), format = format, row.names = FALSE, escape = escape, ...))
     if(!is.null(attr(df[[i]], "tests"))) cat(paste0(attr(df[[i]], "tests"), "\n", collapse = ""))
   }
   if(!shown) stop("There wasn't anything to summarize! (All of the tables have 0 rows)")
