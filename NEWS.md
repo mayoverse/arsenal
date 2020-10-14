@@ -10,6 +10,8 @@
 
 * Possible breaking change: `tableby()`, `modelsum()`, and `freqlist()` now use the `caption=` argument in `knitr::kable()`
   to generate captions (`comparedf()` already does). (#310)
+  
+* Added note to `write2()` vignette about a global option for R Markdown documents in R Studio. (#312)
 
 # arsenal v3.5.0
 

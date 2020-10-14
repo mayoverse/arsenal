@@ -387,3 +387,8 @@ mylist6 <- list(
 )
 write2pdf(mylist6, paste0(tmpdir, "/test.multiple.titles.pdf"))
 ```
+
+## Why is `write2()` not working in R Markdown/R Studio?
+
+It's possible that a global option in R Studio is preventing the tables from rendering. Consider turning off (i.e., unchecking) the option
+Tools > Global Options > R Markdown > Show output inline for all R Markdown documents.
