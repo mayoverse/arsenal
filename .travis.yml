@@ -16,6 +16,3 @@ env:
   global:
   # don't treat missing suggested packages as error
   - _R_CHECK_FORCE_SUGGESTS_=false _R_CHECK_TESTS_NLINES_=0
-
-before_install:
-  Rscript -e 'update.packages(ask = FALSE)'
