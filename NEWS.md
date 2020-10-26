@@ -13,6 +13,8 @@
   
 * Added note to `write2()` vignette about a global option for R Markdown documents in R Studio. (#312)
 
+* Changed `broom` requirement to >= 0.7.1, in which a bug with `geepack::geeglm` was fixed. This affected one test in the test suite.
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.

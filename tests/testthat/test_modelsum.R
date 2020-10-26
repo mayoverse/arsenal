@@ -681,11 +681,11 @@ test_that("relrisk works (#279)", {
     capture.kable(summary(modelsum(mdquality.s ~ arm + sex, data = mockstudy, id = case, family = "relrisk"))),
     c("|                            |RR    |CI.lower.RR |CI.upper.RR |p.value |Nmiss |",
       "|:---------------------------|:-----|:-----------|:-----------|:-------|:-----|",
-      "|(Intercept)                 |0.890 |-0.152      |-0.081      |< 0.001 |252   |",
-      "|**Treatment Arm F: FOLFOX** |1.014 |-0.031      |0.059       |0.538   |      |",
-      "|**Treatment Arm G: IROX**   |1.021 |-0.029      |0.070       |0.412   |      |",
-      "|(Intercept)                 |0.899 |-0.130      |-0.083      |< 0.001 |252   |",
-      "|**sex Female**              |1.004 |-0.033      |0.042       |0.826   |      |"
+      "|(Intercept)                 |0.890 |0.859       |0.922       |< 0.001 |252   |",
+      "|**Treatment Arm F: FOLFOX** |1.014 |0.969       |1.061       |0.538   |      |",
+      "|**Treatment Arm G: IROX**   |1.021 |0.972       |1.072       |0.412   |      |",
+      "|(Intercept)                 |0.899 |0.878       |0.921       |< 0.001 |252   |",
+      "|**sex Female**              |1.004 |0.967       |1.043       |0.826   |      |"
     )
   )
   options(opts)

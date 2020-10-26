@@ -28,7 +28,7 @@ Description: An Arsenal of 'R' functions for large-scale statistical summaries,
   comparedf(), a function for comparing data.frames; and
   write2(), a function to output tables to a document.
 Suggests:
-    broom (>= 0.7.0),
+    broom (>= 0.7.1),
     stringr,
     magrittr,
     rmarkdown,
