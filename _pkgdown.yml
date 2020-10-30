@@ -52,6 +52,7 @@ reference:
       - mdy.Date
       - padjust
       - internal.functions
+      - selectall
   - title: "Common arsenal table structure"
     contents:
       - arsenal_table
