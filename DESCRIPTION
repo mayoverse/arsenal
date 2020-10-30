@@ -39,7 +39,7 @@ Suggests:
     coin,
     pROC,
     MASS,
-    gam,
+    splines,
     rpart,
     yaml,
     geepack

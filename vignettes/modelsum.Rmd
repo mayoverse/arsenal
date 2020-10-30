@@ -14,7 +14,6 @@ vignette: |
 ```{r, echo=FALSE, message=FALSE, results='hide', warning=FALSE}
 require(knitr)
 require(broom)
-require(gam)
 require(MASS)
 require(pROC)
 require(rpart)

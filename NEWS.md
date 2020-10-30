@@ -17,6 +17,8 @@
 
 * Fixed a bug in `tableby()` / `paired()` where `stats.labels=` specification would remove all default labels. (#316)
 
+* Removed `gam` from the "Suggests", in favor of `splines`, which the `modelsum()` vignette actually uses.
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.
