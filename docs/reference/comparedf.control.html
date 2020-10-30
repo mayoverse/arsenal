@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Control settings for <code>comparedf</code> function — comparedf.control • arsenal</title>
+<title>Control settings for comparedf function — comparedf.control • arsenal</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -42,10 +46,9 @@
 
 
 
-<meta property="og:title" content="Control settings for <code>comparedf</code> function — comparedf.control" />
+<meta property="og:title" content="Control settings for comparedf function — comparedf.control" />
 <meta property="og:description" content="Control tolerance definitions for the comparedf function." />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -63,7 +66,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -128,7 +131,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/mayoverse/arsenal">
+  <a href="https://github.com/mayoverse/arsenal/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -155,26 +158,26 @@
     <p>Control tolerance definitions for the <code><a href='comparedf.html'>comparedf</a></code> function.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>comparedf.control</span>(
-  <span class='kw'>tol.logical</span> <span class='kw'>=</span> <span class='st'>"none"</span>,
-  <span class='kw'>tol.num</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"absolute"</span>, <span class='st'>"percent"</span>, <span class='st'>"pct"</span>),
-  <span class='kw'>tol.num.val</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='no'>.Machine</span>$<span class='no'>double.eps</span>),
-  <span class='kw'>int.as.num</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>tol.char</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"trim"</span>, <span class='st'>"case"</span>, <span class='st'>"both"</span>),
-  <span class='kw'>tol.factor</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"levels"</span>, <span class='st'>"labels"</span>),
-  <span class='kw'>factor.as.char</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>tol.date</span> <span class='kw'>=</span> <span class='st'>"absolute"</span>,
-  <span class='kw'>tol.date.val</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>tol.other</span> <span class='kw'>=</span> <span class='st'>"none"</span>,
-  <span class='kw'>tol.vars</span> <span class='kw'>=</span> <span class='st'>"none"</span>,
-  <span class='kw'>max.print.vars</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>max.print.obs</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>max.print.diffs.per.var</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>max.print.diffs</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>max.print.attrs</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>max.print.diff</span> <span class='kw'>=</span> <span class='fl'>10</span>
-)</pre>
+    <pre class="usage"><span class='fu'>comparedf.control</span><span class='op'>(</span>
+  tol.logical <span class='op'>=</span> <span class='st'>"none"</span>,
+  tol.num <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"absolute"</span>, <span class='st'>"percent"</span>, <span class='st'>"pct"</span><span class='op'>)</span>,
+  tol.num.val <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>)</span>,
+  int.as.num <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  tol.char <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"trim"</span>, <span class='st'>"case"</span>, <span class='st'>"both"</span><span class='op'>)</span>,
+  tol.factor <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"levels"</span>, <span class='st'>"labels"</span><span class='op'>)</span>,
+  factor.as.char <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  tol.date <span class='op'>=</span> <span class='st'>"absolute"</span>,
+  tol.date.val <span class='op'>=</span> <span class='fl'>0</span>,
+  tol.other <span class='op'>=</span> <span class='st'>"none"</span>,
+  tol.vars <span class='op'>=</span> <span class='st'>"none"</span>,
+  max.print.vars <span class='op'>=</span> <span class='cn'>NA</span>,
+  max.print.obs <span class='op'>=</span> <span class='cn'>NA</span>,
+  max.print.diffs.per.var <span class='op'>=</span> <span class='fl'>10</span>,
+  max.print.diffs <span class='op'>=</span> <span class='fl'>50</span>,
+  max.print.attrs <span class='op'>=</span> <span class='cn'>NA</span>,
+  <span class='va'>...</span>,
+  max.print.diff <span class='op'>=</span> <span class='fl'>10</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -267,33 +270,29 @@ as the default.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='comparedf.html'>comparedf</a></code>, <code><a href='comparedf.tolerances.html'>comparedf.tolerances</a></code>, <code><a href='summary.comparedf.html'>summary.comparedf</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Ethan Heinzen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cntl</span> <span class='kw'>&lt;-</span> <span class='fu'>comparedf.control</span>(
-  <span class='kw'>tol.num</span> <span class='kw'>=</span> <span class='st'>"pct"</span>,     <span class='co'># calculate percent differences</span>
-  <span class='kw'>tol.vars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"case"</span>, <span class='co'># ignore case</span>
+    <pre class="examples"><div class='input'><span class='va'>cntl</span> <span class='op'>&lt;-</span> <span class='fu'>comparedf.control</span><span class='op'>(</span>
+  tol.num <span class='op'>=</span> <span class='st'>"pct"</span>,     <span class='co'># calculate percent differences</span>
+  tol.vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"case"</span>, <span class='co'># ignore case</span>
                <span class='st'>"._"</span>,   <span class='co'># set all underscores to dots.</span>
-               <span class='st'>"e"</span>)    <span class='co'># remove all letter e's</span>
-)
+               <span class='st'>"e"</span><span class='op'>)</span>    <span class='co'># remove all letter e's</span>
+<span class='op'>)</span>
 
-<span class='no'>cntl</span> <span class='kw'>&lt;-</span> <span class='fu'>comparedf.control</span>(<span class='kw'>tol.char</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+<span class='va'>cntl</span> <span class='op'>&lt;-</span> <span class='fu'>comparedf.control</span><span class='op'>(</span>tol.char <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
   <span class='st'>"none"</span>,      <span class='co'># the default</span>
-  <span class='kw'>x1</span> <span class='kw'>=</span> <span class='st'>"case"</span>, <span class='co'># be case-insensitive for the variable "x1"</span>
-  <span class='kw'>x2</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) <span class='fu'><a href='comparedf.tolerances.html'>tol.NA</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>x</span> <span class='kw'>!=</span> <span class='no'>y</span> <span class='kw'>|</span> <span class='no'>y</span> <span class='kw'>==</span> <span class='st'>"NA"</span>) <span class='co'># a custom-defined tolerance</span>
-))</div></pre>
+  x1 <span class='op'>=</span> <span class='st'>"case"</span>, <span class='co'># be case-insensitive for the variable "x1"</span>
+  x2 <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span> <span class='fu'><a href='comparedf.tolerances.html'>tol.NA</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>x</span> <span class='op'>!=</span> <span class='va'>y</span> <span class='op'>|</span> <span class='va'>y</span> <span class='op'>==</span> <span class='st'>"NA"</span><span class='op'>)</span> <span class='co'># a custom-defined tolerance</span>
+<span class='op'>)</span><span class='op'>)</span>
+</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Ethan Heinzen</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -304,7 +303,7 @@ as the default.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

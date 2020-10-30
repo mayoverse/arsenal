@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@
 
 <meta property="og:title" content="Changelog" />
 <meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -62,7 +65,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -127,7 +130,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/mayoverse/arsenal">
+  <a href="https://github.com/mayoverse/arsenal/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -145,12 +148,12 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
+      <h1 data-toc-skip>Changelog <small></small></h1>
       <small>Source: <a href='https://github.com/mayoverse/arsenal/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
     <div id="arsenal-v3509000" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="3.5.0.9000">
 <a href="#arsenal-v3509000" class="anchor"></a>arsenal v3.5.0.9000<small> Unreleased </small>
 </h1>
 <ul>
@@ -160,10 +163,12 @@
 <li><p>Added “label” option to <code>cat.simplify=</code> and <code>ord.simplify=</code> for <code><a href="../reference/tableby.html">tableby()</a></code>/<code><a href="../reference/paired.html">paired()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/288'>#288</a>)</p></li>
 <li><p>Possible breaking change: <code><a href="../reference/tableby.html">tableby()</a></code>, <code><a href="../reference/modelsum.html">modelsum()</a></code>, and <code><a href="../reference/freqlist.html">freqlist()</a></code> now use the <code>caption=</code> argument in <code><a href="https://rdrr.io/pkg/knitr/man/kable.html">knitr::kable()</a></code> to generate captions (<code><a href="../reference/comparedf.html">comparedf()</a></code> already does). (<a href='https://github.com/mayoverse/arsenal/issues/310'>#310</a>)</p></li>
 <li><p>Added note to <code><a href="../reference/write2.html">write2()</a></code> vignette about a global option for R Markdown documents in R Studio. (<a href='https://github.com/mayoverse/arsenal/issues/312'>#312</a>)</p></li>
+<li><p>Changed <code>broom</code> requirement to &gt;= 0.7.1, in which a bug with <code><a href="https://rdrr.io/pkg/geepack/man/geeglm.html">geepack::geeglm</a></code> was fixed. This affected one test in the test suite.</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code> where <code>stats.labels=</code> specification would remove all default labels. (<a href='https://github.com/mayoverse/arsenal/issues/316'>#316</a>)</p></li>
 </ul>
 </div>
     <div id="arsenal-v350" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="3.5.0">
 <a href="#arsenal-v350" class="anchor"></a>arsenal v3.5.0<small> 2020-07-13 </small>
 </h1>
 <ul>
@@ -194,7 +199,7 @@
 </ul>
 </div>
     <div id="arsenal-v340" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="3.4.0">
 <a href="#arsenal-v340" class="anchor"></a>arsenal v3.4.0<small> 2020-02-15 </small>
 </h1>
 <ul>
@@ -240,7 +245,7 @@
 </ul>
 </div>
     <div id="arsenal-v330" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="3.3.0">
 <a href="#arsenal-v330" class="anchor"></a>arsenal v3.3.0<small> 2019-09-07 </small>
 </h1>
 <ul>
@@ -283,7 +288,7 @@
 </ul>
 </div>
     <div id="arsenal-v320" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="3.2.0">
 <a href="#arsenal-v320" class="anchor"></a>arsenal v3.2.0<small> 2019-06-13 </small>
 </h1>
 <ul>
@@ -315,7 +320,7 @@
 </ul>
 </div>
     <div id="arsenal-v310" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="3.1.0">
 <a href="#arsenal-v310" class="anchor"></a>arsenal v3.1.0<small> 2019-05-03 </small>
 </h1>
 <ul>
@@ -323,7 +328,7 @@
 <p><code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code>:</p>
 <ul>
 <li><p>Added “Nmiss” to default <code>surv.stats=</code> in <code><a href="../reference/tableby.control.html">tableby.control()</a></code>.</p></li>
-<li><p>Fixed a bug when some <code>Surv()</code> elements are NA. (<a href='https://github.com/mayoverse/arsenal/issues/208'>#208</a>)</p></li>
+<li><p>Fixed a bug when some <code><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv()</a></code> elements are NA. (<a href='https://github.com/mayoverse/arsenal/issues/208'>#208</a>)</p></li>
 <li><p><code><a href="../reference/tableby.control.html">tableby.control()</a></code>: fixed a bug with simplifying categorical and numeric output. (<a href='https://github.com/mayoverse/arsenal/issues/199'>#199</a>, <a href='https://github.com/mayoverse/arsenal/issues/203'>#203</a>) This fix also allows for simplification of custom statistics. (<a href='https://github.com/mayoverse/arsenal/issues/200'>#200</a>)</p></li>
 <li><p><code><a href="../reference/tableby.control.html">tableby.control()</a></code>: added <code>date.simplify=</code> and <code>ordered.simplify=</code> arguments. (<a href='https://github.com/mayoverse/arsenal/issues/202'>#202</a>) The order of arguments has changed slightly for consistency.</p></li>
 <li><p><code><a href="../reference/paired.control.html">paired.control()</a></code>: took away the arguments that should be the same as <code><a href="../reference/tableby.control.html">tableby.control()</a></code>, and only included arguments with new defaults or which don’t appear in <code><a href="../reference/tableby.control.html">tableby.control()</a></code>.</p></li>
@@ -342,7 +347,7 @@
 </ul>
 </div>
     <div id="arsenal-v300" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="3.0.0">
 <a href="#arsenal-v300" class="anchor"></a>arsenal v3.0.0<small> 2019-03-25 </small>
 </h1>
 <p><strong>There are a few non-backwards-compatible updates.</strong></p>
@@ -393,7 +398,7 @@
 </ul>
 </div>
     <div id="arsenal-v200" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="2.0.0">
 <a href="#arsenal-v200" class="anchor"></a>arsenal v2.0.0<small> 2019-01-16 </small>
 </h1>
 <p>There is a new class system (<code>"arsenal_table"</code>) which unifies <code><a href="../reference/tableby.html">tableby()</a></code>, <code><a href="../reference/modelsum.html">modelsum()</a></code>, and <code><a href="../reference/freqlist.html">freqlist()</a></code>.</p>
@@ -459,7 +464,7 @@
 </ul>
 </div>
     <div id="arsenal-v150" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="1.5.0">
 <a href="#arsenal-v150" class="anchor"></a>arsenal v1.5.0<small> 2018-11-09 </small>
 </h1>
 <ul>
@@ -487,7 +492,7 @@
 </ul>
 </div>
     <div id="arsenal-v140" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="1.4.0">
 <a href="#arsenal-v140" class="anchor"></a>arsenal v1.4.0<small> 2018-09-18 </small>
 </h1>
 <p><strong>There are a few non-backwards-compatible updates.</strong></p>
@@ -560,7 +565,7 @@
 </ul>
 </div>
     <div id="arsenal-v130" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="1.3.0">
 <a href="#arsenal-v130" class="anchor"></a>arsenal v1.3.0<small> 2018-07-20 </small>
 </h1>
 <p><strong>This is a mostly backwards-compatible update.</strong></p>
@@ -614,7 +619,7 @@
 </ul>
 </div>
     <div id="arsenal-120" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="1.2.0">
 <a href="#arsenal-120" class="anchor"></a>arsenal 1.2.0<small> 2018-04-16 </small>
 </h1>
 <ul>
@@ -623,7 +628,7 @@
 </ul>
 </div>
     <div id="arsenal-110" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="1.1.0">
 <a href="#arsenal-110" class="anchor"></a>arsenal 1.1.0<small> 2018-03-13 </small>
 </h1>
 <p><strong>This is a mostly backwards-compatible update.</strong></p>
@@ -679,7 +684,7 @@
 </ul>
 </div>
     <div id="arsenal-100" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="1.0.0">
 <a href="#arsenal-100" class="anchor"></a>arsenal 1.0.0<small> 2018-02-02 </small>
 </h1>
 <p><strong>This is a non-backwards-compatible update.</strong></p>
@@ -794,7 +799,7 @@
 </ul>
 </div>
     <div id="arsenal-061" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.6.1">
 <a href="#arsenal-061" class="anchor"></a>arsenal 0.6.1<small> 2017-12-08 </small>
 </h1>
 <p>This is a patch to fix an error appearing with R-devel. We anticipate releasing v1.0.0 soon, which will not be backwards-compatible.</p>
@@ -803,7 +808,7 @@
 </ul>
 </div>
     <div id="arsenal-060" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.6.0">
 <a href="#arsenal-060" class="anchor"></a>arsenal 0.6.0<small> 2017-09-20 </small>
 </h1>
 <ul>
@@ -822,7 +827,7 @@
 </ul>
 </div>
     <div id="arsenal-050" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.5.0">
 <a href="#arsenal-050" class="anchor"></a>arsenal 0.5.0<small> 2017-08-14 </small>
 </h1>
 <ul>
@@ -836,7 +841,7 @@
 </ul>
 </div>
     <div id="arsenal-042" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.4.2">
 <a href="#arsenal-042" class="anchor"></a>arsenal 0.4.2<small> Unreleased </small>
 </h1>
 <ul>
@@ -846,7 +851,7 @@
 </ul>
 </div>
     <div id="arsenal-041" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.4.1">
 <a href="#arsenal-041" class="anchor"></a>arsenal 0.4.1<small> Unreleased </small>
 </h1>
 <ul>
@@ -854,7 +859,7 @@
 </ul>
 </div>
     <div id="arsenal-040" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.4.0">
 <a href="#arsenal-040" class="anchor"></a>arsenal 0.4.0<small> Unreleased </small>
 </h1>
 <ul>
@@ -870,7 +875,7 @@
 </ul>
 </div>
     <div id="arsenal-030" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.3.0">
 <a href="#arsenal-030" class="anchor"></a>arsenal 0.3.0<small> 2017-03-09 </small>
 </h1>
 <ul>
@@ -879,7 +884,7 @@
 </ul>
 </div>
     <div id="arsenal-023" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.3">
 <a href="#arsenal-023" class="anchor"></a>arsenal 0.2.3<small> Unreleased </small>
 </h1>
 <ul>
@@ -888,7 +893,7 @@
 </ul>
 </div>
     <div id="arsenal-022" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.2">
 <a href="#arsenal-022" class="anchor"></a>arsenal 0.2.2<small> Unreleased </small>
 </h1>
 <ul>
@@ -897,7 +902,7 @@
 </ul>
 </div>
     <div id="arsenal-021" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.1">
 <a href="#arsenal-021" class="anchor"></a>arsenal 0.2.1<small> Unreleased </small>
 </h1>
 <ul>
@@ -907,7 +912,7 @@
 </ul>
 </div>
     <div id="arsenal-020" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.0">
 <a href="#arsenal-020" class="anchor"></a>arsenal 0.2.0<small> 2017-01-31 </small>
 </h1>
 <ul>
@@ -917,7 +922,7 @@
 </ul>
 </div>
     <div id="arsenal-012" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.2">
 <a href="#arsenal-012" class="anchor"></a>arsenal 0.1.2<small> 2016-12-30 </small>
 </h1>
 <ul>
@@ -926,7 +931,7 @@
 </ul>
 </div>
     <div id="arsenal-011" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1">
 <a href="#arsenal-011" class="anchor"></a>arsenal 0.1.1<small> Unreleased </small>
 </h1>
 <ul>
@@ -934,7 +939,7 @@
 </ul>
 </div>
     <div id="arsenal-010" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.0">
 <a href="#arsenal-010" class="anchor"></a>arsenal 0.1.0<small> Unreleased </small>
 </h1>
 <ul>
@@ -944,40 +949,10 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#arsenal-v3509000">3.5.0.9000</a></li>
-        <li><a href="#arsenal-v350">3.5.0</a></li>
-        <li><a href="#arsenal-v340">3.4.0</a></li>
-        <li><a href="#arsenal-v330">3.3.0</a></li>
-        <li><a href="#arsenal-v320">3.2.0</a></li>
-        <li><a href="#arsenal-v310">3.1.0</a></li>
-        <li><a href="#arsenal-v300">3.0.0</a></li>
-        <li><a href="#arsenal-v200">2.0.0</a></li>
-        <li><a href="#arsenal-v150">1.5.0</a></li>
-        <li><a href="#arsenal-v140">1.4.0</a></li>
-        <li><a href="#arsenal-v130">1.3.0</a></li>
-        <li><a href="#arsenal-120">1.2.0</a></li>
-        <li><a href="#arsenal-110">1.1.0</a></li>
-        <li><a href="#arsenal-100">1.0.0</a></li>
-        <li><a href="#arsenal-061">0.6.1</a></li>
-        <li><a href="#arsenal-060">0.6.0</a></li>
-        <li><a href="#arsenal-050">0.5.0</a></li>
-        <li><a href="#arsenal-042">0.4.2</a></li>
-        <li><a href="#arsenal-041">0.4.1</a></li>
-        <li><a href="#arsenal-040">0.4.0</a></li>
-        <li><a href="#arsenal-030">0.3.0</a></li>
-        <li><a href="#arsenal-023">0.2.3</a></li>
-        <li><a href="#arsenal-022">0.2.2</a></li>
-        <li><a href="#arsenal-021">0.2.1</a></li>
-        <li><a href="#arsenal-020">0.2.0</a></li>
-        <li><a href="#arsenal-012">0.1.2</a></li>
-        <li><a href="#arsenal-011">0.1.1</a></li>
-        <li><a href="#arsenal-010">0.1.0</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -989,7 +964,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

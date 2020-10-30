@@ -25,14 +25,7 @@ tableby.control(
   surv.stats = c("Nmiss", "Nevents", "medSurv"),
   date.stats = c("Nmiss", "median", "range"),
   selectall.stats = c("Nmiss", "countpct"),
-  stats.labels = list(Nmiss = "N-Miss", Nmiss2 = "N-Miss", meansd = "Mean (SD)",
-    medianrange = "Median (Range)", median = "Median", medianq1q3 = "Median (Q1, Q3)",
-    q1q3 = "Q1, Q3", iqr = "IQR", mean = "Mean", sd = "SD", var = "Var", max = "Max", min
-    = "Min", meanCI = "Mean (CI)", sum = "Sum", gmean = "Geom Mean", gsd = "Geom SD",
-    gmeansd = "Geom Mean (Geom SD)", gmeanCI = "Geom Mean (CI)", range = "Range", Npct =
-    "N (Pct)", Nevents = "Events", medSurv = "Median Survival", medTime =
-    "Median Follow-Up", medianmad = "Median (MAD)",      overall = "Overall", total =
-    "Total", difference = "Difference"),
+  stats.labels = list(),
   digits = 3L,
   digits.count = 0L,
   digits.pct = 1L,
@@ -86,7 +79,7 @@ within the levels of the group LHS variable.}
 
 \item{stats.labels}{A named list of labels for all the statistics function names, where the function name is the named element in the list
 and the value that goes with it is a string containing the formal name that will be printed in all printed renderings of the output,
-e.g., \code{list(countpct="Count (Pct)")}.}
+e.g., \code{list(countpct="Count (Pct)")}. Any unnamed elements will be ignored. Passing \code{NULL} will disable labels.}
 
 \item{digits}{Number of decimal places for numeric values.}
 
