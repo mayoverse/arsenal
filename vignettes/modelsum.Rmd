@@ -138,7 +138,7 @@ plot(fit2)
 Finally, look to see whether there there is a non-linear relationship with age.
 
 ```{r}
-require(gam)
+require(splines)
 fit3 <- lm(log(alk.phos) ~ arm + ns(age, df=2) + sex, data=mockstudy)
 
 # test whether there is a difference between models 
