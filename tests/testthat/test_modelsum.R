@@ -131,6 +131,7 @@ test_that("strata() works", {
   skip_if_not_installed("survival", "2.41-3")
   require(survival)
 
+  expect_identical(packageVersion("survival"), "2.41-3")
   expect_identical(
     capture.kable(summary(modelsum(Surv(time, status) ~ ethan, adjust = ~strata(Sex), data = mdat, family="survival"), text = TRUE)),
     c("|              |HR    |CI.lower.HR |CI.upper.HR |p.value |concordance |Nmiss |",
