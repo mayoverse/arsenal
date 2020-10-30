@@ -15,6 +15,8 @@
 
 * Changed `broom` requirement to >= 0.7.1, in which a bug with `geepack::geeglm` was fixed. This affected one test in the test suite.
 
+* Fixed a bug in `tableby()` / `paired()` where `stats.labels=` specification would remove all default labels. (#316)
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.

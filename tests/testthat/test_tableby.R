@@ -1289,8 +1289,8 @@ test_that("10/09/2019: change title for overall and total (#253, #261, #272)", {
       "|-  Male      |   916 (61.1%)   |",
       "|-  Female    |   583 (38.9%)   |",
       "|Age in Years |                 |",
-      "|-  meansd    | 59.985 (11.519) |",
-      "|-  range     | 19.000 - 88.000 |"
+      "|-  Mean (SD) | 59.985 (11.519) |",
+      "|-  Range     | 19.000 - 88.000 |"
     )
   )
   expect_identical(
@@ -1306,8 +1306,8 @@ test_that("10/09/2019: change title for overall and total (#253, #261, #272)", {
     c("|              |     Male (N=916)     |    Female (N=583)    |    Total (N=1499)    | p value|",
       "|:-------------|:--------------------:|:--------------------:|:--------------------:|-------:|",
       "|Age in Years  |                      |                      |                      |   0.048|",
-      "|-  meansd     |   60.455 (11.369)    |   59.247 (11.722)    |   59.985 (11.519)    |        |",
-      "|-  range      |   19.000 - 88.000    |   22.000 - 88.000    |   19.000 - 88.000    |        |",
+      "|-  Mean (SD)  |   60.455 (11.369)    |   59.247 (11.722)    |   59.985 (11.519)    |        |",
+      "|-  Range      |   19.000 - 88.000    |   22.000 - 88.000    |   19.000 - 88.000    |        |",
       "|Treatment Arm |                      |                      |                      |   0.190|",
       "|-  A: IFL     |     277 (30.2%)      |     151 (25.9%)      |     428 (28.6%)      |        |",
       "|-  F: FOLFOX  |     411 (44.9%)      |     280 (48.0%)      |     691 (46.1%)      |        |",
@@ -1642,3 +1642,24 @@ test_that("Titles work with knitr::kable(caption=) (#310)", {
   expect_true(any(grepl("\\\\caption", capture.output(print(summary(tableby(arm ~ sex, data = mockstudy), title = "hi"), format = "latex")))))
 })
 
+
+test_that("stats.labels doesn't overwrite existing labels (#316)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ age, data = mockstudy, stats.labels=list(medSurv = 'Median')), text = TRUE)),
+    c("|             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                 |                 |   0.048|",
+      "|-  Mean (SD) | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |",
+      "|-  Range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ age, data = mockstudy, stats.labels=NULL), text = TRUE)),
+    c("|             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                 |                 |   0.048|",
+      "|-  meansd    | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |",
+      "|-  range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |"
+    )
+  )
+})
