@@ -19,6 +19,8 @@
 
 * Removed `gam` from the "Suggests", in favor of `splines`, which the `modelsum()` vignette actually uses.
 
+* Changed `survival` requirement to `>= 2.43-1`.
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.
