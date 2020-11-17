@@ -22,6 +22,7 @@ NULL
 #' @export
 yaml <- function(...)
 {
+  check_pkg("yaml")
   x <- yaml::as.yaml(list(...))
   class(x) <- "yaml"
   x

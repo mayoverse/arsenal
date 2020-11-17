@@ -76,7 +76,7 @@ trend <- function(x, x.by, ..., test.always = FALSE) {
     return(list(p.value=NA_real_, method = "Trend test for ordinal variables"))
   }
   ## should be taken care of with coin::
-  ## require(coin, quietly=TRUE, warn.conflicts=FALSE)
+  check_pkg("coin")
   indtest <- coin::independence_test(x~as.factor(x.by), teststat="quad")
   list(p.value=coin::pvalue(indtest), method="Trend test for ordinal variables", statistic=indtest@statistic@teststatistic)
 }

@@ -96,6 +96,8 @@ make_ms_term_labels <- function(mf, trms)
 
 modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
 {
+  check_pkg("broom")
+
   try_lrt <- function(f, s, a)
   {
     if(a) return(NA_real_)
@@ -105,6 +107,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
 
   ## y is ordered factor
   if (fam$family == "ordinal") {
+    check_pkg("MASS")
     temp.call[[1]] <- quote(MASS::polr)
     temp.call$Hess <- TRUE
     temp.call$method <- fam$method
@@ -140,6 +143,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
   } else if (fam$family == "binomial" || fam$family == "quasibinomial") {
     ## These families are used in glm
 
+    check_pkg("pROC")
     temp.call[[1]] <- quote(stats::glm)
     temp.call$x <- TRUE
     temp.call$family <- fam
@@ -177,6 +181,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
 
   } else if (fam$family == "negbin") {
     ## Also uses glm
+    check_pkg("MASS")
     temp.call[[1]] <- quote(MASS::glm.nb)
     temp.call$x <- TRUE
     temp.call$link <- fam$link
@@ -192,6 +197,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
 
   } else if(fam$family == "clog") {
 
+    check_pkg("survival")
     temp.call[[1]] <- quote(survival::clogit)
     fit <- eval(temp.call, envir)
     ## use tidy to get both CIs, merge
@@ -203,6 +209,8 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
 
   } else if (fam$family == "relrisk") {
+
+    check_pkg("geepack")
     temp.call[[1]] <- quote(geepack::geeglm)
     temp.call$family <- stats::poisson(fam$link)
     temp.call$corstr <- "independence"
@@ -215,6 +223,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
 
   } else if(fam$family == "survival") {
 
+    check_pkg("survival")
     temp.call[[1]] <- quote(survival::coxph)
     fit <- eval(temp.call, envir)
     ## use tidy to get both CIs, merge

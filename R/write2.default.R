@@ -2,6 +2,7 @@
 #' @export
 write2.default <- function(object, file, FUN = NULL, ..., append. = FALSE, render. = TRUE, keep.rmd = !render., output_format = NULL)
 {
+  check_pkg("rmarkdown")
   if(!is.character(file) || length(file) > 1) stop("'file' argument must be a single character string.")
   if(!is.logical(append.) || length(append.) > 1) stop("'append.' argument must be a single logical value.")
   if(!is.logical(render.) || length(render.) > 1) stop("'render.' argument must be a single logical value.")

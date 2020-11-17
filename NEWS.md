@@ -21,6 +21,8 @@
 
 * Changed `survival` requirement to `>= 2.43-1`.
 
+* Added code to error informatively when "Suggests" aren't available. (#317)
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.

@@ -329,7 +329,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           currtest <- control$selectall.test
           vartype <- "selectall"
 
-        } else if(survival::is.Surv(currcol)) {
+        } else if(inherits(currcol, "Surv")) {
           ##### Survival (time to event) #######
           xlevels <- NULL
           if(any(currcol[, 2] %nin% c(0:1, NA))) stop("Survival endpoint may not be coded 0/1.")

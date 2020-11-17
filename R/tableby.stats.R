@@ -240,6 +240,7 @@ Nevents <- function(x, na.rm = TRUE, weights = NULL, ...) {
   {
     NA_real_
   } else {
+    check_pkg("survival")
     mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
     as.numeric(mat["events"])
   }
@@ -254,6 +255,7 @@ medSurv <- function(x, na.rm = TRUE, weights = NULL, ...) {
   {
     NA_real_
   } else {
+    check_pkg("survival")
     mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
     as.numeric(mat["median"]) # if we don't hit the median, or if all obs are censors, this is NA
   }
@@ -268,6 +270,7 @@ NeventsSurv <- function(x, na.rm = TRUE, weights = NULL, times=1:5, ...) {
     matrix(NA_real_, nrow = 1, ncol = length(times))
   } else
   {
+    check_pkg("survival")
     xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
     t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
   }
@@ -283,6 +286,7 @@ NriskSurv <- function(x, na.rm = TRUE, weights = NULL, times=1:5, ...) {
     matrix(NA_real_, nrow = 1, ncol = length(times))
   } else
   {
+    check_pkg("survival")
     xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
     t(cbind(xsumm$n.risk, 100*xsumm$surv))
   }
@@ -296,7 +300,11 @@ Nrisk <- function(x, na.rm = TRUE, weights = NULL, times=1:5, ...) {
   y <- if(na.rm && allNA(x))
   {
     rep(NA_real_, times = length(times))
-  } else summary(survival::survfit(x ~ 1, weights = weights), times=times)$n.risk
+  } else
+  {
+    check_pkg("survival")
+    summary(survival::survfit(x ~ 1, weights = weights), times=times)$n.risk
+  }
   out <- stats::setNames(as.list(y), paste0("time = ", times))
   as.tbstat_multirow(lapply(out, as.countpct))
 }
@@ -311,6 +319,7 @@ medTime <- function(x, na.rm = TRUE, weights = NULL, ...)
   } else
   {
     x[, 2] <- 1 - x[, 2] # censor events instead
+    check_pkg("survival")
     mat <- summary(survival::survfit(x ~ 1, weights = weights))$table
     as.numeric(mat["median"]) # if we don't hit the median, or if all obs are events, this is NA
   }

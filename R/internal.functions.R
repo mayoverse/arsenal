@@ -1,5 +1,10 @@
 
-locate <- function(string, pattern) stringr::str_locate_all(string, pattern)[[1L]][, 1L]
+check_pkg <- function(p)
+{
+  if(!requireNamespace(p, quietly = TRUE)) stop("Package '", p, "' is required for this functionality, but is not installed.")
+}
+
+locate <- function(string, pattern) gregexpr(pattern, string)[[1L]]
 
 smartsplit <- function(string, width, min.split)
 {
@@ -7,9 +12,9 @@ smartsplit <- function(string, width, min.split)
   if(nchar(string) <= width) return(string)
 
   pos <- locate(string, "[ \t\n_.;:,-]")
-  splt <- if(length(pos) == 0 || !any(idx <- pos <= width & pos >= min.split)) width else max(pos[idx])
+  splt <- if((length(pos) == 1 && pos == -1) || !any(idx <- (pos <= width & pos >= min.split))) width else max(pos[idx])
 
-  c(stringr::str_sub(string, 1L, splt), smartsplit(stringr::str_sub(string, splt+1L), width = width, min.split = min.split))
+  c(substring(string, 1L, splt), smartsplit(substring(string, splt+1L), width = width, min.split = min.split))
 }
 
 #' Internal Functions

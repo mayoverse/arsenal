@@ -265,7 +265,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           currtest <- control$selectall.test
           vartype <- "selectall"
 
-        } else if(survival::is.Surv(currcol)) {
+        } else if(inherits(currcol, "Surv")) {
           ##### Survival (time to event) #######
           stop("Sorry, survival objects don't work in this function.")
 

@@ -46,11 +46,11 @@ as_data_frame_summary_freqlist <- function(tb, labs, cntrl)
     if(nrow(x) == 0) return(x)
     tab <- as.matrix(x[i])
     tab[is.na(tab)] <- "NA"
-    num <- max(stringr::str_count(tab, ","))
+    num <- max(lengths(gregexpr(",", tab)))
 
     for(col in seq_len(ncol(tab)))
     {
-      tmp <- apply(tab[, 1:col, drop = FALSE], 1, paste, collapse = paste0(rep(",", num + 1), collapse = "")) # in R >= 3.3.0, we could use strrep instead
+      tmp <- apply(tab[, 1:col, drop = FALSE], 1, paste, collapse = strrep(",", num + 1))
       x[c(FALSE, tmp[-1] == tmp[-length(tmp)]), colnames(tab)[col]] <- ""
     }
     x
