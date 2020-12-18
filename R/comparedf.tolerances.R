@@ -30,14 +30,16 @@ tol.NA <- function(x, y, idx)
 #' @export
 tol.num.absolute <- function(x, y, tol)
 {
-  tol.NA(x, y, abs(x - y) > tol)
+  both.inf <- is.infinite(x) & is.infinite(y)
+  tol.NA(x, y, (both.inf & x != y) | (!both.inf & abs(x - y) > tol))
 }
 
 #' @rdname comparedf.tolerances
 #' @export
 tol.num.percent <- tol.num.pct <- function(x, y, tol)
 {
-  tol.NA(x, y, (x == 0 & y != 0) | (x != 0 & abs((x - y)/x) > tol))
+  both.inf <- is.infinite(x) & is.infinite(y)
+  tol.NA(x, y, (x == 0 & y != 0) | (both.inf & x != y) | (!both.inf & x != 0 & abs((x - y)/x) > tol))
 }
 
 #' @rdname comparedf.tolerances

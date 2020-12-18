@@ -23,6 +23,8 @@
 
 * Added code to error informatively when "Suggests" aren't available. (#317)
 
+* Fixed bug in `comparedf()` when things are infinite. (#306)
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.

@@ -681,5 +681,15 @@ test_that("2019/05/22: vectors that share a class are still compared (#216)", {
   expect_true(nrow(cmp$diffs.table) == 0)
 })
 
+test_that("Inf (#306)", {
+  dat <- data.frame(x = c(2, Inf, -Inf, Inf, NA))
+  dat2 <- data.frame(x = c(2, Inf, -Inf, -Inf, Inf))
+  cmp <- summary(comparedf(dat, dat2))
+  expect_true(nrow(cmp$diffs.table) == 2)
+  cmp <- summary(comparedf(dat, dat2, tol.num = "pct"))
+  expect_true(nrow(cmp$diffs.table) == 2)
+})
+
+
 
 
