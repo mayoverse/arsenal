@@ -1298,6 +1298,30 @@ test_that("10/09/2019: change title for overall and total (#253, #261, #272)", {
     sub("Hello", "Total", capture.kable(summary(tab2, text = TRUE)))
   )
 
+  d <- data.frame(
+    x = 10:1,
+    by = factor(rep(c("b", "Total"), each = 5), levels = c("b", "Total"))
+  )
+  tab <- tableby(by ~ x, data = d, stats.labels = list(total = "Total 2"))
+  expect_identical(
+    capture.kable(summary(tab, text = TRUE)),
+    c("|             |    b (N=5)     |  Total (N=5)  | Total 2 (N=10) | p value|",
+      "|:------------|:--------------:|:-------------:|:--------------:|-------:|",
+      "|x            |                |               |                |   0.001|",
+      "|-  Mean (SD) | 8.000 (1.581)  | 3.000 (1.581) | 5.500 (3.028)  |        |",
+      "|-  Range     | 6.000 - 10.000 | 1.000 - 5.000 | 1.000 - 10.000 |        |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tab, text = TRUE, total = FALSE)),
+    c("|             |    b (N=5)     |  Total (N=5)  | p value|",
+      "|:------------|:--------------:|:-------------:|-------:|",
+      "|x            |                |               |   0.001|",
+      "|-  Mean (SD) | 8.000 (1.581)  | 3.000 (1.581) |        |",
+      "|-  Range     | 6.000 - 10.000 | 1.000 - 5.000 |        |"
+    )
+  )
+
   tab3 <- tableby(sex ~ age + arm, data = mockstudy, stats.labels = list(total = "Overa"), cat.stats = c("countpct", "countrowpct", "rowbinomCI"))
   tab4 <- tableby(sex ~ age + arm, data = mockstudy, stats.labels = list(total = "Hello"), cat.stats = c("countpct", "countrowpct", "rowbinomCI"))
   tab5 <- tableby(sex ~ age + arm, data = mockstudy, stats.labels = list(total = "Total"), cat.stats = c("countpct", "countrowpct", "rowbinomCI"))

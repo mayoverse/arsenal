@@ -103,7 +103,8 @@ Npct(
   by.levels = sort(unique(by)),
   na.rm = TRUE,
   weights = NULL,
-  ...
+  ...,
+  totallab = "Total"
 )
 
 count(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
@@ -119,7 +120,8 @@ countrowpct(
   by.levels = sort(unique(by)),
   na.rm = TRUE,
   weights = NULL,
-  ...
+  ...,
+  totallab = "Total"
 )
 
 countcellpct(
@@ -129,7 +131,8 @@ countcellpct(
   by.levels = sort(unique(by)),
   na.rm = TRUE,
   weights = NULL,
-  ...
+  ...,
+  totallab = "Total"
 )
 
 binomCI(x, levels = NULL, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
@@ -142,7 +145,8 @@ rowbinomCI(
   na.rm = TRUE,
   weights = NULL,
   conf.level = 0.95,
-  ...
+  ...,
+  totallab = "Total"
 )
 }
 \arguments{

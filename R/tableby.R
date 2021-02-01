@@ -248,9 +248,8 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
     if(is.null(totallab <- control$stats.labels$total)) totallab <- "Total"
     ystats <- if(hasWeights)
     {
-      c(stats::xtabs(weights ~ factor(by.col, levels=by.levels), exclude = NA), Total = sum(weights[!is.na(by.col)]))
-    } else c(table(factor(by.col, levels=by.levels), exclude=NA), Total=sum(!is.na(by.col)))
-    names(ystats)[names(ystats) == "Total"] <- totallab
+      c(stats::xtabs(weights ~ factor(by.col, levels=by.levels), exclude = NA), stats::setNames(sum(weights[!is.na(by.col)]), totallab))
+    } else c(table(factor(by.col, levels=by.levels), exclude=NA), stats::setNames(sum(!is.na(by.col)), totallab))
     yList <- list(stats=ystats, label=labelBy, term=termBy)
 
     ## find which columnss of modeldf have specials assigned to known specials
@@ -372,9 +371,13 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           bystatlist <- list()
           if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct"))
           {
-            bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
-                                                by = bycol, by.levels = by.levels, weights = weightscol, na.rm = TRUE))
-            names(bystatlist)[names(bystatlist) == "Total"] <- totallab
+            bystatlist <- do.call(statfun, list(
+              currcol, levels = xlevels,
+              by = bycol, by.levels = by.levels,
+              weights = weightscol,
+              na.rm = TRUE,
+              totallab = totallab
+            ))
           } else
           {
             for(bylev in by.levels) {

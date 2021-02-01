@@ -27,6 +27,8 @@
 
 * Added `wt()` option for `tableby()`. (#321)
 
+* Fixed a bug in `tableby()` relating to a weird edge case when a by-level is "Total" and the total label is set to something else.
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.

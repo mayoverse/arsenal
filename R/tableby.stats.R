@@ -382,7 +382,7 @@ N <- function(x, na.rm=TRUE, weights = NULL, ...) {
 
 #' @rdname tableby.stats
 #' @export
-Npct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ...) {
+Npct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ..., totallab = "Total") {
   if(is.null(levels)) levels <- sort(unique(x))
   if(na.rm)
   {
@@ -394,7 +394,7 @@ Npct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, wei
   }
 
   tmp <- wtd.table(factor(by, levels = by.levels), weights = weights)
-  wtbl <- c(tmp, Total = sum(tmp))
+  wtbl <- c(tmp, setNames(sum(tmp), totallab))
   lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/sum(tmp)), parens = c("(", ")"), pct = "%", which.pct = 2L))
 }
 
@@ -458,7 +458,7 @@ transpose_list <- function(x, levels, by.levels)
 
 #' @rdname tableby.stats
 #' @export
-countrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ...) {
+countrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ..., totallab = "Total") {
   if(is.null(levels)) levels <- sort(unique(x))
   if(na.rm)
   {
@@ -471,15 +471,15 @@ countrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TR
 
   wtbls <- lapply(levels, function(L) {
     tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
-    wtbl <- c(tmp, Total = sum(tmp))
+    wtbl <- c(tmp, stats::setNames(sum(tmp), totallab))
     lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/sum(tmp)), parens = c("(", ")"), pct = "%", which.pct = 2L))
   })
-  transpose_list(wtbls, levels, c(by.levels, "Total"))
+  transpose_list(wtbls, levels, c(by.levels, totallab))
 }
 
 #' @rdname tableby.stats
 #' @export
-countcellpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ...) {
+countcellpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ..., totallab = "Total") {
   if(is.null(levels)) levels <- sort(unique(x))
   if(na.rm)
   {
@@ -496,10 +496,10 @@ countcellpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=T
 
   wtbls <- lapply(levels, function(L) {
     tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
-    wtbl <- c(tmp, Total = sum(tmp))
+    wtbl <- c(tmp, stats::setNames(sum(tmp), totallab))
     lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/tot), parens = c("(", ")"), pct = "%", which.pct = 2L))
   })
-  transpose_list(wtbls, levels, c(by.levels, "Total"))
+  transpose_list(wtbls, levels, c(by.levels, totallab))
 }
 
 get_binom_est_ci <- function(x, tot, setNA, conf.level = 0.95) {
@@ -521,7 +521,7 @@ binomCI <- function(x, levels=NULL, na.rm=TRUE, weights = NULL, conf.level = 0.9
 
 #' @rdname tableby.stats
 #' @export
-rowbinomCI <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
+rowbinomCI <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, conf.level = 0.95, ..., totallab = "Total") {
   if(is.null(levels)) levels <- sort(unique(x))
   wts <- !is.null(weights)
   if(na.rm)
@@ -535,12 +535,12 @@ rowbinomCI <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRU
 
   wtbls <- lapply(levels, function(L) {
     tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
-    wtbl <- c(tmp, Total = sum(tmp))
+    wtbl <- c(tmp, stats::setNames(sum(tmp), totallab))
     wtbl <- lapply(wtbl, get_binom_est_ci, tot = sum(tmp), setNA = wts, conf.level = conf.level)
     lapply(wtbl, as.tbstat, parens = c("(", ")"), sep2 = ", ")
   })
   # as.tbstat_multirow(lapply(wtbl, f))
-  transpose_list(wtbls, levels, c(by.levels, "Total"))
+  transpose_list(wtbls, levels, c(by.levels, totallab))
 }
 
 ######## internal functions that we use above ########
