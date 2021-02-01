@@ -32,6 +32,17 @@ kwt <- function(x, x.by, ..., test.always = FALSE) {
   stats::kruskal.test(x, as.factor(x.by))
 }
 
+## 2. wilcoxon (non-parametric)
+wt <- function(x, x.by, ..., wilcox.correct = FALSE, wilcox.exact = NULL, test.always = FALSE) {
+  tab <- table(is.na(x), x.by)
+  if(ncol(tab) != 2) stop("The Wilcoxon Rank Sum test must have exactly two groups")
+
+  if(!test.always && (any(tab[1, ] == 0) || any(colSums(tab) == 0))) {
+    return(list(p.value=NA_real_, statistic.F=NA_real_, method="Wilcoxon rank sum test"))
+  }
+  stats::wilcox.test(x ~ as.factor(x.by), correct = wilcox.correct, exact = wilcox.exact)
+}
+
 ## two tests for categorical,
 ## 1. chisq goodness of fit, equal proportions across table cells
 chisq <- function(x, x.by, ..., chisq.correct=FALSE, simulate.p.value=FALSE, B=2000, test.always = FALSE) {

@@ -20,6 +20,7 @@
 #' @param numeric.stats,cat.stats,ordered.stats,surv.stats,date.stats,selectall.stats summary statistics to include for the respective class of RHS variables
 #'  within the levels of the group LHS variable.
 #' @param cat.test name of test for categorical variables: chisq, fe (Fisher's Exact)
+#' @param wilcox.correct,wilcox.exact See \code{\link[stats]{wilcox.test}}
 #' @param chisq.correct logical, correction factor for chisq.test
 #' @param simulate.p.value logical, simulate p-value for categorical tests (fe and chisq)
 #' @param B number of simulations to perform for simulation-based p-value
@@ -84,6 +85,7 @@ tableby.control <- function(
   selectall.stats=c("Nmiss", "countpct"),
   stats.labels = list(),
   digits = 3L, digits.count = 0L, digits.pct = 1L, digits.p = 3L, format.p = TRUE, digits.n = 0L, conf.level = 0.95,
+  wilcox.correct = FALSE, wilcox.exact = NULL,
   chisq.correct=FALSE, simulate.p.value=FALSE, B=2000, times = 1:5, ...) {
 
   nm <- names(list(...))
@@ -128,7 +130,9 @@ tableby.control <- function(
        numeric.stats=numeric.stats, cat.stats=cat.stats, ordered.stats=ordered.stats, surv.stats=surv.stats, date.stats=date.stats, selectall.stats=selectall.stats,
        stats.labels=stats.labels,
        digits=digits, digits.p=digits.p, digits.count = digits.count, digits.pct = digits.pct, format.p = format.p, digits.n = digits.n,
-       conf.level=conf.level, chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B, times=times)
+       conf.level=conf.level,
+       wilcox.correct = wilcox.correct, wilcox.exact = wilcox.exact,
+       chisq.correct=chisq.correct, simulate.p.value=simulate.p.value, B=B, times=times)
 }
 
 add_tbc_stats_labels <- function(x) {

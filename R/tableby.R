@@ -55,6 +55,9 @@
 #'     variables. When LHS variable has two levels, equivalent to Wilcoxon test.
 #'   }
 #'   \item{
+#'     \code{wt}: An explicit Wilcoxon test.
+#'   }
+#'   \item{
 #'     \code{chisq}: chi-square goodness of fit test for equal counts of a
 #'     categorical variable across categories; the default for categorical
 #'     or factor variables
@@ -127,7 +130,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
   indx <- match(c("formula", "data", "subset", "weights", "na.action", "strata"), names(Call), nomatch = 0)
   if(indx[1] == 0) stop("A formula argument is required")
 
-  special <- c("anova", "kwt", "chisq", "fe", "logrank", "trend", "notest")
+  special <- c("anova", "kwt", "wt", "chisq", "fe", "logrank", "trend", "notest")
 
   out.tables <- list()
   formula.list <- as_list_formula(formula)
@@ -390,7 +393,9 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest
         testout <- if(control$test) {
           eval(call(currtest, currcol, factor(bycol, levels = by.levels),
-                    chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B, test.always=control$test.always))
+                    chisq.correct=control$chisq.correct, simulate.p.value=control$simulate.p.value, B=control$B,
+                    wilcox.correct = control$wilcox.correct, wilcox.exact = control$wilcox.exact,
+                    test.always=control$test.always))
         } else notest()
 
         xList[[eff]] <- list(stats=statList, test=testout, type=vartype)

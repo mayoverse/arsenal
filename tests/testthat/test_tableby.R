@@ -1663,3 +1663,19 @@ test_that("stats.labels doesn't overwrite existing labels (#316)", {
     )
   )
 })
+
+test_that("wt (#321)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ kwt(age), data = mockstudy), text = TRUE)),
+    capture.kable(summary(tableby(sex ~ wt(age), data = mockstudy), text = TRUE))
+  )
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ wt(age), data = head(mockstudy, 10), wilcox.correct = TRUE, wilcox.exact = FALSE), text = TRUE)),
+    c("|             |   Male (N=5)    |  Female (N=5)   |  Total (N=10)   | p value|",
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|",
+      "|age          |                 |                 |                 |   0.463|",
+      "|-  Mean (SD) | 58.600 (6.580)  | 63.000 (11.554) | 60.800 (9.163)  |        |",
+      "|-  Range     | 50.000 - 67.000 | 50.000 - 74.000 | 50.000 - 74.000 |        |"
+    )
+  )
+})

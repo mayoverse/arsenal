@@ -33,6 +33,8 @@ tableby.control(
   format.p = TRUE,
   digits.n = 0L,
   conf.level = 0.95,
+  wilcox.correct = FALSE,
+  wilcox.exact = NULL,
   chisq.correct = FALSE,
   simulate.p.value = FALSE,
   B = 2000,
@@ -95,6 +97,8 @@ e.g., \code{list(countpct="Count (Pct)")}. Any unnamed elements will be ignored.
 
 \item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.
 (See, e.g., \code{\link{binomCI}})}
+
+\item{wilcox.correct, wilcox.exact}{See \code{\link[stats]{wilcox.test}}}
 
 \item{chisq.correct}{logical, correction factor for chisq.test}
 

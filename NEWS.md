@@ -25,6 +25,8 @@
 
 * Fixed bug in `comparedf()` when things are infinite. (#306)
 
+* Added `wt()` option for `tableby()`. (#321)
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.

@@ -909,6 +909,8 @@ The following tests are accepted:
 * `kwt`: Kruskal-Wallis test, optional test for continuous
     variables. When the grouping variable has two levels, it is equivalent to the Wilcoxon Rank Sum test.
 
+* `wt`: An explicit Wilcoxcon test.
+    
 * `chisq`: chi-square goodness of fit test for equal counts of a
     categorical variable across categories; the default for categorical
     or factor variables

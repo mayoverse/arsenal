@@ -82,6 +82,9 @@ These tests are accepted:
     variables. When LHS variable has two levels, equivalent to Wilcoxon test.
   }
   \item{
+    \code{wt}: An explicit Wilcoxon test.
+  }
+  \item{
     \code{chisq}: chi-square goodness of fit test for equal counts of a
     categorical variable across categories; the default for categorical
     or factor variables
