@@ -485,3 +485,22 @@ test_that("Multiple labels work (#310)", {
     )
   )
 })
+
+
+test_that("total.pos = 'before' (#320)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ age, data = mockstudy, strata = arm, total.pos = "before"), text = TRUE)),
+    c("|Treatment Arm |             | Total (N=1499)  |  Male (N=916)   | Female (N=583)  | p value |",
+      "|:-------------|:------------|:---------------:|:---------------:|:---------------:|:-------:|",
+      "|A: IFL        |Age in Years |                 |                 |                 |  0.572  |",
+      "|              |-  Mean (SD) | 59.673 (11.365) | 59.903 (11.347) | 59.252 (11.422) |         |",
+      "|              |-  Range     | 27.000 - 88.000 | 28.000 - 83.000 | 27.000 - 88.000 |         |",
+      "|F: FOLFOX     |Age in Years |                 |                 |                 |  0.286  |",
+      "|              |-  Mean (SD) | 60.301 (11.632) | 60.691 (11.598) | 59.729 (11.679) |         |",
+      "|              |-  Range     | 19.000 - 88.000 | 19.000 - 88.000 | 22.000 - 83.000 |         |",
+      "|G: IROX       |Age in Years |                 |                 |                 |  0.051  |",
+      "|              |-  Mean (SD) | 59.763 (11.499) | 60.702 (10.999) | 58.355 (12.113) |         |",
+      "|              |-  Range     | 26.000 - 85.000 | 29.000 - 85.000 | 26.000 - 82.000 |         |"
+    )
+  )
+})

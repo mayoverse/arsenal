@@ -171,6 +171,13 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, cont
   if("p.value" %in% cn && is.null(control$test.pname)) cn["p.value"] <- "p value" else if("p.value" %in% cn) cn["p.value"] <- control$test.pname
   colnames(df) <- cn
 
+  if(control$total.pos == "before" && control$stats.labels$total %in% nm) {
+    idx <- seq_along(cn)
+    idx2 <- idx[names(cn) %in% nm]
+    idx[idx2] <- c(utils::tail(idx2, 1), utils::head(idx2, -1))
+    df <- df[idx]
+  }
+
   set_attr(set_attr(df, "tests", tests.used), "align", align)
 }
 

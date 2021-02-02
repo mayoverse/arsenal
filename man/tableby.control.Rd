@@ -7,6 +7,7 @@
 tableby.control(
   test = TRUE,
   total = TRUE,
+  total.pos = c("after", "before"),
   test.pname = NULL,
   numeric.simplify = FALSE,
   cat.simplify = FALSE,
@@ -46,6 +47,8 @@ tableby.control(
 \item{test}{logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.}
 
 \item{total}{logical, telling \code{tableby} whether to calculate a column of totals across group variable.}
+
+\item{total.pos}{One of \code{"before"} or \code{"after"}, denoting where to put the total column relative to the by-variable columns.}
 
 \item{test.pname}{character string denoting the p-value column name in \code{\link{summary.tableby}}.
 Modifiable also with \code{\link{modpval.tableby}}.}

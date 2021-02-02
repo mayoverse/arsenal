@@ -5,6 +5,7 @@
 #'
 #' @param test logical, telling \code{tableby} whether to perform tests of x variables across levels of the group variable.
 #' @param total logical, telling \code{tableby} whether to calculate a column of totals across group variable.
+#' @param total.pos One of \code{"before"} or \code{"after"}, denoting where to put the total column relative to the by-variable columns.
 #' @param test.pname character string denoting the p-value column name in \code{\link{summary.tableby}}.
 #'   Modifiable also with \code{\link{modpval.tableby}}.
 #' @param cat.simplify,ordered.simplify logical, tell \code{tableby} whether to remove the first level of the categorical/ordinal variable if binary.
@@ -78,7 +79,7 @@
 #' summary(outCtl, text=TRUE)
 #' @export
 tableby.control <- function(
-  test=TRUE,total=TRUE, test.pname=NULL, numeric.simplify=FALSE, cat.simplify=FALSE, ordered.simplify=FALSE, date.simplify=FALSE,
+  test=TRUE,total=TRUE, total.pos = c("after", "before"), test.pname=NULL, numeric.simplify=FALSE, cat.simplify=FALSE, ordered.simplify=FALSE, date.simplify=FALSE,
   numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt", selectall.test="notest", test.always = FALSE,
   numeric.stats=c("Nmiss","meansd","range"), cat.stats=c("Nmiss","countpct"),
   ordered.stats=c("Nmiss", "countpct"), surv.stats=c("Nmiss", "Nevents","medSurv"), date.stats=c("Nmiss", "median","range"),
@@ -123,7 +124,7 @@ tableby.control <- function(
 
   stats.labels <- if(is.null(stats.labels)) NULL else add_tbc_stats_labels(stats.labels)
 
-  list(test=test, total=total, test.pname=test.pname,
+  list(test=test, total=total, total.pos = match.arg(total.pos), test.pname=test.pname,
        numeric.simplify=numeric.simplify, cat.simplify=cat.simplify, ordered.simplify=ordered.simplify, date.simplify=date.simplify,
        numeric.test=numeric.test, cat.test=cat.test, ordered.test=ordered.test, surv.test=surv.test, date.test=date.test, selectall.test=selectall.test,
        test.always=test.always,
