@@ -361,6 +361,18 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
 
         # now finally subset
         currcol <- currcol[strata.col == strat]
+
+        if(vartype == "categorical") {
+          tmpdl <- control.list[[eff]]$cat.droplevels
+          if(is.null(tmpdl)) tmpdl <- control$cat.droplevels
+          if(tmpdl) {
+            currcol <- droplevels(currcol)
+            xlevels <- levels(currcol)
+            if(length(xlevels) == 0) stop(paste0("Zero-length levels found for ", names(xTerms)[eff]))
+            if(!control$test.always) specialTests[eff] <- "notest"
+          }
+        }
+
         if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
         statList <- list()
         for(statfun2 in currstats) {

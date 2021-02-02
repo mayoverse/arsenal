@@ -31,6 +31,8 @@
 
 * Added a feature to `tableby.control()` to allow for the total column to be moved before the other columns. (#320)
 
+* Added a feature to `tableby.control()` to allow for dropping of categorical levels. (#318)
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.

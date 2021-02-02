@@ -504,3 +504,53 @@ test_that("total.pos = 'before' (#320)", {
     )
   )
 })
+
+
+
+test_that("cat.droplevels (#318)", {
+  d <- data.frame(
+    z = rep(LETTERS[1:3], each = 10),
+    x = rep(c("a", "b", "b"), each = 10),
+    y = rep(LETTERS[1:3], times = 10),
+    stringsAsFactors = FALSE
+  )
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = d, strata = z, cat.droplevels = FALSE), text = TRUE)),
+    c("|z  |     |  A (N=10)  |  B (N=10)  |  C (N=10)  | Total (N=30) | p value |",
+      "|:--|:----|:----------:|:----------:|:----------:|:------------:|:-------:|",
+      "|A  |x    |            |            |            |              |         |",
+      "|   |-  a | 4 (100.0%) | 3 (100.0%) | 3 (100.0%) | 10 (100.0%)  |         |",
+      "|   |-  b |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)  |   0 (0.0%)   |         |",
+      "|B  |x    |            |            |            |              |         |",
+      "|   |-  a |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)  |   0 (0.0%)   |         |",
+      "|   |-  b | 3 (100.0%) | 4 (100.0%) | 3 (100.0%) | 10 (100.0%)  |         |",
+      "|C  |x    |            |            |            |              |         |",
+      "|   |-  a |  0 (0.0%)  |  0 (0.0%)  |  0 (0.0%)  |   0 (0.0%)   |         |",
+      "|   |-  b | 3 (100.0%) | 3 (100.0%) | 4 (100.0%) | 10 (100.0%)  |         |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = d, strata = z, cat.droplevels = TRUE), text = TRUE)),
+    c("|z  |     |  A (N=10)  |  B (N=10)  |  C (N=10)  | Total (N=30) | p value |",
+      "|:--|:----|:----------:|:----------:|:----------:|:------------:|:-------:|",
+      "|A  |x    |            |            |            |              |         |",
+      "|   |-  a | 4 (100.0%) | 3 (100.0%) | 3 (100.0%) | 10 (100.0%)  |         |",
+      "|B  |x    |            |            |            |              |         |",
+      "|   |-  b | 3 (100.0%) | 4 (100.0%) | 3 (100.0%) | 10 (100.0%)  |         |",
+      "|C  |x    |            |            |            |              |         |",
+      "|   |-  b | 3 (100.0%) | 3 (100.0%) | 4 (100.0%) | 10 (100.0%)  |         |"
+    )
+  )
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = d, strata = z, cat.droplevels = TRUE), text = TRUE)),
+    capture.kable(summary(tableby(y ~ chisq(x, cat.droplevels = TRUE), data = d, strata = z), text = TRUE))
+  )
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = d, strata = z, cat.droplevels = TRUE, test.always = TRUE), text = TRUE)),
+    capture.kable(summary(tableby(y ~ chisq(x, cat.droplevels = TRUE), data = d, strata = z, test.always = TRUE), text = TRUE))
+  )
+  expect_identical(
+    capture.kable(summary(tableby(y ~ x, data = d, strata = z, cat.droplevels = TRUE, test.always = TRUE), text = TRUE)),
+    capture.kable(summary(tableby(y ~ x, data = d, strata = z, test.always = TRUE), text = TRUE))[c(1:4, 6, 8:9, 11)]
+  )
+})

@@ -4,12 +4,13 @@
 ## rather than anova(age) showing up in the result (though anova(age) will be the column name in modeldf
 ## but we pull these attributes off later.
 inline_tableby_stat_test <- function(x, ..., digits = NULL, digits.count = NULL, digits.pct = NULL,
-                                     numeric.simplify = NULL, cat.simplify = NULL, ordered.simplify = NULL, date.simplify = NULL)
+                                     numeric.simplify = NULL, cat.simplify = NULL, cat.droplevels = NULL,
+                                     ordered.simplify = NULL, date.simplify = NULL)
 {
   attr(x, "term") <- attr(x, "name") <- deparse(substitute(x))
   attr(x, "stats") <- if(missing(...)) NULL else list(...)
   attr(x, "control.list") <- list(digits = digits, digits.count = digits.count, digits.pct = digits.pct,
-                                  numeric.simplify = numeric.simplify, cat.simplify = cat.simplify,
+                                  numeric.simplify = numeric.simplify, cat.simplify = cat.simplify, cat.droplevels = cat.droplevels,
                                   ordered.simplify = ordered.simplify, date.simplify = date.simplify)
   class(x) <- c("keep_tableby_attrs", class(x)[class(x) != "keep_tableby_attrs"])
   x

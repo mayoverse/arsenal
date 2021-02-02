@@ -11,6 +11,7 @@ tableby.control(
   test.pname = NULL,
   numeric.simplify = FALSE,
   cat.simplify = FALSE,
+  cat.droplevels = FALSE,
   ordered.simplify = FALSE,
   date.simplify = FALSE,
   numeric.test = "anova",
@@ -62,6 +63,9 @@ If \code{TRUE}, only the summary stats of the second level are reported (unless 
 If \code{"label"}, the second level's label is additionally appended to the label.
 NOTE: this only simplifies to one line if there is only one statistic reported, such as \code{countpct}.
 In particular, if \code{Nmiss} is specified and there are missings, then the output is not simplified.}
+
+\item{cat.droplevels}{Should levels be dropped for categorical variables? If set to true, p-values will not be displayed
+unless \code{test.always = TRUE} as well.}
 
 \item{numeric.test}{name of test for numeric RHS variables in \code{tableby}: anova, kwt (Kruskal-Wallis).
 If no LHS variable exists, then a mean is required for a univariate test.}

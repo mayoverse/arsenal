@@ -13,6 +13,8 @@
 #'   If \code{"label"}, the second level's label is additionally appended to the label.
 #'   NOTE: this only simplifies to one line if there is only one statistic reported, such as \code{countpct}.
 #'   In particular, if \code{Nmiss} is specified and there are missings, then the output is not simplified.
+#' @param cat.droplevels Should levels be dropped for categorical variables? If set to true, p-values will not be displayed
+#'   unless \code{test.always = TRUE} as well.
 #' @param numeric.simplify,date.simplify logical, tell \code{tableby} whether to condense numeric/date output to a single line.
 #'   NOTE: this only simplifies to one line if there is only one statistic reported, such as \code{meansd}.
 #'   In particular, if \code{Nmiss} is specified and there are missings, then the output is not simplified.
@@ -79,8 +81,10 @@
 #' summary(outCtl, text=TRUE)
 #' @export
 tableby.control <- function(
-  test=TRUE,total=TRUE, total.pos = c("after", "before"), test.pname=NULL, numeric.simplify=FALSE, cat.simplify=FALSE, ordered.simplify=FALSE, date.simplify=FALSE,
-  numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt", selectall.test="notest", test.always = FALSE,
+  test=TRUE,total=TRUE, total.pos = c("after", "before"), test.pname=NULL,
+  numeric.simplify=FALSE, cat.simplify=FALSE, cat.droplevels=FALSE, ordered.simplify=FALSE, date.simplify=FALSE,
+  numeric.test="anova", cat.test="chisq", ordered.test="trend", surv.test="logrank", date.test="kwt", selectall.test="notest",
+  test.always = FALSE,
   numeric.stats=c("Nmiss","meansd","range"), cat.stats=c("Nmiss","countpct"),
   ordered.stats=c("Nmiss", "countpct"), surv.stats=c("Nmiss", "Nevents","medSurv"), date.stats=c("Nmiss", "median","range"),
   selectall.stats=c("Nmiss", "countpct"),
@@ -125,7 +129,7 @@ tableby.control <- function(
   stats.labels <- if(is.null(stats.labels)) NULL else add_tbc_stats_labels(stats.labels)
 
   list(test=test, total=total, total.pos = match.arg(total.pos), test.pname=test.pname,
-       numeric.simplify=numeric.simplify, cat.simplify=cat.simplify, ordered.simplify=ordered.simplify, date.simplify=date.simplify,
+       numeric.simplify=numeric.simplify, cat.simplify=cat.simplify, cat.droplevels = cat.droplevels, ordered.simplify=ordered.simplify, date.simplify=date.simplify,
        numeric.test=numeric.test, cat.test=cat.test, ordered.test=ordered.test, surv.test=surv.test, date.test=date.test, selectall.test=selectall.test,
        test.always=test.always,
        numeric.stats=numeric.stats, cat.stats=cat.stats, ordered.stats=ordered.stats, surv.stats=surv.stats, date.stats=date.stats, selectall.stats=selectall.stats,

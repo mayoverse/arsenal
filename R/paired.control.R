@@ -33,5 +33,6 @@ paired.control <- function(
 
   ## never show total
   out$total <- FALSE
+  out$cat.droplevels <- FALSE
   out
 }
