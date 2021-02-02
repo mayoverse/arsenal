@@ -17,6 +17,7 @@
 #' @param by.levels a vector of the levels of \code{by}.
 #' @param conf.level Numeric, denoting what confidence level to use for confidence intervals.
 #' @param ... Other arguments.
+#' @param totallab What to call the total "column"
 #' @return Usually a vector of the appropriate numbers.
 #' @details Not all these functions are exported, in order to avoid conflicting NAMESPACES.
 #'   Note also that the functions prefixed with \code{"arsenal_"} can be referred to by their short names

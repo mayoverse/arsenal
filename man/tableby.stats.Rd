@@ -167,6 +167,8 @@ rowbinomCI(
 \item{by}{a vector of the by-values.}
 
 \item{by.levels}{a vector of the levels of \code{by}.}
+
+\item{totallab}{What to call the total "column"}
 }
 \value{
 Usually a vector of the appropriate numbers.
