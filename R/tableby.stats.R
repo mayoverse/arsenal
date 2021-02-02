@@ -110,6 +110,21 @@ meansd <- function(x, na.rm=TRUE, weights = NULL, ...) {
 
 #' @rdname tableby.stats
 #' @export
+meanse <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  y <- if(na.rm && allNA(x))
+  {
+    NA_real_
+  } else {
+    if(!is.null(weights)) stop("'meanse' can only be used without weights")
+    m <- mean(x, na.rm=na.rm)
+    s <- sd(x, na.rm=na.rm)/sqrt(sum(!is.na(x)))
+    if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
+  }
+  as.tbstat(y, parens = c("(", ")"))
+}
+
+#' @rdname tableby.stats
+#' @export
 meanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
   y <- if(!is.null(weights) || (na.rm && allNA(x)))
   {

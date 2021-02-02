@@ -1370,8 +1370,8 @@ test_that("11/05/2019: remove N's in title (#256)", {
   )
 })
 
-test_that("11/12/2019: base summary stats work (#259, #281)", {
-  allstats <- c("min", "max", "range", "mean", "sd", "meansd", "meanCI", "var", "median", "medianrange", "sum")
+test_that("11/12/2019: base summary stats work (#259, #281); meanse (#315)", {
+  allstats <- c("min", "max", "range", "mean", "sd", "meansd", "meanse", "meanCI", "var", "median", "medianrange", "sum")
   expect_identical(
     capture.kable(summary(tableby(Sex ~ Age, data = mdat, numeric.stats = allstats), text = TRUE)),
     c("|                  |      Female (N=46)      |       Male (N=44)       |      Total (N=90)       | p value|",
@@ -1383,6 +1383,7 @@ test_that("11/12/2019: base summary stats work (#259, #281)", {
       "|-  Mean           |         39.826          |         39.568          |         39.700          |        |",
       "|-  SD             |          5.259          |          5.315          |          5.258          |        |",
       "|-  Mean (SD)      |     39.826 (5.259)      |     39.568 (5.315)      |     39.700 (5.258)      |        |",
+      "|-  Mean (SE)      |     39.826 (0.775)      |     39.568 (0.801)      |     39.700 (0.554)      |        |",
       "|-  Mean (CI)      | 39.826 (38.264, 41.388) | 39.568 (37.952, 41.184) | 39.700 (38.599, 40.801) |        |",
       "|-  Var            |         27.658          |         28.251          |         27.651          |        |",
       "|-  Median         |         39.000          |         39.500          |         39.000          |        |",
@@ -1402,6 +1403,7 @@ test_that("11/12/2019: base summary stats work (#259, #281)", {
       "|-  Mean           |             1949-06-11              |             1950-07-14              |             1949-12-23              |        |",
       "|-  SD             |            1981.348 days            |            2227.654 days            |            2103.010 days            |        |",
       "|-  Mean (SD)      |     1949-06-11 (1981.348 days)      |     1950-07-14 (2227.654 days)      |     1949-12-23 (2103.010 days)      |        |",
+      "|-  Mean (SE)      |      1949-06-11 (292.134 days)      |      1950-07-14 (335.832 days)      |      1949-12-23 (221.677 days)      |        |",
       "|-  Mean (CI)      | 1949-06-11 (1947-10-31, 1951-01-20) | 1950-07-14 (1948-09-05, 1952-05-22) | 1949-12-23 (1948-10-08, 1951-03-08) |        |",
       "|-  Var            |             3925741.628             |             4962443.482             |             4422652.929             |        |",
       "|-  Median         |             1948-12-07              |             1951-03-26              |             1949-10-07              |        |",

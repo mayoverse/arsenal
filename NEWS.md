@@ -33,6 +33,8 @@
 
 * Added a feature to `tableby.control()` to allow for dropping of categorical levels. (#318)
 
+* Added `meanse()` for `tableby()`. (#315)
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.
