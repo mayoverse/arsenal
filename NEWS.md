@@ -35,6 +35,8 @@
 
 * Added `meanse()` for `tableby()`. (#315)
 
+* Fixed a bug in `modelsum()` with confidence level for survival.
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.
