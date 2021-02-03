@@ -37,6 +37,8 @@
 
 * Fixed a bug in `modelsum()` with confidence level for survival.
 
+* Suppressed warnings with new broom version when using `MASS::glm.nb()`.
+
 # arsenal v3.5.0
 
 * Change R requirement to >= 3.4.0.

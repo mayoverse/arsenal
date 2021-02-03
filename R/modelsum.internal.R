@@ -186,11 +186,11 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     temp.call$x <- TRUE
     temp.call$link <- fam$link
     fit <- eval(temp.call, envir)
-    coeffRRTidy <- broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level)
+    coeffRRTidy <- suppressWarnings(broom::tidy(fit, exponentiate=TRUE, conf.int=TRUE, conf.level=conf.level))
     coeffRRTidy[coeffRRTidy$term == "Intercept", -1] <- NA
-    coeffTidy <- broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level)
+    coeffTidy <- suppressWarnings(broom::tidy(fit, exponentiate=FALSE, conf.int=TRUE, conf.level=conf.level))
     coeffTidy <- cbind(coeffTidy, RR=coeffRRTidy$estimate, CI.lower.RR=coeffRRTidy$conf.low, CI.upper.RR=coeffRRTidy$conf.high)
-    modelGlance <- broom::glance(fit)
+    modelGlance <- suppressWarnings(broom::glance(fit))
     modelGlance$theta <- fit$theta
     modelGlance$SE.theta <- fit$SE.theta
     modelGlance$p.value.lrt <- try_lrt(fit, scope, anyna)
