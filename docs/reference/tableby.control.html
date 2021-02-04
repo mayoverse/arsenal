@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.0</span>
       </span>
     </div>
 
@@ -161,9 +161,11 @@
     <pre class="usage"><span class='fu'>tableby.control</span><span class='op'>(</span>
   test <span class='op'>=</span> <span class='cn'>TRUE</span>,
   total <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  total.pos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"after"</span>, <span class='st'>"before"</span><span class='op'>)</span>,
   test.pname <span class='op'>=</span> <span class='cn'>NULL</span>,
   numeric.simplify <span class='op'>=</span> <span class='cn'>FALSE</span>,
   cat.simplify <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  cat.droplevels <span class='op'>=</span> <span class='cn'>FALSE</span>,
   ordered.simplify <span class='op'>=</span> <span class='cn'>FALSE</span>,
   date.simplify <span class='op'>=</span> <span class='cn'>FALSE</span>,
   numeric.test <span class='op'>=</span> <span class='st'>"anova"</span>,
@@ -187,6 +189,8 @@
   format.p <span class='op'>=</span> <span class='cn'>TRUE</span>,
   digits.n <span class='op'>=</span> <span class='fl'>0L</span>,
   conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,
+  wilcox.correct <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  wilcox.exact <span class='op'>=</span> <span class='cn'>NULL</span>,
   chisq.correct <span class='op'>=</span> <span class='cn'>FALSE</span>,
   simulate.p.value <span class='op'>=</span> <span class='cn'>FALSE</span>,
   B <span class='op'>=</span> <span class='fl'>2000</span>,
@@ -206,6 +210,10 @@
       <td><p>logical, telling <code>tableby</code> whether to calculate a column of totals across group variable.</p></td>
     </tr>
     <tr>
+      <th>total.pos</th>
+      <td><p>One of <code>"before"</code> or <code>"after"</code>, denoting where to put the total column relative to the by-variable columns.</p></td>
+    </tr>
+    <tr>
       <th>test.pname</th>
       <td><p>character string denoting the p-value column name in <code><a href='summary.tableby.html'>summary.tableby</a></code>.
 Modifiable also with <code><a href='tableby.internal.html'>modpval.tableby</a></code>.</p></td>
@@ -223,6 +231,11 @@ If <code>TRUE</code>, only the summary stats of the second level are reported (u
 If <code>"label"</code>, the second level's label is additionally appended to the label.
 NOTE: this only simplifies to one line if there is only one statistic reported, such as <code>countpct</code>.
 In particular, if <code>Nmiss</code> is specified and there are missings, then the output is not simplified.</p></td>
+    </tr>
+    <tr>
+      <th>cat.droplevels</th>
+      <td><p>Should levels be dropped for categorical variables? If set to true, p-values will not be displayed
+unless <code>test.always = TRUE</code> as well.</p></td>
     </tr>
     <tr>
       <th>numeric.test</th>
@@ -293,6 +306,10 @@ e.g., <code><a href='https://rdrr.io/r/base/list.html'>list(countpct="Count (Pct
       <th>conf.level</th>
       <td><p>Numeric, denoting what confidence level to use for confidence intervals.
 (See, e.g., <code><a href='tableby.stats.html'>binomCI</a></code>)</p></td>
+    </tr>
+    <tr>
+      <th>wilcox.correct, wilcox.exact</th>
+      <td><p>See <code><a href='https://rdrr.io/r/stats/wilcox.test.html'>wilcox.test</a></code></p></td>
     </tr>
     <tr>
       <th>chisq.correct</th>

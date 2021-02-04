@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.0</span>
       </span>
     </div>
 
@@ -176,6 +176,8 @@
 
 <span class='fu'>meansd</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
+<span class='fu'>meanse</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+
 <span class='fu'>meanCI</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>medianrange</span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -225,7 +227,8 @@
   by.levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>by</span><span class='op'>)</span><span class='op'>)</span>,
   na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>,
   weights <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>...</span>
+  <span class='va'>...</span>,
+  totallab <span class='op'>=</span> <span class='st'>"Total"</span>
 <span class='op'>)</span>
 
 <span class='fu'>count</span><span class='op'>(</span><span class='va'>x</span>, levels <span class='op'>=</span> <span class='cn'>NULL</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -241,7 +244,8 @@
   by.levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>by</span><span class='op'>)</span><span class='op'>)</span>,
   na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>,
   weights <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>...</span>
+  <span class='va'>...</span>,
+  totallab <span class='op'>=</span> <span class='st'>"Total"</span>
 <span class='op'>)</span>
 
 <span class='fu'>countcellpct</span><span class='op'>(</span>
@@ -251,7 +255,8 @@
   by.levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>by</span><span class='op'>)</span><span class='op'>)</span>,
   na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>,
   weights <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>...</span>
+  <span class='va'>...</span>,
+  totallab <span class='op'>=</span> <span class='st'>"Total"</span>
 <span class='op'>)</span>
 
 <span class='fu'>binomCI</span><span class='op'>(</span><span class='va'>x</span>, levels <span class='op'>=</span> <span class='cn'>NULL</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -264,7 +269,8 @@
   na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>,
   weights <span class='op'>=</span> <span class='cn'>NULL</span>,
   conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,
-  <span class='va'>...</span>
+  <span class='va'>...</span>,
+  totallab <span class='op'>=</span> <span class='st'>"Total"</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -305,6 +311,10 @@
     <tr>
       <th>by.levels</th>
       <td><p>a vector of the levels of <code>by</code>.</p></td>
+    </tr>
+    <tr>
+      <th>totallab</th>
+      <td><p>What to call the total "column"</p></td>
     </tr>
     </table>
 

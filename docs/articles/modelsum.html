@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.0</span>
       </span>
     </div>
 
@@ -437,22 +437,23 @@
 <p><img src="modelsum_files/figure-html/unnamed-chunk-5-1.png" width="700"><img src="modelsum_files/figure-html/unnamed-chunk-5-2.png" width="700"><img src="modelsum_files/figure-html/unnamed-chunk-5-3.png" width="700"><img src="modelsum_files/figure-html/unnamed-chunk-5-4.png" width="700"></p>
 <p>Finally, look to see whether there there is a non-linear relationship with age.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">require</span>(splines)</span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="op">&gt;</span><span class="st"> </span>fit3 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(alk.phos) <span class="op">~</span><span class="st"> </span>arm <span class="op">+</span><span class="st"> </span><span class="kw">ns</span>(age, <span class="dt">df=</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>sex, <span class="dt">data=</span>mockstudy)</span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="op">&gt;</span><span class="st"> </span></span>
-<span id="cb10-4"><a href="#cb10-4"></a><span class="er">&gt;</span><span class="st"> </span><span class="co"># test whether there is a difference between models </span></span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="er">&gt;</span><span class="st"> </span>stats<span class="op">::</span><span class="kw">anova</span>(fit2,fit3)</span>
-<span id="cb10-6"><a href="#cb10-6"></a>Analysis of Variance Table</span>
-<span id="cb10-7"><a href="#cb10-7"></a></span>
-<span id="cb10-8"><a href="#cb10-8"></a>Model <span class="dv">1</span><span class="op">:</span><span class="st"> </span><span class="kw">log</span>(alk.phos) <span class="op">~</span><span class="st"> </span>arm <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex</span>
-<span id="cb10-9"><a href="#cb10-9"></a>Model <span class="dv">2</span><span class="op">:</span><span class="st"> </span><span class="kw">log</span>(alk.phos) <span class="op">~</span><span class="st"> </span>arm <span class="op">+</span><span class="st"> </span><span class="kw">ns</span>(age, <span class="dt">df =</span> <span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>sex</span>
-<span id="cb10-10"><a href="#cb10-10"></a>  Res.Df    RSS Df Sum of Sq      F  <span class="kw">Pr</span>(<span class="op">&gt;</span>F)  </span>
-<span id="cb10-11"><a href="#cb10-11"></a><span class="dv">1</span>   <span class="dv">1228</span> <span class="fl">503.19</span>                              </span>
-<span id="cb10-12"><a href="#cb10-12"></a><span class="dv">2</span>   <span class="dv">1227</span> <span class="fl">502.07</span>  <span class="dv">1</span>    <span class="fl">1.1137</span> <span class="fl">2.7218</span> <span class="fl">0.09924</span> .</span>
-<span id="cb10-13"><a href="#cb10-13"></a><span class="op">---</span></span>
-<span id="cb10-14"><a href="#cb10-14"></a>Signif. codes<span class="op">:</span><span class="st">  </span><span class="dv">0</span> <span class="st">'***'</span> <span class="fl">0.001</span> <span class="st">'**'</span> <span class="fl">0.01</span> <span class="st">'*'</span> <span class="fl">0.05</span> <span class="st">'.'</span> <span class="fl">0.1</span> <span class="st">' '</span> <span class="dv">1</span></span>
-<span id="cb10-15"><a href="#cb10-15"></a><span class="op">&gt;</span><span class="st"> </span></span>
-<span id="cb10-16"><a href="#cb10-16"></a><span class="er">&gt;</span><span class="st"> </span><span class="co"># look at functional form of age</span></span>
-<span id="cb10-17"><a href="#cb10-17"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">termplot</span>(fit3, <span class="dt">term=</span><span class="dv">2</span>, <span class="dt">se=</span>T, <span class="dt">rug=</span>T)</span></code></pre></div>
+<span id="cb10-2"><a href="#cb10-2"></a>Loading required package<span class="op">:</span><span class="st"> </span>splines</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="op">&gt;</span><span class="st"> </span>fit3 &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(alk.phos) <span class="op">~</span><span class="st"> </span>arm <span class="op">+</span><span class="st"> </span><span class="kw">ns</span>(age, <span class="dt">df=</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>sex, <span class="dt">data=</span>mockstudy)</span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="er">&gt;</span><span class="st"> </span><span class="co"># test whether there is a difference between models </span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="er">&gt;</span><span class="st"> </span>stats<span class="op">::</span><span class="kw">anova</span>(fit2,fit3)</span>
+<span id="cb10-7"><a href="#cb10-7"></a>Analysis of Variance Table</span>
+<span id="cb10-8"><a href="#cb10-8"></a></span>
+<span id="cb10-9"><a href="#cb10-9"></a>Model <span class="dv">1</span><span class="op">:</span><span class="st"> </span><span class="kw">log</span>(alk.phos) <span class="op">~</span><span class="st"> </span>arm <span class="op">+</span><span class="st"> </span>age <span class="op">+</span><span class="st"> </span>sex</span>
+<span id="cb10-10"><a href="#cb10-10"></a>Model <span class="dv">2</span><span class="op">:</span><span class="st"> </span><span class="kw">log</span>(alk.phos) <span class="op">~</span><span class="st"> </span>arm <span class="op">+</span><span class="st"> </span><span class="kw">ns</span>(age, <span class="dt">df =</span> <span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>sex</span>
+<span id="cb10-11"><a href="#cb10-11"></a>  Res.Df    RSS Df Sum of Sq      F  <span class="kw">Pr</span>(<span class="op">&gt;</span>F)  </span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="dv">1</span>   <span class="dv">1228</span> <span class="fl">503.19</span>                              </span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="dv">2</span>   <span class="dv">1227</span> <span class="fl">502.07</span>  <span class="dv">1</span>    <span class="fl">1.1137</span> <span class="fl">2.7218</span> <span class="fl">0.09924</span> .</span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="op">---</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a>Signif. codes<span class="op">:</span><span class="st">  </span><span class="dv">0</span> <span class="st">'***'</span> <span class="fl">0.001</span> <span class="st">'**'</span> <span class="fl">0.01</span> <span class="st">'*'</span> <span class="fl">0.05</span> <span class="st">'.'</span> <span class="fl">0.1</span> <span class="st">' '</span> <span class="dv">1</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb10-17"><a href="#cb10-17"></a><span class="er">&gt;</span><span class="st"> </span><span class="co"># look at functional form of age</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">termplot</span>(fit3, <span class="dt">term=</span><span class="dv">2</span>, <span class="dt">se=</span>T, <span class="dt">rug=</span>T)</span></code></pre></div>
 <p><img src="modelsum_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <p>In this instance it looks like there isn’t enough evidence to say that the relationship is non-linear.</p>
 </div>

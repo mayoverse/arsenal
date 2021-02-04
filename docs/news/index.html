@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.0</span>
       </span>
     </div>
 
@@ -152,19 +152,60 @@
       <small>Source: <a href='https://github.com/mayoverse/arsenal/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="arsenal-v3509000" class="section level1">
-<h1 class="page-header" data-toc-text="3.5.0.9000">
-<a href="#arsenal-v3509000" class="anchor"></a>arsenal v3.5.0.9000<small> Unreleased </small>
+    <div id="arsenal-v360" class="section level1">
+<h1 class="page-header" data-toc-text="3.6.0">
+<a href="#arsenal-v360" class="anchor"></a>arsenal v3.6.0<small> Unreleased </small>
 </h1>
+<p>Possible breaking change:</p>
+<ul>
+<li><p><code><a href="../reference/tableby.html">tableby()</a></code>, <code><a href="../reference/modelsum.html">modelsum()</a></code>, and <code><a href="../reference/freqlist.html">freqlist()</a></code> now use the <code>caption=</code> argument in <code><a href="https://rdrr.io/pkg/knitr/man/kable.html">knitr::kable()</a></code> to generate captions (<code><a href="../reference/comparedf.html">comparedf()</a></code> already does). (<a href='https://github.com/mayoverse/arsenal/issues/310'>#310</a>)</p></li>
+<li>
+<p>Changes to <code>DESCRIPTION</code> file:</p>
+<ul>
+<li><p>Changed <code>broom</code> requirement to &gt;= 0.7.1, in which a bug with <code><a href="https://rdrr.io/pkg/geepack/man/geeglm.html">geepack::geeglm</a></code> was fixed. This affected one test in the test suite.</p></li>
+<li><p>Added <code>geepack</code> package to “Suggests” (<a href='https://github.com/mayoverse/arsenal/issues/279'>#279</a>).</p></li>
+<li><p>Removed <code>gam</code> from the “Suggests”, in favor of <code>splines</code>, which the <code><a href="../reference/modelsum.html">modelsum()</a></code> vignette actually uses.</p></li>
+<li><p>Changed <code>survival</code> requirement to <code>&gt;= 2.43-1</code>.</p></li>
+</ul>
+</li>
+</ul>
+<p>Other changes:</p>
+<ul>
+<li><p>Added code to error informatively when “Suggests” aren’t available. (<a href='https://github.com/mayoverse/arsenal/issues/317'>#317</a>)</p></li>
+<li>
+<p><code><a href="../reference/tableby.html">tableby()</a></code>:</p>
 <ul>
 <li><p>Added <code><a href="../reference/selectall.html">selectall()</a></code>.</p></li>
-<li><p>Added <code><a href="../reference/modelsum.family.html">relrisk()</a></code> to <code><a href="../reference/modelsum.html">modelsum()</a></code> families (with corresponding addition of <code>geepack</code> package to “Suggests”). (<a href='https://github.com/mayoverse/arsenal/issues/279'>#279</a>)</p></li>
-<li><p>Added option to <code><a href="../reference/diffs.html">diffs()</a></code> for extracting not-shared observations. (<a href='https://github.com/mayoverse/arsenal/issues/305'>#305</a>)</p></li>
 <li><p>Added “label” option to <code>cat.simplify=</code> and <code>ord.simplify=</code> for <code><a href="../reference/tableby.html">tableby()</a></code>/<code><a href="../reference/paired.html">paired()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/288'>#288</a>)</p></li>
-<li><p>Possible breaking change: <code><a href="../reference/tableby.html">tableby()</a></code>, <code><a href="../reference/modelsum.html">modelsum()</a></code>, and <code><a href="../reference/freqlist.html">freqlist()</a></code> now use the <code>caption=</code> argument in <code><a href="https://rdrr.io/pkg/knitr/man/kable.html">knitr::kable()</a></code> to generate captions (<code><a href="../reference/comparedf.html">comparedf()</a></code> already does). (<a href='https://github.com/mayoverse/arsenal/issues/310'>#310</a>)</p></li>
-<li><p>Added note to <code><a href="../reference/write2.html">write2()</a></code> vignette about a global option for R Markdown documents in R Studio. (<a href='https://github.com/mayoverse/arsenal/issues/312'>#312</a>)</p></li>
-<li><p>Changed <code>broom</code> requirement to &gt;= 0.7.1, in which a bug with <code><a href="https://rdrr.io/pkg/geepack/man/geeglm.html">geepack::geeglm</a></code> was fixed. This affected one test in the test suite.</p></li>
 <li><p>Fixed a bug in <code><a href="../reference/tableby.html">tableby()</a></code> / <code><a href="../reference/paired.html">paired()</a></code> where <code>stats.labels=</code> specification would remove all default labels. (<a href='https://github.com/mayoverse/arsenal/issues/316'>#316</a>)</p></li>
+<li><p>Added <code>wt()</code> (Wilcoxon test) option for <code><a href="../reference/tableby.html">tableby()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/321'>#321</a>)</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/tableby.html">tableby()</a></code> relating to a weird edge case when a by-level is “Total” and the total label is set to something else.</p></li>
+<li><p>Added a feature to <code><a href="../reference/tableby.control.html">tableby.control()</a></code> to allow for the total column to be moved before the other columns. (<a href='https://github.com/mayoverse/arsenal/issues/320'>#320</a>)</p></li>
+<li><p>Added a feature to <code><a href="../reference/tableby.control.html">tableby.control()</a></code> to allow for dropping of categorical levels. (<a href='https://github.com/mayoverse/arsenal/issues/318'>#318</a>)</p></li>
+<li><p>Added <code><a href="../reference/tableby.stats.html">meanse()</a></code> for <code><a href="../reference/tableby.html">tableby()</a></code>. (<a href='https://github.com/mayoverse/arsenal/issues/315'>#315</a>)</p></li>
+</ul>
+</li>
+<li>
+<p><code><a href="../reference/modelsum.html">modelsum()</a></code>:</p>
+<ul>
+<li><p>Added <code><a href="../reference/modelsum.family.html">relrisk()</a></code> to <code><a href="../reference/modelsum.html">modelsum()</a></code> families (with corresponding addition of <code>geepack</code> package to “Suggests”). (<a href='https://github.com/mayoverse/arsenal/issues/279'>#279</a>)</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/modelsum.html">modelsum()</a></code> with confidence level for survival.</p></li>
+<li><p>Suppressed warnings with new broom version when using <code><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">MASS::glm.nb()</a></code>.</p></li>
+</ul>
+</li>
+<li>
+<p><code><a href="../reference/comparedf.html">comparedf()</a></code>:</p>
+<ul>
+<li><p>Added option to <code><a href="../reference/diffs.html">diffs()</a></code> for extracting not-shared observations. (<a href='https://github.com/mayoverse/arsenal/issues/305'>#305</a>)</p></li>
+<li><p>Fixed bug in <code><a href="../reference/comparedf.html">comparedf()</a></code> when things are infinite. (<a href='https://github.com/mayoverse/arsenal/issues/306'>#306</a>)</p></li>
+</ul>
+</li>
+<li>
+<p><code><a href="../reference/write2.html">write2()</a></code>:</p>
+<ul>
+<li>Added note to <code><a href="../reference/write2.html">write2()</a></code> vignette about a global option for R Markdown documents in R Studio. (<a href='https://github.com/mayoverse/arsenal/issues/312'>#312</a>)</li>
+</ul>
+</li>
 </ul>
 </div>
     <div id="arsenal-v350" class="section level1">

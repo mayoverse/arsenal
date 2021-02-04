@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.0</span>
       </span>
     </div>
 
@@ -5625,6 +5625,9 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 <code>meansd</code>: print the mean and standard deviation in the format <code><a href="https://rdrr.io/r/base/mean.html">mean(sd)</a></code>
 </li>
 <li>
+<code>meanse</code>: print the mean and standard error in the format <code><a href="https://rdrr.io/r/base/mean.html">mean(se)</a></code>
+</li>
+<li>
 <code>meanCI</code>: print the mean and a (t) confidence interval</li>
 <li>
 <code>count</code>: print the number of values in a category</li>
@@ -5689,6 +5692,7 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 <ul>
 <li><p><code>anova</code>: analysis of variance test; the default test for continuous variables. When the grouping variable has two levels, it is equivalent to the two-sample t-test with equal variance.</p></li>
 <li><p><code>kwt</code>: Kruskal-Wallis test, optional test for continuous variables. When the grouping variable has two levels, it is equivalent to the Wilcoxon Rank Sum test.</p></li>
+<li><p><code>wt</code>: An explicit Wilcoxcon test.</p></li>
 <li><p><code>chisq</code>: chi-square goodness of fit test for equal counts of a categorical variable across categories; the default for categorical or factor variables</p></li>
 <li><p><code>fe</code>: Fisher’s exact test for categorical variables; optional</p></li>
 <li><p><code>logrank</code>: log-rank test, the default test for time-to-event variables</p></li>
@@ -5702,8 +5706,9 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 <p>A quick way to see what arguments are possible to utilize in a function is to use the <code><a href="https://rdrr.io/r/base/args.html">args()</a></code> command. Settings involving the number of digits can be set in <code>tableby.control</code> or in <code>summary.tableby</code>.</p>
 <div class="sourceCode" id="cb144"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">tableby.control</span><span class="op">)</span></pre></div>
-<pre><code>## function (test = TRUE, total = TRUE, test.pname = NULL, numeric.simplify = FALSE, 
-##     cat.simplify = FALSE, ordered.simplify = FALSE, date.simplify = FALSE, 
+<pre><code>## function (test = TRUE, total = TRUE, total.pos = c("after", "before"), 
+##     test.pname = NULL, numeric.simplify = FALSE, cat.simplify = FALSE, 
+##     cat.droplevels = FALSE, ordered.simplify = FALSE, date.simplify = FALSE, 
 ##     numeric.test = "anova", cat.test = "chisq", ordered.test = "trend", 
 ##     surv.test = "logrank", date.test = "kwt", selectall.test = "notest", 
 ##     test.always = FALSE, numeric.stats = c("Nmiss", "meansd", 
@@ -5712,8 +5717,9 @@ render("Test.md", pdf_document(keep_tex=TRUE))
 ##     date.stats = c("Nmiss", "median", "range"), selectall.stats = c("Nmiss", 
 ##         "countpct"), stats.labels = list(), digits = 3L, digits.count = 0L, 
 ##     digits.pct = 1L, digits.p = 3L, format.p = TRUE, digits.n = 0L, 
-##     conf.level = 0.95, chisq.correct = FALSE, simulate.p.value = FALSE, 
-##     B = 2000, times = 1:5, ...) 
+##     conf.level = 0.95, wilcox.correct = FALSE, wilcox.exact = NULL, 
+##     chisq.correct = FALSE, simulate.p.value = FALSE, B = 2000, 
+##     times = 1:5, ...) 
 ## NULL</code></pre>
 </div>
 <div id="summary-tableby-settings" class="section level2">
