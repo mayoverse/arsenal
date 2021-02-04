@@ -117,7 +117,7 @@ meanse <- function(x, na.rm=TRUE, weights = NULL, ...) {
   } else {
     if(!is.null(weights)) stop("'meanse' can only be used without weights")
     m <- mean(x, na.rm=na.rm)
-    s <- sd(x, na.rm=na.rm)/sqrt(sum(!is.na(x)))
+    s <- stats::sd(x, na.rm=na.rm)/sqrt(sum(!is.na(x)))
     if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
   }
   as.tbstat(y, parens = c("(", ")"))
@@ -410,7 +410,7 @@ Npct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, wei
   }
 
   tmp <- wtd.table(factor(by, levels = by.levels), weights = weights)
-  wtbl <- c(tmp, setNames(sum(tmp), totallab))
+  wtbl <- c(tmp, stats::setNames(sum(tmp), totallab))
   lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/sum(tmp)), parens = c("(", ")"), pct = "%", which.pct = 2L))
 }
 
