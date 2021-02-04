@@ -1,19 +1,23 @@
-## Submission for arsenal 3.5.0
+## Submission for arsenal 3.6.0
 
 This is a new version. In this version:
 
-* Updated the R requirement to >= 3.4.0, and updated several dependencies' version requirements.
+* Updated several dependencies' version requirements.
 
-* Fixed the bugs from the new versions of `broom` and `knitr`
+* Replaced `gam` with `splines` in the "Suggests"
 
-* Closed about 12 bugs/feature requests.
+* Added `geepack` to the "Suggests"
+
+* Fixed the bugs from the new version of `broom`
+
+* Closed about 14 bugs/feature requests.
 
 * Updated documentation where appropriate.
 
 ## Test environments
 
 * local Linux install: R 3.6.2
-* ubuntu 16.04 (on travis-ci): R devel, R 4.0.0, R 3.6.3 (oldrel), R 3.6.2, R 3.4.2, R 3.4.0
+* ubuntu 16.04 (on travis-ci): R devel, R 4.0.2, R 3.6.3 (oldrel), R 3.6.2, R 3.4.2, R 3.4.0
 * Win builder (devel and release)
 
 ## R CMD check results
@@ -23,3 +27,4 @@ This is a new version. In this version:
 ## Reverse dependencies
 
 sdglinkage: OK
+haplo.stats: OK

@@ -1,43 +1,60 @@
-# arsenal v3.5.0.9000
+# arsenal v3.6.0
 
-* Added `selectall()`.
+Possible breaking change:
 
-* Added `relrisk()` to `modelsum()` families (with corresponding addition of `geepack` package to "Suggests"). (#279)
-
-* Added option to `diffs()` for extracting not-shared observations. (#305)
-
-* Added "label" option to `cat.simplify=` and `ord.simplify=` for `tableby()`/`paired()`. (#288)
-
-* Possible breaking change: `tableby()`, `modelsum()`, and `freqlist()` now use the `caption=` argument in `knitr::kable()`
+* `tableby()`, `modelsum()`, and `freqlist()` now use the `caption=` argument in `knitr::kable()`
   to generate captions (`comparedf()` already does). (#310)
   
-* Added note to `write2()` vignette about a global option for R Markdown documents in R Studio. (#312)
+* Changes to `DESCRIPTION` file:
+  
+    - Changed `broom` requirement to >= 0.7.1, in which a bug with `geepack::geeglm` was fixed. This affected one test in the test suite.
 
-* Changed `broom` requirement to >= 0.7.1, in which a bug with `geepack::geeglm` was fixed. This affected one test in the test suite.
+    - Added `geepack` package to "Suggests" (#279).
 
-* Fixed a bug in `tableby()` / `paired()` where `stats.labels=` specification would remove all default labels. (#316)
+    - Removed `gam` from the "Suggests", in favor of `splines`, which the `modelsum()` vignette actually uses.
 
-* Removed `gam` from the "Suggests", in favor of `splines`, which the `modelsum()` vignette actually uses.
+    - Changed `survival` requirement to `>= 2.43-1`.
 
-* Changed `survival` requirement to `>= 2.43-1`.
-
+Other changes:  
+  
 * Added code to error informatively when "Suggests" aren't available. (#317)
 
-* Fixed bug in `comparedf()` when things are infinite. (#306)
+* `tableby()`: 
 
-* Added `wt()` option for `tableby()`. (#321)
+    - Added `selectall()`.
 
-* Fixed a bug in `tableby()` relating to a weird edge case when a by-level is "Total" and the total label is set to something else.
+    - Added "label" option to `cat.simplify=` and `ord.simplify=` for `tableby()`/`paired()`. (#288)
+    
+    - Fixed a bug in `tableby()` / `paired()` where `stats.labels=` specification would remove all default labels. (#316)
 
-* Added a feature to `tableby.control()` to allow for the total column to be moved before the other columns. (#320)
+    - Added `wt()` (Wilcoxon test) option for `tableby()`. (#321)
+    
+    - Fixed a bug in `tableby()` relating to a weird edge case when a by-level is "Total" and the total label is set to something else.
 
-* Added a feature to `tableby.control()` to allow for dropping of categorical levels. (#318)
+    - Added a feature to `tableby.control()` to allow for the total column to be moved before the other columns. (#320)
 
-* Added `meanse()` for `tableby()`. (#315)
+    - Added a feature to `tableby.control()` to allow for dropping of categorical levels. (#318)
 
-* Fixed a bug in `modelsum()` with confidence level for survival.
+    - Added `meanse()` for `tableby()`. (#315)
 
-* Suppressed warnings with new broom version when using `MASS::glm.nb()`.
+* `modelsum()`:
+
+    - Added `relrisk()` to `modelsum()` families (with corresponding addition of `geepack` package to "Suggests"). (#279)
+    
+    - Fixed a bug in `modelsum()` with confidence level for survival.
+
+    - Suppressed warnings with new broom version when using `MASS::glm.nb()`.
+
+* `comparedf()`:
+
+    - Added option to `diffs()` for extracting not-shared observations. (#305)
+    
+    - Fixed bug in `comparedf()` when things are infinite. (#306)
+  
+* `write2()`:
+
+    - Added note to `write2()` vignette about a global option for R Markdown documents in R Studio. (#312)
+
 
 # arsenal v3.5.0
 
