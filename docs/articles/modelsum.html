@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.1</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@
 <a href="#introduction" class="anchor"></a>Introduction</h1>
 <p>Very often we are asked to summarize model results from multiple fits into a nice table. The endpoint might be of different types (e.g., survival, case/control, continuous) and there may be several independent variables that we want to examine univariately or adjusted for certain variables such as age and sex. Locally at Mayo, the SAS macros <code>%modelsum</code>, <code>%glmuniv</code>, and <code>%logisuni</code> were written to create such summary tables. With the increasing interest in R, we have developed the function <code>modelsum</code> to create similar tables within the R environment.</p>
 <p>In developing the <code>modelsum</code> function, the goal was to bring the best features of these macros into an R function. However, the task was not simply to duplicate all the functionality, but rather to make use of R’s strengths (modeling, method dispersion, flexibility in function definition and output format) and make a tool that fits the needs of R users. Additionally, the results needed to fit within the general reproducible research framework so the tables could be displayed within an R markdown report.</p>
-<p>This report provides step-by-step directions for using the functions associated with <code>modelsum</code>. All functions presented here are available within the <code>arsenal</code> package. An assumption is made that users are somewhat familiar with R markdown documents. For those who are new to the topic, a good initial resource is available at <a href="http://rmarkdown.rstudio.com">rmarkdown.rstudio.com</a>.</p>
+<p>This report provides step-by-step directions for using the functions associated with <code>modelsum</code>. All functions presented here are available within the <code>arsenal</code> package. An assumption is made that users are somewhat familiar with R markdown documents. For those who are new to the topic, a good initial resource is available at <a href="https://rmarkdown.rstudio.com/">rmarkdown.rstudio.com</a>.</p>
 </div>
 <div id="simple-example" class="section level1">
 <h1 class="hasAnchor">
