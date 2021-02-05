@@ -1,3 +1,7 @@
+# arsenal v3.6.1
+
+* Fixed two URLs
+
 # arsenal v3.6.0
 
 Possible breaking change:

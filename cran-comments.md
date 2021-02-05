@@ -2,17 +2,7 @@
 
 This is a new version. In this version:
 
-* Updated several dependencies' version requirements.
-
-* Replaced `gam` with `splines` in the "Suggests"
-
-* Added `geepack` to the "Suggests"
-
-* Fixed the bugs from the new version of `broom`
-
-* Closed about 14 bugs/feature requests.
-
-* Updated documentation where appropriate.
+* Two invalid URLs were fixed.
 
 ## Test environments
 
