@@ -251,7 +251,7 @@ output: word_document
   reference_docx: /projects/bsi/gentools/R/lib320/arsenal/doc/WordStylesReference01.docx 
 ```
 
-For more informating on changing the look/feel of your Word document, see the [Rmarkdown documentation](http://rmarkdown.rstudio.com/word_document_format.html) website.
+For more information on changing the look/feel of your Word document, see the [Rmarkdown documentation](https://bookdown.org/yihui/rmarkdown/word-document.html) website.
 
 
 # Additional Examples
