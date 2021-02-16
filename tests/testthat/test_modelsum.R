@@ -526,7 +526,7 @@ test_that("05/31/2018: similar column names (#98)", {
 
 test_that("05/31/2018: similar column names (#100)", {
   dat <- data.frame(
-    y = 1:10,
+    y = c(1:9, 11),
     a = factor(rep(c("a", "b"), each = 5), levels = c("b", "a")),
     d = factor(rep(c("c", "d"), times = 5), levels = c("c", "d"))
   )
@@ -534,9 +534,9 @@ test_that("05/31/2018: similar column names (#100)", {
     capture.kable(summary(modelsum(y ~ a, adjust = ~ d, data = set_labels(dat, list(a = "A", d = "D"))), text = TRUE)),
     c("|            |estimate |std.error |p.value |adj.r.squared |",
       "|:-----------|:--------|:---------|:-------|:-------------|",
-      "|(Intercept) |8.000    |1.000     |< 0.001 |0.688         |",
-      "|A a         |-5.000   |1.091     |0.003   |              |",
-      "|D d         |-0.000   |1.091     |1.000   |              |"
+      "|(Intercept) |8.100    |1.112     |< 0.001 |0.656         |",
+      "|A a         |-5.167   |1.213     |0.004   |              |",
+      "|D d         |0.167    |1.213     |0.895   |              |"
     )
   )
 })
