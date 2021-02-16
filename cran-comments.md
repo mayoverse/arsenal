@@ -1,8 +1,10 @@
-## Submission for arsenal 3.6.0
+## Submission for arsenal 3.6.2
 
 This is a new version. In this version:
 
-* Two invalid URLs were fixed.
+* One invalid URL was fixed.
+
+* Two tests in the test suite were improved for rounding differences on macos.
 
 ## Test environments
 

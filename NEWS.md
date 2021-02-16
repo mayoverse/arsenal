@@ -1,3 +1,9 @@
+# arsenal v3.6.2
+
+* Fixed one URL
+
+* Fixed two `modelsum` test errors that were a result of rounding on macos.
+
 # arsenal v3.6.1
 
 * Fixed two URLs
