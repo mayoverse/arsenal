@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.2</span>
       </span>
     </div>
 
@@ -886,27 +886,33 @@
 <span id="cb22-6"><a href="#cb22-6"></a><span class="op">&gt;</span><span class="st"> </span></span>
 <span id="cb22-7"><a href="#cb22-7"></a><span class="er">&gt;</span><span class="st"> </span><span class="co"># It can also be calculated using the survConcordance function</span></span>
 <span id="cb22-8"><a href="#cb22-8"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">survConcordance</span>(<span class="kw">Surv</span>(fu.time, fu.stat) <span class="op">~</span><span class="st"> </span><span class="kw">predict</span>(fit2), <span class="dt">data=</span>mockstudy)</span>
-<span id="cb22-9"><a href="#cb22-9"></a><span class="op">$</span>concordance</span>
-<span id="cb22-10"><a href="#cb22-10"></a>concordant </span>
-<span id="cb22-11"><a href="#cb22-11"></a> <span class="fl">0.5684325</span> </span>
-<span id="cb22-12"><a href="#cb22-12"></a></span>
-<span id="cb22-13"><a href="#cb22-13"></a><span class="op">$</span>stats</span>
-<span id="cb22-14"><a href="#cb22-14"></a>concordant discordant  tied.risk  tied.time   <span class="kw">std</span>(c<span class="op">-</span>d) </span>
-<span id="cb22-15"><a href="#cb22-15"></a> <span class="fl">620221.00</span>  <span class="fl">470282.00</span>    <span class="fl">5021.00</span>     <span class="fl">766.00</span>   <span class="fl">19235.49</span> </span>
-<span id="cb22-16"><a href="#cb22-16"></a></span>
-<span id="cb22-17"><a href="#cb22-17"></a><span class="op">$</span>n</span>
-<span id="cb22-18"><a href="#cb22-18"></a>[<span class="dv">1</span>] <span class="dv">1499</span></span>
-<span id="cb22-19"><a href="#cb22-19"></a></span>
-<span id="cb22-20"><a href="#cb22-20"></a><span class="op">$</span>std.err</span>
-<span id="cb22-21"><a href="#cb22-21"></a>   <span class="kw">std</span>(c<span class="op">-</span>d) </span>
-<span id="cb22-22"><a href="#cb22-22"></a><span class="fl">0.008779125</span> </span>
-<span id="cb22-23"><a href="#cb22-23"></a></span>
-<span id="cb22-24"><a href="#cb22-24"></a><span class="op">$</span>call</span>
-<span id="cb22-25"><a href="#cb22-25"></a><span class="kw">survConcordance</span>(<span class="dt">formula =</span> <span class="kw">Surv</span>(fu.time, fu.stat) <span class="op">~</span><span class="st"> </span><span class="kw">predict</span>(fit2), </span>
-<span id="cb22-26"><a href="#cb22-26"></a>    <span class="dt">data =</span> mockstudy)</span>
-<span id="cb22-27"><a href="#cb22-27"></a></span>
-<span id="cb22-28"><a href="#cb22-28"></a><span class="kw">attr</span>(,<span class="st">"class"</span>)</span>
-<span id="cb22-29"><a href="#cb22-29"></a>[<span class="dv">1</span>] <span class="st">"survConcordance"</span></span></code></pre></div>
+<span id="cb22-9"><a href="#cb22-9"></a>Warning<span class="op">:</span><span class="st"> 'survConcordance'</span> is deprecated.</span>
+<span id="cb22-10"><a href="#cb22-10"></a>Use <span class="st">'concordance'</span> instead.</span>
+<span id="cb22-11"><a href="#cb22-11"></a>See <span class="kw">help</span>(<span class="st">"Deprecated"</span>)</span>
+<span id="cb22-12"><a href="#cb22-12"></a>Warning<span class="op">:</span><span class="st"> 'survConcordance.fit'</span> is deprecated.</span>
+<span id="cb22-13"><a href="#cb22-13"></a>Use <span class="st">'concordancefit'</span> instead.</span>
+<span id="cb22-14"><a href="#cb22-14"></a>See <span class="kw">help</span>(<span class="st">"Deprecated"</span>)</span>
+<span id="cb22-15"><a href="#cb22-15"></a><span class="op">$</span>concordance</span>
+<span id="cb22-16"><a href="#cb22-16"></a>concordant </span>
+<span id="cb22-17"><a href="#cb22-17"></a> <span class="fl">0.5684325</span> </span>
+<span id="cb22-18"><a href="#cb22-18"></a></span>
+<span id="cb22-19"><a href="#cb22-19"></a><span class="op">$</span>stats</span>
+<span id="cb22-20"><a href="#cb22-20"></a>concordant discordant  tied.risk  tied.time   <span class="kw">std</span>(c<span class="op">-</span>d) </span>
+<span id="cb22-21"><a href="#cb22-21"></a> <span class="fl">620221.00</span>  <span class="fl">470282.00</span>    <span class="fl">5021.00</span>     <span class="fl">766.00</span>   <span class="fl">19235.49</span> </span>
+<span id="cb22-22"><a href="#cb22-22"></a></span>
+<span id="cb22-23"><a href="#cb22-23"></a><span class="op">$</span>n</span>
+<span id="cb22-24"><a href="#cb22-24"></a>[<span class="dv">1</span>] <span class="dv">1499</span></span>
+<span id="cb22-25"><a href="#cb22-25"></a></span>
+<span id="cb22-26"><a href="#cb22-26"></a><span class="op">$</span>std.err</span>
+<span id="cb22-27"><a href="#cb22-27"></a>   <span class="kw">std</span>(c<span class="op">-</span>d) </span>
+<span id="cb22-28"><a href="#cb22-28"></a><span class="fl">0.008779125</span> </span>
+<span id="cb22-29"><a href="#cb22-29"></a></span>
+<span id="cb22-30"><a href="#cb22-30"></a><span class="op">$</span>call</span>
+<span id="cb22-31"><a href="#cb22-31"></a><span class="kw">survConcordance</span>(<span class="dt">formula =</span> <span class="kw">Surv</span>(fu.time, fu.stat) <span class="op">~</span><span class="st"> </span><span class="kw">predict</span>(fit2), </span>
+<span id="cb22-32"><a href="#cb22-32"></a>    <span class="dt">data =</span> mockstudy)</span>
+<span id="cb22-33"><a href="#cb22-33"></a></span>
+<span id="cb22-34"><a href="#cb22-34"></a><span class="kw">attr</span>(,<span class="st">"class"</span>)</span>
+<span id="cb22-35"><a href="#cb22-35"></a>[<span class="dv">1</span>] <span class="st">"survConcordance"</span></span></code></pre></div>
 </div>
 <div id="extract-data-using-broom-package-1" class="section level3">
 <h3 class="hasAnchor">
