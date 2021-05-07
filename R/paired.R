@@ -305,6 +305,8 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
             bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                                 by = by.col, by.levels = by.levels, na.rm = TRUE))
             bystatlist$Total <- NULL
+          } else if(statfun2 == "Nsigntest") {
+            bystatlist <- as.countpct(NA_real_)
           } else
           {
             for(bylev in by.levels) {
@@ -346,7 +348,8 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest
         testout <- if(control$test) {
           eval(call(currtest, TP1.eff, TP2.eff, mcnemar.correct=control$mcnemar.correct,
-                    signed.rank.exact = control$signed.rank.exact, signed.rank.correct = control$signed.rank.correct))
+                    signed.rank.exact = control$signed.rank.exact, signed.rank.correct = control$signed.rank.correct,
+                    test.always=control$test.always))
         } else notest()
 
         xList[[eff]] <- list(stats=statList, test=testout, type=vartype)

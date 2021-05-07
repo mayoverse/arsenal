@@ -1707,7 +1707,7 @@ test_that("wt (#321)", {
 })
 
 
-test_that("wt (#327)", {
+test_that("medtest (#327)", {
   expect_identical(
     capture.kable(summary(tableby(sex ~ medtest(age), data = mockstudy), text = TRUE)),
     c("|             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|",

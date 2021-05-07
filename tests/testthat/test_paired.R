@@ -283,4 +283,22 @@ test_that("12/27/2019: informative error when no stats are computed (#273)", {
   expect_error(summary(paired(tp ~ Cat, data = dat2, id = id, cat.stats = "Nmiss")), "Nothing to show for variable")
 })
 
+test_that("NAs in sign.test, plus Nsigntest (#326)", {
+  d <- data.frame(
+    tp = rep(c("Time 1", "Time 2"), times = 4),
+    id = c(1, 1, 2, 2, 3, 3, 4, 4),
+    a = c(1, 2, 2, 3, 3, 4, 5, NA)
+  )
+  expect_identical(
+    capture.kable(summary(paired(tp ~ sign.test(a), id = id, data = d, numeric.stats = c("Nmiss", "meansd", "range", "Nsigntest")), text = TRUE)),
+    c("|                 | Time 1 (N=4)  | Time 2 (N=4)  | Difference (N=4) | p value|",
+      "|:----------------|:-------------:|:-------------:|:----------------:|-------:|",
+      "|a                |               |               |                  |   0.250|",
+      "|-  N-Miss        |       4       |       4       |        4         |        |",
+      "|-  Mean (SD)     | 2.750 (1.708) | 3.000 (1.000) |  1.000 (0.000)   |        |",
+      "|-  Range         | 1.000 - 5.000 | 2.000 - 4.000 |  1.000 - 1.000   |        |",
+      "|-  N (sign test) |      NA       |      NA       |        3         |        |"
+    )
+  )
+})
 

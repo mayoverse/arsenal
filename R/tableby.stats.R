@@ -247,6 +247,12 @@ gmeanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
   as.tbstat(y, parens = c("(", ")"), sep2 = ", ")
 }
 
+#' @rdname tableby.stats
+#' @export
+Nsigntest <- function(x, na.rm = TRUE, weights = NULL, ...) {
+  if(is.null(weights)) weights <- rep(1, NROW(x))
+  as.countpct(sum(weights*(x != 0), na.rm = na.rm))
+}
 
 ## survival stats
 #' @rdname tableby.stats
@@ -379,7 +385,7 @@ iqr <- function(x, na.rm=TRUE, weights = NULL, ...) {
 #' @export
 Nmiss <- function(x, na.rm=TRUE, weights = NULL, ...) {
   if(is.null(weights)) weights <- rep(1, NROW(x))
-  as.countpct(sum(weights[is.na(x)]))
+  as.countpct(sum(weights, na.rm = na.rm))
 }
 
 ## Nmiss2 make similar, but in tableby, always keep nmiss,
@@ -393,7 +399,7 @@ Nmiss2 <- Nmiss
 #' @export
 N <- function(x, na.rm=TRUE, weights = NULL, ...) {
   if(is.null(weights)) weights <- rep(1, NROW(x))
-  as.countpct(sum(weights[!is.na(x)]))
+  as.countpct(sum(weights, na.rm = na.rm))
 }
 
 #' @rdname tableby.stats

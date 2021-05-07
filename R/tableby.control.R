@@ -147,7 +147,7 @@ add_tbc_stats_labels <- function(x) {
     mean = "Mean", sd = "SD", var = "Var", max = "Max", min = "Min", meanCI = "Mean (CI)", sum = "Sum",
     gmean = "Geom Mean", gsd = "Geom SD", gmeansd = "Geom Mean (Geom SD)", gmeanCI = "Geom Mean (CI)",
     range="Range", Npct="N (Pct)", Nevents="Events", medSurv="Median Survival",
-    medTime = "Median Follow-Up", medianmad="Median (MAD)",
+    medTime = "Median Follow-Up", medianmad="Median (MAD)", Nsigntest = "N (sign test)",
     overall = "Overall", total = "Total", difference = "Difference"
   )
   nms <- setdiff(names(x), "")
