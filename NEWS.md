@@ -1,3 +1,7 @@
+# arsenal v3.6.2.9000
+
+* Added `medtest()` to `tableby()` for a median test. (#327)
+
 # arsenal v3.6.2
 
 * Fixed one URL

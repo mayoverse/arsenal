@@ -58,6 +58,9 @@
 #'     \code{wt}: An explicit Wilcoxon test.
 #'   }
 #'   \item{
+#'     \code{medtest}: A median test.
+#'   }
+#'   \item{
 #'     \code{chisq}: chi-square goodness of fit test for equal counts of a
 #'     categorical variable across categories; the default for categorical
 #'     or factor variables
@@ -130,7 +133,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
   indx <- match(c("formula", "data", "subset", "weights", "na.action", "strata"), names(Call), nomatch = 0)
   if(indx[1] == 0) stop("A formula argument is required")
 
-  special <- c("anova", "kwt", "wt", "chisq", "fe", "logrank", "trend", "notest")
+  special <- c("anova", "kwt", "wt", "medtest", "chisq", "fe", "logrank", "trend", "notest")
 
   out.tables <- list()
   formula.list <- as_list_formula(formula)

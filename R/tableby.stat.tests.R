@@ -43,6 +43,24 @@ wt <- function(x, x.by, ..., wilcox.correct = FALSE, wilcox.exact = NULL, test.a
   stats::wilcox.test(x ~ as.factor(x.by), correct = wilcox.correct, exact = wilcox.exact)
 }
 
+## median test
+medtest <- function(x, x.by, ..., test.always = FALSE) {
+  if(!requireNamespace("coin", quietly = TRUE))
+  {
+    warning("The \"coin\" package is required to run a median test.", call. = FALSE)
+    return(notest(x, x.by, ...))
+  }
+
+  tab <- table(is.na(x), x.by)
+  if(!test.always && (any(tab[1, ] == 0) || any(colSums(tab) == 0))) {
+    return(list(p.value=NA_real_, method = "Median test"))
+  }
+  ## should be taken care of with coin::
+  check_pkg("coin")
+  mtest <- coin::median_test(x~as.factor(x.by), teststat="quad")
+  list(p.value=coin::pvalue(mtest), method="Median test", statistic=mtest@statistic@teststatistic)
+}
+
 ## two tests for categorical,
 ## 1. chisq goodness of fit, equal proportions across table cells
 chisq <- function(x, x.by, ..., chisq.correct=FALSE, simulate.p.value=FALSE, B=2000, test.always = FALSE) {

@@ -1705,3 +1705,17 @@ test_that("wt (#321)", {
     )
   )
 })
+
+
+test_that("wt (#327)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ medtest(age), data = mockstudy), text = TRUE)),
+    c("|             |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:---------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                 |                 |   0.018|",
+      "|-  Mean (SD) | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |",
+      "|-  Range     | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |"
+    )
+  )
+})
+

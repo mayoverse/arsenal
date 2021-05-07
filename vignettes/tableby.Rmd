@@ -912,6 +912,8 @@ The following tests are accepted:
 
 * `wt`: An explicit Wilcoxcon test.
     
+* `medtest`: Median test test, optional test for continuous variables.
+
 * `chisq`: chi-square goodness of fit test for equal counts of a
     categorical variable across categories; the default for categorical
     or factor variables
