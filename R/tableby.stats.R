@@ -385,7 +385,7 @@ iqr <- function(x, na.rm=TRUE, weights = NULL, ...) {
 #' @export
 Nmiss <- function(x, na.rm=TRUE, weights = NULL, ...) {
   if(is.null(weights)) weights <- rep(1, NROW(x))
-  if(na.rm) weights <- weights[!is.na(x) & !is.na(weights)]
+  if(na.rm) weights <- weights[is.na(x) | is.na(weights)]
   as.countpct(sum(weights))
 }
 
