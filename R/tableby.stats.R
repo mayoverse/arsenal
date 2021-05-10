@@ -383,9 +383,9 @@ iqr <- function(x, na.rm=TRUE, weights = NULL, ...) {
 ## Count of missings: always show missings
 #' @rdname tableby.stats
 #' @export
-Nmiss <- function(x, na.rm=TRUE, weights = NULL, ...) {
+Nmiss <- function(x, weights = NULL, ...) {
   if(is.null(weights)) weights <- rep(1, NROW(x))
-  if(na.rm) weights <- weights[is.na(x) | is.na(weights)]
+  weights <- weights[is.na(x) | is.na(weights)]
   as.countpct(sum(weights))
 }
 
