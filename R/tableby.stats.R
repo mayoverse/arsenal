@@ -385,7 +385,8 @@ iqr <- function(x, na.rm=TRUE, weights = NULL, ...) {
 #' @export
 Nmiss <- function(x, na.rm=TRUE, weights = NULL, ...) {
   if(is.null(weights)) weights <- rep(1, NROW(x))
-  as.countpct(sum(weights, na.rm = na.rm))
+  if(na.rm) weights <- weights[!is.na(x) & !is.na(weights)]
+  as.countpct(sum(weights))
 }
 
 ## Nmiss2 make similar, but in tableby, always keep nmiss,
@@ -399,7 +400,8 @@ Nmiss2 <- Nmiss
 #' @export
 N <- function(x, na.rm=TRUE, weights = NULL, ...) {
   if(is.null(weights)) weights <- rep(1, NROW(x))
-  as.countpct(sum(weights, na.rm = na.rm))
+  if(na.rm) weights <- weights[!is.na(x) & !is.na(weights)]
+  as.countpct(sum(weights))
 }
 
 #' @rdname tableby.stats
