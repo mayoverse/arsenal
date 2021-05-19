@@ -827,7 +827,7 @@ The available summary statistics, by varible type, are:
   +  default:  `OR, CI.lower.OR, CI.upper.OR, p.value, concordance, Nmiss`
   +  optional: `estimate, CI.OR, CI.estimate, CI.lower.estimate, CI.upper.estimate,`
         `CI.wald, CI.lower.wald, CI.upper.wald, CI.OR.wald, CI.lower.OR.wald, CI.upper.OR.wald,`
-        `N, Nmiss2, endpoint, std.error, statistic, logLik, AIC, BIC, null.deviance, deviance, df.residual, df.null, p.value.lrt`
+        `N, Nmiss2, Nevents, endpoint, std.error, statistic, logLik, AIC, BIC, null.deviance, deviance, df.residual, df.null, p.value.lrt`
 * `gaussian`: Linear regression models 
   +  default:  `estimate, std.error, p.value, adj.r.squared, Nmiss`
   +  optional: `CI.estimate, CI.lower.estimate, CI.upper.estimate, N, Nmiss2, statistic,`

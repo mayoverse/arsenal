@@ -97,7 +97,7 @@ modelsum.control <- function(
     "Nmiss", "OR", "CI.lower.OR", "CI.upper.OR", "p.value", "concordance",  # default
     "estimate", "CI.OR", "CI.estimate", "CI.lower.estimate", "CI.upper.estimate",
     "CI.wald", "CI.lower.wald", "CI.upper.wald", "CI.OR.wald", "CI.lower.OR.wald", "CI.upper.OR.wald",
-    "N", "Nmiss2", "endpoint", "std.error", "statistic",
+    "N", "Nmiss2", "endpoint", "std.error", "statistic", "Nevents",
     "logLik", "AIC", "BIC", "null.deviance", "deviance", "df.residual", "df.null", "p.value.lrt"
   )
 

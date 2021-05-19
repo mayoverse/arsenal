@@ -164,6 +164,7 @@ modelsum_guts <- function(fam, temp.call, envir, conf.level, scope, anyna)
     modelGlance <- broom::glance(fit)
     modelGlance$concordance <- as.numeric(pROC::auc(fit$y ~ predict(fit, type='response'), direction = "<", levels = 0:1))
     modelGlance$p.value.lrt <- try_lrt(fit, scope, FALSE)
+    modelGlance$Nevents <- table(fit$y)[2]
 
   } else if (fam$family == "quasipoisson" || fam$family == "poisson") {
     ## These families use glm

@@ -691,3 +691,14 @@ test_that("relrisk works (#279)", {
   options(opts)
 })
 
+test_that("Nevents works for binomial (#325)", {
+  expect_identical(
+    capture.kable(summary(modelsum(fu.stat == 1 ~ age, data = mockstudy, family = "binomial",
+                                   binomial.stats = c("OR", "Nevents")))),
+    c("|                 |OR    |Nevents |",
+      "|:----------------|:-----|:-------|",
+      "|(Intercept)      |0.145 |143     |",
+      "|**Age in Years** |0.995 |        |"
+    )
+  )
+})
