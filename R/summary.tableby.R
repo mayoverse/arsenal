@@ -82,8 +82,15 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, cont
   digits.count <- vapply(df$variable, function(i) f(i, "digits.count"), numeric(1))
   digits.pct <- vapply(df$variable, function(i) f(i, "digits.pct"), numeric(1))
 
-  df[idx] <- lapply(df[idx], function(col) unlist(Map(format, col, digits = digits, format = "f", # the format="f" is not used for tbstat objects
-                                                      digits.count = digits.count, digits.pct = digits.pct)))
+  df[idx] <- lapply(df[idx], function(col) {
+    out <- Map(
+      function(xx, ...) if(is.character(xx)) xx else format(xx, ...),
+      col,
+      digits = digits, format = "f", # the format="f" is not used for tbstat objects
+      digits.count = digits.count, digits.pct = digits.pct
+    )
+    unlist(out)
+  })
 
   if(is.numeric(df$p.value))
   {
