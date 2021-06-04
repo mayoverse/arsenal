@@ -19,6 +19,7 @@
 \alias{gsd}
 \alias{gmeansd}
 \alias{gmeanCI}
+\alias{Nsigntest}
 \alias{Nevents}
 \alias{medSurv}
 \alias{NeventsSurv}
@@ -75,6 +76,8 @@ gmeansd(x, na.rm = TRUE, weights = NULL, ...)
 
 gmeanCI(x, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
 
+Nsigntest(x, na.rm = TRUE, weights = NULL, ...)
+
 Nevents(x, na.rm = TRUE, weights = NULL, ...)
 
 medSurv(x, na.rm = TRUE, weights = NULL, ...)
@@ -93,9 +96,9 @@ medianq1q3(x, na.rm = TRUE, weights = NULL, ...)
 
 iqr(x, na.rm = TRUE, weights = NULL, ...)
 
-Nmiss(x, na.rm = TRUE, weights = NULL, ...)
+Nmiss(x, weights = NULL, ...)
 
-Nmiss2(x, na.rm = TRUE, weights = NULL, ...)
+Nmiss2(x, weights = NULL, ...)
 
 N(x, na.rm = TRUE, weights = NULL, ...)
 

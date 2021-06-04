@@ -85,6 +85,9 @@ These tests are accepted:
     \code{wt}: An explicit Wilcoxon test.
   }
   \item{
+    \code{medtest}: A median test.
+  }
+  \item{
     \code{chisq}: chi-square goodness of fit test for equal counts of a
     categorical variable across categories; the default for categorical
     or factor variables

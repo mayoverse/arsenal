@@ -67,7 +67,7 @@ In particular, if \code{Nmiss} is specified and there are missings, then the out
 \item{cat.droplevels}{Should levels be dropped for categorical variables? If set to true, p-values will not be displayed
 unless \code{test.always = TRUE} as well.}
 
-\item{numeric.test}{name of test for numeric RHS variables in \code{tableby}: anova, kwt (Kruskal-Wallis).
+\item{numeric.test}{name of test for numeric RHS variables in \code{tableby}: anova, kwt (Kruskal-Wallis), medtest (median test).
 If no LHS variable exists, then a mean is required for a univariate test.}
 
 \item{cat.test}{name of test for categorical variables: chisq, fe (Fisher's Exact)}
