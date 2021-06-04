@@ -10,6 +10,7 @@ context("Testing the tableby strata and multiple LHS output")
 ###########################################################################################################
 
 test_that("A three-LHS tableby call", {
+  skip_if_not_installed("coin")
   expect_identical(
     capture.kable(summary(tableby(list(Group, trt, ethan) ~ Sex + time + dt + Phase, data = mdat), text = TRUE)),
     c(
@@ -168,6 +169,7 @@ test_that("Reordering variables and subsetting", {
 })
 
 test_that("Merging tableby objects", {
+  skip_if_not_installed("coin")
   tb1 <- tableby(list(Group, ethan) ~ Sex + Phase, strata = trt, data = mdat)
   tb2 <- tableby(list(Group.fac, status) ~ Age, strata = trt, data = mdat)
   tb3 <- tableby(list(Group, Group.fac, ethan) ~ Age + dt, strata = trt, data = mdat)

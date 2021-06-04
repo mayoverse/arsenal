@@ -267,6 +267,7 @@ test_that("Reordering variables", {
 
 
 test_that("Merging tableby objects", {
+  skip_if_not_installed("coin")
   tb1 <- tableby(Group ~ Sex + Phase, data = mdat)
   tb2 <- tableby(Group.fac ~ Age, data = mdat)
   tb3 <- tableby(Group ~ Age + dt, data = mdat)
@@ -1077,6 +1078,7 @@ test_that("06/12/2019: labelTranslations for non-default stat tests (#220, #222)
 })
 
 test_that("06/24/2019: fe() and chisq() works with only one level (#227)", {
+  skip_if_not_installed("coin")
   expect_identical(
     capture.kable(summary(tableby(sex ~ fe(arm), data = mockstudy, subset = arm == "F: FOLFOX"), text = TRUE)),
     c("|              | Male (N=411) | Female (N=280) | Total (N=691) | p value|",
@@ -1144,6 +1146,7 @@ test_that("07/17/2019: fix bug with confidence limits (#234)", {
 })
 
 test_that("07/17/2019: run stat test even if one group has 0 observations (#233, #250)", {
+  skip_if_not_installed("coin")
   dd <- data.frame(group=factor(rep(c("A", "B", "C"), 20)), x1=1:60, x2 = rep(c("D", "E", "F"), each = 20))
   dd$x1[dd$group == "C"] <- NA
   dd$x2[dd$group == "C"] <- NA
@@ -1708,6 +1711,8 @@ test_that("wt (#321)", {
 
 
 test_that("medtest (#327)", {
+  skip_if_not_installed("coin")
+
   expect_identical(
     capture.kable(summary(tableby(sex ~ medtest(ast), data = mockstudy, numeric.stats = c("meansd", "range", "N")), text = TRUE)),
     c("|             |  Male (N=916)   |  Female (N=583)  | Total (N=1499)  | p value|",
