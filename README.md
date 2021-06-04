@@ -5,7 +5,7 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/arsenal)](https://CRAN.R-project.org/package=arsenal)
 [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/arsenal)](https://CRAN.R-project.org/package=arsenal)
 [![Downloads](http://cranlogs.r-pkg.org/badges/arsenal)](https://CRAN.R-project.org/package=arsenal)
-[![Travis-CI Build Status](https://travis-ci.org/mayoverse/arsenal.svg?branch=master)](https://travis-ci.org/mayoverse/arsenal)
+[![R-CMD-check](https://github.com/mayoverse/arsenal/workflows/R-CMD-check/badge.svg)](https://github.com/mayoverse/arsenal/actions)
 <!-- badges: end -->
 
 ## Overview
