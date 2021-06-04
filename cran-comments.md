@@ -12,6 +12,7 @@ This is a new version. In this version:
 * ubuntu 18.04 (on GitHub): R devel, release, (oldrel), R 3.6
 * Windows (on Github): release, 3.6
 * OSX (on GitHub): release
+* Windows (winbuilder): devel
 
 ## R CMD check results
 
