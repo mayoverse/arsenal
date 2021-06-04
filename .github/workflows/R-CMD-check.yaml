@@ -47,6 +47,17 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v1
 
+      - uses: r-lib/actions/setup-tinytex@v1
+        env:
+          # install full prebuilt version
+          TINYTEX_INSTALLER: TinyTeX
+
+      - name: Add some R options for later steps
+        run: |
+          cat("\noptions(tinytex.verbose = TRUE)\n", file = "~/.Rprofile", append = TRUE)
+          cat(readLines("~/.Rprofile"), sep = "\n")
+        shell: Rscript {0}
+
       - name: Install pak and query dependencies
         run: |
           install.packages("pak", repos = "https://r-lib.github.io/p/pak/dev/")
