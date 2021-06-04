@@ -9,6 +9,7 @@ expect_write2_worked <- function(FUN, object, reference, ...)
 {
   skip_on_cran()
   skip_on_os("mac")
+  skip_on_os("windows")
   FUN <- match.fun(FUN)
   filename <- tempfile()
   # on.exit(expect_true(file.remove(paste0(filename, ".Rmd"))))
