@@ -4,11 +4,14 @@ This is a new version. In this version:
 
 * 5 bugs were fixed, including an R Devel error with `format()` and `digits=0`.
 
+* Switched testing from Travis to Github Actions
+
 ## Test environments
 
 * local Linux install: R 3.6.2
-* ubuntu 16.04 (on travis-ci): R devel, R 4.0.2, R 3.6.3 (oldrel), R 3.6.2, R 3.4.2, R 3.4.0
-* Win builder (devel and release)
+* ubuntu 18.04 (on GitHub): R devel, release, (oldrel), R 3.6
+* Windows (on Github): release, 3.6
+* OSX (on GitHub): release
 
 ## R CMD check results
 

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.3</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@
 
       
 
-      </header><script src="labels_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="labels_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+      </header><script src="labels_files/header-attrs-2.5/header-attrs.js"></script><link href="labels_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
 <script src="labels_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -127,8 +127,9 @@
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mayoverse/arsenal">arsenal</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">mockstudy</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">magrittr</span><span class="op">)</span>
-
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">magrittr</span><span class="op">)</span></pre></div>
+<pre><code>## Warning: package 'magrittr' was built under R version 4.0.2</code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="co"># for 'freqlist' examples</span>
 <span class="va">tab.ex</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">mockstudy</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"arm"</span>, <span class="st">"sex"</span>, <span class="st">"mdquality.s"</span><span class="op">)</span><span class="op">]</span>, useNA<span class="op">=</span><span class="st">"ifany"</span><span class="op">)</span></pre></div>
 </div>
@@ -139,7 +140,7 @@
 <h2 class="hasAnchor">
 <a href="#set-labels-in-the-function-call" class="anchor"></a>Set labels in the function call</h2>
 <p>The <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> method for <code><a href="../reference/tableby.html">tableby()</a></code>, <code><a href="../reference/modelsum.html">modelsum()</a></code>, and <code><a href="../reference/freqlist.html">freqlist()</a></code> objects contains a <code>labelTranslations =</code> argument to specify labels in the function call. Note that the <code><a href="../reference/freqlist.html">freqlist()</a></code> function matches labels in order, whereas the other two match labels by name. The labels can be input as a list or a character vector.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
+<div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/freqlist.html">freqlist</a></span><span class="op">(</span><span class="va">tab.ex</span><span class="op">)</span>,
         labelTranslations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"Treatment Arm"</span>, sex <span class="op">=</span> <span class="st">"Gender"</span>, mdquality.s <span class="op">=</span> <span class="st">"LASA QOL"</span><span class="op">)</span><span class="op">)</span></pre></div>
 <table class="table">
@@ -317,7 +318,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb3"><pre class="downlit">
+<div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/tableby.html">tableby</a></span><span class="op">(</span><span class="va">arm</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">age</span>, data <span class="op">=</span> <span class="va">mockstudy</span><span class="op">)</span>,
         labelTranslations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>sex <span class="op">=</span> <span class="st">"SEX"</span>, age <span class="op">=</span> <span class="st">"Age, yrs"</span><span class="op">)</span><span class="op">)</span></pre></div>
 <table class="table">
@@ -380,7 +381,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb4"><pre class="downlit">
+<div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/modelsum.html">modelsum</a></span><span class="op">(</span><span class="va">bmi</span> <span class="op">~</span> <span class="va">age</span>, adjust <span class="op">=</span> <span class="op">~</span><span class="va">sex</span>, data <span class="op">=</span> <span class="va">mockstudy</span><span class="op">)</span>,
         labelTranslations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sexFemale <span class="op">=</span> <span class="st">"Female"</span>, age <span class="op">=</span> <span class="st">"Age, yrs"</span><span class="op">)</span><span class="op">)</span></pre></div>
 <table class="table">
@@ -424,7 +425,7 @@
 <h2 class="hasAnchor">
 <a href="#modify-labels-after-the-fact" class="anchor"></a>Modify labels after the fact</h2>
 <p>Another option is to add labels after you have created the object. To do this, you can use the form <code>labels(x) &lt;- value</code> or use the pipe-able version, <code><a href="../reference/labels.html">set_labels()</a></code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
+<div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="co"># the non-pipe version; somewhat clunky</span>
 <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/freqlist.html">freqlist</a></span><span class="op">(</span><span class="va">tab.ex</span><span class="op">)</span>
 <span class="fu"><a href="../reference/labels.html">labels</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"Treatment Arm"</span>, sex <span class="op">=</span> <span class="st">"Gender"</span>, mdquality.s <span class="op">=</span> <span class="st">"LASA QOL"</span><span class="op">)</span>
@@ -604,7 +605,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb6"><pre class="downlit">
+<div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="co"># piped--much cleaner</span>
 <span class="va">mockstudy</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/tableby.html">tableby</a></span><span class="op">(</span><span class="va">arm</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">age</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -670,7 +671,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb7"><pre class="downlit">
+<div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="va">mockstudy</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/modelsum.html">modelsum</a></span><span class="op">(</span><span class="va">bmi</span> <span class="op">~</span> <span class="va">age</span>, adjust <span class="op">=</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/labels.html">set_labels</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sexFemale <span class="op">=</span> <span class="st">"Female"</span>, age <span class="op">=</span> <span class="st">"Age, yrs"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -717,23 +718,23 @@
 <a href="#add-labels-to-a-data-frame" class="anchor"></a>Add labels to a <code>data.frame</code>
 </h2>
 <p><code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/modelsum.html">modelsum()</a></code> also allow you to have label attributes on the data. Note that by default these attributes usually get dropped upon subsetting, but <code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/modelsum.html">modelsum()</a></code> use the <code><a href="../reference/keep.labels.html">keep.labels()</a></code> function to retain them.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
+<div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="va">mockstudy.lab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/keep.labels.html">keep.labels</a></span><span class="op">(</span><span class="va">mockstudy</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">mockstudy</span><span class="op">$</span><span class="va">age</span><span class="op">)</span></pre></div>
 <p>[1] “integer”</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
+<div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">mockstudy.lab</span><span class="op">$</span><span class="va">age</span><span class="op">)</span></pre></div>
 <p>[1] “keep_labels” “integer”</p>
 <p>To undo this, simply <code><a href="../reference/keep.labels.html">loosen.labels()</a></code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
+<div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="fu"><a href="../reference/keep.labels.html">loosen.labels</a></span><span class="op">(</span><span class="va">mockstudy.lab</span><span class="op">)</span><span class="op">$</span><span class="va">age</span><span class="op">)</span></pre></div>
 <p>[1] “integer”</p>
 <p>You can set attributes one at a time in two ways:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
+<div class="sourceCode" id="cb13"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">mockstudy.lab</span><span class="op">$</span><span class="va">sex</span>, <span class="st">"label"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Sex"</span>
 <span class="fu"><a href="../reference/labels.html">labels</a></span><span class="op">(</span><span class="va">mockstudy.lab</span><span class="op">$</span><span class="va">age</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Age, yrs"</span></pre></div>
 <p>…or all at once:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
+<div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="fu"><a href="../reference/labels.html">labels</a></span><span class="op">(</span><span class="va">mockstudy.lab</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sex <span class="op">=</span> <span class="st">"Sex"</span>, age <span class="op">=</span> <span class="st">"Age, yrs"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/tableby.html">tableby</a></span><span class="op">(</span><span class="va">arm</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">age</span>, data <span class="op">=</span> <span class="va">mockstudy.lab</span><span class="op">)</span><span class="op">)</span></pre></div>
 <table class="table">
@@ -797,7 +798,7 @@
 </tbody>
 </table>
 <p>You can pipe this, too.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
+<div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="va">mockstudy</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/labels.html">set_labels</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sex <span class="op">=</span> <span class="st">"SEX"</span>, age <span class="op">=</span> <span class="st">"Age, yrs"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/modelsum.html">modelsum</a></span><span class="op">(</span><span class="va">bmi</span> <span class="op">~</span> <span class="va">age</span>, adjust <span class="op">=</span> <span class="op">~</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -839,7 +840,7 @@
 </tbody>
 </table>
 <p>To extract labels from a <code>data.frame</code>, simply use the <code><a href="../reference/labels.html">labels()</a></code> function:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
+<div class="sourceCode" id="cb16"><pre class="downlit">
 <span class="fu"><a href="../reference/labels.html">labels</a></span><span class="op">(</span><span class="va">mockstudy.lab</span><span class="op">)</span></pre></div>
 <pre><code>## $case
 ## NULL
@@ -887,7 +888,7 @@
 <h2 class="hasAnchor">
 <a href="#when-labels-get-long" class="anchor"></a>When labels get long</h2>
 <p><code><a href="../reference/tableby.html">tableby()</a></code> and <code><a href="../reference/modelsum.html">modelsum()</a></code> both support the wrapping of long labels. Consider the <code>width=</code> argument in the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
+<div class="sourceCode" id="cb18"><pre class="downlit">
 <span class="va">mockstudy</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/labels.html">set_labels</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>age <span class="op">=</span> <span class="st">"This is a really long label for the arm variable"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/tableby.html">tableby</a></span><span class="op">(</span><span class="va">sex</span> <span class="op">~</span> <span class="va">age</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op">%&gt;%</span> 
