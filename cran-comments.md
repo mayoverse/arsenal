@@ -1,10 +1,8 @@
-## Submission for arsenal 3.6.2
+## Submission for arsenal 3.6.3
 
 This is a new version. In this version:
 
-* One invalid URL was fixed.
-
-* Two tests in the test suite were improved for rounding differences on macos.
+* 5 bugs were fixed, including an R Devel error with `format()` and `digits=0`.
 
 ## Test environments
 

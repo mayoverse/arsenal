@@ -1,6 +1,14 @@
-# arsenal v3.6.2.9000
+# arsenal v3.6.3
 
 * Added `medtest()` to `tableby()` for a median test. (#327)
+
+* Account for NAs in `sign.test()` in `paired()`. (#326)
+
+* Add `Nsigntest()` for `paired()`. (#326)
+
+* Add `"Nevents"` for binomial GLMs. (#325)
+
+* A fix for R devel when digits=0.
 
 # arsenal v3.6.2
 
