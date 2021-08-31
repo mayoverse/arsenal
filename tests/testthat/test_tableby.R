@@ -1725,3 +1725,21 @@ test_that("medtest (#327)", {
   )
 })
 
+test_that("rowpct and pct (#337)", {
+  expect_identical(
+    capture.kable(summary(tableby(sex ~ arm, data = mockstudy, cat.stats = c("rowpct", "pct", "countpct")), text = TRUE)),
+    c("|              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
+      "|:-------------|:------------:|:--------------:|:--------------:|-------:|",
+      "|Treatment Arm |              |                |                |   0.190|",
+      "|-  A: IFL     |    64.7%     |     35.3%      |     100.0%     |        |",
+      "|-  F: FOLFOX  |    59.5%     |     40.5%      |     100.0%     |        |",
+      "|-  G: IROX    |    60.0%     |     40.0%      |     100.0%     |        |",
+      "|-  A: IFL     |    30.2%     |     25.9%      |     28.6%      |        |",
+      "|-  F: FOLFOX  |    44.9%     |     48.0%      |     46.1%      |        |",
+      "|-  G: IROX    |    24.9%     |     26.1%      |     25.4%      |        |",
+      "|-  A: IFL     | 277 (30.2%)  |  151 (25.9%)   |  428 (28.6%)   |        |",
+      "|-  F: FOLFOX  | 411 (44.9%)  |  280 (48.0%)   |  691 (46.1%)   |        |",
+      "|-  G: IROX    | 228 (24.9%)  |  152 (26.1%)   |  380 (25.4%)   |        |"
+    )
+  )
+})

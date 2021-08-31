@@ -97,38 +97,38 @@ arsenal_var <- function(x, na.rm=TRUE, weights = NULL, ...) {
 #' @rdname tableby.stats
 #' @export
 meansd <- function(x, na.rm=TRUE, weights = NULL, ...) {
-  y <- if(na.rm && allNA(x))
+  if(na.rm && allNA(x))
   {
-    NA_real_
+    as.tbstat(NA_real_)
   } else {
     m <- wtd.mean(x, weights=weights, na.rm=na.rm)
     s <- sqrt(wtd.var(x, weights=weights, na.rm=na.rm))
-    if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
+    y <- if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
+    as.tbstat(y, parens = c("(", ")"))
   }
-  as.tbstat(y, parens = c("(", ")"))
 }
 
 #' @rdname tableby.stats
 #' @export
 meanse <- function(x, na.rm=TRUE, weights = NULL, ...) {
-  y <- if(na.rm && allNA(x))
+  if(na.rm && allNA(x))
   {
-    NA_real_
+    as.tbstat(NA_real_)
   } else {
     if(!is.null(weights)) stop("'meanse' can only be used without weights")
     m <- mean(x, na.rm=na.rm)
     s <- stats::sd(x, na.rm=na.rm)/sqrt(sum(!is.na(x)))
-    if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
+    y <- if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
+    as.tbstat(y, parens = c("(", ")"))
   }
-  as.tbstat(y, parens = c("(", ")"))
 }
 
 #' @rdname tableby.stats
 #' @export
 meanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
-  y <- if(!is.null(weights) || (na.rm && allNA(x)))
+  if(!is.null(weights) || (na.rm && allNA(x)))
   {
-    NA_real_
+    as.tbstat(NA_real_)
   } else
   {
     if(na.rm) x <- x[!is.na(x)]
@@ -136,31 +136,35 @@ meanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
     m <- mean(x, na.rm = na.rm)
     n <- length(x)
     a <- (1 - conf.level)/2
-    c(m, m + stats::qt(c(a, 1 - a), df = n - 1) * s / sqrt(n))
+    y <- c(m, m + stats::qt(c(a, 1 - a), df = n - 1) * s / sqrt(n))
+    as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
   }
-  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
 }
 
 #' @rdname tableby.stats
 #' @export
 medianrange <- function(x, na.rm=TRUE, weights = NULL, ...) {
-  y <- if(na.rm && allNA(x)) NA_real_ else wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights)
-  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
+  if(na.rm && allNA(x)) {
+    as.tbstat(NA_real_)
+  } else {
+    y <- wtd.quantile(x, probs=c(0.5, 0, 1), na.rm=na.rm, weights=weights)
+    as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
+  }
 }
 
 
 #' @rdname tableby.stats
 #' @export
 medianmad <- function(x, na.rm=TRUE, weights = NULL, ...) {
-  y <- if(!is.null(weights) || (na.rm && allNA(x)))
+  if(!is.null(weights) || (na.rm && allNA(x)))
   {
-    NA_real_
+    as.tbstat(NA_real_)
   } else {
     m <- stats::median(x, na.rm=na.rm)
     s <- stats::mad(x, na.rm=na.rm, constant = 1)
-    if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
+    y <- if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
+    as.tbstat(y, parens = c("(", ")"))
   }
-  as.tbstat(y, parens = c("(", ")"))
 }
 
 
@@ -178,12 +182,12 @@ arsenal_median <- function(x, na.rm=TRUE, weights = NULL, ...) {
 
 #' @rdname tableby.stats
 arsenal_range <- function(x, na.rm=TRUE, ...) {
-  y <- if(na.rm && allNA(x)) {
-    NA_real_
+  if(na.rm && allNA(x)) {
+    as.tbstat(NA_real_)
   } else {
-    range(x, na.rm=na.rm)
+    y <- range(x, na.rm=na.rm)
+    as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = " - ")
   }
-  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = " - ")
 }
 
 #' @rdname tableby.stats
@@ -214,26 +218,25 @@ gsd <- function(x, na.rm=TRUE, weights = NULL, ...) {
 #' @rdname tableby.stats
 #' @export
 gmeansd <- function(x, na.rm=TRUE, weights = NULL, ...) {
-  y <- if((na.rm && allNA(x)) || any(x < 0, na.rm = TRUE) || is.Date(x))
+  if((na.rm && allNA(x)) || any(x < 0, na.rm = TRUE) || is.Date(x))
   {
-    NA_real_
+    as.tbstat(NA_real_)
   } else {
     m <- exp(wtd.mean(log(x), weights=weights, na.rm=na.rm))
     n <- sum(!is.na(x))
     s <- if(any(x == 0, na.rm = TRUE)) {
       NA_real_
     } else exp(sqrt(wtd.var(log(x), weights = weights, na.rm = na.rm) * (n-1)/n))
-    c(m, s)
+    as.tbstat(c(m, s), parens = c("(", ")"))
   }
-  as.tbstat(y, parens = c("(", ")"))
 }
 
 #' @rdname tableby.stats
 #' @export
 gmeanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
-  y <- if(!is.null(weights) || (na.rm && allNA(x)) || any(x < 0, na.rm = TRUE) || is.Date(x))
+  if(!is.null(weights) || (na.rm && allNA(x)) || any(x < 0, na.rm = TRUE) || is.Date(x))
   {
-    NA_real_
+    as.tbstat(NA_real_)
   } else
   {
     if(na.rm) x <- x[!is.na(x)]
@@ -242,9 +245,8 @@ gmeanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
     m <- mean(log(x), na.rm = na.rm)
     a <- (1 - conf.level)/2
     ci <- if(any(x == 0, na.rm = TRUE)) NA_real_ else m + stats::qt(c(a, 1 - a), df = n - 1) * s / sqrt(n)
-    exp(c(m, ci))
+    as.tbstat(exp(c(m, ci)), parens = c("(", ")"), sep2 = ", ")
   }
-  as.tbstat(y, parens = c("(", ")"), sep2 = ", ")
 }
 
 #' @rdname tableby.stats
@@ -287,33 +289,36 @@ medSurv <- function(x, na.rm = TRUE, weights = NULL, ...) {
 #' @rdname tableby.stats
 #' @export
 NeventsSurv <- function(x, na.rm = TRUE, weights = NULL, times=1:5, ...) {
-  y <- if(na.rm && allNA(x))
+  if(na.rm && allNA(x))
   {
-    matrix(NA_real_, nrow = 1, ncol = length(times))
+    y <- matrix(NA_real_, nrow = 1, ncol = length(times))
+    a <- TRUE
   } else
   {
     check_pkg("survival")
     xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
-    t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
+    y <- t(cbind(cumsum(xsumm$n.event), 100*xsumm$surv))
+    a <- FALSE
   }
   out <- stats::setNames(as.list(as.data.frame(y)), paste0("time = ", times))
-  as.tbstat_multirow(lapply(out, as.countpct, parens = c("(", ")"), which.pct = 2L))
+  as.tbstat_multirow(lapply(out, as.countpct, parens = if(a) NULL else c("(", ")"), which.pct = 2L))
 }
 
 #' @rdname tableby.stats
 #' @export
 NriskSurv <- function(x, na.rm = TRUE, weights = NULL, times=1:5, ...) {
-  y <- if(na.rm && allNA(x))
+  if(na.rm && allNA(x))
   {
-    matrix(NA_real_, nrow = 1, ncol = length(times))
-  } else
-  {
+    y <- matrix(NA_real_, nrow = 1, ncol = length(times))
+    a <- TRUE
+  } else {
     check_pkg("survival")
     xsumm <- summary(survival::survfit(x ~ 1, weights = weights), times=times)
-    t(cbind(xsumm$n.risk, 100*xsumm$surv))
+    y <- t(cbind(xsumm$n.risk, 100*xsumm$surv))
+    a <- FALSE
   }
   out <- stats::setNames(as.list(as.data.frame(y)), paste0("time = ", times))
-  as.tbstat_multirow(lapply(out, as.countpct, parens = c("(", ")"), which.pct = 2L))
+  as.tbstat_multirow(lapply(out, as.countpct, parens = if(a) NULL else c("(", ")"), which.pct = 2L))
 }
 
 #' @rdname tableby.stats
@@ -352,19 +357,23 @@ medTime <- function(x, na.rm = TRUE, weights = NULL, ...)
 #' @rdname tableby.stats
 #' @export
 q1q3 <- function(x, na.rm=TRUE, weights = NULL, ...) {
-  y <- if(na.rm && allNA(x)) {
-    NA_real_
-  } else wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm)
-  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = ", ")
+  if(na.rm && allNA(x)) {
+    as.tbstat(NA_real_)
+  } else {
+    y <- wtd.quantile(x, weights=weights, probs=c(0.25, .75), na.rm=na.rm)
+    as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, sep = ", ")
+  }
 }
 
 #' @rdname tableby.stats
 #' @export
 medianq1q3 <- function(x, na.rm=TRUE, weights = NULL, ...) {
-  y <- if(na.rm && allNA(x)) {
-    NA_real_
-  } else wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm)
-  as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
+  if(na.rm && allNA(x)) {
+    as.tbstat(NA_real_)
+  } else {
+    y <- wtd.quantile(x, weights=weights, probs=c(0.5, 0.25, 0.75), na.rm=na.rm)
+    as.tbstat(y, oldClass = if(is.Date(x)) "Date" else NULL, parens = c("(", ")"), sep2 = ", ")
+  }
 }
 
 #' @rdname tableby.stats
@@ -463,8 +472,34 @@ countpct <- function(x, levels=NULL, na.rm=TRUE, weights = NULL, ...) {
     wtbl <- wtd.table(factor(x, levels=levels), weights=weights)
     denom <- sum(wtbl)
   }
-  as.tbstat_multirow(lapply(Map(c, wtbl, if(any(wtbl > 0)) 100*wtbl/denom else rep(list(NULL), times = length(wtbl))),
-                            as.countpct, parens = c("(", ")"), pct = "%", which.pct = 2L))
+  a <- any(wtbl > 0)
+  as.tbstat_multirow(lapply(Map(c, wtbl, if(a) 100*wtbl/denom else rep(list(NULL), times = length(wtbl))),
+                            as.countpct, parens = if(a) c("(", ")") else NULL, pct = if(a) "%" else NULL, which.pct = 2L))
+}
+
+#' @rdname tableby.stats
+#' @export
+pct <- function(x, levels=NULL, na.rm=TRUE, weights = NULL, ...) {
+  if(is.null(levels)) levels <- sort(unique(x))
+  if(na.rm)
+  {
+    idx <- !is.na(x)
+    if(!is.null(weights)) idx <- idx & !is.na(weights)
+    x <- x[idx]
+    weights <- weights[idx]
+  }
+  if(is.selectall(x))
+  {
+    if(is.null(weights)) weights <- rep(1, nrow(x))
+    wtbl <- apply(as.matrix(x) == 1, 2, function(y) sum(weights[y]))
+    denom <- sum(weights)
+  } else
+  {
+    wtbl <- wtd.table(factor(x, levels=levels), weights=weights)
+    denom <- sum(wtbl)
+  }
+  as.tbstat_multirow(lapply(if(any(wtbl > 0)) 100*wtbl/denom else rep(list(NULL), times = length(wtbl)),
+                            as.countpct, pct = "%", which.pct = 1L))
 }
 
 #' @rdname tableby.stats
@@ -497,6 +532,27 @@ countrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TR
     tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
     wtbl <- c(tmp, stats::setNames(sum(tmp), totallab))
     lapply(wtbl, function(elt) as.countpct(c(elt, 100*elt/sum(tmp)), parens = c("(", ")"), pct = "%", which.pct = 2L))
+  })
+  transpose_list(wtbls, levels, c(by.levels, totallab))
+}
+
+#' @rdname tableby.stats
+#' @export
+rowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ..., totallab = "Total") {
+  if(is.null(levels)) levels <- sort(unique(x))
+  if(na.rm)
+  {
+    idx <- !is.na(x) & !is.na(by)
+    if(!is.null(weights)) idx <- idx & !is.na(weights)
+    x <- x[idx]
+    by <- by[idx]
+    weights <- weights[idx]
+  }
+
+  wtbls <- lapply(levels, function(L) {
+    tmp <- wtd.table(factor(by[x == L], levels = by.levels), weights = weights[x == L])
+    wtbl <- c(tmp, stats::setNames(sum(tmp), totallab))
+    lapply(wtbl, function(elt) as.countpct(100*elt/sum(tmp), pct = "%", which.pct = 1L))
   })
   transpose_list(wtbls, levels, c(by.levels, totallab))
 }

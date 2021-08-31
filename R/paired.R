@@ -324,6 +324,11 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
             # countrowpct to get the right percentages
             bystatlist[[difflab]] <- countrowpct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
                                                  by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
+          } else if(statfun2 %in% c("rowpct", "pct"))
+          {
+            # rowpct to get the right percentages
+            bystatlist[[difflab]] <- rowpct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
+                                                 by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
           } else if(statfun2 == "count")
           {
             # this doesn't have percentages

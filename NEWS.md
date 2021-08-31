@@ -1,3 +1,7 @@
+# arsenal v3.6.3.9000
+
+* Added `pct()` and `rowpct()`. (#337)
+
 # arsenal v3.6.3
 
 * Added `medtest()` to `tableby()` for a median test. (#327)

@@ -43,13 +43,14 @@ format.tbstat <- function(x, digits = NULL, ...)
   {
     x[idx] <- lapply(x[idx], function(xx) paste(trimws(formatC(unclass(xx), digits = digits, format = "f")), units(xx)))
   }
-  if(length(x) == 1) return(paste0(x))
 
   parens <- get_attr(x, "parens", c("", ""))
   sep <- get_attr(x, "sep", " ")
   sep2 <- get_attr(x, "sep2", " ")
   pct <- get_attr(x, "pct", "")
-  if(length(x) == 2)
+  if(length(x) == 1) {
+    paste0(parens[1], x, pct, parens[2])
+  } else if(length(x) == 2)
   {
     paste0(x[1], sep, parens[1], x[2], pct, parens[2])
   } else paste0(x[1], sep, parens[1], x[2], sep2, x[3], parens[2])

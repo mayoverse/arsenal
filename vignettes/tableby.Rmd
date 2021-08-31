@@ -872,7 +872,9 @@ There are a number of extra functions defined specifically for the tableby funct
 * `count`: print the number of values in a category
 * `countN`: print the number of values in a category plus the total N for the group in the format `N/Total`
 * `countpct`: print the number of values in a category plus the column-percentage in the format `N (%)`
+* `pct`: print the column-percentage
 * `countrowpct`: print the number of values in a category plus the row-percentage in the format `N (%)`
+* `rowpct`: print the row-percentage
 * `countcellpct`: print the number of values in a category plus the cell-percentage in the format `N (%)`
 * `binomCI`: print the proportion in a category plus a binomial confidence interval.
 * `rowbinomCI`: print the row proportion in a category plus a binomial confidence interval.
