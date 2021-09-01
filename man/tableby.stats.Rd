@@ -35,8 +35,10 @@
 \alias{Npct}
 \alias{count}
 \alias{countpct}
+\alias{pct}
 \alias{countN}
 \alias{countrowpct}
+\alias{rowpct}
 \alias{countcellpct}
 \alias{binomCI}
 \alias{rowbinomCI}
@@ -117,9 +119,22 @@ count(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
 
 countpct(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
 
+pct(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
+
 countN(x, levels = NULL, na.rm = TRUE, weights = NULL, ...)
 
 countrowpct(
+  x,
+  levels = NULL,
+  by,
+  by.levels = sort(unique(by)),
+  na.rm = TRUE,
+  weights = NULL,
+  ...,
+  totallab = "Total"
+)
+
+rowpct(
   x,
   levels = NULL,
   by,
