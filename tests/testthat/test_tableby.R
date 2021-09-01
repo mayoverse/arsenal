@@ -1758,3 +1758,44 @@ test_that("subsetting tableby (#338)", {
     )
   )
 })
+
+
+
+test_that("Subsetting y-levels (#336)", {
+  tb <- tableby(list(arm, ps, sex) ~ age + ast + mdquality.s, data = mockstudy)
+  expect_warning(tb[, list(arm = "F: FOLFOX", ps = c("3", "1"))], "Some indices not found")
+  expect_error(tb[, list(arm = TRUE)], "Logical vector")
+
+  expect_identical(
+    capture.kable(summary(tb["age", list(ps = "0", sex = 2:3, arm = c(TRUE, TRUE, FALSE, TRUE))], text = TRUE, term.name = TRUE)),
+    c("|ps           |    0 (N=635)    | p value|"                                      ,
+      "|:------------|:---------------:|-------:|"                                      ,
+      "|Age in Years |                 |   0.335|"                                      ,
+      "|-  Mean (SD) | 59.935 (11.261) |        |"                                      ,
+      "|-  Range     | 22.000 - 85.000 |        |"                                      ,
+      ""                                                                                ,
+      ""                                                                                ,
+      "|sex          | Female (N=583)  | Total (N=1499)  | p value|"                    ,
+      "|:------------|:---------------:|:---------------:|-------:|"                    ,
+      "|Age in Years |                 |                 |   0.048|"                    ,
+      "|-  Mean (SD) | 59.247 (11.722) | 59.985 (11.519) |        |"                    ,
+      "|-  Range     | 22.000 - 88.000 | 19.000 - 88.000 |        |"                    ,
+      ""                                                                                ,
+      ""                                                                                ,
+      "|Treatment Arm | A: IFL (N=428)  | F: FOLFOX (N=691) | Total (N=1499)  | p value|",
+      "|:-------------|:---------------:|:-----------------:|:---------------:|-------:|",
+      "|Age in Years  |                 |                   |                 |   0.614|",
+      "|-  Mean (SD)  | 59.673 (11.365) |  60.301 (11.632)  | 59.985 (11.519) |        |",
+      "|-  Range      | 27.000 - 88.000 |  19.000 - 88.000  | 19.000 - 88.000 |        |")
+  )
+})
+
+
+
+
+
+
+
+
+
+

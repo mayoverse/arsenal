@@ -2,6 +2,10 @@
 
 * Added `pct()` and `rowpct()`. (#337)
 
+* Fixed one bug in `[.arsenal_table()`. (#338)
+
+* Allowed for by-level subsetting in `tableby()` by implementing a `[.tableby()` method. (#336)
+
 # arsenal v3.6.3
 
 * Added `medtest()` to `tableby()` for a median test. (#327)

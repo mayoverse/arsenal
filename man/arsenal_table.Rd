@@ -4,6 +4,7 @@
 \alias{arsenal_table}
 \alias{has_strata}
 \alias{[.arsenal_table}
+\alias{[.tableby}
 \alias{labels.arsenal_table}
 \alias{labels<-.arsenal_table}
 \alias{print.arsenal_table}
@@ -15,6 +16,8 @@
 has_strata(x)
 
 \method{[}{arsenal_table}(x, i, j, ...)
+
+\method{[}{tableby}(x, i, j, ...)
 
 \method{labels}{arsenal_table}(object, ...)
 

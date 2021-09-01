@@ -91,6 +91,50 @@ na_lhs_strata <- function(object, ...) {
 
 #' @rdname arsenal_table
 #' @export
+`[.tableby` <- function(x, i, j, ...) {
+  give_warn <- function(vec) warning(paste0("Some indices not found in object: ", paste0(vec, collapse = ", ")), call. = FALSE)
+  if(!missing(j) && is.list(j))
+  {
+    if(is.null(names(j))) stop("A list used to index must have names")
+    for(nm in names(j)) {
+      k <- j[[nm]]
+      if(nm %nin% names(x$tables)) stop("Can't find term '", nm, "'")
+      jj <- match(nm, names(x$tables), nomatch = 0)
+
+      if(is.character(k)) {
+        if(any(tmp <- k %nin% names(x$tables[[jj]]$y$stats)))
+        {
+          give_warn(k[tmp])
+          k <- k[!tmp]
+        }
+        # we could leave "k" alone here and use the names, but for when names are missing ("") we'll do this
+        k <- match(k, names(x$tables[[jj]]$y$stats), nomatch = 0)
+      } else if(is.numeric(k) && any(tmp <- k %nin% seq_along(x$tables[[jj]]$y$stats)))
+      {
+        give_warn(k[tmp])
+        k <- k[!tmp]
+      } else if(is.logical(k) && length(k) != length(x$tables[[jj]]$y$stats))
+      {
+        stop("Logical vector index not the right length")
+      } else if(is.logical(k) && !any(k)) stop("Logical vector must have at least one TRUE element")
+
+      if(length(k) == 0 || anyNA(k)) stop("Indices must have nonzero length and no NAs.")
+      x$tables[[jj]]$y$stats <- x$tables[[jj]]$y$stats[k]
+      for(ss in seq_along(x$tables[[jj]]$tables)) {
+        for(xx in seq_along(x$tables[[jj]]$tables[[ss]])) {
+          for(tt in seq_along(x$tables[[jj]]$tables[[ss]][[xx]]$stats)) {
+            x$tables[[jj]]$tables[[ss]][[xx]]$stats[[tt]] <- x$tables[[jj]]$tables[[ss]][[xx]]$stats[[tt]][k]
+          }
+        }
+      }
+    }
+    j <- names(j)
+  }
+  NextMethod()
+}
+
+#' @rdname arsenal_table
+#' @export
 labels.arsenal_table <- function(object, ...) {
 
   get_lab <- function(x)
