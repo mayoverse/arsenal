@@ -1743,3 +1743,18 @@ test_that("rowpct and pct (#337)", {
     )
   )
 })
+
+test_that("subsetting tableby (#338)", {
+  expect_identical(
+    capture.output(tableby(list(sex, arm, ps) ~ age, data = mockstudy)[, c("ps", "sex")]),
+    c("tableby Object"                                               ,
+      ""                                                             ,
+      "Function Call:"                                               ,
+      "tableby(formula = list(sex, arm, ps) ~ age, data = mockstudy)",
+      ""                                                             ,
+      "Variable(s):"                                                 ,
+      "ps ~ age"                                                     ,
+      "sex ~ age"
+    )
+  )
+})

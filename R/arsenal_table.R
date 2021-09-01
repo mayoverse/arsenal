@@ -51,7 +51,7 @@ na_lhs_strata <- function(object, ...) {
         j <- j[!tmp]
       }
       # we could leave "j" alone here and use the names, but for when names are missing ("") we'll do this
-      j <- match(names(newx$tables), j, nomatch = 0)
+      j <- match(j, names(newx$tables), nomatch = 0)
     } else if(is.numeric(j) && any(tmp <- j %nin% seq_along(newx$tables)))
     {
       give_warn(j[tmp])
