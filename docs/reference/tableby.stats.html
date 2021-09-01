@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.3.9000</span>
       </span>
     </div>
 
@@ -237,9 +237,22 @@
 
 <span class='fu'>countpct</span><span class='op'>(</span><span class='va'>x</span>, levels <span class='op'>=</span> <span class='cn'>NULL</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
+<span class='fu'>pct</span><span class='op'>(</span><span class='va'>x</span>, levels <span class='op'>=</span> <span class='cn'>NULL</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+
 <span class='fu'>countN</span><span class='op'>(</span><span class='va'>x</span>, levels <span class='op'>=</span> <span class='cn'>NULL</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>countrowpct</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  levels <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>by</span>,
+  by.levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>by</span><span class='op'>)</span><span class='op'>)</span>,
+  na.rm <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  weights <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>,
+  totallab <span class='op'>=</span> <span class='st'>"Total"</span>
+<span class='op'>)</span>
+
+<span class='fu'>rowpct</span><span class='op'>(</span>
   <span class='va'>x</span>,
   levels <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>by</span>,
