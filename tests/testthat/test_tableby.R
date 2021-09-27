@@ -1790,6 +1790,29 @@ test_that("Subsetting y-levels (#336)", {
   )
 })
 
+test_that("stddiff", {
+  expect_error(tableby(arm ~ stddiff(sex), data = mockstudy), "exactly two by-groups")
+  expect_error(tableby(sex ~ stddiff(age.ord), data = mockstudy), "unless the object is ")
+  expect_error(tableby(sex ~ stddiff(arm), subset = arm == "F: FOLFOX", data = mockstudy), "At least two levels")
+
+  tb <- tableby(sex ~ stddiff(arm) + stddiff(age) + stddiff(ps == 2), data = mockstudy)
+  expect_identical(
+    capture.kable(summary(tb, text = TRUE)),
+    c("|              |  Male (N=916)   | Female (N=583)  | Total (N=1499)  | p value|",
+      "|:-------------|:---------------:|:---------------:|:---------------:|-------:|",
+      "|Treatment Arm |                 |                 |                 |   0.097|",
+      "|-  A: IFL     |   277 (30.2%)   |   151 (25.9%)   |   428 (28.6%)   |        |",
+      "|-  F: FOLFOX  |   411 (44.9%)   |   280 (48.0%)   |   691 (46.1%)   |        |",
+      "|-  G: IROX    |   228 (24.9%)   |   152 (26.1%)   |   380 (25.4%)   |        |",
+      "|Age in Years  |                 |                 |                 |   0.105|",
+      "|-  Mean (SD)  | 60.455 (11.369) | 59.247 (11.722) | 59.985 (11.519) |        |",
+      "|-  Range      | 19.000 - 88.000 | 22.000 - 88.000 | 19.000 - 88.000 |        |",
+      "|ps == 2       |                 |                 |                 |   0.103|",
+      "|-  N-Miss     |       162       |       104       |       266       |        |",
+      "|-  FALSE      |   720 (95.5%)   |   446 (93.1%)   |  1166 (94.6%)   |        |",
+      "|-  TRUE       |    34 (4.5%)    |    33 (6.9%)    |    67 (5.4%)    |        |")
+  )
+})
 
 
 

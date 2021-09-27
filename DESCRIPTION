@@ -41,6 +41,7 @@ Suggests:
     splines,
     rpart,
     yaml,
+    stddiff,
     geepack
 Depends:
     R (>= 3.4.0),

@@ -931,6 +931,8 @@ The following tests are accepted:
 * `trend`: The `independence_test` function from the `coin` is used to test for trends.  Whenthe grouping variable has two levels,
   it is equivalent to the Armitage trend test.  This is the default for ordered factors
   
+* `stddiff`: perform standardized differences.
+  
 * `notest`: Don't perform a test.
 
 ## `tableby.control` settings

@@ -5,6 +5,34 @@ notest <- function(x, x.by, ...)
   list(p.value = NA_real_, method = "No test")
 }
 
+stddiff <- function(x, x.by, ..., test.always = FALSE) {
+  tab <- table(is.na(x), x.by)
+  cs <- colSums(tab)
+  if(!test.always && (any(tab[1, ] == 0) || any(colSums(tab) == 0))) {
+    return(list(p.value=NA_real_, method="Standardized difference"))
+  }
+  if(sum(cs > 0) != 2) stop("Standardized differences require exactly two by-groups", call. = FALSE)
+  tab <- tab[, cs > 0]
+  trt <- levels(x.by)[cs > 0][2]
+  x.by <- +(x.by == trt)
+  check_pkg("stddiff")
+  if(is.ordered(x) || inherits(x, "Surv") || is.selectall(x)) {
+    stop("Can't run standardized differences unless the object is factor-ish or numeric-ish", call. = FALSE)
+  } else if(is.factor(x)) {
+    if(length(levels(x)) < 2) stop("At least two levels are required to run standardized differences")
+    if(length(levels(x)) == 2) {
+      s <- stddiff::stddiff.binary(data.frame(x, x.by), 2, 1)
+    } else {
+      s <- stddiff::stddiff.category(data.frame(x, x.by), 2, 1)
+    }
+  } else if(is.numeric(x) || inherits(x, "difftime") || is.Date(x)) {
+    s <- stddiff::stddiff.numeric(data.frame(x, x.by), 2, 1)
+  } else stop("Can't run standardized differences unless the object is categorical (but not ordered), numeric, or date", call. = FALSE)
+
+  list(p.value=s[1, "stddiff"], method="Standardized difference")
+}
+
+
 ## continuous tests:
 ## 1. anova  (parametric)
 ## consider allowing glm, for now just lm with gaussian errors

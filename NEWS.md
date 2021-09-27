@@ -6,6 +6,10 @@
 
 * Allowed for by-level subsetting in `tableby()` by implementing a `[.tableby()` method. (#336)
 
+* `tableby()`: implemented `stddiff()`, which computes standardized differences, instead of p-values.
+
+* Added `stddiff` as a "Suggests".
+
 # arsenal v3.6.3
 
 * Added `medtest()` to `tableby()` for a median test. (#327)
