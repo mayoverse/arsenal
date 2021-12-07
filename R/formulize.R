@@ -54,7 +54,7 @@
 #' f13 <- formulize(f[[2]], f[[3]])
 #'
 #' @export
-formulize <- function(y = "", x = "", ..., data = NULL, collapse = "+", collapse.y = collapse, escape = FALSE)
+formulize <- function(y = "", x, ..., data = NULL, collapse = "+", collapse.y = collapse, escape = FALSE)
 {
   dots <- list(y = y, x = x, ...)
   if(!is.null(data))
@@ -63,8 +63,13 @@ formulize <- function(y = "", x = "", ..., data = NULL, collapse = "+", collapse
     dots <- lapply(dots, function(elt, cn) if(is.numeric(elt)) lapply(cn[elt], as.name) else elt, cn = colnames(data))
   }
   name.or.call <- function(elt) is.name(elt) || is.call(elt)
-  dots <- lapply(dots, function(elt) if(name.or.call(elt)) list(elt) else if(is.character(elt) && all(nzchar(elt)) && escape) lapply(elt, as.name) else elt)
-  is.ok <- function(x) is.character(x) || (is.list(x) && all(vapply(x, name.or.call, NA)))
+  dots <- lapply(dots, function(elt) {
+    if(name.or.call(elt)) return(list(elt))
+    if(is.character(elt) && escape) {
+      lapply(elt, function(elt2) if(nzchar(elt2)) as.name(elt2) else elt2)
+    } else elt
+  })
+  is.ok <- function(x) is.character(x) || (is.list(x) && all(vapply(x, name.or.call, NA) | vapply(x, is.character, NA)))
   trash <- lapply(dots, function(elt) if(!is.ok(elt))
     stop("One or more argument isn't a character vector, numeric vector, list of names, or list of calls"))
 

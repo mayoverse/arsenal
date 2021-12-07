@@ -6,7 +6,7 @@
 \usage{
 formulize(
   y = "",
-  x = "",
+  x,
   ...,
   data = NULL,
   collapse = "+",

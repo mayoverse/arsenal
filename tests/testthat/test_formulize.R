@@ -23,6 +23,7 @@ test_that("Two-sided formula, text input", {
 
 test_that("One-sided formula, text input", {
   check_form(formulize(x = c("x1", "x2", "x3")), "~x1 + x2 + x3")
+  check_form(formulize(x = c("x1", "x2", "x3"), escape = TRUE), "~x1 + x2 + x3")
 })
 
 test_that("Multi-sided formula, text input", {
@@ -162,3 +163,7 @@ test_that("03/25/2019: using collapse arguments (#197)", {
   )
 })
 
+test_that("12/7/2021: escape=TRUE", {
+  check_form(formulize(c("", "dangerous_function()"), c("", "dangerous_function()"), escape = TRUE),
+             "+`dangerous_function()` ~ +`dangerous_function()`")
+})

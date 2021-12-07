@@ -1,4 +1,4 @@
-# arsenal v3.6.3.9000
+# arsenal v3.6.3.9001
 
 * Added `pct()` and `rowpct()`. (#337)
 
@@ -9,6 +9,10 @@
 * `tableby()`: implemented `stddiff()`, which computes standardized differences, instead of p-values.
 
 * Added `stddiff` as a "Suggests".
+
+* Remove `formulize()` default for `x=`.
+
+* Change logic for `escape=TRUE` when zero-length variables are involved.
 
 # arsenal v3.6.3
 
