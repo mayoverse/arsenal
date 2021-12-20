@@ -167,3 +167,8 @@ test_that("12/7/2021: escape=TRUE", {
   check_form(formulize(c("", "dangerous_function()"), c("", "dangerous_function()"), escape = TRUE),
              "+`dangerous_function()` ~ +`dangerous_function()`")
 })
+
+test_that("12/7/2021: escape=TRUE with list", {
+  check_form(formulize("", list("dangerous_function()"), escape = TRUE),
+             "~`dangerous_function()`")
+})

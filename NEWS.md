@@ -1,4 +1,4 @@
-# arsenal v3.6.3.9001
+# arsenal v3.6.3.9002
 
 * Added `pct()` and `rowpct()`. (#337)
 

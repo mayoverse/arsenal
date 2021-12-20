@@ -65,8 +65,8 @@ formulize <- function(y = "", x, ..., data = NULL, collapse = "+", collapse.y = 
   name.or.call <- function(elt) is.name(elt) || is.call(elt)
   dots <- lapply(dots, function(elt) {
     if(name.or.call(elt)) return(list(elt))
-    if(is.character(elt) && escape) {
-      lapply(elt, function(elt2) if(nzchar(elt2)) as.name(elt2) else elt2)
+    if(escape) {
+      lapply(elt, function(elt2) if(identical(elt2, "")) "" else as.name(elt2))
     } else elt
   })
   is.ok <- function(x) is.character(x) || (is.list(x) && all(vapply(x, name.or.call, NA) | vapply(x, is.character, NA)))
