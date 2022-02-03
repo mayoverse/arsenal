@@ -32,9 +32,12 @@
 \alias{medianq1q3}
 \alias{iqr}
 \alias{Nmiss}
+\alias{Nmisspct}
 \alias{Nmiss2}
+\alias{Nmisspct2}
 \alias{N}
 \alias{Npct}
+\alias{Nrowpct}
 \alias{count}
 \alias{countpct}
 \alias{pct}
@@ -106,16 +109,21 @@ iqr(x, na.rm = TRUE, weights = NULL, ...)
 
 Nmiss(x, weights = NULL, ...)
 
+Nmisspct(x, weights = NULL, ...)
+
 Nmiss2(x, weights = NULL, ...)
 
-N(x, na.rm = TRUE, weights = NULL, ...)
+Nmisspct2(x, weights = NULL, ...)
 
-Npct(
+N(x, weights = NULL, ...)
+
+Npct(x, weights = NULL, ...)
+
+Nrowpct(
   x,
   levels = NULL,
   by,
   by.levels = sort(unique(by)),
-  na.rm = TRUE,
   weights = NULL,
   ...,
   totallab = "Total"
