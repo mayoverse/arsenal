@@ -10,6 +10,8 @@
 \alias{arsenal_var}
 \alias{meansd}
 \alias{meanse}
+\alias{meanpmsd}
+\alias{meanpmse}
 \alias{meanCI}
 \alias{medianrange}
 \alias{medianmad}
@@ -59,6 +61,10 @@ arsenal_var(x, na.rm = TRUE, weights = NULL, ...)
 meansd(x, na.rm = TRUE, weights = NULL, ...)
 
 meanse(x, na.rm = TRUE, weights = NULL, ...)
+
+meanpmsd(x, na.rm = TRUE, weights = NULL, ...)
+
+meanpmse(x, na.rm = TRUE, weights = NULL, ...)
 
 meanCI(x, na.rm = TRUE, weights = NULL, conf.level = 0.95, ...)
 

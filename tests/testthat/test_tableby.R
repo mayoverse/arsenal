@@ -1815,6 +1815,19 @@ test_that("stddiff", {
 })
 
 
+test_that("meanpmsd and meanpmse (#343)", {
+  tb <- tableby(sex ~ age, data = mockstudy, numeric.stats = c("meanpmsd", "meanpmse", "meansd", "meanse"))
+  expect_identical(
+    capture.kable(summary(tb, text = TRUE)),
+    c("|                |    Male (N=916)    |   Female (N=583)   |   Total (N=1499)   | p value|",
+      "|:---------------|:------------------:|:------------------:|:------------------:|-------:|",
+      "|Age in Years    |                    |                    |                    |   0.048|",
+      "|-  Mean &pm; SD | 60.455 &pm; 11.369 | 59.247 &pm; 11.722 | 59.985 &pm; 11.519 |        |",
+      "|-  Mean &pm; SE | 60.455 &pm; 0.376  | 59.247 &pm; 0.485  | 59.985 &pm; 0.298  |        |",
+      "|-  Mean (SD)    |  60.455 (11.369)   |  59.247 (11.722)   |  59.985 (11.519)   |        |",
+      "|-  Mean (SE)    |   60.455 (0.376)   |   59.247 (0.485)   |   59.985 (0.298)   |        |")
+  )
+})
 
 
 

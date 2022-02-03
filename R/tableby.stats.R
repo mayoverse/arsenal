@@ -125,6 +125,35 @@ meanse <- function(x, na.rm=TRUE, weights = NULL, ...) {
 
 #' @rdname tableby.stats
 #' @export
+meanpmsd <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  if(na.rm && allNA(x))
+  {
+    as.tbstat(NA_real_)
+  } else {
+    m <- wtd.mean(x, weights=weights, na.rm=na.rm)
+    s <- sqrt(wtd.var(x, weights=weights, na.rm=na.rm))
+    y <- if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
+    as.tbstat(y, parens = c("&pm; ", ""))
+  }
+}
+
+#' @rdname tableby.stats
+#' @export
+meanpmse <- function(x, na.rm=TRUE, weights = NULL, ...) {
+  if(na.rm && allNA(x))
+  {
+    as.tbstat(NA_real_)
+  } else {
+    if(!is.null(weights)) stop("'meanse' can only be used without weights")
+    m <- mean(x, na.rm=na.rm)
+    s <- stats::sd(x, na.rm=na.rm)/sqrt(sum(!is.na(x)))
+    y <- if(is.Date(x)) list(as.character(m), as.difftime(s, units = "days")) else c(m, s)
+    as.tbstat(y, parens = c("&pm; ", ""))
+  }
+}
+
+#' @rdname tableby.stats
+#' @export
 meanCI <- function(x, na.rm=TRUE, weights = NULL, conf.level = 0.95, ...) {
   if(!is.null(weights) || (na.rm && allNA(x)))
   {
