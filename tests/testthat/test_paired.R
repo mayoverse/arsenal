@@ -233,7 +233,7 @@ test_that("07/17/2019: fix bug with confidence limits and count (#234, #235)", {
   )
 })
 
-test_that("12/27/2019: Npct works (#263)", {
+test_that("12/27/2019: Nrowpct works (#263)", {
   d <- data.frame(
     tp = rep(c("Time 1", "Time 2"), times = 4),
     id = c(1, 1, 2, 2, 3, 3, 4, 4),
@@ -241,7 +241,7 @@ test_that("12/27/2019: Npct works (#263)", {
     b = c(1, 0, 2, 0, 3, 0, 4, 0)
   )
   expect_identical(
-    capture.kable(summary(paired(tp ~ notest(a) + b, id = id, data = d, numeric.stats = c("meansd", "Npct")), text = TRUE)),
+    capture.kable(summary(paired(tp ~ notest(a) + b, id = id, data = d, numeric.stats = c("meansd", "Nrowpct")), text = TRUE)),
     c("|             | Time 1 (N=4)  | Time 2 (N=4)  | Difference (N=4) | p value|",
       "|:------------|:-------------:|:-------------:|:----------------:|-------:|",
       "|a            |               |               |                  |        |",

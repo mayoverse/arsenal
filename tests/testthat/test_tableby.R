@@ -1441,9 +1441,9 @@ test_that("11/13/2019: geometric summaries (#260)", {
   )
 })
 
-test_that("12/20/2019: Npct (#263)", {
+test_that("12/20/2019: Nrowpct (#263)", {
   expect_identical(
-    capture.kable(summary(tableby(sex ~ arm + ps, data = mockstudy, cat.stats = "Npct", numeric.stats = c("Npct", "Nmiss")), text = TRUE)),
+    capture.kable(summary(tableby(sex ~ arm + ps, data = mockstudy, cat.stats = "Nrowpct", numeric.stats = c("Nrowpct", "Nmiss")), text = TRUE)),
     c("|              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
       "|:-------------|:------------:|:--------------:|:--------------:|-------:|",
       "|Treatment Arm |              |                |                |   0.190|",

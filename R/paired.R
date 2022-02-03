@@ -300,7 +300,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           statfun <- if(is.null(tmp)) get(statfun, parent.frame(), mode = "function") else tmp
 
           bystatlist <- list()
-          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct"))
+          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Nrowpct"))
           {
             bystatlist <- do.call(statfun, list(currcol, levels = xlevels,
                                                 by = by.col, by.levels = by.levels, na.rm = TRUE))

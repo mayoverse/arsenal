@@ -18,6 +18,8 @@
 
 * Fixed an issue with long variable names and `deparse()`. (#342)
 
+* Renamed `Npct()` to `Nrowpct()` for consistency.
+
 # arsenal v3.6.3
 
 * Added `medtest()` to `tableby()` for a median test. (#327)
