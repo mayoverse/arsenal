@@ -423,8 +423,17 @@ iqr <- function(x, na.rm=TRUE, weights = NULL, ...) {
 #' @export
 Nmiss <- function(x, weights = NULL, ...) {
   if(is.null(weights)) weights <- rep(1, NROW(x))
-  weights <- weights[is.na(x) | is.na(weights)]
+  weights <- weights[is.na(x)]
   as.countpct(sum(weights))
+}
+
+#' @rdname tableby.stats
+#' @export
+Nmisspct <- function(x, weights = NULL, ...) {
+  if(is.null(weights)) weights <- rep(1, NROW(x))
+  num <- sum(weights[is.na(x)])
+  denom <- sum(weights)
+  as.countpct(c(num, 100*num/denom), parens = c("(", ")"), pct = "%", which.pct = 2L)
 }
 
 ## Nmiss2 make similar, but in tableby, always keep nmiss,
@@ -433,27 +442,38 @@ Nmiss <- function(x, weights = NULL, ...) {
 #' @export
 Nmiss2 <- Nmiss
 
+#' @rdname tableby.stats
+#' @export
+Nmisspct2 <- Nmisspct
+
 ## count of complete samples
 #' @rdname tableby.stats
 #' @export
-N <- function(x, na.rm=TRUE, weights = NULL, ...) {
+N <- function(x, weights = NULL, ...) {
   if(is.null(weights)) weights <- rep(1, NROW(x))
-  if(na.rm) weights <- weights[!is.na(x) & !is.na(weights)]
+  weights <- weights[!is.na(x)]
   as.countpct(sum(weights))
+}
+
+
+#' @rdname tableby.stats
+#' @export
+Npct <- function(x, weights = NULL, ...) {
+  if(is.null(weights)) weights <- rep(1, NROW(x))
+  num <- sum(weights[!is.na(x)])
+  denom <- sum(weights)
+  as.countpct(c(num, 100*num/denom), parens = c("(", ")"), pct = "%", which.pct = 2L)
 }
 
 #' @rdname tableby.stats
 #' @export
-Nrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, weights = NULL, ..., totallab = "Total") {
+Nrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), weights = NULL, ..., totallab = "Total") {
   if(is.null(levels)) levels <- sort(unique(x))
-  if(na.rm)
-  {
-    idx <- !is.na(x) & !is.na(by)
-    if(!is.null(weights)) idx <- idx & !is.na(weights)
-    x <- x[idx]
-    by <- by[idx]
-    weights <- weights[idx]
-  }
+
+  idx <- !is.na(x) & !is.na(by)
+  x <- x[idx]
+  by <- by[idx]
+  weights <- weights[idx]
 
   tmp <- wtd.table(factor(by, levels = by.levels), weights = weights)
   wtbl <- c(tmp, stats::setNames(sum(tmp), totallab))
@@ -467,7 +487,6 @@ count <- function (x, levels=NULL, na.rm = TRUE, weights = NULL, ...)  {
   if(na.rm)
   {
     idx <- !is.na(x)
-    if(!is.null(weights)) idx <- idx & !is.na(weights)
     x <- x[idx]
     weights <- weights[idx]
   }
@@ -487,7 +506,6 @@ countpct <- function(x, levels=NULL, na.rm=TRUE, weights = NULL, ...) {
   if(na.rm)
   {
     idx <- !is.na(x)
-    if(!is.null(weights)) idx <- idx & !is.na(weights)
     x <- x[idx]
     weights <- weights[idx]
   }
@@ -513,7 +531,6 @@ pct <- function(x, levels=NULL, na.rm=TRUE, weights = NULL, ...) {
   if(na.rm)
   {
     idx <- !is.na(x)
-    if(!is.null(weights)) idx <- idx & !is.na(weights)
     x <- x[idx]
     weights <- weights[idx]
   }
@@ -551,7 +568,6 @@ countrowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TR
   if(na.rm)
   {
     idx <- !is.na(x) & !is.na(by)
-    if(!is.null(weights)) idx <- idx & !is.na(weights)
     x <- x[idx]
     by <- by[idx]
     weights <- weights[idx]
@@ -572,7 +588,6 @@ rowpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRUE, w
   if(na.rm)
   {
     idx <- !is.na(x) & !is.na(by)
-    if(!is.null(weights)) idx <- idx & !is.na(weights)
     x <- x[idx]
     by <- by[idx]
     weights <- weights[idx]
@@ -593,7 +608,6 @@ countcellpct <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=T
   if(na.rm)
   {
     idx <- !is.na(x) & !is.na(by)
-    if(!is.null(weights)) idx <- idx & !is.na(weights)
     x <- x[idx]
     by <- by[idx]
     weights <- weights[idx]
@@ -636,7 +650,6 @@ rowbinomCI <- function(x, levels=NULL, by, by.levels=sort(unique(by)), na.rm=TRU
   if(na.rm)
   {
     idx <- !is.na(x) & !is.na(by)
-    if(wts) idx <- idx & !is.na(weights)
     x <- x[idx]
     by <- by[idx]
     weights <- weights[idx]

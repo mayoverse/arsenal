@@ -18,7 +18,18 @@
 
 * Fixed an issue with long variable names and `deparse()`. (#342)
 
-* Renamed `Npct()` to `Nrowpct()` for consistency.
+* Missings and non-missings:
+
+    - `weights=` is no longer allowed to have NAs
+
+    - Renamed `Npct()` to `Nrowpct()` for consistency. It calculates the number of non-missing observations and the percentage of the 
+      row-total of non-missing values.
+      
+    - Removed the `na.rm=` arguments from `N()` and `Nrowpct()`
+    
+    - Added `Nmisspct()` and `Nmisspct2()`. (#346)
+    
+    - Changed the label for `Nrowpct()`
 
 # arsenal v3.6.3
 

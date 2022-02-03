@@ -178,7 +178,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
 
     if(hasWeights <- "(weights)" %in% colnames(modeldf)) {
       weights <- as.vector(stats::model.weights(modeldf))
-      if(!is.numeric(weights) || any(weights < 0)) stop("'weights' must be a numeric vector and must be non-negative")
+      if(!is.numeric(weights) || anyNA(weights) || any(weights < 0)) stop("'weights' must be a numeric vector and must be non-missing and non-negative")
       modeldf[["(weights)"]] <- NULL
       control$test <- FALSE
     } else weights <- NULL
@@ -376,7 +376,10 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           }
         }
 
-        if(!anyNA(currcol) && "Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
+        if(!anyNA(currcol)) {
+          if("Nmiss" %in% currstats) currstats <- currstats[currstats != "Nmiss"]
+          if("Nmisspct" %in% currstats) currstats <- currstats[currstats != "Nmisspct"]
+        }
         statList <- list()
         for(statfun2 in currstats) {
           statfun <- get_stat_function(statfun2)
@@ -384,7 +387,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
           statfun <- if(is.null(tmp)) get(statfun, parent.frame(), mode = "function") else tmp
 
           bystatlist <- list()
-          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Npct", "rowpct"))
+          if(statfun2 %in% c("countrowpct", "countcellpct", "rowbinomCI", "Nrowpct", "rowpct"))
           {
             bystatlist <- do.call(statfun, list(
               currcol, levels = xlevels,
