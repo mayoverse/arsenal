@@ -340,7 +340,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           } else if(statfun2 == "Nrowpct")
           {
             # get the right percentages
-            bystatlist[[difflab]] <- Npct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff, by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
+            bystatlist[[difflab]] <- Nrowpct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff, by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
           } else
           {
             bystatlist[[difflab]] <- do.call(statfun, list(as.numeric(TP2.eff) - as.numeric(TP1.eff),
