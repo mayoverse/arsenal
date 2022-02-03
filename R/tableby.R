@@ -188,7 +188,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
     if(hasStrata <- "(strata)" %in% colnames(modeldf))
     {
       strata.col <- modeldf[["(strata)"]]
-      strataTerm <- deparse(Call$strata)
+      strataTerm <- paste(deparse(Call$strata), collapse = " ")
       if(is.null(strataLabel <- attr(strata.col, "label"))) strataLabel <- strataTerm
       if(is.factor(strata.col))
       {

@@ -1829,8 +1829,14 @@ test_that("meanpmsd and meanpmse (#343)", {
   )
 })
 
+test_that("deparse works (#342)", {
+  this_is_a_along_variable_name_to_make_deparse_split_the_expression_into_multiple_pieces <- 1
 
-
+  expect_error(
+    tableby(arm ~ age, data = mockstudy, strata = paste(this_is_a_along_variable_name_to_make_deparse_split_the_expression_into_multiple_pieces, sex)),
+    NA
+  )
+})
 
 
 

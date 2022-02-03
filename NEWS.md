@@ -14,6 +14,10 @@
 
 * Change logic for `escape=TRUE` when zero-length variables are involved.
 
+* Added `meanpmsd()` and `meanpmse()`. (#343)
+
+* Fixed an issue with long variable names and `deparse()`. (#342)
+
 # arsenal v3.6.3
 
 * Added `medtest()` to `tableby()` for a median test. (#327)

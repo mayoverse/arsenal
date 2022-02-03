@@ -136,7 +136,7 @@ modelsum <- function(formula,  family="gaussian", data, adjust=NULL, na.action =
     if(hasStrata <- "(strata)" %in% colnames(maindf))
     {
       strata.col <- maindf[["(strata)"]]
-      strataTerm <- deparse(Call$strata)
+      strataTerm <- paste(deparse(Call$strata), collapse = " ")
       if(is.null(strataLabel <- attr(strata.col, "label"))) strataLabel <- strataTerm
       if(is.factor(strata.col))
       {

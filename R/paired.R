@@ -105,7 +105,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
     if(hasStrata <- "(strata)" %in% colnames(modeldf))
     {
       strata.col <- modeldf[["(strata)"]]
-      strataTerm <- deparse(Call$strata)
+      strataTerm <- paste(deparse(Call$strata), collapse = " ")
       if(is.null(strataLabel <- attr(strata.col, "label"))) strataLabel <- strataTerm
       if(is.factor(strata.col))
       {
