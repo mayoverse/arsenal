@@ -337,7 +337,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
           {
             bystatlist[[difflab]] <- rowbinomCI(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff,
                                                 by.levels = c(TRUE, FALSE), na.rm = TRUE, conf.level = control$conf.level)[[2]]
-          } else if(statfun2 == "Npct")
+          } else if(statfun2 == "Nrowpct")
           {
             # get the right percentages
             bystatlist[[difflab]] <- Npct(TP1.eff, levels = xlevels, by = TP1.eff == TP2.eff, by.levels = c(TRUE, FALSE), na.rm = TRUE)[[2]]
