@@ -1855,4 +1855,16 @@ test_that("Nmisspct and Nmisspct2 (#346)", {
 })
 
 
+test_that("Passing a character vector of stats to tableby (#348)", {
+  s1 <- c("meansd", "Nmiss2")
+  s2 <- c("medianq1q3", "range")
+  tb1 <- tableby(sex ~ notest(age, "medianq1q3", "range") + anova(ast, "meansd", "Nmiss2"), data = mockstudy)
+  tb2 <- tableby(sex ~ notest(age, stats = s2) + anova(ast, stats = s1), data = mockstudy)
+  expect_identical(
+    capture.kable(summary(tb1, text = TRUE)),
+    capture.kable(summary(tb2, text = TRUE))
+  )
+})
+
+
 

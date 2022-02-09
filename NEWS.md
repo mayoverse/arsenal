@@ -1,4 +1,4 @@
-# arsenal v3.6.3.9002
+# arsenal v3.6.3.9004
 
 * Added `pct()` and `rowpct()`. (#337)
 
@@ -30,6 +30,8 @@
     - Added `Nmisspct()` and `Nmisspct2()`. (#346)
     
     - Changed the label for `Nrowpct()`
+    
+* Allowed for `stats=` argument to inline functions in `tableby()` / `paired()`. (#348)
 
 # arsenal v3.6.3
 

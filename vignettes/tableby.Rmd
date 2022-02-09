@@ -213,6 +213,15 @@ tab.test <- tableby(arm ~ kwt(ast, "Nmiss2","median") + anova(age, "N","mean") +
 summary(tab.test)
 ```
 
+These can also be passed to the `stats=` argument.
+
+```{r, eval=FALSE}
+tab.test <- tableby(arm ~ kwt(ast, "Nmiss2","median") + anova(age, "N","mean") +
+                    notest(bmi, "Nmiss","median"), data=mockstudy)
+summary(tab.test)
+```
+
+
 ## Controlling Options for Categorical Tests (Chisq and Fisher's)
 
 The formal tests for categorical variables against the levels of the by variable, chisq and fe, have
