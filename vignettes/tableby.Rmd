@@ -216,8 +216,8 @@ summary(tab.test)
 These can also be passed to the `stats=` argument.
 
 ```{r, eval=FALSE}
-tab.test <- tableby(arm ~ kwt(ast, "Nmiss2","median") + anova(age, "N","mean") +
-                    notest(bmi, "Nmiss","median"), data=mockstudy)
+tab.test <- tableby(arm ~ kwt(ast, stats = c("Nmiss2", "median")) + anova(age, stats = c("N","mean")) +
+                    notest(bmi, stats = c("Nmiss","median")), data=mockstudy)
 summary(tab.test)
 ```
 
