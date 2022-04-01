@@ -94,14 +94,27 @@ as_data_frame_summary_tableby <- function(df, totals, hasStrata, term.name, cont
 
   if(is.numeric(df$p.value))
   {
-    df$p.value <- formatC(df$p.value, digits = control$digits.p, format = if(control$format.p) "f" else "g")
+    my_format_p <- function(p, digits.p, format.p) {
+      p2 <- formatC(p, digits = digits.p, format = "f")
+      cutoff <- 10^(-digits.p)
+      fmt <- paste0("< ", format(cutoff, digits = digits.p, format = "f"))
+      p2[p < cutoff] <- fmt
+      if(identical(format.p, TRUE)) return(p2)
 
-    if(control$format.p)
-    {
-      cutoff <- 10^(-control$digits.p)
-      fmt <- paste0("< ", format(cutoff, digits = control$digits.p, format = "f"))
-      df$p.value[df.orig$p.value < cutoff] <- fmt
+      p3 <- formatC(p, digits = digits.p, format = "g")
+      if(identical(format.p, FALSE)) return(p3)
+
+      glue::glue(format.p, p = p, digits.p = digits.p)
     }
+    digits.p <- vapply(df$variable, function(i) f(i, "digits.p"), numeric(1))
+    format.p <- lapply(df$variable, function(i) f(i, "format.p"))
+
+    df$p.value <- unlist(Map(
+      my_format_p,
+      df$p.value,
+      digits.p = digits.p,
+      format.p = format.p
+    ))
   }
   if(!is.null(df$p.value)) df$p.value[grepl("^\\s*NA$", df$p.value) | is.na(df$p.value)] <- ""
 

@@ -1889,3 +1889,20 @@ test_that("Currency formatting (#209)", {
 })
 
 
+test_that("Custom p-value formatting (#345)", {
+  tb <- tableby(sex ~ stddiff(age, format.p = "{round(100*p, digits.p)}%", digits.p = 1) + ast, data = mockstudy)
+  expect_identical(
+    capture.kable(summary(tb, text = TRUE)),
+    c("|             |  Male (N=916)   |  Female (N=583)  | Total (N=1499)  | p value|",
+      "|:------------|:---------------:|:----------------:|:---------------:|-------:|",
+      "|Age in Years |                 |                  |                 |   10.5%|",
+      "|-  Mean (SD) | 60.455 (11.369) | 59.247 (11.722)  | 59.985 (11.519) |        |",
+      "|-  Range     | 19.000 - 88.000 | 22.000 - 88.000  | 19.000 - 88.000 |        |",
+      "|ast          |                 |                  |                 |   0.921|",
+      "|-  N-Miss    |       162       |       104        |       266       |        |",
+      "|-  Mean (SD) | 35.873 (26.606) | 36.029 (27.238)  | 35.933 (26.843) |        |",
+      "|-  Range     | 5.000 - 205.000 | 10.000 - 178.000 | 5.000 - 205.000 |        |")
+  )
+})
+
+

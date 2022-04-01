@@ -46,6 +46,12 @@
     - Added the `fmt=` argument and attribute, giving a `glue`-specification for how to format.
     
     - Added `glue` to the imports.
+    
+* Custom-formatted p-values (#345):
+
+    - `format.p=` and `digits.p=` are now arguments to the inline functions.
+
+    - `format.p=` now accepts `glue` specifications.
 
 # arsenal v3.6.3
 

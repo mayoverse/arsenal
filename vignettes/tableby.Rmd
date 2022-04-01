@@ -582,12 +582,12 @@ Within tableby.control function there are 4 options for controlling the number o
 summary(tableby(arm ~ sex + age + fu.time, data=mockstudy), digits=4, digits.p=2, digits.pct=1)
 ```
 
-With the exception of `digits.p`, all of these can be specified on a per-variable basis
+All of these can be specified on a per-variable basis
 using the in-formula functions that specify which tests are run:
 
 ```{r results='asis'}
 summary(tableby(arm ~ chisq(sex, digits.pct=1) + anova(age, digits=4) +
-                  anova(fu.time, digits = 1), data=mockstudy))
+                  anova(fu.time, digits = 1, digits.p = 6, format.p = FALSE), data=mockstudy))
 ```
 
 
