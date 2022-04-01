@@ -653,8 +653,8 @@ dollarmean <- function(x, na.rm = TRUE, ...) {
   if(na.rm && allNA(x)) {
     as.tbstat(NA_real_)
   } else {
-    out <- arsenal_mean(x, na.rm = na.rm, ...)
-    attr(out, "fmt") <- "${y}"
+    out <- meansd(x, na.rm = na.rm, ...)
+    attr(out, "fmt") <- "${y[1]}"
     out
   }
 }
