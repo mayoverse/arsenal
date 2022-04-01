@@ -306,7 +306,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
                                                 by = by.col, by.levels = by.levels, na.rm = TRUE))
             bystatlist$Total <- NULL
           } else if(statfun2 == "Nsigntest") {
-            bystatlist <- as.countpct(NA_real_)
+            bystatlist <- as.tbstat(NA_real_, which.count = 1L)
           } else
           {
             for(bylev in by.levels) {

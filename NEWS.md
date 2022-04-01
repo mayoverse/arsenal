@@ -33,6 +33,20 @@
     
 * Allowed for `stats=` argument to inline functions in `tableby()` / `paired()`. (#348)
 
+* Overhauled the `as.tbstat()` framework (#351):
+
+    - Edited some summary statistic definitions to borrow from others
+    
+    - Added `print.tbstat()`
+    
+    - Removed `as.countpct()`.
+    
+    - Added `tbfmt()`.
+    
+    - Added the `fmt=` argument and attribute, giving a `glue`-specification for how to format.
+    
+    - Added `glue` to the imports.
+
 # arsenal v3.6.3
 
 * Added `medtest()` to `tableby()` for a median test. (#327)

@@ -1459,14 +1459,14 @@ test_that("12/27/2019: informative error when no stats are computed (#273)", {
   expect_error(summary(tableby(~ sex, data = mockstudy, cat.stats = "Nmiss")), "Nothing to show for variable")
 })
 
-test_that("02/28/2020: as.tbstat and as.countpct are better described (#283)", {
+test_that("02/28/2020: as.tbstat is better described (#283, #351)", {
   trim510bracket <- function(x, weights=rep(1,length(x)), ...){
     tmp <- c(mean(x, trim = 0.05, ...), mean(x, trim = 0.1, ...))
-    as.tbstat(tmp, sep = " ", parens = c("[", "]"))
+    as.tbstat(tmp, fmt = "{y[1]} [{y[2]}]")
   }
   trim10pct <- function(x, weights=rep(1,length(x)), ...){
     tmp <- mean(x, trim = 0.05, ...)
-    as.countpct(c(tmp, 10), sep = " ", parens = c("(", ")"), which.count = 0, which.pct = 2, pct = "%")
+    as.tbstat(c(tmp, 10), fmt = "{y[1]} ({y[2]}%)", which.count = 0L, which.pct = 2L)
   }
   expect_identical(
     capture.kable(summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510bracket"),
@@ -1866,5 +1866,26 @@ test_that("Passing a character vector of stats to tableby (#348)", {
   )
 })
 
+
+test_that("Currency formatting (#209)", {
+  dollarmean <- function(x, na.rm = TRUE, ...) {
+    if(na.rm && allNA(x)) {
+      as.tbstat(NA_real_)
+    } else {
+      out <- arsenal_mean(x, na.rm = na.rm, ...)
+      attr(out, "fmt") <- "${y}"
+      out
+    }
+  }
+
+  tb <- tableby(sex ~ notest(age, "dollarmean", digits = 2), data = mockstudy)
+  expect_identical(
+    capture.kable(summary(tb, text = TRUE)),
+    c("|              | Male (N=916) | Female (N=583) | Total (N=1499) | p value|",
+      "|:-------------|:------------:|:--------------:|:--------------:|-------:|",
+      "|Age in Years  |              |                |                |        |",
+      "|-  dollarmean |    $60.46    |     $59.25     |     $59.99     |        |")
+  )
+})
 
 

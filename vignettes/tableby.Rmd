@@ -599,7 +599,7 @@ for user-defined functions.  In this case, `na.rm=T` is passed to `myfunc`.  The
 it isn't passed on to the internal function in this particular example.   
 
 ```{r, results='asis'}
-trim10 <- function(x, weights=rep(1,length(x)), ...){
+trim10 <- function(x, weights=NULL, ...){
   mean(x, trim=.1, ...)
 }
 
@@ -608,35 +608,58 @@ summary(tableby(sex ~ hgb, data=mockstudy,
                     stats.labels=list(Nmiss='Missing values', trim10="Trimmed Mean, 10%"))))
 ```
 
-For statistics to be formatted appropriately, you may want to use `as.tbstat()` or `as.countpct()`.
+For statistics to be formatted appropriately, you may want to use `as.tbstat()`.
 For example, suppose you want to create a trimmed mean function that trims by both 5 and 10 percent.
-The first example shows them separated by a comma; the second puts the 10% trimmed mean in brackets
+The first example shows them separated by a comma; the second puts the 10% trimmed mean in brackets.
+`as.tbstat()` takes a `fmt=` argument with a `glue` string specification, where the current value is exposed as
+`x` and a formatted value (using `tbfmt()`) is exposed as `y`. See `?as.tbstat` for details.
 
 ```{r, results='asis'}
-trim510comma <- function(x, weights=rep(1,length(x)), ...){
+trim510comma <- function(x, ...){
   tmp <- c(mean(x, trim = 0.05, ...), mean(x, trim = 0.1, ...))
-  as.tbstat(tmp, sep = ", ")
+  as.tbstat(tmp, fmt = "{y[1]}, {y[2]}")
 }
-trim510bracket <- function(x, weights=rep(1,length(x)), ...){
+trim510bracket <- function(x, ...){
   tmp <- c(mean(x, trim = 0.05, ...), mean(x, trim = 0.1, ...))
-  as.tbstat(tmp, sep = " ", parens = c("[", "]"))
+  as.tbstat(tmp, fmt = "{y[1]} [{y[2]}]")
 }
 
-summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510comma"), test = FALSE))
-summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510bracket"), test = FALSE))
+summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim510comma", "trim510bracket"), test = FALSE))
 ```
 
 Or perhaps it's useful to put the amount of trimming in parentheses. Since it is a percent, we can
 flag it as such:
 
 ```{r results='asis'}
-trim10pct <- function(x, weights=rep(1,length(x)), ...){
+trim10pct <- function(x, ...){
   tmp <- mean(x, trim = 0.05, ...)
-  as.countpct(c(tmp, 10), sep = " ", parens = c("(", ")"), which.count = 0, which.pct = 2, pct = "%")
+  as.tbstat(c(tmp, 10), fmt = "{y[1]} ({y[2]}%)", which.pct = 2L)
 }
 summary(tableby(sex ~ hgb, data=mockstudy, numeric.stats=c("Nmiss", "trim10pct"),
                 digits = 2, digits.pct = 0, test = FALSE))
 
+```
+
+Finally, if there's a pre-computed summary statistic, you can easily change the formatting, like in `meanpmsd()`:
+
+```{r}
+meanpmsd
+```
+
+For example:
+
+```{r}
+dollarmean <- function(x, na.rm = TRUE, ...) {
+  if(na.rm && allNA(x)) {
+    as.tbstat(NA_real_)
+  } else {
+    out <- arsenal_mean(x, na.rm = na.rm, ...)
+    attr(out, "fmt") <- "${y}"
+    out
+  }
+}
+
+summary(tableby(sex ~ notest(age, "dollarmean", digits = 2), data = mockstudy))
 ```
 
 ## 16. Use case-weights for creating summary statistics

@@ -35,38 +35,42 @@ get_attr <- function(x, which, default)
 }
 
 #' @export
-format.tbstat <- function(x, digits = NULL, ...)
-{
+print.tbstat <- function(x, ...) {
+  cat("A 'tbstat' object with format:\n'", attr(x, "fmt"), "'", sep = "")
+  invisible(x)
+}
+
+#' @rdname tableby.stats.internal
+#' @export
+tbfmt <- function(x, digits = NULL, digits.count = NULL, digits.pct = NULL, ...) {
   x <- x[] # to remove classes
-  if(is.numeric(x)) x <- trimws(formatC(x, digits = digits, format = "f"))
-  if(is.list(x) && any(idx <- vapply(x, inherits, NA, "difftime")))
+  if(is.numeric(x)) {
+    att <- attributes(x)
+    x <- vapply(seq_along(x), function(i) {
+      d <- if(i %in% att$which.pct) digits.pct else if(i %in% att$which.count) digits.count else digits
+      formatC(x[i], digits = d, format = "f")
+    }, NA_character_)
+    x <- trimws(x)
+  } else if(is.list(x) && any(idx <- vapply(x, inherits, NA, "difftime")))
   {
     x[idx] <- lapply(x[idx], function(xx) paste(trimws(formatC(unclass(xx), digits = digits, format = "f")), units(xx)))
   }
-
-  parens <- get_attr(x, "parens", c("", ""))
-  sep <- get_attr(x, "sep", " ")
-  sep2 <- get_attr(x, "sep2", " ")
-  pct <- get_attr(x, "pct", "")
-  if(length(x) == 1) {
-    paste0(parens[1], x, pct, parens[2])
-  } else if(length(x) == 2)
-  {
-    paste0(x[1], sep, parens[1], x[2], pct, parens[2])
-  } else paste0(x[1], sep, parens[1], x[2], sep2, x[3], parens[2])
+  x
 }
 
 #' @export
-format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, digits = NULL, ...)
+format.tbstat <- function(x, digits = NULL, digits.count = NULL, digits.pct = NULL, ...)
 {
-  att <- attributes(x)
-  x <- vapply(seq_along(x), function(i) {
-    d <- if(i %in% att$which.pct) digits.pct else if(i %in% att$which.count) digits.count else digits
-    formatC(x[i], digits = d, format = "f")
-  }, NA_character_)
-  x <- trimws(x)
-  attributes(x) <- att
-  NextMethod("format")
+  if(is.null(fmt <- attr(x, "fmt"))) {
+    warning("Could not find 'fmt' attribute")
+    fmt <- "{y}"
+  }
+  glue::glue(
+    fmt,
+    x = x,
+    y = tbfmt(x, digits = digits, digits.pct = digits.pct, digits.count = digits.count),
+    digits = digits, digits.pct = digits.pct, digits.count = digits.count
+  )
 }
 
 #' Internal \code{tableby} functions
@@ -74,21 +78,19 @@ format.tbstat_countpct <- function(x, digits.count = NULL, digits.pct = NULL, di
 #' A collection of functions that may help users create custom functions that are formatted correctly.
 #' @param x Usually a vector.
 #' @param oldClass class(es) to add to the resulting object.
-#' @param sep The separator between \code{x[1]} and the rest of the vector.
-#' @param parens A length-2 vector denoting parentheses to use around \code{x[2]} and \code{x[3]}.
-#' @param sep2 The separator between \code{x[2]} and \code{x[3]}.
-#' @param pct For statistics of length 2, the symbol to use after the second one. (It's called
-#'   "pct" because usually the first statistic is never a percent, but the second often is.)
+#' @param fmt A \code{\link[glue]{glue}} string, where the object is exposed as the variable \code{x},
+#'   and a default-formatted version (using \code{tbfmt}) exposed as the variable \code{y}. \code{digits}, \code{digits.count},
+#'   and \code{digits.pct} are also exposed.
 #' @param which.pct Which statistics are percents? The default is 0, indicating that none are.
-#' @param which.count Which statistics are counts? The default is everything except the things that are percents.
+#' @param which.count Which statistics are counts? The default is 0, indicating that none are.
+#' @param digits,digits.pct,digits.count Digits specifications
 #' @param ... arguments to pass to \code{as.tbstat}.
 #' @details
 #'   The vignette has an example on how to use these.
 #'
 #'   \code{as.tbstat} defines a tableby statistic with its appropriate formatting.
 #'
-#'   \code{as.countpct} adds another class to \code{as.tbstat} to use different "digits" arguments
-#'   (i.e., \code{digits.count} or \code{digits.pct}). See \code{\link{tableby.control}}.
+#'   \code{tbfmt} applies some default formatting.
 #'
 #'   \code{as.tbstat_multirow} marks an object (usually a list) for multiple-row printing.
 #' @name tableby.stats.internal
@@ -97,19 +99,9 @@ NULL
 
 #' @rdname tableby.stats.internal
 #' @export
-as.tbstat <- function(x, oldClass = NULL, sep = NULL, parens = NULL, sep2 = NULL, pct = NULL, ...)
+as.tbstat <- function(x, oldClass = NULL, fmt = "{y}", which.count = 0L, which.pct = 0L, ...)
 {
-  structure(x, class = c("tbstat", oldClass),
-            sep = sep, parens = parens, sep2 = sep2, pct = pct, ...)
-}
-
-#' @rdname tableby.stats.internal
-#' @export
-as.countpct <- function(x, ..., which.count = setdiff(seq_along(x), which.pct), which.pct = 0L)
-{
-  tmp <- as.tbstat(x, ..., which.count = which.count, which.pct = which.pct)
-  class(tmp) <- c("tbstat_countpct", class(tmp))
-  tmp
+  structure(x, class = c("tbstat", oldClass), fmt = fmt, which.count = which.count, which.pct = which.pct, ...)
 }
 
 #' @rdname tableby.stats.internal

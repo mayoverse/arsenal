@@ -1,6 +1,6 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical Summaries
-Version: 3.6.3.9004
+Version: 3.6.3.9900
 Date: 2022-02-09
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
@@ -48,7 +48,8 @@ Depends:
     stats (>= 3.4.0)
 Imports:
     knitr (>= 1.29),
-    utils (>= 3.4.0)
+    utils (>= 3.4.0),
+    glue
 URL: https://github.com/mayoverse/arsenal, https://cran.r-project.org/package=arsenal, https://mayoverse.github.io/arsenal/
 BugReports: https://github.com/mayoverse/arsenal/issues
 VignetteBuilder: knitr
