@@ -302,3 +302,19 @@ test_that("NAs in sign.test, plus Nsigntest (#326)", {
   )
 })
 
+test_that("diff=FALSE works (#352)", {
+  set.seed(99)
+  df <- data.frame(a = c(rep("a",10),rep("b",10)),x1 = rnorm(20),id  = rep(1:10,2))
+
+
+  expect_identical(
+    capture.kable(summary(paired(a~x1,data= df,id = id,diff = F))),
+    c("|                            |    a (N=10)    |    b (N=10)    | p value|",
+      "|:---------------------------|:--------------:|:--------------:|-------:|",
+      "|**x1**                      |                |                |   0.358|",
+      "|&nbsp;&nbsp;&nbsp;Mean (SD) | -0.105 (0.607) | -0.599 (1.392) |        |",
+      "|&nbsp;&nbsp;&nbsp;Range     | -1.294 - 0.490 | -3.041 - 0.922 |        |"
+    )
+  )
+})
+
