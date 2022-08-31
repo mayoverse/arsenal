@@ -954,8 +954,7 @@ The following tests are accepted:
     
 * `medtest`: Median test test, optional test for continuous variables.
 
-* `chisq`: chi-square goodness of fit test for equal counts of a
-    categorical variable across categories; the default for categorical
+* `chisq`: chi-square goodness of fit test or Pearson chi-squared test; the default for categorical
     or factor variables
 
 * `fe`: Fisher's exact test for categorical variables; optional 
