@@ -313,6 +313,46 @@ medSurv <- function(x, na.rm = TRUE, weights = NULL, ...) {
   as.tbstat(y)
 }
 
+## Median survival with confidence interval
+#' @rdname tableby.stats
+#' @export
+medSurvCI <- function (x, na.rm = TRUE, weights = NULL, robust = FALSE, conf.type = 'log', ...) {
+  y <- if (na.rm && allNA(x)) {
+    NA_real_
+  }
+  else {
+    arsenal:::check_pkg("survival")
+    mat <- summary(survival::survfit(x ~ 1,
+                                     weights = weights,
+                                     robust = robust,
+                                     conf.type =conf.type))$table
+    m <- as.numeric(mat["median"])
+    ci <- c(as.numeric(mat["0.95LCL"]), as.numeric(mat["0.95UCL"]))
+    c(m, ci)
+  }
+  as.tbstat(y, fmt = "{y[1]} ({y[2]}, {y[3]})")
+}
+
+## Median survival with 25th/75th quantiles
+#' @rdname tableby.stats
+#' @export
+medSurvQuant <- function (x, na.rm = TRUE, weights = NULL, robust = FALSE, ...) {
+  y <- if (na.rm && allNA(x)) {
+    NA_real_
+  }
+  else {
+    arsenal:::check_pkg("survival")
+    mat <- quantile(survival::survfit(x ~ 1,
+                                     weights = weights,
+                                     robust = robust
+                                     ),
+                    probs=c(0.5,0.25, 0.75))$quantile
+    mat
+  }
+  as.tbstat(y, fmt = "{y[1]} ({y[2]}, {y[3]})")
+}
+
+
 #' @rdname tableby.stats
 #' @export
 NeventsSurv <- function(x, na.rm = TRUE, weights = NULL, times=1:5, ...) {

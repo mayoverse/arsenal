@@ -149,6 +149,7 @@ add_tbc_stats_labels <- function(x) {
     mean = "Mean", sd = "SD", var = "Var", max = "Max", min = "Min", meanCI = "Mean (CI)", sum = "Sum",
     gmean = "Geom Mean", gsd = "Geom SD", gmeansd = "Geom Mean (Geom SD)", gmeanCI = "Geom Mean (CI)",
     range="Range", Npct="N (%)", Nrowpct="N (%)", Nevents="Events", medSurv="Median Survival",
+    medSurvQuant="Median (Q1, Q3) Survival", medSurvCI="Median (CI)",
     medTime = "Median Follow-Up", medianmad="Median (MAD)", Nsigntest = "N (sign test)",
     overall = "Overall", total = "Total", difference = "Difference"
   )

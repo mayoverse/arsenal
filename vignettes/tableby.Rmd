@@ -319,7 +319,15 @@ summary(survfit(Surv(fu.time/365.25, fu.stat)~sex, data=mockstudy), times=1:5)
 ```
 
 ```{r, results='asis', eval=ge330}
-summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5, surv.stats=c("NeventsSurv","NriskSurv")))
+summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:3, surv.stats=c("NeventsSurv")))
+
+summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, times=1:5, surv.stats=c("NriskSurv")))
+
+summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, surv.stats="medSurvCI", survconf.type='log-log'), digits=2)
+
+summary(tableby(sex ~ Surv(fu.time/365.25, fu.stat), data=mockstudy, surv.stats="medSurvQuant"), digits=2)
+
+
 ```
 
 ## 5. Summarize date variables

@@ -126,7 +126,7 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
 
   Call <- match.call()
   ## Tell user if they passed an argument that was not expected, either here or in control
-  expectArgs <- c("formula", "data", "na.action", "subset", "weights", "strata", "control", names(control), "times")
+  expectArgs <- c("formula", "data", "na.action", "subset", "weights", "strata", "control", names(control), "times","survconf.type")
   match.idx <- match(names(Call)[-1], expectArgs)
   if(anyNA(match.idx)) warning("unused arguments: ", paste(names(Call)[1+which(is.na(match.idx))], collapse=", "), "\n")
 
@@ -401,11 +401,11 @@ tableby <- function(formula, data, na.action, subset=NULL, weights=NULL, strata,
             for(bylev in by.levels) {
               idx <- bycol == bylev
               bystatlist[[bylev]] <- do.call(statfun, list(currcol[idx], levels=xlevels, na.rm=TRUE,
-                                                           weights=weightscol[idx], conf.level=control$conf.level, times=control$times))
+                                                           weights=weightscol[idx], conf.level=control$conf.level, times=control$times, survconf.type=control$survconf.type))
             }
             ## add Total
             bystatlist[[totallab]] <- do.call(statfun, list(currcol, levels=xlevels, na.rm=TRUE,
-                                                            weights=weightscol, conf.level=control$conf.level, times=control$times))
+                                                            weights=weightscol, conf.level=control$conf.level, times=control$times, survconf.type=control$survconf.type))
           }
           statList[[statfun2]] <- bystatlist
         }
