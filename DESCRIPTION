@@ -1,7 +1,7 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical Summaries
-Version: 3.6.3.9900
-Date: 2022-02-09
+Version: 3.6.4.0000
+Date: 2024-05-15
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
     person("Jason", "Sinnwell", role="aut"),
