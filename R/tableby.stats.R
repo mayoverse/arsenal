@@ -315,6 +315,7 @@ medSurv <- function(x, na.rm = TRUE, weights = NULL, ...) {
 
 ## Median survival with confidence interval
 #' @rdname tableby.stats
+#' @param robust,conf.type Passed to \code{survival::\link[survival]{survfit}}.
 #' @export
 medSurvCI <- function (x, na.rm = TRUE, weights = NULL, robust = FALSE, conf.type = 'log', ...) {
   y <- if (na.rm && allNA(x)) {

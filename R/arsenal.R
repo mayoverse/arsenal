@@ -50,11 +50,9 @@
 #' @examples
 #' library(arsenal)
 #'
-#' @docType package
-#' @name arsenal
 #' @importFrom utils head tail
 #'
-NULL
+"_PACKAGE"
 
 
 #### commands to build the package using devtools
