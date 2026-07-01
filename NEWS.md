@@ -1,4 +1,9 @@
-# arsenal v3.6.3.9004
+# arsenal v3.7.0
+
+This is the first release in several years.
+
+* `paired()`: `sign.test()` is now officially `signtest()`, but the former
+  is supported for backwards compatibility.
 
 * Added `pct()` and `rowpct()`. (#337)
 

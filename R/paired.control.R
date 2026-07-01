@@ -4,10 +4,10 @@
 #' Control test and summary settings for the \code{\link{paired}} function.
 #'
 #' @param diff logical, telling \code{paired} whether to calculate a column of differences between time points.
-#' @param numeric.test name of test for numeric RHS variables in \code{paired}: paired.t, signed.rank, sign.test.
+#' @param numeric.test name of test for numeric RHS variables in \code{paired}: paired.t, signed.rank, signtest.
 #' @param cat.test name of test for categorical variables: mcnemar
-#' @param ordered.test name of test for ordered variables: signed.rank, sign.test
-#' @param date.test name of test to perform for date variables: paired.t, signed.rank, sign.test
+#' @param ordered.test name of test for ordered variables: signed.rank, signtest
+#' @param date.test name of test to perform for date variables: paired.t, signed.rank, signtest
 #' @param mcnemar.correct,signed.rank.exact,signed.rank.correct Options for statistical tests. See \code{\link{wilcox.test}}
 #'   and \code{\link{mcnemar.test}} for details.
 #' @param ... Arguments passed to \code{\link{tableby.control}}

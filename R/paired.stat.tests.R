@@ -38,7 +38,7 @@ signed.rank <- function(x, y, signed.rank.exact = NULL, signed.rank.correct = TR
   stats::wilcox.test(x, y, paired = TRUE, exact = signed.rank.exact, correct = signed.rank.correct)
 }
 
-sign.test <- function(x, y, ..., na.rm = TRUE)
+signtest <- function(x, y, ..., na.rm = TRUE)
 {
   if(na.rm) {
     idx <- is.na(x) | is.na(y)

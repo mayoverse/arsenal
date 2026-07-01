@@ -34,7 +34,7 @@
 #'     \code{signed.rank}: a \link[stats:wilcox.test]{signed rank test}.
 #'   }
 #'   \item{
-#'     \code{sign.test}: a sign test.
+#'     \code{signtest}: a sign test.
 #'   }
 #'   \item{
 #'     \code{notest}: no test is performed.
@@ -64,7 +64,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
   if(length(formula) != 3) stop("'formula' must be two-sided.")
   if(indx[5] == 0) stop("An id argument is required")
 
-  special <- c("paired.t", "mcnemar", "signed.rank", "sign.test", "notest")
+  special <- c("paired.t", "mcnemar", "signed.rank", "signtest", "sign.test", "notest")
 
   out.tables <- list()
   formula.list <- as_list_formula(formula)
@@ -351,6 +351,7 @@ paired <- function(formula, data, id, na.action, subset=NULL, strata, control = 
         if(length(statList) == 0) stop(paste0("Nothing to show for variable '", names(xTerms)[eff], "'"))
 
         currtest <- if(nchar(specialTests[eff]) > 0) specialTests[eff] else currtest
+        if(currtest == "sign.test") currtest <- "signtest"
         testout <- if(control$test) {
           eval(call(currtest, TP1.eff, TP2.eff, mcnemar.correct=control$mcnemar.correct,
                     signed.rank.exact = control$signed.rank.exact, signed.rank.correct = control$signed.rank.correct,
