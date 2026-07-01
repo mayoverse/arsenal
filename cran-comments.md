@@ -11,10 +11,9 @@ This is a new version. In this version:
 ## Test environments
 
 * local Linux install: R 4.5.2
-* ubuntu 18.04 (on GitHub): R devel, release, (oldrel), R 3.6
-* Windows (on Github): release, 3.6
+* ubuntu 18.04 (on GitHub): R devel, release, oldrel
+* Windows (on Github): release
 * OSX (on GitHub): release
-* Windows (winbuilder): devel
 
 ## R CMD check results
 
