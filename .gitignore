@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 revdep
+renv
+renv.lock
+.Rprofile
