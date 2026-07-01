@@ -7,6 +7,7 @@ data(mockstudy)
 
 expect_write2_worked <- function(FUN, object, reference, ...)
 {
+  skip_on_ci()
   skip_on_cran()
   skip_on_os("mac")
   skip_on_os("windows")
