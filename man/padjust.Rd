@@ -18,7 +18,8 @@ padjust(p, method, n, ...)
 \arguments{
 \item{p}{An object.}
 
-\item{method}{correction method.  Can be abbreviated.}
+\item{method}{correction method, a \code{\link{character}} string.
+    Can be abbreviated.}
 
 \item{n}{number of comparisons, must be at least \code{length(p)};
     only set this (to non-default) when you know what you are doing!}

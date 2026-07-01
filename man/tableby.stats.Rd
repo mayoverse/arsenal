@@ -24,6 +24,8 @@
 \alias{Nsigntest}
 \alias{Nevents}
 \alias{medSurv}
+\alias{medSurvCI}
+\alias{medSurvQuant}
 \alias{NeventsSurv}
 \alias{NriskSurv}
 \alias{Nrisk}
@@ -92,6 +94,17 @@ Nsigntest(x, na.rm = TRUE, weights = NULL, ...)
 Nevents(x, na.rm = TRUE, weights = NULL, ...)
 
 medSurv(x, na.rm = TRUE, weights = NULL, ...)
+
+medSurvCI(
+  x,
+  na.rm = TRUE,
+  weights = NULL,
+  robust = FALSE,
+  conf.type = "log",
+  ...
+)
+
+medSurvQuant(x, na.rm = TRUE, weights = NULL, robust = FALSE, ...)
 
 NeventsSurv(x, na.rm = TRUE, weights = NULL, times = 1:5, ...)
 
@@ -194,6 +207,8 @@ rowbinomCI(
 \item{weights}{A vector of weights.}
 
 \item{conf.level}{Numeric, denoting what confidence level to use for confidence intervals.}
+
+\item{robust, conf.type}{Passed to \code{survival::\link[survival]{survfit}}.}
 
 \item{times}{A vector of times to use for survival summaries.}
 

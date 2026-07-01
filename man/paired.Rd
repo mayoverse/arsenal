@@ -66,7 +66,7 @@ These tests are accepted:
     \code{signed.rank}: a \link[stats:wilcox.test]{signed rank test}.
   }
   \item{
-    \code{sign.test}: a sign test.
+    \code{signtest}: a sign test.
   }
   \item{
     \code{notest}: no test is performed.

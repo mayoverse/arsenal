@@ -1,14 +1,16 @@
-## Submission for arsenal 3.6.3
+## Submission for arsenal 3.7.0
 
 This is a new version. In this version:
 
-* 5 bugs were fixed, including an R Devel error with `format()` and `digits=0`.
+* Several bugs were fixed.
 
-* Switched testing from Travis to Github Actions
+* Multiple features were added.
+
+* Errors on CRAN were corrected.
 
 ## Test environments
 
-* local Linux install: R 3.6.2
+* local Linux install: R 4.5.2
 * ubuntu 18.04 (on GitHub): R devel, release, (oldrel), R 3.6
 * Windows (on Github): release, 3.6
 * OSX (on GitHub): release
@@ -20,5 +22,4 @@ This is a new version. In this version:
 
 ## Reverse dependencies
 
-sdglinkage: OK
-haplo.stats: OK
+This is a backwards-compatible release, so all reverse dependencies should be okay.

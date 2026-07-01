@@ -19,13 +19,13 @@ paired.control(
 \arguments{
 \item{diff}{logical, telling \code{paired} whether to calculate a column of differences between time points.}
 
-\item{numeric.test}{name of test for numeric RHS variables in \code{paired}: paired.t, signed.rank, sign.test.}
+\item{numeric.test}{name of test for numeric RHS variables in \code{paired}: paired.t, signed.rank, signtest.}
 
 \item{cat.test}{name of test for categorical variables: mcnemar}
 
-\item{ordered.test}{name of test for ordered variables: signed.rank, sign.test}
+\item{ordered.test}{name of test for ordered variables: signed.rank, signtest}
 
-\item{date.test}{name of test to perform for date variables: paired.t, signed.rank, sign.test}
+\item{date.test}{name of test to perform for date variables: paired.t, signed.rank, signtest}
 
 \item{mcnemar.correct, signed.rank.exact, signed.rank.correct}{Options for statistical tests. See \code{\link{wilcox.test}}
 and \code{\link{mcnemar.test}} for details.}

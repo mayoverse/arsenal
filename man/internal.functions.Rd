@@ -19,11 +19,11 @@ or a positive integer giving the largest allowed string length.}
 \item{min.split}{Either \code{-Inf} or \code{NULL} to specify no
 lower bound on the string length, or a positive integer giving the minimum string length.}
 
-\item{x}{vector}
+\item{x}{a vector.}
 
-\item{list}{an index vector}
+\item{list}{an index vector.}
 
-\item{values}{replacement values}
+\item{values}{replacement values.}
 }
 \value{
 For \code{smart.split}, a list of the same length as \code{string}, with each element being

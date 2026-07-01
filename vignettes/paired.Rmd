@@ -82,7 +82,7 @@ The following tests are accepted:
 
 * `signed.rank`: the signed-rank test.
 
-* `sign.test`: the sign test.
+* `signtest`: the sign test.
 
 * `notest`: Don't perform a test.
 

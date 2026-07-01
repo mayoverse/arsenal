@@ -26,7 +26,7 @@ for(i in 1:3)
   if(i == 2) dat$id <- as.character(dat$id) else if(i == 3) dat$id <- as.factor(dat$id)
   test_that(paste0("Basic paired call; class(id) = ", class(dat$id), "; na.paired('asis')"), {
     expect_identical(
-      capture.kable(summary(paired(tp ~ Cat + Fac + Num + Ord + Lgl + Dat + s, data = dat, id = id,
+      capture.kable(summary(paired(tp ~ Cat + Fac + Num + notest(Ord) + Lgl + Dat + s, data = dat, id = id,
                                    signed.rank.exact = FALSE, na.action = na.paired("asis")), text = TRUE)),
       c("|             |         1 (N=5)         |         2 (N=5)         | Difference (N=4) | p value|",
         "|:------------|:-----------------------:|:-----------------------:|:----------------:|-------:|",
@@ -42,7 +42,7 @@ for(i in 1:3)
         "|-  N-Miss    |            0            |            1            |        0         |        |",
         "|-  Mean (SD) |      2.200 (1.643)      |      3.250 (0.957)      |  0.500 (1.000)   |        |",
         "|-  Range     |      0.000 - 4.000      |      2.000 - 4.000      |  -1.000 - 1.000  |        |",
-        "|Ord          |                         |                         |                  |   0.174|",
+        "|Ord          |                         |                         |                  |        |",
         "|-  I         |        2 (40.0%)        |        1 (20.0%)        |    2 (100.0%)    |        |",
         "|-  II        |        2 (40.0%)        |        1 (20.0%)        |    1 (100.0%)    |        |",
         "|-  III       |        1 (20.0%)        |        3 (60.0%)        |     0 (0.0%)     |        |",
@@ -61,7 +61,7 @@ for(i in 1:3)
 
   test_that(paste0("Basic paired call; class(id) = ", class(dat$id), "; na.paired('fill')"), {
     expect_identical(
-      capture.kable(summary(paired(tp ~ Cat + Fac + Num + Ord + Lgl + Dat, data = dat, id = id,
+      capture.kable(summary(paired(tp ~ Cat + Fac + Num + notest(Ord) + Lgl + Dat, data = dat, id = id,
                                    signed.rank.exact = FALSE, na.action = na.paired("fill")), text = TRUE)),
       c("|             |         1 (N=6)         |         2 (N=6)         | Difference (N=6) | p value|",
         "|:------------|:-----------------------:|:-----------------------:|:----------------:|-------:|",
@@ -78,7 +78,7 @@ for(i in 1:3)
         "|-  N-Miss    |            1            |            2            |        2         |        |",
         "|-  Mean (SD) |      2.200 (1.643)      |      3.250 (0.957)      |  0.500 (1.000)   |        |",
         "|-  Range     |      0.000 - 4.000      |      2.000 - 4.000      |  -1.000 - 1.000  |        |",
-        "|Ord          |                         |                         |                  |   0.174|",
+        "|Ord          |                         |                         |                  |        |",
         "|-  N-Miss    |            1            |            1            |        2         |        |",
         "|-  I         |        2 (40.0%)        |        1 (20.0%)        |    2 (100.0%)    |        |",
         "|-  II        |        2 (40.0%)        |        1 (20.0%)        |    1 (100.0%)    |        |",
@@ -97,7 +97,7 @@ for(i in 1:3)
 
   test_that(paste0("Basic paired call; class(id) = ", class(dat$id), "; na.paired('in.both')"), {
     expect_identical(
-      capture.kable(summary(paired(tp ~ Cat + Fac + Num + Ord + Lgl + Dat, data = dat, id = id,
+      capture.kable(summary(paired(tp ~ Cat + Fac + Num + notest(Ord) + Lgl + Dat, data = dat, id = id,
                                    signed.rank.exact = FALSE, na.action = na.paired("in.both")), text = TRUE)),
       c("|             |         1 (N=4)         |         2 (N=4)         | Difference (N=4) | p value|",
         "|:------------|:-----------------------:|:-----------------------:|:----------------:|-------:|",
@@ -111,7 +111,7 @@ for(i in 1:3)
         "|Num          |                         |                         |                  |   0.391|",
         "|-  Mean (SD) |      2.750 (1.258)      |      3.250 (0.957)      |  0.500 (1.000)   |        |",
         "|-  Range     |      1.000 - 4.000      |      2.000 - 4.000      |  -1.000 - 1.000  |        |",
-        "|Ord          |                         |                         |                  |   0.174|",
+        "|Ord          |                         |                         |                  |        |",
         "|-  I         |        2 (50.0%)        |        0 (0.0%)         |    2 (100.0%)    |        |",
         "|-  II        |        1 (25.0%)        |        1 (25.0%)        |    1 (100.0%)    |        |",
         "|-  III       |        1 (25.0%)        |        3 (75.0%)        |     0 (0.0%)     |        |",
@@ -165,7 +165,7 @@ dat$id[10] <- NA
 dat$tp[9] <- NA
 test_that("Paired with missings", {
   expect_identical(
-    capture.kable(summary(paired(tp ~ Cat + Fac + Num + Ord + Lgl + Dat, data = dat, id = id, signed.rank.exact = FALSE), text = TRUE)),
+    capture.kable(summary(paired(tp ~ Cat + Fac + Num + notest(Ord) + Lgl + Dat, data = dat, id = id, signed.rank.exact = FALSE), text = TRUE)),
     c("|             |         1 (N=4)         |         2 (N=4)         | Difference (N=4) | p value|",
       "|:------------|:-----------------------:|:-----------------------:|:----------------:|-------:|",
       "|Cat          |                         |                         |                  |   1.000|",
@@ -178,7 +178,7 @@ test_that("Paired with missings", {
       "|Num          |                         |                         |                  |   0.391|",
       "|-  Mean (SD) |      2.750 (1.258)      |      3.250 (0.957)      |  0.500 (1.000)   |        |",
       "|-  Range     |      1.000 - 4.000      |      2.000 - 4.000      |  -1.000 - 1.000  |        |",
-      "|Ord          |                         |                         |                  |   0.174|",
+      "|Ord          |                         |                         |                  |        |",
       "|-  I         |        2 (50.0%)        |        0 (0.0%)         |    2 (100.0%)    |        |",
       "|-  II        |        1 (25.0%)        |        1 (25.0%)        |    1 (100.0%)    |        |",
       "|-  III       |        1 (25.0%)        |        3 (75.0%)        |     0 (0.0%)     |        |",
@@ -283,14 +283,14 @@ test_that("12/27/2019: informative error when no stats are computed (#273)", {
   expect_error(summary(paired(tp ~ Cat, data = dat2, id = id, cat.stats = "Nmiss")), "Nothing to show for variable")
 })
 
-test_that("NAs in sign.test, plus Nsigntest (#326)", {
+test_that("NAs in signtest, plus Nsigntest (#326)", {
   d <- data.frame(
     tp = rep(c("Time 1", "Time 2"), times = 4),
     id = c(1, 1, 2, 2, 3, 3, 4, 4),
     a = c(1, 2, 2, 3, 3, 4, 5, NA)
   )
   expect_identical(
-    capture.kable(summary(paired(tp ~ sign.test(a), id = id, data = d, numeric.stats = c("Nmiss", "meansd", "range", "Nsigntest")), text = TRUE)),
+    capture.kable(summary(paired(tp ~ signtest(a), id = id, data = d, numeric.stats = c("Nmiss", "meansd", "range", "Nsigntest")), text = TRUE)),
     c("|                 | Time 1 (N=4)  | Time 2 (N=4)  | Difference (N=4) | p value|",
       "|:----------------|:-------------:|:-------------:|:----------------:|-------:|",
       "|a                |               |               |                  |   0.250|",

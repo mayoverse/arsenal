@@ -55,9 +55,7 @@ use the y-variable's label for each table.}
 
 \item{x}{An object of class \code{"summary.modelsum"}.}
 
-\item{width}{Passed to \code{\link{smart.split}} for formatting of the "term" column.}
-
-\item{min.split}{Passed to \code{\link{smart.split}} for formatting of the "term" column.}
+\item{width, min.split}{Passed to \code{\link{smart.split}} for formatting of the "term" column.}
 
 \item{list.ok}{If the object has multiple by-variables, is it okay to return a list of data.frames instead of a single data.frame?
 If \code{FALSE} but there are multiple by-variables, a warning is issued.}

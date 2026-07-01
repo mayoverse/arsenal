@@ -6,6 +6,7 @@
 [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/arsenal)](https://CRAN.R-project.org/package=arsenal)
 [![Downloads](http://cranlogs.r-pkg.org/badges/arsenal)](https://CRAN.R-project.org/package=arsenal)
 [![R-CMD-check](https://github.com/mayoverse/arsenal/workflows/R-CMD-check/badge.svg)](https://github.com/mayoverse/arsenal/actions)
+[![R-CMD-check](https://github.com/mayoverse/arsenal/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mayoverse/arsenal/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ## Overview

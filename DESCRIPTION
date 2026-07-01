@@ -1,7 +1,7 @@
 Package: arsenal
 Title: An Arsenal of 'R' Functions for Large-Scale Statistical Summaries
-Version: 3.6.4.0000
-Date: 2024-05-15
+Version: 3.7.0
+Date: 2026-07-01
 Authors@R: c(
     person("Ethan", "Heinzen", email = "heinzen.ethan@mayo.edu", role = c("aut", "cre")),
     person("Jason", "Sinnwell", role="aut"),
@@ -54,6 +54,6 @@ URL: https://github.com/mayoverse/arsenal, https://cran.r-project.org/package=ar
 BugReports: https://github.com/mayoverse/arsenal/issues
 VignetteBuilder: knitr
 License: GPL (>= 2)
-RoxygenNote: 7.1.1
 LazyData: true
 Encoding: UTF-8
+Config/roxygen2/version: 8.0.0
