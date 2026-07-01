@@ -322,11 +322,8 @@ medSurvCI <- function (x, na.rm = TRUE, weights = NULL, robust = FALSE, conf.typ
     NA_real_
   }
   else {
-    arsenal:::check_pkg("survival")
-    mat <- summary(survival::survfit(x ~ 1,
-                                     weights = weights,
-                                     robust = robust,
-                                     conf.type =conf.type))$table
+    check_pkg("survival")
+    mat <- summary(survival::survfit(x ~ 1, weights = weights, robust = robust, conf.type =conf.type))$table
     m <- as.numeric(mat["median"])
     ci <- c(as.numeric(mat["0.95LCL"]), as.numeric(mat["0.95UCL"]))
     c(m, ci)
@@ -342,12 +339,8 @@ medSurvQuant <- function (x, na.rm = TRUE, weights = NULL, robust = FALSE, ...) 
     NA_real_
   }
   else {
-    arsenal:::check_pkg("survival")
-    mat <- quantile(survival::survfit(x ~ 1,
-                                     weights = weights,
-                                     robust = robust
-                                     ),
-                    probs=c(0.5,0.25, 0.75))$quantile
+    check_pkg("survival")
+    mat <- stats::quantile(survival::survfit(x ~ 1, weights = weights, robust = robust), probs=c(0.5,0.25, 0.75))$quantile
     mat
   }
   as.tbstat(y, fmt = "{y[1]} ({y[2]}, {y[3]})")
