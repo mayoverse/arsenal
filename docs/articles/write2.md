@@ -1,0 +1,492 @@
+# The write2 function
+
+## Introduction
+
+The `write2*()` functions were designed as an alternative to SAS’s `ODS`
+procedure for useRs who want to save R Markdown tables to separate Word,
+HTML, or PDF files without needing separate R Markdown programs.
+
+There are three shortcut functions for the most common output types:
+HTML, PDF, and Word. Each of these three functions calls
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md),
+an S3 function which accepts many file output types (see the help pages
+for
+[`rmarkdown::render()`](https://pkgs.rstudio.com/rmarkdown/reference/render.html)).
+Methods have been implemented for
+[`tableby()`](https://mayoverse.github.io/arsenal/reference/tableby.md),
+[`modelsum()`](https://mayoverse.github.io/arsenal/reference/modelsum.md),
+and
+[`freqlist()`](https://mayoverse.github.io/arsenal/reference/freqlist.md),
+but also [`knitr::kable()`](https://rdrr.io/pkg/knitr/man/kable.html),
+[`xtable::xtable()`](https://rdrr.io/pkg/xtable/man/xtable.html), and
+[`pander::pander_return()`](https://rdrr.io/pkg/pander/man/pander_return.html).
+
+The two most important things to recognize with
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md)
+are the following:
+
+1.  Which function is being used to output the object. Sometimes the
+    `write2` functions use
+    [`summary()`](https://rdrr.io/r/base/summary.html), while other
+    times they will use [`print()`](https://rdrr.io/r/base/print.html).
+    The details for each object specifically are described below.
+
+2.  How the `...` arguments are passed. To change the options for the
+    summary-like or print-like function, you can pass named arguments
+    which will in turn get passed to the appropriate function. Details
+    for each object specifically are described below.
+
+## A note on piping
+
+`arsenal` is piping-compatible!
+
+The `write2*()` functions are probably the most useful place to take
+advantage of the `magrittr` package’s piping framework, since commands
+are often nested several functions deep in the context of `write2*()`.
+Piping also allows the `arsenal` package to become a part of more
+standard analysis pipelines; instead of needing to write separate R
+Markdown programs, intermediate analysis tables and output can be easily
+incorporated into piped statements.
+
+This vignette will sprinkle the foward pipe (`%>%`) throughout as a hint
+at the power and flexibility of `arsenal` and piping.
+
+## Examples Using `arsenal` Objects
+
+``` r
+
+library(arsenal)
+library(magrittr)
+data(mockstudy)
+tmpdir <- tempdir()
+```
+
+### `tableby`
+
+For `tableby` objects, the output function in
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md) is
+[`summary()`](https://rdrr.io/r/base/summary.html). For
+`summary.tableby` objects, the output function is
+[`print()`](https://rdrr.io/r/base/print.html). For available arguments,
+see the help pages for
+[`summary.tableby()`](https://mayoverse.github.io/arsenal/reference/summary.tableby.md).
+Don’t use the option `text = TRUE` with the `write2` functions.
+
+``` r
+
+mylabels <- list(sex = "SEX", age ="Age, yrs")
+tab1 <- tableby(arm ~ sex + age, data=mockstudy)
+
+write2html(
+  tab1, paste0(tmpdir, "/test.tableby.html"), quiet = TRUE,
+  title = "My test table",      # passed to summary.tableby
+  labelTranslations = mylabels, # passed to summary.tableby
+  total = FALSE                 # passed to summary.tableby
+)
+```
+
+### `modelsum`
+
+For `modelsum` objects, the output function in
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md) is
+[`summary()`](https://rdrr.io/r/base/summary.html). For
+`summary.modelsum` objects, the output function is
+[`print()`](https://rdrr.io/r/base/print.html). For available arguments,
+see the help pages for
+[`summary.modelsum()`](https://mayoverse.github.io/arsenal/reference/summary.modelsum.md).
+Don’t use the option `text = TRUE` with the `write2` functions.
+
+``` r
+
+tab2 <- modelsum(alk.phos ~ arm + ps + hgb, adjust= ~ age + sex, family = "gaussian", data = mockstudy)
+
+write2pdf(
+  tab2, paste0(tmpdir, "/test.modelsum.pdf"), quiet = TRUE,
+  title = "My test table", # passed to summary.modelsum
+  show.intercept = FALSE,  # passed to summary.modelsum
+  digits = 5               # passed to summary.modelsum
+)
+```
+
+### `freqlist`
+
+For `freqlist` objects, the output function in
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md) is
+[`summary()`](https://rdrr.io/r/base/summary.html). For
+`summary.freqlist` objects, the output function is
+[`print()`](https://rdrr.io/r/base/print.html). For available arguments,
+see the help pages for
+[`summary.freqlist()`](https://mayoverse.github.io/arsenal/reference/summary.freqlist.md).
+
+``` r
+
+mockstudy[, c("arm", "sex", "mdquality.s")] %>% 
+  table(useNA = "ifany") %>% 
+  freqlist(groupBy = c("arm", "sex")) %>% 
+  write2word(
+    paste0(tmpdir, "/test.freqlist.doc"), quiet = TRUE,
+    single = FALSE,         # passed to summary.freqlist
+    title = "My cool title" # passed to summary.freqlist
+  )
+```
+
+### `comparedf`
+
+For `comparedf` objects, the output function in
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md) is
+[`summary()`](https://rdrr.io/r/base/summary.html). For
+`summary.comparedf` objects, the output function is
+[`print()`](https://rdrr.io/r/base/print.html).
+
+## Examples Using Other Objects
+
+### `knitr::kable()`
+
+For objects resulting from a call to
+[`kable()`](https://rdrr.io/pkg/knitr/man/kable.html), the output
+function in
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md) is
+[`print()`](https://rdrr.io/r/base/print.html). There aren’t any
+arguments to the `print.knitr_kable()` function.
+
+``` r
+
+mockstudy %>% 
+  head() %>% 
+  knitr::kable() %>% 
+  write2html(paste0(tmpdir, "/test.kable.html"), quiet = TRUE)
+```
+
+### `xtable::xtable()`
+
+For `xtable` objects, the output function in
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md) is
+[`print()`](https://rdrr.io/r/base/print.html). For available arguments,
+see the help pages for
+[`print.xtable()`](https://rdrr.io/pkg/xtable/man/print.xtable.html).
+
+``` r
+
+mockstudy %>% 
+  head() %>% 
+  xtable::xtable(caption = "My xtable") %>% 
+  write2pdf(
+    paste0(tmpdir, "/test.xtable.pdf"), quiet = TRUE,
+    comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
+    include.rownames = FALSE, # passed to print.xtable
+    caption.placement = "top" # passed to print.xtable
+  )
+```
+
+To make an HTML document, use the
+[`print.xtable()`](https://rdrr.io/pkg/xtable/man/print.xtable.html)
+option `type = "html"`.
+
+``` r
+
+mockstudy %>% 
+  head() %>% 
+  xtable::xtable(caption = "My xtable") %>% 
+  write2html(
+    paste0(tmpdir, "/test.xtable.html"), quiet = TRUE,
+    type = "html",            # passed to print.xtable
+    comment = FALSE, # passed to print.xtable to turn off the default message about xtable version
+    include.rownames = FALSE, # passed to print.xtable
+    caption.placement = "top" # passed to print.xtable
+  )
+```
+
+User beware! [`xtable()`](https://rdrr.io/pkg/xtable/man/xtable.html) is
+not compatible with
+[`write2word()`](https://mayoverse.github.io/arsenal/reference/write2specific.md).
+
+### `pander::pander_return()`
+
+Pander is a little bit more tricky. Since
+[`pander::pander()`](https://rdrr.io/pkg/pander/man/pander.html) doesn’t
+return an object, the useR should instead use
+[`pander::pander_return()`](https://rdrr.io/pkg/pander/man/pander_return.html).
+For this (and for all character vectors), the the output function in
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md) is
+`cat(sep = '\n')`.
+
+``` r
+
+write2word(pander::pander_return(head(mockstudy)), file = paste0(tmpdir, "/test.pander.doc"), quiet = TRUE)
+```
+
+## Output Multiple Tables to One Document
+
+To output multiple tables into a document, simply make a list of them
+and call the same function as before.
+
+``` r
+
+mylist <- list(
+  tableby(sex ~ age, data = mockstudy),
+  freqlist(table(mockstudy[, c("sex", "arm")])),
+  knitr::kable(head(mockstudy))
+)
+
+write2pdf(mylist, paste0(tmpdir, "/test.mylist.pdf"), quiet = TRUE)
+```
+
+One neat side-effect of this function is that you can output text and
+headers, etc. The possibilities are endless!
+
+``` r
+
+mylist2 <- list(
+  "# Header 1",
+  "This is a small paragraph introducing tableby.",
+  tableby(sex ~ age, data = mockstudy),
+  "<hr>",
+  "# Header 2",
+  "<font color='red'>I can change color of my text!</font>"
+)
+write2html(mylist2, paste0(tmpdir, "/test.mylist2.html"), quiet = TRUE)
+```
+
+In fact, you can even recurse on the lists!
+
+``` r
+
+write2pdf(list(mylist2, mylist), paste0(tmpdir, "/test.mylists.pdf"), quiet = TRUE)
+```
+
+## Output Other Objects Monospaced (as if in a terminal)
+
+It may be useful at times to write output that would normally be copied
+from the terminal. The default method for
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md)
+does this automatically. To output the results of
+[`summary.lm()`](https://rdrr.io/r/stats/summary.lm.html), for example:
+
+``` r
+
+lm(age ~ sex, data = mockstudy) %>% 
+  summary() %>% 
+  write2pdf(paste0(tmpdir, "/test.lm.pdf"), quiet = TRUE)
+```
+
+The
+[`verbatim()`](https://mayoverse.github.io/arsenal/reference/write2.internal.md)
+function is another option to explicitly alert
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md) to
+do this. This becomes particularly helpful to overrule existing S3
+methods.
+
+For example, suppose you wanted to just print a tableby object (as if it
+were to print in the terminal):
+
+``` r
+
+tab4 <- tableby(arm ~ sex + age, data=mockstudy)
+write2html(verbatim(tab4), paste0(tmpdir, "/test.print.tableby.html"), quiet = TRUE)
+```
+
+Or suppose you wanted to print a character vector (as if it were to
+print in the terminal):
+
+``` r
+
+chr <- paste0("MyVector", 1:10)
+write2pdf(verbatim(chr), paste0(tmpdir, "/test.character.pdf"), quiet = TRUE)
+```
+
+Note that you can combine multiple objects in one call:
+
+``` r
+
+write2pdf(verbatim(tab4, chr), paste0(tmpdir, "/test.verbatim.pdf"), quiet = TRUE)
+```
+
+## Add a YAML Header to the Output
+
+You can add a YAML header to
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md)
+output using the
+[`yaml()`](https://mayoverse.github.io/arsenal/reference/yaml.md)
+function.
+
+``` r
+
+mylist3 <- list(
+  yaml(title = "Test YAML Title", author = "My cool author name"),
+  "# Header 1",
+  "This is a small paragraph introducing tableby.",
+  tableby(sex ~ age, data = mockstudy)
+)
+write2html(mylist3, paste0(tmpdir, "/test.yaml.html"), quiet = TRUE)
+```
+
+In fact, all detected YAML pieces will be moved as the first output, so
+that the above code chunk gives the same output as this one:
+
+``` r
+
+mylist4 <- list(
+  "# Header 1",
+  "This is a small paragraph introducing tableby.",
+  yaml(title = "Test YAML Title"),
+  tableby(sex ~ age, data = mockstudy),
+  yaml(author = "My cool author name")
+)
+write2html(mylist4, paste0(tmpdir, "/test.yaml2.html"), quiet = TRUE)
+```
+
+## Add a Code Chunk to the Output
+
+It is now possible to add code chunks to the output `.Rmd`:
+
+``` r
+
+mylist5 <- list(
+  "# What is 1 + 2?",
+  code.chunk(a <- 1, b <- 2),
+  code.chunk(a + b, chunk.opts = "r echo=FALSE, eval=TRUE")
+)
+write2html(mylist5, paste0(tmpdir, "/test.code.chunk.html"), quiet = TRUE)
+```
+
+This allow flexibility to create objects on-the-fly, to read in saved
+objects to the temporary `.Rmd`, etc. The possibilities are endless!
+
+## FAQs
+
+### How do I suppress the note about my document getting rendered?
+
+This is easily accomplished by using the argument `quiet = TRUE` (passed
+to the
+[`rmarkdown::render()`](https://pkgs.rstudio.com/rmarkdown/reference/render.html)
+function).
+
+``` r
+
+write2html(
+  knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.quiet.html"),
+  quiet = TRUE # passed to rmarkdown::render
+)
+```
+
+### How do I look at the temporary `.Rmd` file?
+
+This is easily accomplished by using the option `keep.rmd = TRUE`.
+
+``` r
+
+write2html(
+  knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.keep.rmd.html"),
+  quiet = TRUE, # passed to rmarkdown::render
+  keep.rmd = TRUE
+)
+```
+
+### How do I prevent my document from being rendered?
+
+This is easily accomplished by using the option `render. = FALSE`. Note
+that this will then default to `keep.rmd = TRUE`.
+
+``` r
+
+write2html(
+  knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.dont.render.html"),
+  render. = FALSE
+)
+```
+
+### How do I output headers, raw HTML/LaTeX, paragraphs, etc.?
+
+One can simply abuse the list S3 method for
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md)!
+
+``` r
+
+mylist2 <- list(
+  "# Header 1",
+  "This is a small paragraph introducing tableby.",
+  tableby(sex ~ age, data = mockstudy),
+  "<hr>",
+  "# Header 2",
+  "<font color='red'>I can change color of my text!</font>"
+)
+write2html(mylist2, paste0(tmpdir, "/test.mylist2.html"), quiet = TRUE)
+```
+
+### How do I tweak the default format from `write2word()`, `write2html()`, or `write2pdf()`?
+
+You can pass arguments to the format functions used behind the scenes.
+
+``` r
+
+write2html(
+  knitr::kable(head(mockstudy)), paste0(tmpdir, "/test.kable.theme.html"),
+  quiet = TRUE,  # passed to rmarkdown::render
+  theme = "yeti" # passed to rmarkdown::html_document
+)
+```
+
+See the help pages for
+[`rmarkdown::word_document()`](https://pkgs.rstudio.com/rmarkdown/reference/word_document.html),
+[`rmarkdown::html_document()`](https://pkgs.rstudio.com/rmarkdown/reference/html_document.html),
+and
+[`rmarkdown::pdf_document()`](https://pkgs.rstudio.com/rmarkdown/reference/pdf_document.html).
+
+### How do I output to a file format other than word, HTML, and PDF?
+
+This can be done using the generic
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md)
+function. The last argument in the function can be another format
+specification. For details on the acceptable inputs, see the help page
+for
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md).
+
+``` r
+
+write2(
+  knitr::kable(head(mockstudy[, 1:4])), paste0(tmpdir, "/test.kable.rtf"),
+  quiet = TRUE,  # passed to rmarkdown::render
+  output_format = rmarkdown::rtf_document
+)
+```
+
+### How do I avoid prefixes on my table captions in PDF?
+
+You can do this pretty easily with the
+[`yaml()`](https://mayoverse.github.io/arsenal/reference/yaml.md)
+function:
+
+``` r
+
+mylist5 <- list(
+  yaml("header-includes" = list("\\usepackage[labelformat=empty]{caption}")),
+  "# Header 1",
+  "This is a small paragraph introducing tableby.",
+  tableby(sex ~ age, data = mockstudy)
+)
+write2pdf(mylist5, paste0(tmpdir, "/test.noprefixes.pdf"), title = "My tableby")
+```
+
+### How do I output multiple tables with different titles?
+
+There are now
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md)
+methods for the summary objects of `arsenal` functions. This allows you
+to specify a title for each table:
+
+``` r
+
+mylist6 <- list(
+  summary(tableby(sex ~ age, data = mockstudy), title = "A Title for tableby"),
+  summary(modelsum(age ~ sex, data = mockstudy), title = "A Title for modelsum"),
+  summary(freqlist(~ sex, data = mockstudy), title = "A Title for freqlist")
+)
+write2pdf(mylist6, paste0(tmpdir, "/test.multiple.titles.pdf"))
+```
+
+### Why is `write2()` not working in R Markdown/R Studio?
+
+It’s possible that a global option in R Studio is preventing the tables
+from rendering. Consider turning off (i.e., unchecking) the option Tools
+\> Global Options \> R Markdown \> Show output inline for all R Markdown
+documents.

@@ -4,149 +4,126 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>The paired function • arsenal</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="The paired function">
-<meta property="og:description" content="arsenal">
-<meta property="og:image" content="/logo.png">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="The paired function">
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">arsenal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.3.9000</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/comparedf.html">The comparedf function</a>
-    </li>
-    <li>
-      <a href="../articles/freqlist.html">The freqlist function</a>
-    </li>
-    <li>
-      <a href="../articles/labels.html">A Few Notes on Labels</a>
-    </li>
-    <li>
-      <a href="../articles/modelsum.html">The modelsum function</a>
-    </li>
-    <li>
-      <a href="../articles/paired.html">The paired function</a>
-    </li>
-    <li>
-      <a href="../articles/tableby.html">The tableby function</a>
-    </li>
-    <li>
-      <a href="../articles/write2.html">The write2 function</a>
-    </li>
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
+    <a class="navbar-brand me-2" href="../index.html">arsenal</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.7.0</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/comparedf.html">The comparedf function</a></li>
+    <li><a class="dropdown-item" href="../articles/freqlist.html">The freqlist function</a></li>
+    <li><a class="dropdown-item" href="../articles/labels.html">A Few Notes on Labels</a></li>
+    <li><a class="dropdown-item" href="../articles/modelsum.html">The modelsum function</a></li>
+    <li><a class="dropdown-item" href="../articles/paired.html">The paired function</a></li>
+    <li><a class="dropdown-item" href="../articles/tableby.html">The tableby function</a></li>
+    <li><a class="dropdown-item" href="../articles/write2.html">The write2 function</a></li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/mayoverse/arsenal/">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/mayoverse/arsenal/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><script src="paired_files/header-attrs-2.5/header-attrs.js"></script><link href="paired_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="paired_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>The paired function</h1>
-                        <h4 class="author">Ethan Heinzen, Beth Atkinson, Jason Sinnwell</h4>
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>The paired function</h1>
+                        <h4 data-toc-skip class="author">Ethan Heinzen,
+Beth Atkinson, Jason Sinnwell</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/mayoverse/arsenal/blob/master/vignettes/paired.Rmd"><code>vignettes/paired.Rmd</code></a></small>
-      <div class="hidden name"><code>paired.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/mayoverse/arsenal/blob/HEAD/vignettes/paired.Rmd" class="external-link"><code>vignettes/paired.Rmd</code></a></small>
+      <div class="d-none name"><code>paired.Rmd</code></div>
     </div>
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>Another one of the most common tables in medical literature includes summary statistics for a set of variables paired across two time points. Locally at Mayo, the SAS macro <code>%paired</code> was written to create summary tables with a single call. With the increasing interest in R, we have developed the function <code><a href="../reference/paired.html">paired()</a></code> to create similar tables within the R environment.</p>
-<p>This vignette is light on purpose; <code><a href="../reference/paired.html">paired()</a></code> piggybacks off of tableby, so most documentation there applies here, too.</p>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>Another one of the most common tables in medical literature includes
+summary statistics for a set of variables paired across two time points.
+Locally at Mayo, the SAS macro <code>%paired</code> was written to
+create summary tables with a single call. With the increasing interest
+in R, we have developed the function <code><a href="../reference/paired.html">paired()</a></code> to create
+similar tables within the R environment.</p>
+<p>This vignette is light on purpose; <code><a href="../reference/paired.html">paired()</a></code> piggybacks
+off of tableby, so most documentation there applies here, too.</p>
 </div>
-<div id="simple-example" class="section level1">
-<h1 class="hasAnchor">
-<a href="#simple-example" class="anchor"></a>Simple Example</h1>
-<p>The first step when using the <code><a href="../reference/paired.html">paired()</a></code> function is to load the <code>arsenal</code> package. We can’t use <code>mockstudy</code> here because we need a dataset with paired observations, so we’ll create our own dataset.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mayoverse/arsenal">arsenal</a></span><span class="op">)</span>
-<span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
-  tp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Time Point "</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,
-  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>,
-  Cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="cn">NA</span>, <span class="st">"B"</span><span class="op">)</span>,
-  Fac <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"A"</span><span class="op">)</span><span class="op">)</span>,
-  Num <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span>,
-  Ord <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">ordered</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"I"</span>, <span class="st">"II"</span>, <span class="st">"II"</span>, <span class="st">"III"</span>, <span class="st">"III"</span>, <span class="st">"III"</span>, <span class="st">"I"</span>, <span class="st">"III"</span>, <span class="st">"II"</span>, <span class="st">"I"</span><span class="op">)</span><span class="op">)</span>,
-  Lgl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span>,
-  Dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2018-05-01"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,
-  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></pre></div>
-<p>To create a simple table stratified by time point, use a <code>formula=</code> statement to specify the variables that you want summarized and the <code>id=</code> argument to specify the paired observations.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/paired.html">paired</a></span><span class="op">(</span><span class="va">tp</span> <span class="op">~</span> <span class="va">Cat</span> <span class="op">+</span> <span class="va">Fac</span> <span class="op">+</span> <span class="va">Num</span> <span class="op">+</span> <span class="va">Ord</span> <span class="op">+</span> <span class="va">Lgl</span> <span class="op">+</span> <span class="va">Dat</span>, data <span class="op">=</span> <span class="va">dat</span>, id <span class="op">=</span> <span class="va">id</span>, signed.rank.exact <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></pre></div>
+<div class="section level2">
+<h2 id="simple-example">Simple Example<a class="anchor" aria-label="anchor" href="#simple-example"></a>
+</h2>
+<p>The first step when using the <code><a href="../reference/paired.html">paired()</a></code> function is to
+load the <code>arsenal</code> package. We can’t use
+<code>mockstudy</code> here because we need a dataset with paired
+observations, so we’ll create our own dataset.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mayoverse/arsenal" class="external-link">arsenal</a></span><span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  tp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Time Point "</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>,</span>
+<span>  Cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="cn">NA</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
+<span>  Fac <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"A"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  Num <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  Ord <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">ordered</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"I"</span>, <span class="st">"II"</span>, <span class="st">"II"</span>, <span class="st">"III"</span>, <span class="st">"III"</span>, <span class="st">"III"</span>, <span class="st">"I"</span>, <span class="st">"III"</span>, <span class="st">"II"</span>, <span class="st">"I"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  Lgl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>  Dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2018-05-01"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>To create a simple table stratified by time point, use a
+<code>formula=</code> statement to specify the variables that you want
+summarized and the <code>id=</code> argument to specify the paired
+observations.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/paired.html">paired</a></span><span class="op">(</span><span class="va">tp</span> <span class="op">~</span> <span class="va">Cat</span> <span class="op">+</span> <span class="va">Fac</span> <span class="op">+</span> <span class="va">Num</span> <span class="op">+</span> <span class="va">Ord</span> <span class="op">+</span> <span class="va">Lgl</span> <span class="op">+</span> <span class="va">Dat</span>, data <span class="op">=</span> <span class="va">dat</span>, id <span class="op">=</span> <span class="va">id</span>, signed.rank.exact <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
+<colgroup>
+<col width="26%">
+<col width="24%">
+<col width="24%">
+<col width="17%">
+<col width="7%">
+</colgroup>
 <thead><tr class="header">
 <th align="left"></th>
 <th align="center">Time Point 1 (N=4)</th>
@@ -297,17 +274,29 @@
 </tr>
 </tbody>
 </table>
-<p>The third column shows the difference between time point 1 and time point 2. For categorical variables, it reports the percent of observations from time point 1 which changed in time point 2.</p>
+<p>The third column shows the difference between time point 1 and time
+point 2. For categorical variables, it reports the percent of
+observations from time point 1 which changed in time point 2.</p>
 </div>
-<div id="nas" class="section level1">
-<h1 class="hasAnchor">
-<a href="#nas" class="anchor"></a>NAs</h1>
-<p>Note that by default, observations which do not have both timepoints are removed. This is easily changed using the <code>na.action = na.paired("&lt;arg&gt;")</code> argument. For example:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/paired.html">paired</a></span><span class="op">(</span><span class="va">tp</span> <span class="op">~</span> <span class="va">Cat</span> <span class="op">+</span> <span class="va">Fac</span> <span class="op">+</span> <span class="va">Num</span> <span class="op">+</span> <span class="va">Ord</span> <span class="op">+</span> <span class="va">Lgl</span> <span class="op">+</span> <span class="va">Dat</span>, data <span class="op">=</span> <span class="va">dat</span>, id <span class="op">=</span> <span class="va">id</span>,
-            signed.rank.exact <span class="op">=</span> <span class="cn">FALSE</span>, na.action <span class="op">=</span> <span class="fu"><a href="../reference/paired.internal.html">na.paired</a></span><span class="op">(</span><span class="st">"fill"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></pre></div>
+<div class="section level2">
+<h2 id="nas">NAs<a class="anchor" aria-label="anchor" href="#nas"></a>
+</h2>
+<p>Note that by default, observations which do not have both timepoints
+are removed. This is easily changed using the
+<code>na.action = na.paired("&lt;arg&gt;")</code> argument. For
+example:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/paired.html">paired</a></span><span class="op">(</span><span class="va">tp</span> <span class="op">~</span> <span class="va">Cat</span> <span class="op">+</span> <span class="va">Fac</span> <span class="op">+</span> <span class="va">Num</span> <span class="op">+</span> <span class="va">Ord</span> <span class="op">+</span> <span class="va">Lgl</span> <span class="op">+</span> <span class="va">Dat</span>, data <span class="op">=</span> <span class="va">dat</span>, id <span class="op">=</span> <span class="va">id</span>,</span>
+<span>            signed.rank.exact <span class="op">=</span> <span class="cn">FALSE</span>, na.action <span class="op">=</span> <span class="fu"><a href="../reference/paired.internal.html">na.paired</a></span><span class="op">(</span><span class="st">"fill"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
+<colgroup>
+<col width="26%">
+<col width="24%">
+<col width="24%">
+<col width="17%">
+<col width="7%">
+</colgroup>
 <thead><tr class="header">
 <th align="left"></th>
 <th align="center">Time Point 1 (N=6)</th>
@@ -502,68 +491,72 @@
 </table>
 <p>For more details, see the help page for <code><a href="../reference/paired.internal.html">na.paired()</a></code>.</p>
 </div>
-<div id="available-function-options" class="section level1">
-<h1 class="hasAnchor">
-<a href="#available-function-options" class="anchor"></a>Available Function Options</h1>
-<div id="testing-options" class="section level2">
-<h2 class="hasAnchor">
-<a href="#testing-options" class="anchor"></a>Testing options</h2>
-<p>The tests used to calculate p-values differ by the variable type, but can be specified explicitly in the formula statement or in the control function.</p>
+<div class="section level2">
+<h2 id="available-function-options">Available Function Options<a class="anchor" aria-label="anchor" href="#available-function-options"></a>
+</h2>
+<div class="section level3">
+<h3 id="testing-options">Testing options<a class="anchor" aria-label="anchor" href="#testing-options"></a>
+</h3>
+<p>The tests used to calculate p-values differ by the variable type, but
+can be specified explicitly in the formula statement or in the control
+function.</p>
 <p>The following tests are accepted:</p>
 <ul>
 <li><p><code>paired.t</code>: A paired t-test.</p></li>
 <li><p><code>mcnemar</code>: McNemar’s test.</p></li>
 <li><p><code>signed.rank</code>: the signed-rank test.</p></li>
-<li><p><code>sign.test</code>: the sign test.</p></li>
+<li><p><code>signtest</code>: the sign test.</p></li>
 <li><p><code>notest</code>: Don’t perform a test.</p></li>
 </ul>
 </div>
-<div id="paired-control-settings" class="section level2">
-<h2 class="hasAnchor">
-<a href="#paired-control-settings" class="anchor"></a><code>paired.control</code> settings</h2>
-<p>A quick way to see what arguments are possible to utilize in a function is to use the <code><a href="https://rdrr.io/r/base/args.html">args()</a></code> command. Settings involving the number of digits can be set in <code>paired.control</code> or in <code>summary.tableby</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">paired.control</span><span class="op">)</span></pre></div>
-<pre><code>## function (diff = TRUE, numeric.test = "paired.t", cat.test = "mcnemar", 
-##     ordered.test = "signed.rank", date.test = "paired.t", mcnemar.correct = TRUE, 
-##     signed.rank.exact = NULL, signed.rank.correct = TRUE, ...) 
-## NULL</code></pre>
+<div class="section level3">
+<h3 id="paired-control-settings">
+<code>paired.control</code> settings<a class="anchor" aria-label="anchor" href="#paired-control-settings"></a>
+</h3>
+<p>A quick way to see what arguments are possible to utilize in a
+function is to use the <code><a href="https://rdrr.io/r/base/args.html" class="external-link">args()</a></code> command. Settings involving
+the number of digits can be set in <code>paired.control</code> or in
+<code>summary.tableby</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html" class="external-link">args</a></span><span class="op">(</span><span class="va">paired.control</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## function (diff = TRUE, numeric.test = "paired.t", cat.test = "mcnemar", </span></span>
+<span><span class="co">##     ordered.test = "signed.rank", date.test = "paired.t", mcnemar.correct = TRUE, </span></span>
+<span><span class="co">##     signed.rank.exact = NULL, signed.rank.correct = TRUE, ...) </span></span>
+<span><span class="co">## NULL</span></span></code></pre>
 </div>
-<div id="summary-tableby-settings" class="section level2">
-<h2 class="hasAnchor">
-<a href="#summary-tableby-settings" class="anchor"></a><code>summary.tableby</code> settings</h2>
-<p>Since the “paired” object inherits “tableby”, the <code>summary.tableby</code> function is what’s actually used to format and print the table.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="fu">arsenal</span><span class="fu">:::</span><span class="va"><a href="../reference/summary.tableby.html">summary.tableby</a></span><span class="op">)</span></pre></div>
-<pre><code>## function (object, ..., labelTranslations = NULL, text = FALSE, 
-##     title = NULL, pfootnote = FALSE, term.name = "") 
-## NULL</code></pre>
+<div class="section level3">
+<h3 id="summary-tableby-settings">
+<code>summary.tableby</code> settings<a class="anchor" aria-label="anchor" href="#summary-tableby-settings"></a>
+</h3>
+<p>Since the “paired” object inherits “tableby”, the
+<code>summary.tableby</code> function is what’s actually used to format
+and print the table.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html" class="external-link">args</a></span><span class="op">(</span><span class="fu">arsenal</span><span class="fu">:::</span><span class="va"><a href="../reference/summary.tableby.html">summary.tableby</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## function (object, ..., labelTranslations = NULL, text = FALSE, </span></span>
+<span><span class="co">##     title = NULL, pfootnote = FALSE, term.name = "") </span></span>
+<span><span class="co">## NULL</span></span></code></pre>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
+    <footer><div class="pkgdown-footer-left">
   <p>Developed by Ethan Heinzen, Jason Sinnwell, Elizabeth Atkinson, Tina Gunderson, Gregory Dougherty.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
-  
+
+
 
 
   </body>

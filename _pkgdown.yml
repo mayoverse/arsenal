@@ -1,4 +1,7 @@
 destination: docs
+url: https://mayoverse.github.io/arsenal
+template:
+  bootstrap: 5
 reference:
   - title: "tableby and paired"
     contents:

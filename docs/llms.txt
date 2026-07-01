@@ -1,0 +1,493 @@
+# The `arsenal` Package
+
+## Overview
+
+The goal of [`library(arsenal)`](https://github.com/mayoverse/arsenal)
+is to make statistical reporting easy. It includes many functions which
+the useR will find useful to have in his/her “arsenal” of functions.
+There are, at this time, 6 main functions, documented below. Each of
+these functions is motivated by a local SAS macro or procedure of
+similar functionality.
+
+Note that `arsenal` v3.0.0 is not backwards compatible with previous
+versions (mainly because `compare()` got renamed to
+[`comparedf()`](https://mayoverse.github.io/arsenal/reference/comparedf.md)).
+See the `NEWS` file for more details.
+
+`arsenal` now has a `pkgdown` site:
+<https://mayoverse.github.io/arsenal/>
+
+## The `tableby()` Function
+
+[`tableby()`](https://mayoverse.github.io/arsenal/reference/tableby.md)
+is a function to easily summarize a set of independent variables by one
+or more categorical variables. Optionally, an appropriate test is
+performed to test the distribution of the independent variables across
+the levels of the categorical variable. Options for this function are
+easily controlled using
+[`tableby.control()`](https://mayoverse.github.io/arsenal/reference/tableby.control.md).
+
+The
+[`tableby()`](https://mayoverse.github.io/arsenal/reference/tableby.md)
+output is easily knitted in an Rmarkdown document or displayed in the
+command line using the
+[`summary()`](https://rdrr.io/r/base/summary.html) function. Other S3
+methods are implemented for objects from
+[`tableby()`](https://mayoverse.github.io/arsenal/reference/tableby.md),
+including [`print()`](https://rdrr.io/r/base/print.html), `[`,
+[`as.data.frame()`](https://rdrr.io/r/base/as.data.frame.html),
+[`sort()`](https://rdrr.io/r/base/sort.html),
+[`merge()`](https://rdrr.io/r/base/merge.html),
+[`padjust()`](https://mayoverse.github.io/arsenal/reference/padjust.md),
+[`head()`](https://rdrr.io/r/utils/head.html), and
+[`tail()`](https://rdrr.io/r/utils/head.html).
+
+## The `paired()` Function
+
+[`paired()`](https://mayoverse.github.io/arsenal/reference/paired.md) is
+a function to easily summarize a set of independent variables across two
+time points. Optionally, an appropriate test is performed to test the
+distribution of the independent variables across the time points.
+Options for this function are easily controlled using
+[`paired.control()`](https://mayoverse.github.io/arsenal/reference/paired.control.md).
+
+The
+[`paired()`](https://mayoverse.github.io/arsenal/reference/paired.md)
+output is easily knitted in an Rmarkdown document or displayed in the
+command line using the
+[`summary()`](https://rdrr.io/r/base/summary.html) function. It has the
+same S3 methods as
+[`tableby()`](https://mayoverse.github.io/arsenal/reference/tableby.md),
+since it’s a special case of the
+[`tableby()`](https://mayoverse.github.io/arsenal/reference/tableby.md)
+object.
+
+## The `modelsum()` Function
+
+[`modelsum()`](https://mayoverse.github.io/arsenal/reference/modelsum.md)
+is a function to fit and summarize models for each independent variable
+with one or more response variables, with options to adjust for
+covariates for each model. Options for this function are easily
+controlled using
+[`modelsum.control()`](https://mayoverse.github.io/arsenal/reference/modelsum.control.md).
+
+The `modelsum` output is easily knitted in an Rmarkdown document or
+displayed in the command line using the
+[`summary()`](https://rdrr.io/r/base/summary.html) function. Other S3
+methods are implemented for objects from
+[`modelsum()`](https://mayoverse.github.io/arsenal/reference/modelsum.md),
+including [`print()`](https://rdrr.io/r/base/print.html), `[`,
+[`as.data.frame()`](https://rdrr.io/r/base/as.data.frame.html), and
+[`merge()`](https://rdrr.io/r/base/merge.html).
+
+## The `freqlist()` Function
+
+[`freqlist()`](https://mayoverse.github.io/arsenal/reference/freqlist.md)
+is a function to approximate the output from SAS’s `PROC FREQ` procedure
+when using the `/list` option of the `TABLE` statement. Options for this
+function are easily controlled using
+[`freq.control()`](https://mayoverse.github.io/arsenal/reference/freq.control.md).
+
+The
+[`freqlist()`](https://mayoverse.github.io/arsenal/reference/freqlist.md)
+output is easily knitted in an Rmarkdown document or displayed in the
+command line using the
+[`summary()`](https://rdrr.io/r/base/summary.html) function. Other S3
+methods are implemented for objects from
+[`freqlist()`](https://mayoverse.github.io/arsenal/reference/freqlist.md),
+including [`print()`](https://rdrr.io/r/base/print.html), `[`,
+[`as.data.frame()`](https://rdrr.io/r/base/as.data.frame.html),
+[`sort()`](https://rdrr.io/r/base/sort.html), and
+[`merge()`](https://rdrr.io/r/base/merge.html). Additionally, the
+[`summary()`](https://rdrr.io/r/base/summary.html) output can be used
+with [`head()`](https://rdrr.io/r/utils/head.html) or
+[`tail()`](https://rdrr.io/r/utils/head.html).
+
+## The `comparedf()` Function
+
+[`comparedf()`](https://mayoverse.github.io/arsenal/reference/comparedf.md)
+compares two data.frames and reporting any differences between them,
+much like SAS’s `PROC COMPARE` procedure.
+
+The
+[`comparedf()`](https://mayoverse.github.io/arsenal/reference/comparedf.md)
+output is easily knitted in an Rmarkdown document or displayed in the
+command line using the
+[`summary()`](https://rdrr.io/r/base/summary.html) function. Other S3
+methods are implemented for objects of class `"comparedf"`, including
+[`print()`](https://rdrr.io/r/base/print.html),
+[`n.diffs()`](https://mayoverse.github.io/arsenal/reference/diffs.md),
+[`n.diff.obs()`](https://mayoverse.github.io/arsenal/reference/diffs.md),
+and [`diffs()`](https://mayoverse.github.io/arsenal/reference/diffs.md).
+
+## The `write2*()` Family of Functions
+
+[`write2word()`](https://mayoverse.github.io/arsenal/reference/write2specific.md),
+[`write2pdf()`](https://mayoverse.github.io/arsenal/reference/write2specific.md),
+and
+[`write2html()`](https://mayoverse.github.io/arsenal/reference/write2specific.md)
+are functions to output a table into a document, much like SAS’s `ODS`
+procedure. The S3 method behind them is
+[`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md).
+There are methods implemented for
+[`tableby()`](https://mayoverse.github.io/arsenal/reference/tableby.md),
+[`modelsum()`](https://mayoverse.github.io/arsenal/reference/modelsum.md),
+[`freqlist()`](https://mayoverse.github.io/arsenal/reference/freqlist.md),
+and
+[`comparedf()`](https://mayoverse.github.io/arsenal/reference/comparedf.md),
+and also methods for
+[`knitr::kable()`](https://rdrr.io/pkg/knitr/man/kable.html),
+[`xtable::xtable()`](https://rdrr.io/pkg/xtable/man/xtable.html), and
+[`pander::pander_return()`](https://rdrr.io/pkg/pander/man/pander_return.html).
+Another option is to coerce an object using
+[`verbatim()`](https://mayoverse.github.io/arsenal/reference/write2.internal.md)
+to print out the results monospaced (as if they were in the
+terminal)–the default method does this automatically. To output multiple
+tables into a document, simply make a list of them and call the same
+function as before. A YAML header can be added using
+[`yaml()`](https://mayoverse.github.io/arsenal/reference/yaml.md). Code
+chunks can be written using
+[`code.chunk()`](https://mayoverse.github.io/arsenal/reference/write2.internal.md).
+
+For more information, see
+[`vignette("write2")`](https://mayoverse.github.io/arsenal/articles/write2.md).
+
+## Other Notable Functions
+
+- [`keep.labels()`](https://mayoverse.github.io/arsenal/reference/keep.labels.md)
+  keeps the `'label'` attribute on an R object when subsetting.
+  [`loosen.labels()`](https://mayoverse.github.io/arsenal/reference/keep.labels.md)
+  allows the labels to drop again.
+
+- [`formulize()`](https://mayoverse.github.io/arsenal/reference/formulize.md)
+  is a shortcut to collapse variable names into a formula.
+
+- [`mdy.Date()`](https://mayoverse.github.io/arsenal/reference/mdy.Date.md)
+  and
+  [`Date.mdy()`](https://mayoverse.github.io/arsenal/reference/mdy.Date.md)
+  convert numeric dates for month, day, and year to Date object, and
+  vice versa.
+
+- `is.Date`: tests if an object is a date.
+
+- `%nin%` tests for “not in”, the negation of `%in%`.
+
+- [`allNA()`](https://mayoverse.github.io/arsenal/reference/NA.operations.md)
+  tests for all elements being NA, and
+  [`includeNA()`](https://mayoverse.github.io/arsenal/reference/NA.operations.md)
+  makes NAs explicit values.
+
+# Package index
+
+## tableby and paired
+
+- [`tableby()`](https://mayoverse.github.io/arsenal/reference/tableby.md)
+  : Summary Statistics of a Set of Independent Variables by a
+  Categorical Variable
+
+- [`paired()`](https://mayoverse.github.io/arsenal/reference/paired.md)
+  : Summary Statistics of a Set of Independent Variables Paired Across
+  Two Timepoints
+
+- [`tableby.control()`](https://mayoverse.github.io/arsenal/reference/tableby.control.md)
+  :
+
+  Control settings for `tableby` function
+
+- [`paired.control()`](https://mayoverse.github.io/arsenal/reference/paired.control.md)
+  :
+
+  Control settings for `paired` function
+
+- [`arsenal_sum()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`arsenal_min()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`arsenal_max()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`arsenal_mean()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`arsenal_sd()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`arsenal_var()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`meansd()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`meanse()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`meanpmsd()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`meanpmse()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`meanCI()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`medianrange()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`medianmad()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`arsenal_median()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`arsenal_range()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`gmean()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`gsd()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`gmeansd()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`gmeanCI()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`Nsigntest()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`Nevents()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`medSurv()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`medSurvCI()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`medSurvQuant()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`NeventsSurv()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`NriskSurv()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`Nrisk()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`medTime()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`q1q3()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`medianq1q3()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`iqr()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`Nmiss()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`Nmisspct()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`Nmiss2()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`Nmisspct2()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`N()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`Npct()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`Nrowpct()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`count()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`countpct()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`pct()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`countN()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`countrowpct()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`rowpct()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`countcellpct()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`binomCI()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  [`rowbinomCI()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.md)
+  : tableby Summary Statistics Functions
+
+- [`tbfmt()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.internal.md)
+  [`as.tbstat()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.internal.md)
+  [`as.tbstat_multirow()`](https://mayoverse.github.io/arsenal/reference/tableby.stats.internal.md)
+  :
+
+  Internal `tableby` functions
+
+- [`summary(`*`<tableby>`*`)`](https://mayoverse.github.io/arsenal/reference/summary.tableby.md)
+  [`as.data.frame(`*`<summary.tableby>`*`)`](https://mayoverse.github.io/arsenal/reference/summary.tableby.md)
+  :
+
+  The summary method for a `tableby` object
+
+- [`as.data.frame(`*`<tableby>`*`)`](https://mayoverse.github.io/arsenal/reference/as.data.frame.tableby.md)
+  : as.data.frame.tableby
+
+- [`is.tableby()`](https://mayoverse.github.io/arsenal/reference/tableby.internal.md)
+  [`is.summary.tableby()`](https://mayoverse.github.io/arsenal/reference/tableby.internal.md)
+  [`modpval.tableby()`](https://mayoverse.github.io/arsenal/reference/tableby.internal.md)
+  [`tests()`](https://mayoverse.github.io/arsenal/reference/tableby.internal.md)
+  [`na.tableby()`](https://mayoverse.github.io/arsenal/reference/tableby.internal.md)
+  [`xtfrm(`*`<tableby>`*`)`](https://mayoverse.github.io/arsenal/reference/tableby.internal.md)
+  [`sort(`*`<tableby>`*`)`](https://mayoverse.github.io/arsenal/reference/tableby.internal.md)
+  [`Ops(`*`<tableby>`*`)`](https://mayoverse.github.io/arsenal/reference/tableby.internal.md)
+  [`head(`*`<tableby>`*`)`](https://mayoverse.github.io/arsenal/reference/tableby.internal.md)
+  [`tail(`*`<tableby>`*`)`](https://mayoverse.github.io/arsenal/reference/tableby.internal.md)
+  : Helper functions for tableby
+
+- [`na.paired()`](https://mayoverse.github.io/arsenal/reference/paired.internal.md)
+  : Helper functions for paired
+
+## modelsum
+
+- [`modelsum()`](https://mayoverse.github.io/arsenal/reference/modelsum.md)
+  : Fit models over each of a set of independent variables with a
+  response variable
+
+- [`modelsum.control()`](https://mayoverse.github.io/arsenal/reference/modelsum.control.md)
+  :
+
+  Control settings for `modelsum` function
+
+- [`survival()`](https://mayoverse.github.io/arsenal/reference/modelsum.family.md)
+  [`ordinal()`](https://mayoverse.github.io/arsenal/reference/modelsum.family.md)
+  [`negbin()`](https://mayoverse.github.io/arsenal/reference/modelsum.family.md)
+  [`clog()`](https://mayoverse.github.io/arsenal/reference/modelsum.family.md)
+  [`relrisk()`](https://mayoverse.github.io/arsenal/reference/modelsum.family.md)
+  : Family functions for modelsum
+
+- [`summary(`*`<modelsum>`*`)`](https://mayoverse.github.io/arsenal/reference/summary.modelsum.md)
+  [`as.data.frame(`*`<summary.modelsum>`*`)`](https://mayoverse.github.io/arsenal/reference/summary.modelsum.md)
+  :
+
+  Summarize a `modelsum` object.
+
+- [`as.data.frame(`*`<modelsum>`*`)`](https://mayoverse.github.io/arsenal/reference/as.data.frame.modelsum.md)
+  : as.data.frame.modelsum
+
+- [`is.modelsum()`](https://mayoverse.github.io/arsenal/reference/modelsum.internal.md)
+  [`is.summary.modelsum()`](https://mayoverse.github.io/arsenal/reference/modelsum.internal.md)
+  [`na.modelsum()`](https://mayoverse.github.io/arsenal/reference/modelsum.internal.md)
+  : Helper functions for modelsum
+
+## freqlist
+
+- [`freqlist()`](https://mayoverse.github.io/arsenal/reference/freqlist.md)
+  : freqlist
+
+- [`freq.control()`](https://mayoverse.github.io/arsenal/reference/freq.control.md)
+  :
+
+  Control settings for `freqlist` function
+
+- [`as.data.frame(`*`<freqlist>`*`)`](https://mayoverse.github.io/arsenal/reference/as.data.frame.freqlist.md)
+  : as.data.frame.freqlist
+
+- [`summary(`*`<freqlist>`*`)`](https://mayoverse.github.io/arsenal/reference/summary.freqlist.md)
+  [`as.data.frame(`*`<summary.freqlist>`*`)`](https://mayoverse.github.io/arsenal/reference/summary.freqlist.md)
+  : summary.freqlist
+
+- [`is.freqlist()`](https://mayoverse.github.io/arsenal/reference/freqlist.internal.md)
+  [`is.summary.freqlist()`](https://mayoverse.github.io/arsenal/reference/freqlist.internal.md)
+  [`head(`*`<summary.freqlist>`*`)`](https://mayoverse.github.io/arsenal/reference/freqlist.internal.md)
+  [`tail(`*`<summary.freqlist>`*`)`](https://mayoverse.github.io/arsenal/reference/freqlist.internal.md)
+  [`sort(`*`<freqlist>`*`)`](https://mayoverse.github.io/arsenal/reference/freqlist.internal.md)
+  : Helper functions for freqlist
+
+## comparedf
+
+- [`comparedf()`](https://mayoverse.github.io/arsenal/reference/comparedf.md)
+  [`print(`*`<comparedf>`*`)`](https://mayoverse.github.io/arsenal/reference/comparedf.md)
+  : Compare two data.frames and report differences
+
+- [`comparedf.control()`](https://mayoverse.github.io/arsenal/reference/comparedf.control.md)
+  :
+
+  Control settings for `comparedf` function
+
+- [`tol.NA()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.num.absolute()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.num.percent()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.num.pct()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.factor.none()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.factor.levels()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.factor.labels()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.char.both()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.char.case()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.char.trim()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.char.none()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.date.absolute()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.logical.none()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  [`tol.other.none()`](https://mayoverse.github.io/arsenal/reference/comparedf.tolerances.md)
+  :
+
+  `comparedf` tolerances
+
+- [`summary(`*`<comparedf>`*`)`](https://mayoverse.github.io/arsenal/reference/summary.comparedf.md)
+  [`print(`*`<summary.comparedf>`*`)`](https://mayoverse.github.io/arsenal/reference/summary.comparedf.md)
+  :
+
+  The summary method for a `comparedf` object
+
+- [`n.diff.obs()`](https://mayoverse.github.io/arsenal/reference/diffs.md)
+  [`n.diffs()`](https://mayoverse.github.io/arsenal/reference/diffs.md)
+  [`diffs()`](https://mayoverse.github.io/arsenal/reference/diffs.md) :
+  Extract differences
+
+## write2
+
+- [`write2()`](https://mayoverse.github.io/arsenal/reference/write2.md)
+  : write2
+
+- [`verbatim()`](https://mayoverse.github.io/arsenal/reference/write2.internal.md)
+  [`code.chunk()`](https://mayoverse.github.io/arsenal/reference/write2.internal.md)
+  :
+
+  Helper functions for `write2`
+
+- [`write2word()`](https://mayoverse.github.io/arsenal/reference/write2specific.md)
+  [`write2pdf()`](https://mayoverse.github.io/arsenal/reference/write2specific.md)
+  [`write2html()`](https://mayoverse.github.io/arsenal/reference/write2specific.md)
+  : write2word, write2html, write2pdf
+
+- [`yaml()`](https://mayoverse.github.io/arsenal/reference/yaml.md)
+  [`print(`*`<yaml>`*`)`](https://mayoverse.github.io/arsenal/reference/yaml.md)
+  [`c(`*`<yaml>`*`)`](https://mayoverse.github.io/arsenal/reference/yaml.md)
+  [`is.yaml()`](https://mayoverse.github.io/arsenal/reference/yaml.md) :
+
+  Include a YAML header in `write2`
+
+## Regarding labels
+
+- [`labels(`*`<data.frame>`*`)`](https://mayoverse.github.io/arsenal/reference/labels.md)
+  [`labels(`*`<keep_labels>`*`)`](https://mayoverse.github.io/arsenal/reference/labels.md)
+  [`` `labels<-`() ``](https://mayoverse.github.io/arsenal/reference/labels.md)
+  [`set_labels()`](https://mayoverse.github.io/arsenal/reference/labels.md)
+  [`set_attr()`](https://mayoverse.github.io/arsenal/reference/labels.md)
+  : Labels
+- [`keep.labels()`](https://mayoverse.github.io/arsenal/reference/keep.labels.md)
+  [`` `[`( ``*`<keep_labels>`*`)`](https://mayoverse.github.io/arsenal/reference/keep.labels.md)
+  [`` `[<-`( ``*`<keep_labels>`*`)`](https://mayoverse.github.io/arsenal/reference/keep.labels.md)
+  [`loosen.labels()`](https://mayoverse.github.io/arsenal/reference/keep.labels.md)
+  : Keep Labels
+
+## Other utilities
+
+- [`formulize()`](https://mayoverse.github.io/arsenal/reference/formulize.md)
+  : formulize
+- [`` `%nin%` ``](https://mayoverse.github.io/arsenal/reference/grapes-nin-grapes.md)
+  : Not in
+- [`allNA()`](https://mayoverse.github.io/arsenal/reference/NA.operations.md)
+  [`includeNA()`](https://mayoverse.github.io/arsenal/reference/NA.operations.md)
+  : Some functions to handle NAs
+- [`mdy.Date()`](https://mayoverse.github.io/arsenal/reference/mdy.Date.md)
+  [`Date.mdy()`](https://mayoverse.github.io/arsenal/reference/mdy.Date.md)
+  [`is.Date()`](https://mayoverse.github.io/arsenal/reference/mdy.Date.md)
+  : Convert numeric dates to Date object, and vice versa
+- [`padjust()`](https://mayoverse.github.io/arsenal/reference/padjust.md)
+  : Adjust P-values for Multiple Comparisons
+- [`smart.split()`](https://mayoverse.github.io/arsenal/reference/internal.functions.md)
+  [`replace2()`](https://mayoverse.github.io/arsenal/reference/internal.functions.md)
+  : Internal Functions
+- [`selectall()`](https://mayoverse.github.io/arsenal/reference/selectall.md)
+  [`as.selectall()`](https://mayoverse.github.io/arsenal/reference/selectall.md)
+  [`as.matrix(`*`<selectall>`*`)`](https://mayoverse.github.io/arsenal/reference/selectall.md)
+  [`` `[`( ``*`<selectall>`*`)`](https://mayoverse.github.io/arsenal/reference/selectall.md)
+  [`is.na(`*`<selectall>`*`)`](https://mayoverse.github.io/arsenal/reference/selectall.md)
+  [`is.selectall()`](https://mayoverse.github.io/arsenal/reference/selectall.md)
+  : Make a column for "select all" input
+
+## Common arsenal table structure
+
+- [`has_strata()`](https://mayoverse.github.io/arsenal/reference/arsenal_table.md)
+  [`` `[`( ``*`<arsenal_table>`*`)`](https://mayoverse.github.io/arsenal/reference/arsenal_table.md)
+  [`` `[`( ``*`<tableby>`*`)`](https://mayoverse.github.io/arsenal/reference/arsenal_table.md)
+  [`labels(`*`<arsenal_table>`*`)`](https://mayoverse.github.io/arsenal/reference/arsenal_table.md)
+  [`` `labels<-`( ``*`<arsenal_table>`*`)`](https://mayoverse.github.io/arsenal/reference/arsenal_table.md)
+  [`print(`*`<arsenal_table>`*`)`](https://mayoverse.github.io/arsenal/reference/arsenal_table.md)
+  [`merge(`*`<arsenal_table>`*`)`](https://mayoverse.github.io/arsenal/reference/arsenal_table.md)
+  [`merge(`*`<freqlist>`*`)`](https://mayoverse.github.io/arsenal/reference/arsenal_table.md)
+  [`print(`*`<summary.arsenal_table>`*`)`](https://mayoverse.github.io/arsenal/reference/arsenal_table.md)
+  :
+
+  `arsenal` tables with common structure
+
+## Other reference
+
+- [`mockstudy`](https://mayoverse.github.io/arsenal/reference/mockstudy.md)
+  [`muck_up_mockstudy()`](https://mayoverse.github.io/arsenal/reference/mockstudy.md)
+  : Mock study data for examples
+
+- [`arsenal`](https://mayoverse.github.io/arsenal/reference/arsenal-package.md)
+  [`arsenal-package`](https://mayoverse.github.io/arsenal/reference/arsenal-package.md)
+  : An Arsenal of 'R' Functions for Large-Scale Statistical Summaries
+
+- [`arsenal-deprecated`](https://mayoverse.github.io/arsenal/reference/arsenal-deprecated.md)
+  :
+
+  Deprecated functions in `arsenal`
+
+- [`arsenal-defunct`](https://mayoverse.github.io/arsenal/reference/arsenal-defunct.md)
+  :
+
+  Defunct functions in `arsenal`
+
+# Articles
+
+### All vignettes
+
+- [The comparedf
+  function](https://mayoverse.github.io/arsenal/articles/comparedf.md):
+- [The freqlist
+  function](https://mayoverse.github.io/arsenal/articles/freqlist.md):
+- [A Few Notes on
+  Labels](https://mayoverse.github.io/arsenal/articles/labels.md):
+- [The modelsum
+  function](https://mayoverse.github.io/arsenal/articles/modelsum.md):
+- [The paired
+  function](https://mayoverse.github.io/arsenal/articles/paired.md):
+- [The tableby
+  function](https://mayoverse.github.io/arsenal/articles/tableby.md):
+- [The write2
+  function](https://mayoverse.github.io/arsenal/articles/write2.md):
