@@ -1670,8 +1670,8 @@ is [`knitr::kable()`](https://rdrr.io/pkg/knitr/man/kable.html), tables
 still render well in bookdown. However, `print.summary.modelsum()`
 doesn’t use the `caption=` argument of `kable()`, so some tables may not
 have a properly numbered caption. To fix this, use the method described
-[on the bookdown site](https://bookdown.org/yihui/bookdown/tables.html)
-to give the table a tag/ID.
+[on the bookdown site](https://pkg.yihui.org/bookdown/tables.html) to
+give the table a tag/ID.
 
 ``` r
 > summary(modelsum(age ~ sex, data = mockstudy), title="(\\#tab:mytableby) Caption here")

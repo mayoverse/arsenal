@@ -546,7 +546,7 @@ WordStylesReference02.docx.
 
 For more information on changing the look/feel of your Word document,
 see the [Rmarkdown
-documentation](https://bookdown.org/yihui/rmarkdown/word-document.html)
+documentation](https://pkg.yihui.org/rmarkdown-book/word-document.html)
 website.
 
 ## Additional Examples
@@ -1701,7 +1701,7 @@ meanpmsd
     ##         y
     ##     }
     ## }
-    ## <bytecode: 0x11153300>
+    ## <bytecode: 0x16843c98>
     ## <environment: namespace:arsenal>
 
 For example:
@@ -2057,8 +2057,8 @@ doesn’t use the `caption=` argument of
 [`kable()`](https://rdrr.io/pkg/knitr/man/kable.html), so some tables
 may not have a properly numbered caption. To fix this, use the method
 described [on the bookdown
-site](https://bookdown.org/yihui/bookdown/tables.html) to give the table
-a tag/ID.
+site](https://pkg.yihui.org/bookdown/tables.html) to give the table a
+tag/ID.
 
 ``` r
 

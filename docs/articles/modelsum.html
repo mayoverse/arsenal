@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">arsenal</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.7.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -3389,8 +3389,8 @@ to make the table dynamic!</p>
 However, <code>print.summary.modelsum()</code> doesn’t use the
 <code>caption=</code> argument of <code>kable()</code>, so some tables
 may not have a properly numbered caption. To fix this, use the method
-described <a href="https://bookdown.org/yihui/bookdown/tables.html" class="external-link">on
-the bookdown site</a> to give the table a tag/ID.</p>
+described <a href="https://pkg.yihui.org/bookdown/tables.html" class="external-link">on the
+bookdown site</a> to give the table a tag/ID.</p>
 <div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">summary</span>(<span class="fu">modelsum</span>(age <span class="sc">~</span> sex, <span class="at">data =</span> mockstudy), <span class="at">title=</span><span class="st">"(</span><span class="sc">\\</span><span class="st">#tab:mytableby) Caption here"</span>)</span></code></pre></div>
 </div>
 <div class="section level3">

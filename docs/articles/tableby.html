@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">arsenal</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.7.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -1072,7 +1072,7 @@ then WordStylesReference02.docx.</p>
 <pre><code>output: word_document
   reference_docx: /projects/bsi/gentools/R/lib320/arsenal/doc/WordStylesReference01.docx </code></pre>
 <p>For more information on changing the look/feel of your Word document,
-see the <a href="https://bookdown.org/yihui/rmarkdown/word-document.html" class="external-link">Rmarkdown
+see the <a href="https://pkg.yihui.org/rmarkdown-book/word-document.html" class="external-link">Rmarkdown
 documentation</a> website.</p>
 </div>
 </div>
@@ -4676,7 +4676,7 @@ change the formatting, like in <code><a href="../reference/tableby.stats.html">m
 <span><span class="co">##         y</span></span>
 <span><span class="co">##     }</span></span>
 <span><span class="co">## }</span></span>
-<span><span class="co">## &lt;bytecode: 0x11153300&gt;</span></span>
+<span><span class="co">## &lt;bytecode: 0x16843c98&gt;</span></span>
 <span><span class="co">## &lt;environment: namespace:arsenal&gt;</span></span></code></pre>
 <p>For example:</p>
 <div class="sourceCode" id="cb128"><pre class="downlit sourceCode r">
@@ -5321,8 +5321,8 @@ to make the table dynamic!</p>
 However, <code>print.summary.tableby()</code> doesn’t use the
 <code>caption=</code> argument of <code><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable()</a></code>, so some tables
 may not have a properly numbered caption. To fix this, use the method
-described <a href="https://bookdown.org/yihui/bookdown/tables.html" class="external-link">on
-the bookdown site</a> to give the table a tag/ID.</p>
+described <a href="https://pkg.yihui.org/bookdown/tables.html" class="external-link">on the
+bookdown site</a> to give the table a tag/ID.</p>
 <div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/tableby.html">tableby</a></span><span class="op">(</span><span class="va">sex</span> <span class="op">~</span> <span class="va">age</span>, data <span class="op">=</span> <span class="va">mockstudy</span><span class="op">)</span>, title<span class="op">=</span><span class="st">"(\\#tab:mytableby) Caption here"</span><span class="op">)</span></span></code></pre></div>
 </div>
