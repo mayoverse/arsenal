@@ -260,7 +260,7 @@ output: word_document
   reference_docx: /projects/bsi/gentools/R/lib320/arsenal/doc/WordStylesReference01.docx 
 ```
 
-For more information on changing the look/feel of your Word document, see the [Rmarkdown documentation](https://bookdown.org/yihui/rmarkdown/word-document.html) website.
+For more information on changing the look/feel of your Word document, see the [Rmarkdown documentation](https://pkg.yihui.org/rmarkdown-book/word-document.html) website.
 
 
 # Additional Examples
@@ -853,7 +853,7 @@ the table dynamic!
 
 Since the backbone of `tableby()` is `knitr::kable()`, tables still render well in bookdown. However, `print.summary.tableby()` doesn't use
 the `caption=` argument of `kable()`, so some tables may not have a properly numbered caption. To fix this, use the method described
-[on the bookdown site](https://bookdown.org/yihui/bookdown/tables.html) to give the table a tag/ID.
+[on the bookdown site](https://pkg.yihui.org/bookdown/tables.html) to give the table a tag/ID.
 
 ```{r eval=FALSE}
 summary(tableby(sex ~ age, data = mockstudy), title="(\\#tab:mytableby) Caption here")

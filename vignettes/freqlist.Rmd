@@ -209,7 +209,7 @@ print(xftbl, sanitize.colnames.function = italic, include.rownames = FALSE, type
 
 Since the backbone of `freqlist()` is `knitr::kable()`, tables still render well in bookdown. However, `print.summary.freqlist()` doesn't use
 the `caption=` argument of `kable()`, so some tables may not have a properly numbered caption. To fix this, use the method described
-[on the bookdown site](https://bookdown.org/yihui/bookdown/tables.html) to give the table a tag/ID.
+[on the bookdown site](https://pkg.yihui.org/bookdown/tables.html) to give the table a tag/ID.
 
 ```{r eval=FALSE}
 summary(freqlist(~ sex + age, data = mockstudy), title="(\\#tab:mytableby) Caption here")

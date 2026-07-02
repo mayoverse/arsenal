@@ -1,6 +1,10 @@
-## Submission for arsenal 3.7.0
+## Submission for arsenal 3.7.1
 
 This is a new version. In this version:
+
+* URLs were corrected.
+
+In version 3.7.0 (which didn't pass CRAN checks):
 
 * Several bugs were fixed.
 
