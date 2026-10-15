@@ -195,5 +195,7 @@ export(write2html)
 export(write2pdf)
 export(write2word)
 export(yaml)
-importFrom(utils,head)
-importFrom(utils,tail)
+importFrom(utils,
+  head,
+  tail
+)

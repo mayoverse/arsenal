@@ -34,7 +34,7 @@ has_strata(x)
   ...,
   format = if (!is.null(x$text) && x$text \%in\% c("html", "latex")) x$text else
     "markdown",
-  escape = x$text \%nin\% c("html", "latex"),
+  escape = is.null(x$text) || x$text \%nin\% c("html", "latex"),
   width = NULL,
   min.split = NULL
 )
