@@ -8,7 +8,7 @@ This is a new version. In this version:
 
 ## Test environments
 
-* ubuntu 18.04 (on GitHub): R devel, release, oldrel
+* ubuntu (on GitHub): R devel, release, oldrel
 * Windows (on Github): release
 * Windows (local install): R devel
 * OSX (on GitHub): release
