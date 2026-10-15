@@ -297,7 +297,7 @@ merge.freqlist <- function(x, y, all = TRUE, ...)
 #' @rdname arsenal_table
 #' @export
 print.summary.arsenal_table <- function(x, ..., format = if(!is.null(x$text) && x$text %in% c("html", "latex")) x$text else "markdown",
-                                        escape = x$text %nin% c("html", "latex"), width = NULL, min.split = NULL)
+                                        escape = is.null(x$text) || x$text %nin% c("html", "latex"), width = NULL, min.split = NULL)
 {
   df <- as.data.frame(x, ..., width = width, min.split = min.split, list.ok = TRUE)
 
