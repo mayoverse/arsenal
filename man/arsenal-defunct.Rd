@@ -3,11 +3,6 @@
 \name{arsenal-defunct}
 \alias{arsenal-defunct}
 \title{Defunct functions in \code{arsenal}}
-\arguments{
-\item{x, y}{See \code{\link{comparedf}}.}
-
-\item{...}{Other arguments.}
-}
 \description{
 Details about defunct functions in \code{arsenal}
 }

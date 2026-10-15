@@ -3,8 +3,6 @@
 #'
 #' Details about defunct functions in \code{arsenal}
 #'
-#' @param x,y See \code{\link{comparedf}}.
-#' @param ... Other arguments.
 #' @details
 #' \code{comparison.control} was renamed to \code{\link{comparedf.control}} in version 3.0.0.
 #'
