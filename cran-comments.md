@@ -1,4 +1,4 @@
-## Submission for arsenal 3.7.2
+## Submission for arsenal 3.7.3
 
 This is a new version. Since the last release:
 
