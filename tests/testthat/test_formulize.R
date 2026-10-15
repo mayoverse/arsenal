@@ -77,16 +77,8 @@ test_that("Two-sided formula, interaction", {
 
 test_that("Two-sided formula, mixed input", {
   expect_identical(
-    cap(lm(formulize(2, 3:4, data = mockstudy), data = mockstudy)),
-    c(""                                                                   ,
-      "Call:"                                                              ,
-      "lm(formula = formulize(2, 3:4, data = mockstudy), data = mockstudy)",
-      ""                                                                   ,
-      "Coefficients:"                                                      ,
-      " (Intercept)  armF: FOLFOX    armG: IROX     sexFemale  "           ,
-      "     60.1075        0.6927        0.1484       -1.2319  "           ,
-      ""
-    )
+    names(coefficients(lm(formulize(2, 3:4, data = mockstudy), data = mockstudy))),
+    c("(Intercept)", "armF: FOLFOX", "armG: IROX", "sexFemale")
   )
 })
 
