@@ -1,6 +1,8 @@
 ## Submission for arsenal 3.7.2
 
-This is a new version. In this version:
+This is a new version. Since the last release:
+
+* Corrected some errant documentation.
 
 * Printing behavior was future-proofed for new `knitr` releases.
 

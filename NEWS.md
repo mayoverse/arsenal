@@ -1,3 +1,7 @@
+# arsenal v3.7.3
+
+* Corrected some errant documentation.
+
 # arsenal v3.7.2
 
 * Fixed some tests that were erroring on CRAN.
