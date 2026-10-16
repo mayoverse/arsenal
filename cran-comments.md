@@ -1,6 +1,8 @@
-## Submission for arsenal 3.7.3
+## Submission for arsenal 3.7.4
 
 This is a new version. Since the last release:
+
+* Corrected some tests that failed due to rounding on different systems.
 
 * Corrected some errant documentation.
 

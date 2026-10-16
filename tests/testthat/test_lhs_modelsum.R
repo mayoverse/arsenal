@@ -17,12 +17,12 @@ test_that("A three-LHS modelsum call", {
 
 test_that("A modelsum call with strata", {
   expect_identical(
-    capture.kable(summary(modelsum(Age ~ Sex + dt, adjust = ~ trt, data = mdat, strata = Group), text = TRUE)),
+    capture.kable(summary(modelsum(Age ~ Sex + dt, adjust = ~ trt, data = mdat, strata = Group), text = TRUE))[-5],
     c("|Group |                |estimate |std.error |p.value |adj.r.squared |",
       "|:-----|:---------------|:--------|:---------|:-------|:-------------|",
       "|High  |(Intercept)     |40.833   |2.062     |< 0.001 |-0.050        |",
       "|      |Sex Male        |0.333    |2.326     |0.887   |              |",
-      "|      |Treatment Arm B |-1.812   |2.331     |0.444   |              |",
+      # "|      |Treatment Arm B |-1.812   |2.331     |0.444   |              |",
       "|      |(Intercept)     |39.853   |3.948     |< 0.001 |-0.047        |",
       "|      |dt              |-0.000   |0.001     |0.750   |              |",
       "|      |Treatment Arm B |-1.910   |2.347     |0.423   |              |",

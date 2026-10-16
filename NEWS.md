@@ -1,3 +1,7 @@
+# arsenal v3.7.4
+
+* Fixed one more test that was erroring because of rounding.
+
 # arsenal v3.7.3
 
 * Corrected some errant documentation.
